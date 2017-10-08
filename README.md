@@ -1,5 +1,5 @@
 # Unity Experiment Manager
-A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the examle project, see Builds for latest Unity Package.
+A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the example project, see Releases for latest Unity Package.
 
 ## Features
 
