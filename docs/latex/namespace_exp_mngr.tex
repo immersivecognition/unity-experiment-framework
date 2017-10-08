@@ -1,0 +1,62 @@
+\hypertarget{namespace_exp_mngr}{}\section{Exp\+Mngr Namespace Reference}
+\label{namespace_exp_mngr}\index{Exp\+Mngr@{Exp\+Mngr}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_exp_mngr_1_1_block}{Block}
+\begin{DoxyCompactList}\small\item\em A set of trials – often used to group a number of consecutive \hyperlink{class_exp_mngr_1_1_trial}{Trial} objects that share something in common. \end{DoxyCompactList}\item 
+class \hyperlink{class_exp_mngr_1_1_experiment_session}{Experiment\+Session}
+\begin{DoxyCompactList}\small\item\em The main class used to manage your experiment. Attach this to a gameobject, and it will manage your experiment \char`\"{}session\char`\"{}. \end{DoxyCompactList}\item 
+class \hyperlink{class_exp_mngr_1_1_file_i_o_command}{File\+I\+O\+Command}
+\begin{DoxyCompactList}\small\item\em Class which represents a command sent to the File\+IO manager \end{DoxyCompactList}\item 
+class \hyperlink{class_exp_mngr_1_1_file_i_o_manager}{File\+I\+O\+Manager}
+\begin{DoxyCompactList}\small\item\em Class which manages File I/O in a seperate thread to avoid hitches. \end{DoxyCompactList}\item 
+class \hyperlink{class_exp_mngr_1_1_no_such_trial_exception}{No\+Such\+Trial\+Exception}
+\begin{DoxyCompactList}\small\item\em Exception thrown in cases where we try to access a trial that does not exist. \end{DoxyCompactList}\item 
+class \hyperlink{class_exp_mngr_1_1_settings}{Settings}
+\begin{DoxyCompactList}\small\item\em Class which handles the cascading settings system. \end{DoxyCompactList}\item 
+class \hyperlink{class_exp_mngr_1_1_tracker}{Tracker}
+\begin{DoxyCompactList}\small\item\em Attach this component to a gameobject and assign it in the tracked\+Objects field in an \hyperlink{class_exp_mngr_1_1_experiment_session}{Experiment\+Session} to automatically record position/rotation of the object at each frame. \end{DoxyCompactList}\item 
+class \hyperlink{class_exp_mngr_1_1_trial}{Trial}
+\begin{DoxyCompactList}\small\item\em The base unit of experiments. A \hyperlink{class_exp_mngr_1_1_trial}{Trial} is usually a singular attempt at a task by a participant after/during the presentation of a stimulus. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespace_exp_mngr_ada658a3bceadc7d2f4be3a749edae819}{File\+I\+O\+Function} \{ \newline
+{\bfseries Copy\+File}, 
+{\bfseries Write\+Trials}, 
+{\bfseries Write\+Json}, 
+{\bfseries Write\+Movement\+Data}, 
+\newline
+{\bfseries Quit}
+ \}\begin{DoxyCompactList}\small\item\em Enum that maps onto various functions used in the File\+IO manager \end{DoxyCompactList}
+\item 
+enum \hyperlink{namespace_exp_mngr_a8a72f39778ead3dc04af13a60949175c}{Trial\+Status} \{ {\bfseries Not\+Done}, 
+{\bfseries Preparing}, 
+{\bfseries In\+Progress}, 
+{\bfseries Done}
+ \}\begin{DoxyCompactList}\small\item\em Status of a trial \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespace_exp_mngr_ada658a3bceadc7d2f4be3a749edae819}\label{namespace_exp_mngr_ada658a3bceadc7d2f4be3a749edae819}} 
+\index{Exp\+Mngr@{Exp\+Mngr}!File\+I\+O\+Function@{File\+I\+O\+Function}}
+\index{File\+I\+O\+Function@{File\+I\+O\+Function}!Exp\+Mngr@{Exp\+Mngr}}
+\subsubsection{\texorpdfstring{File\+I\+O\+Function}{FileIOFunction}}
+{\footnotesize\ttfamily enum \hyperlink{namespace_exp_mngr_ada658a3bceadc7d2f4be3a749edae819}{Exp\+Mngr.\+File\+I\+O\+Function}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum that maps onto various functions used in the File\+IO manager 
+
+\mbox{\Hypertarget{namespace_exp_mngr_a8a72f39778ead3dc04af13a60949175c}\label{namespace_exp_mngr_a8a72f39778ead3dc04af13a60949175c}} 
+\index{Exp\+Mngr@{Exp\+Mngr}!Trial\+Status@{Trial\+Status}}
+\index{Trial\+Status@{Trial\+Status}!Exp\+Mngr@{Exp\+Mngr}}
+\subsubsection{\texorpdfstring{Trial\+Status}{TrialStatus}}
+{\footnotesize\ttfamily enum \hyperlink{namespace_exp_mngr_a8a72f39778ead3dc04af13a60949175c}{Exp\+Mngr.\+Trial\+Status}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Status of a trial 
+

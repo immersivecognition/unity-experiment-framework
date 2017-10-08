@@ -1,0 +1,194 @@
+\hypertarget{class_exp_mngr_1_1_trial}{}\section{Exp\+Mngr.\+Trial Class Reference}
+\label{class_exp_mngr_1_1_trial}\index{Exp\+Mngr.\+Trial@{Exp\+Mngr.\+Trial}}
+
+
+The base unit of experiments. A \hyperlink{class_exp_mngr_1_1_trial}{Trial} is usually a singular attempt at a task by a participant after/during the presentation of a stimulus.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_exp_mngr_1_1_trial_ad9a26c84544d95c3fbfd3344ef1ac46b}{Trial} (\hyperlink{class_exp_mngr_1_1_experiment_session}{Experiment\+Session} exp, \hyperlink{class_exp_mngr_1_1_block}{Block} trial\+Block)
+\begin{DoxyCompactList}\small\item\em Create trial with an associated block \end{DoxyCompactList}\item 
+\hyperlink{class_exp_mngr_1_1_trial_a7d8023ebd830604a202875026a47187b}{Trial} (\hyperlink{class_exp_mngr_1_1_experiment_session}{Experiment\+Session} exp)
+\begin{DoxyCompactList}\small\item\em Create trial without an associated block \end{DoxyCompactList}\item 
+void \hyperlink{class_exp_mngr_1_1_trial_a4281bab345d041e995132d16462b056e}{Begin} ()
+\begin{DoxyCompactList}\small\item\em Begins the trial, updating the current trial and block number, setting the status to in progress, starting the timer for the trial, and beginning recording positions of every object with an attached tracker \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_exp_mngr_1_1_trial_ae187535e400451e0df950a4c7a5fe0bc}{On\+Begin} ()
+\begin{DoxyCompactList}\small\item\em Override this method to create custom behavior on trial start \end{DoxyCompactList}\item 
+void \hyperlink{class_exp_mngr_1_1_trial_a34bdc21e8c6b5a686d893ca5ecd1b916}{End} ()
+\begin{DoxyCompactList}\small\item\em Ends the rial, queues up saving results to output file, stops and saves tracked object data. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_exp_mngr_1_1_trial_a0c010c02f70930a36b52c6d828040b5a}{On\+End} ()
+\begin{DoxyCompactList}\small\item\em Override this method to create custom behavior for after a trial ends. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespace_exp_mngr_a8a72f39778ead3dc04af13a60949175c}{Trial\+Status} \hyperlink{class_exp_mngr_1_1_trial_a1725d79305b17692b7be6075c00fa026}{status} = Trial\+Status.\+Not\+Done
+\begin{DoxyCompactList}\small\item\em Status of the trial (enum) \end{DoxyCompactList}\item 
+\hyperlink{class_exp_mngr_1_1_block}{Block} \hyperlink{class_exp_mngr_1_1_trial_ab1e65f76d97081ae962fe22637a32bad}{block}
+\begin{DoxyCompactList}\small\item\em The block the trial belongs to \end{DoxyCompactList}\item 
+\hyperlink{class_exp_mngr_1_1_settings}{Settings} \hyperlink{class_exp_mngr_1_1_trial_a6f92b03ff55c788613c0bd44e1190449}{settings} = \hyperlink{class_exp_mngr_1_1_settings_a9a79c93bbbd6158a6ae543a615da6e6a}{Settings.\+empty}
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_exp_mngr_1_1_trial}{Trial} settings. These will override block settings if set. \end{DoxyCompactList}\item 
+\hyperlink{class_ordered_result_dict}{Ordered\+Result\+Dict} \hyperlink{class_exp_mngr_1_1_trial_aecde0037b2ddec7c09c6b4f2a6c12263}{result}
+\begin{DoxyCompactList}\small\item\em Ordered dictionary of results in a order. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{class_exp_mngr_1_1_trial_ad581be1a1aa77dbeb93ccd9721c1f8a2}{number}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Returns non-\/zero indexed trial number. \end{DoxyCompactList}\item 
+int \hyperlink{class_exp_mngr_1_1_trial_ad0730e34a2ae268037c3d396b8863921}{number\+In\+Block}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Returns non-\/zero indexed trial number for the current block. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The base unit of experiments. A \hyperlink{class_exp_mngr_1_1_trial}{Trial} is usually a singular attempt at a task by a participant after/during the presentation of a stimulus. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_ad9a26c84544d95c3fbfd3344ef1ac46b}\label{class_exp_mngr_1_1_trial_ad9a26c84544d95c3fbfd3344ef1ac46b}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!Trial@{Trial}}
+\index{Trial@{Trial}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{Trial()}{Trial()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Exp\+Mngr.\+Trial.\+Trial (\begin{DoxyParamCaption}\item[{\hyperlink{class_exp_mngr_1_1_experiment_session}{Experiment\+Session}}]{exp,  }\item[{\hyperlink{class_exp_mngr_1_1_block}{Block}}]{trial\+Block }\end{DoxyParamCaption})}
+
+
+
+Create trial with an associated block 
+
+
+\begin{DoxyParams}{Parameters}
+{\em exp} & The experiment session the trial belongs to.\\
+\hline
+{\em trial\+Block} & The block the trial belongs to.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_a7d8023ebd830604a202875026a47187b}\label{class_exp_mngr_1_1_trial_a7d8023ebd830604a202875026a47187b}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!Trial@{Trial}}
+\index{Trial@{Trial}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{Trial()}{Trial()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Exp\+Mngr.\+Trial.\+Trial (\begin{DoxyParamCaption}\item[{\hyperlink{class_exp_mngr_1_1_experiment_session}{Experiment\+Session}}]{exp }\end{DoxyParamCaption})}
+
+
+
+Create trial without an associated block 
+
+
+\begin{DoxyParams}{Parameters}
+{\em exp} & The experiment session the trial belongs to.\\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_a4281bab345d041e995132d16462b056e}\label{class_exp_mngr_1_1_trial_a4281bab345d041e995132d16462b056e}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!Begin@{Begin}}
+\index{Begin@{Begin}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{Begin()}{Begin()}}
+{\footnotesize\ttfamily void Exp\+Mngr.\+Trial.\+Begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Begins the trial, updating the current trial and block number, setting the status to in progress, starting the timer for the trial, and beginning recording positions of every object with an attached tracker 
+
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_a34bdc21e8c6b5a686d893ca5ecd1b916}\label{class_exp_mngr_1_1_trial_a34bdc21e8c6b5a686d893ca5ecd1b916}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!End@{End}}
+\index{End@{End}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{End()}{End()}}
+{\footnotesize\ttfamily void Exp\+Mngr.\+Trial.\+End (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Ends the rial, queues up saving results to output file, stops and saves tracked object data. 
+
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_ae187535e400451e0df950a4c7a5fe0bc}\label{class_exp_mngr_1_1_trial_ae187535e400451e0df950a4c7a5fe0bc}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!On\+Begin@{On\+Begin}}
+\index{On\+Begin@{On\+Begin}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{On\+Begin()}{OnBegin()}}
+{\footnotesize\ttfamily virtual void Exp\+Mngr.\+Trial.\+On\+Begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Override this method to create custom behavior on trial start 
+
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_a0c010c02f70930a36b52c6d828040b5a}\label{class_exp_mngr_1_1_trial_a0c010c02f70930a36b52c6d828040b5a}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!On\+End@{On\+End}}
+\index{On\+End@{On\+End}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{On\+End()}{OnEnd()}}
+{\footnotesize\ttfamily virtual void Exp\+Mngr.\+Trial.\+On\+End (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Override this method to create custom behavior for after a trial ends. 
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_ab1e65f76d97081ae962fe22637a32bad}\label{class_exp_mngr_1_1_trial_ab1e65f76d97081ae962fe22637a32bad}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!block@{block}}
+\index{block@{block}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{block}{block}}
+{\footnotesize\ttfamily \hyperlink{class_exp_mngr_1_1_block}{Block} Exp\+Mngr.\+Trial.\+block}
+
+
+
+The block the trial belongs to 
+
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_aecde0037b2ddec7c09c6b4f2a6c12263}\label{class_exp_mngr_1_1_trial_aecde0037b2ddec7c09c6b4f2a6c12263}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!result@{result}}
+\index{result@{result}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{result}{result}}
+{\footnotesize\ttfamily \hyperlink{class_ordered_result_dict}{Ordered\+Result\+Dict} Exp\+Mngr.\+Trial.\+result}
+
+
+
+Ordered dictionary of results in a order. 
+
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_a6f92b03ff55c788613c0bd44e1190449}\label{class_exp_mngr_1_1_trial_a6f92b03ff55c788613c0bd44e1190449}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!settings@{settings}}
+\index{settings@{settings}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{settings}{settings}}
+{\footnotesize\ttfamily \hyperlink{class_exp_mngr_1_1_settings}{Settings} Exp\+Mngr.\+Trial.\+settings = \hyperlink{class_exp_mngr_1_1_settings_a9a79c93bbbd6158a6ae543a615da6e6a}{Settings.\+empty}}
+
+
+
+\hyperlink{class_exp_mngr_1_1_trial}{Trial} settings. These will override block settings if set. 
+
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_a1725d79305b17692b7be6075c00fa026}\label{class_exp_mngr_1_1_trial_a1725d79305b17692b7be6075c00fa026}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!status@{status}}
+\index{status@{status}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{status}{status}}
+{\footnotesize\ttfamily \hyperlink{namespace_exp_mngr_a8a72f39778ead3dc04af13a60949175c}{Trial\+Status} Exp\+Mngr.\+Trial.\+status = Trial\+Status.\+Not\+Done}
+
+
+
+Status of the trial (enum) 
+
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_ad581be1a1aa77dbeb93ccd9721c1f8a2}\label{class_exp_mngr_1_1_trial_ad581be1a1aa77dbeb93ccd9721c1f8a2}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!number@{number}}
+\index{number@{number}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{number}{number}}
+{\footnotesize\ttfamily int Exp\+Mngr.\+Trial.\+number\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Returns non-\/zero indexed trial number. 
+
+\mbox{\Hypertarget{class_exp_mngr_1_1_trial_ad0730e34a2ae268037c3d396b8863921}\label{class_exp_mngr_1_1_trial_ad0730e34a2ae268037c3d396b8863921}} 
+\index{Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}!number\+In\+Block@{number\+In\+Block}}
+\index{number\+In\+Block@{number\+In\+Block}!Exp\+Mngr\+::\+Trial@{Exp\+Mngr\+::\+Trial}}
+\subsubsection{\texorpdfstring{number\+In\+Block}{numberInBlock}}
+{\footnotesize\ttfamily int Exp\+Mngr.\+Trial.\+number\+In\+Block\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Returns non-\/zero indexed trial number for the current block. 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+Data/\+Dropbox/\+Documents/\+Ph\+D/\+Software/\+Unity/\+Experiment\+Manager\+Project/\+Assets/\+Exp\+Mngr/\+Scripts/Trial.\+cs\end{DoxyCompactItemize}
