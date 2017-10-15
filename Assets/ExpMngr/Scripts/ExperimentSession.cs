@@ -13,9 +13,6 @@ namespace ExpMngr
     /// </summary>
     public class ExperimentSession : MonoBehaviour
     {
-        ///
-        /// Inspector fields
-        ///
 
         [SerializeField] private string _expName = "experiment_name";
         /// <summary>
@@ -55,12 +52,9 @@ namespace ExpMngr
         /// </summary>
         public List<string> settingsToLog { get { return _settingsToLog; } }
 
-
-        ///
-        /// All other fields
-        ///
-
         bool hasInitialised = false;
+
+        FillableFormController formController;
 
         /// <summary>
         /// Settings for the experiment. These are automatically loaded from file on initialisation of the session.
@@ -114,25 +108,31 @@ namespace ExpMngr
         /// <summary>
         /// Unique string for this session (participant ID, etc)
         /// </summary>
-        [HideInInspector] public string sessionID;
+        [HideInInspector]
+        public string sessionID;
 
         /// <summary>
         /// Currently active trial number.
         /// </summary>
+        [HideInInspector]
         public int trialNum = 0;
 
         /// <summary>
         /// Currently active block number.
         /// </summary>
+        [HideInInspector]
         public int blockNum = 0;
 
         FileIOManager fileIOManager;
 
         List<string> baseHeaders = new List<string> { "session_id", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
+
+        string basePath;
+
         /// <summary>
         /// Path to the folder used for readijng settings and storing the output. 
         /// </summary>
-        public string experimentPath { get { return Path.Combine(Application.streamingAssetsPath, expName); } }
+        public string experimentPath { get { return Path.Combine(basePath, expName); } }
         /// <summary>
         /// Path within the experiment path for this particular session.
         /// </summary>
@@ -230,6 +230,8 @@ namespace ExpMngr
             string filePath = Path.Combine(sessionPath, fileName);
             fileIOManager.Manage(new FileIOCommand(FileIOFunction.WriteJson, filePath, dict));
         }
+
+
 
         /// <summary>
         /// Initialises a session with given name and writes info about the session to file

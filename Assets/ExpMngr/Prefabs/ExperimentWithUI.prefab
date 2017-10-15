@@ -410,8 +410,9 @@ GameObject:
   - component: {fileID: 222682604545691766}
   - component: {fileID: 114178250408166730}
   - component: {fileID: 114755861338468502}
+  - component: {fileID: 114400572270731072}
   m_Layer: 5
-  m_Name: FillableForm
+  m_Name: ExperimentWithUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1121,6 +1122,27 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
+--- !u!114 &114400572270731072
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1684823504853620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a3318d1a6878db47b0b9a8e0b74cc67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _expName: experiment_name
+  endExperimentOnQuit: 1
+  blocks: []
+  _trackedObjects: []
+  _customHeaders: []
+  _settingsToLog: []
+  sessionID: 
+  trialNum: 0
+  blockNum: 0
+  headers: []
 --- !u!114 &114431244893998606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1596,8 +1618,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114775509996771296}
   m_HandleRect: {fileID: 224082368914696248}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.34763312
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1876,7 +1898,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000034339726}
+  m_AnchoredPosition: {x: 0, y: 169.61539}
   m_SizeDelta: {x: 400, y: 210}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224082368914696248
