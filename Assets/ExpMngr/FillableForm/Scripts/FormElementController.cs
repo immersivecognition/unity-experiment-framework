@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-
 namespace ExpMngr
 {
     public class FormElementController : MonoBehaviour
@@ -18,6 +16,9 @@ namespace ExpMngr
 
         public float height { get { return rectTransform.rect.height; } }
 
+        [HideInInspector]
+        public FormElementEntry entry;
+
         // Use this for initialization
         void Start()
         {
@@ -30,8 +31,9 @@ namespace ExpMngr
 
         }
 
-        public void Setup(string titleText, FormDataType dType)
+        public void Setup(string titleText, FormDataType dType, FormElementEntry entry)
         {
+            this.entry = entry;
             title.text = titleText;
             originalTitle = titleText;
             dataType = dType;

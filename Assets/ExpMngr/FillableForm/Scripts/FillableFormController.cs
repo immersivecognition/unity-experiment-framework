@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 namespace ExpMngr
 {
     public class FillableFormController : MonoBehaviour
@@ -14,6 +13,7 @@ namespace ExpMngr
         public GameObject contentParent;
         public GameObject textPrefab;
         public GameObject checkBoxPrefab;
+        public GameObject dropDownPrefab;
 
         // Use this for initialization
         void Start()
@@ -70,6 +70,8 @@ namespace ExpMngr
                     return Instantiate(textPrefab, contentParent.transform);
                 case FormDataType.Bool:
                     return Instantiate(checkBoxPrefab, contentParent.transform);
+                case FormDataType.DropDown:
+                    return Instantiate(dropDownPrefab, contentParent.transform);
                 default:
                     return null;
             }
@@ -110,12 +112,14 @@ namespace ExpMngr
         public string displayName;
         public string internalName;
         public FormDataType dataType;
+        public List<string> dropDownValues = new List<string>() { "Option 1", "Option 2" };
+
         public FormElementController controller { get; set; }
 
         public void Initialise(FormElementController formElementController)
         {
             controller = formElementController;
-            controller.Setup(displayName, dataType);
+            controller.Setup(displayName, dataType, this);
         }
 
     }
@@ -123,6 +127,6 @@ namespace ExpMngr
 
     public enum FormDataType
     {
-        String, Float, Int, Bool
+        String, Float, Int, Bool, DropDown
     }
 }
