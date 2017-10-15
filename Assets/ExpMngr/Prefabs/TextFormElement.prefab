@@ -203,6 +203,13 @@ MonoBehaviour:
   rectTransform: {fileID: 224762906418741188}
   title: {fileID: 114566013805535272}
   dataType: 0
+  entry:
+    displayName: 
+    internalName: 
+    dataType: 0
+    dropDownValues:
+    - Option 1
+    - Option 2
   placeholder: {fileID: 114812937645559530}
   enteredText: {fileID: 114871084140008742}
 --- !u!114 &114871084140008742

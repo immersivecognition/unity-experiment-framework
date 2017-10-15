@@ -108,6 +108,13 @@ MonoBehaviour:
   rectTransform: {fileID: 224762906418741188}
   title: {fileID: 114566013805535272}
   dataType: 3
+  entry:
+    displayName: 
+    internalName: 
+    dataType: 0
+    dropDownValues:
+    - Option 1
+    - Option 2
   toggle: {fileID: 114771334041337836}
 --- !u!114 &114566013805535272
 MonoBehaviour:
