@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CheckBoxController : FormElementController
+namespace ExpMngr
 {
-    public Toggle toggle;
-
-    public override object GetContents()
+    public class CheckBoxController : FormElementController
     {
-        return toggle.isOn;
-    }
+        public Toggle toggle;
 
+        public override object GetContents()
+        {
+            return toggle.isOn;
+        }
+
+    }
 }
