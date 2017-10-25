@@ -1,3 +1,5 @@
+![Experiment manager for Unity](media/banner.png)
+
 # Unity Experiment Manager
 A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the examle project, see Builds for latest Unity Package.
 
@@ -22,3 +24,8 @@ http://jackbrookes.github.io/unity-experiment-manager
 ## Usage
 
 Download the project and open in Unity. Alternatively import the ```.unitypackage``` file to your existing Unity project.
+
+## Future additions
+
+* In experiment UI to monitor collection of data in real-time
+* Recording of an experiment via an in-game camera (useful for mixed reality, and watching back afterwards)
