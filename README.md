@@ -20,33 +20,33 @@ A set of C# scripts which simplifies management of human-based experiments devel
 
 ## Example
 
-```
+```csharp
 class ExperimentBuilder : Monobehaviour
+{
+    // set this to your ExperimentSession instance in the inspector
+    public ExpMngr.ExperimentSession exp;
+    
+    // call this function from ExperimentSession OnSessionStart UnityEvent in its inspector
+    public void GenerateAndRun() 
     {
-        // set this to your ExperimentSession instance in the inspector
-        public ExpMngr.ExperimentSession exp;
-        
-        // call this function from ExperimentSession OnSessionStart UnityEvent in its inspector
-        public void GenerateAndRun() 
-        {
-            // Creating a block
-            var myBlock = new ExpMngr.Block(exp); 
+        // Creating a block
+        var myBlock = new ExpMngr.Block(exp); 
 
-            // Creating 10 trials within our block
-            for (int i = 0; i < 10; i++)
-                new ExpMngr.Trial(exp, myBlock);
+        // Creating 10 trials within our block
+        for (int i = 0; i < 10; i++)
+            new ExpMngr.Trial(exp, myBlock);
 
-            // Add a new setting to trial 1
-            var firstTrial = myBlock.GetTrial(1);//trial number not 0 indexed
-            firstTrial.settings["color"] = "red";
+        // Add a new setting to trial 1
+        var firstTrial = myBlock.GetTrial(1);//trial number not 0 indexed
+        firstTrial.settings["color"] = "red";
 
-            // Run first trial
-            exp.nextTrial.Begin();
-        }
-
-        ...
-
+        // Run first trial
+        exp.nextTrial.Begin();
     }
+
+    ...
+
+}
 ```
 
 See ```Assets/ExpMngr/ExampleScript.cs``` for another simple example.
