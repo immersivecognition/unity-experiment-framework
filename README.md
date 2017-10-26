@@ -1,21 +1,55 @@
 ![Experiment manager for Unity](media/banner.png)
 
-# Unity Experiment Manager
+# ExpMngr - Experiment Manager for Unity
 A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the example project, see Releases for latest Unity Package.
 
 ## Features
 
+* UI to load participant data from file (or add new participant data)
 * Classes for common experimental concepts such as ```Session```, ```Block``` & ```Trial```
 * Saves behavioural data to ```.CSV``` file, automatically handling file & directory naming
 * Allows for tracking of position/rotation of any objects in the scene and writes to ```.CSV```
 * Writes files in a seperate thread to avoid frame drops
 * Cascading settings system, allowing setting independent variables at a Session, Block, or Trial level.
-* Serialises and saves information to ```JSON``` file
+* Serialises and saves information to ```JSON``` files
 * Helps create maintaiable code using an Object-Oriented Programming style
+
+## UI Screenshot
+
+![User interface](media/screenshot-1.png)
 
 ## Example
 
-See ```Assets/ExpMngr/TestScript.cs``` for a simple example.
+```
+class ExperimentBuilder : Monobehaviour
+    {
+        // set this to your ExperimentSession instance in the inspector
+        public ExpMngr.ExperimentSession exp;
+        
+        // call this function from ExperimentSession OnSessionStart UnityEvent in its inspector
+        public void GenerateAndRun() 
+        {
+            // Creating a block
+            var myBlock = new ExpMngr.Block(exp); 
+
+            // Creating 10 trials within our block
+            for (int i = 0; i < 10; i++)
+                new ExpMngr.Trial(exp, myBlock);
+
+            // Add a new setting to trial 1
+            var firstTrial = myBlock.GetTrial(1);//trial number not 0 indexed
+            firstTrial.settings["color"] = "red";
+
+            // Run first trial
+            exp.nextTrial.Begin();
+        }
+
+        ...
+
+    }
+```
+
+See ```Assets/ExpMngr/ExampleScript.cs``` for another simple example.
 
 ## Documentation
 
