@@ -81,7 +81,8 @@ namespace ExpMngr
             foreach (string h in experiment.headers)
                 result.Add(h, string.Empty);
 
-            result["session_id"] = experiment.sessionID;
+            result["ppid"] = experiment.ppid;
+            result["session_num"] = experiment.sessionNum;
             result["trial_num"] = number;
             result["block_num"] = block.number;
             result["trial_num_in_block"] = numberInBlock;

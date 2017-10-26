@@ -8,25 +8,38 @@ namespace ExpMngr
     public class TextFormController : FormElementController
     {
         public Text placeholder;
-        public Text enteredText;
+        public InputField inputField;
+
+
 
         public override object GetContents()
         {
             switch (dataType)
             {
                 case FormDataType.Float:
-                    return float.Parse(enteredText.text);
+                    return float.Parse(inputField.text);
                 case FormDataType.Int:
-                    return int.Parse(enteredText.text);
+                    return int.Parse(inputField.text);
                 case FormDataType.String:
-                    return enteredText.text;
+                    return inputField.text;
                 default:
                     throw new System.Exception("Datatype undefined");
             }
         }
 
+        public override void SetContents(object newContents)
+        {
+            inputField.text = (string) newContents;
+        }
+
+        public override void Clear()
+        {
+            inputField.text = "";
+        }
+
         protected override void Setup()
         {
+            
             string pText;
             switch (dataType)
             {

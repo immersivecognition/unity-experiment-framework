@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections.Specialized;
+using System.Data;
+using UnityEngine.Events;
 
 namespace ExpMngr
 {
@@ -14,7 +16,7 @@ namespace ExpMngr
     public class ExperimentSession : MonoBehaviour
     {
 
-        [SerializeField] private string _expName = "experiment_name";
+        [SerializeField] private string _experimentName = "experiment_name";
         /// <summary>
         /// Enable to automatically safely end the session when the application stops running.
         /// </summary>
@@ -22,9 +24,12 @@ namespace ExpMngr
         /// <summary>
         /// Name of the experiment (will be used for the generated folder name)
         /// </summary>
-        public string expName {
-            get { return _expName; }
-            set { expName = GetSafeFilename(value); }
+        public string experimentName {
+            get { return _experimentName; }
+            set {
+                string safeName = Extensions.GetSafeFilename(value);
+                _experimentName = safeName;
+            }
         }
 
         /// <summary>
@@ -42,19 +47,22 @@ namespace ExpMngr
 
         [SerializeField] private List<string> _customHeaders = new List<string>();
         /// <summary>
-        /// List of variables you want to measure in your experiment. Once set here, you can add the observations to your results disctionary on each trial.
+        /// List of variables you want to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
         /// </summary>
         public List<string> customHeaders { get { return _customHeaders; } }
 
         [SerializeField] private List<string> _settingsToLog = new List<string>();
         /// <summary>
-        /// List of settings you wish to log to the output file for each trial.
+        /// List of settings you wish to log to the behavioural file for each trial.
         /// </summary>
         public List<string> settingsToLog { get { return _settingsToLog; } }
 
-        bool hasInitialised = false;
+        /// <summary>
+        /// Event to trigger when the session is started via the UI
+        /// </summary>
+        public UnityEvent onSessionStart;
 
-        FillableFormController formController;
+        bool hasInitialised = false;
 
         /// <summary>
         /// Settings for the experiment. These are automatically loaded from file on initialisation of the session.
@@ -106,10 +114,17 @@ namespace ExpMngr
         }
 
         /// <summary>
-        /// Unique string for this session (participant ID, etc)
+        /// Unique string for this participant (participant ID)
         /// </summary>
         [HideInInspector]
-        public string sessionID;
+        public string ppid;
+
+        /// <summary>
+        /// Current session number for this participant
+        /// </summary>
+        [HideInInspector]
+        public int sessionNum;
+        private string sessionFolderName {  get { return string.Format("S{0:000}", sessionNum); } }
 
         /// <summary>
         /// Currently active trial number.
@@ -125,18 +140,22 @@ namespace ExpMngr
 
         FileIOManager fileIOManager;
 
-        List<string> baseHeaders = new List<string> { "session_id", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
+        List<string> baseHeaders = new List<string> { "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
 
         string basePath;
 
         /// <summary>
         /// Path to the folder used for readijng settings and storing the output. 
         /// </summary>
-        public string experimentPath { get { return Path.Combine(basePath, expName); } }
+        public string experimentPath { get { return Path.Combine(basePath, experimentName); } }
         /// <summary>
-        /// Path within the experiment path for this particular session.
+        /// Path within the experiment path for this particular particpant.
         /// </summary>
-        public string sessionPath { get { return Path.Combine(experimentPath, sessionID); } }
+        public string ppPath { get { return Path.Combine(experimentPath, ppid); } }
+        /// <summary>
+        /// Path within the particpant path for this particular session.
+        /// </summary>
+        public string sessionPath { get { return Path.Combine(ppPath, sessionFolderName); } }
         /// <summary>
         /// Path within the experiment path that points to the settings json file.
         /// </summary>
@@ -150,19 +169,36 @@ namespace ExpMngr
         /// </summary>
         [HideInInspector] public List<string> headers;
 
+        /// <summary>
+        /// Queue of actions which gets emptied on each frame in the main thread.
+        /// </summary>
+        public readonly Queue<System.Action> executeOnMainThreadQueue = new Queue<System.Action>();
+
+
         void Start()
         {
+            // set name
+            experimentName = _experimentName;
+
             // start FileIOManager
             fileIOManager = new FileIOManager(this);
 
-            // error checks (has set save folder, etc)     
-            InitFolder();
-
-            // load experiment settings
-            settings = ReadSettings();
-
             // create headers
-            headers = baseHeaders.Concat(customHeaders).Concat(trackingHeaders).Concat(settingsToLog).ToList<string>();
+            headers = baseHeaders.Concat(customHeaders).Concat(trackingHeaders).Concat(settingsToLog).ToList();
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            ManageActions();
+        }
+
+        void ManageActions()
+        {
+            while (executeOnMainThreadQueue.Count > 0)
+            {
+                executeOnMainThreadQueue.Dequeue().Invoke();
+            }
         }
 
         internal List<Tracker> GetTrackedObjects()
@@ -170,13 +206,19 @@ namespace ExpMngr
             return trackedObjects;
         }
 
+        /// <summary>
+        /// Folder error checks (creates folders, has set save folder, etc)     
+        /// </summary>
         void InitFolder()
         {
-            if (!System.IO.Directory.Exists(Application.streamingAssetsPath))
-                System.IO.Directory.CreateDirectory(Application.streamingAssetsPath);
-
             if (!System.IO.Directory.Exists(experimentPath))
                 System.IO.Directory.CreateDirectory(experimentPath);
+            if (!System.IO.Directory.Exists(ppPath))
+                System.IO.Directory.CreateDirectory(ppPath);
+            if (!System.IO.Directory.Exists(sessionPath))
+                System.IO.Directory.CreateDirectory(sessionPath);
+            else
+                Debug.LogWarning("Warning session already exists! Continuing will overwrite");
         }
 
         /// <summary>
@@ -190,7 +232,7 @@ namespace ExpMngr
             string fname = string.Format("movement_{0}_T{1:000}.csv", objectName, trialNum);
             string fpath = Path.Combine(sessionPath, fname);
 
-            fileIOManager.Manage(new FileIOCommand(FileIOFunction.WriteMovementData, data, fpath));
+            fileIOManager.Manage(new System.Action( () => fileIOManager.WriteMovementData(data, fpath)));
 
             // return relative path so it can be saved
             Uri fullPath = new Uri(fpath);
@@ -205,7 +247,7 @@ namespace ExpMngr
         public void CopyFileToSessionFolder(string filePath)
         {
             string newPath = Path.Combine(sessionPath, Path.GetFileName(filePath));
-            fileIOManager.Manage(new FileIOCommand(FileIOFunction.CopyFile, filePath, newPath));
+            fileIOManager.Manage(new System.Action(() => fileIOManager.CopyFile(filePath, newPath)));
         }
 
         /// <summary>
@@ -216,45 +258,40 @@ namespace ExpMngr
         public void CopyFileToSessionFolder(string filePath, string newName)
         {
             string newPath = Path.Combine(sessionPath, newName);
-            fileIOManager.Manage(new FileIOCommand(FileIOFunction.CopyFile, filePath, newPath));
+            fileIOManager.Manage(new System.Action(() => fileIOManager.CopyFile(filePath, newPath)));
         }
 
         /// <summary>
         /// Write a dictionary object to a JSON file in the session folder
         /// </summary>
         /// <param name="dict">Dictionary object to write</param>
+
         /// <param name="objectName">Name of the object (is used for file name)</param>
         public void WriteDictToSessionFolder(Dictionary<string, object> dict, string objectName)
         {
             string fileName = string.Format("{0}.json", objectName);
             string filePath = Path.Combine(sessionPath, fileName);
-            fileIOManager.Manage(new FileIOCommand(FileIOFunction.WriteJson, filePath, dict));
+            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteJson(filePath, dict)));
         }
 
-
-
-        /// <summary>
-        /// Initialises a session with given name and writes info about the session to file
-        /// </summary>
-        /// <param name="sessionIdentifier">Unique ID used to identify the session.</param>
-        /// <param name="sessionInfo">A dictionary of objects (such as collected demographics from a participant) to write to the session folder.</param>
-        public void InitSession(string sessionIdentifier, Dictionary<string, object> sessionInfo)
-        {
-            InitSession(sessionIdentifier);
-            WriteDictToSessionFolder(sessionInfo, "info");
-        }
 
         /// <summary>
         /// Initialises a session with given name
         /// </summary>
-        /// <param name="sessionIdentifier"></param>
-        public void InitSession(string sessionIdentifier)
+        /// <param name="sessionNumber">Session number for this particular participant</param>
+        /// <param name="baseFolder">Path to the folder where data should be stored.</param>
+        public void InitSession(string participantId, int sessionNumber, string baseFolder)
         {
-            sessionID = GetSafeFilename(sessionIdentifier);
-            if (!System.IO.Directory.Exists(sessionPath))
-                System.IO.Directory.CreateDirectory(sessionPath);
-            else
-                Debug.LogError("Warning session already exists! Continuing will overwrite");
+            ppid = participantId;
+            sessionNum = sessionNumber;
+            basePath = baseFolder;
+
+            // setup folders
+            InitFolder();
+
+            // load experiment settings
+            settings = ReadSettings();
+
             hasInitialised = true;
         }
 
@@ -269,11 +306,11 @@ namespace ExpMngr
             catch (FileNotFoundException)
             {
                 string message = string.Format("Settings .json file not found! Creating an empty one in {0}.", settingsPath);
-                Debug.LogError(message);
+                Debug.LogWarning(message);
 
                 // write empty settings to experiment folder
                 dict = new Dictionary<string, object>();
-                fileIOManager.Manage(new FileIOCommand(FileIOFunction.WriteJson, settingsPath, dict));
+                fileIOManager.Manage(new System.Action(() => fileIOManager.WriteJson(settingsPath, dict)));
             }            
             return new Settings(dict);
         }
@@ -361,11 +398,6 @@ namespace ExpMngr
             return blocks[blockNumber - 1];
         }
 
-        static string GetSafeFilename(string filename)
-        {
-            return string.Join("", filename.Split(Path.GetInvalidFileNameChars()));
-        }
-
 
         /// <summary>
         /// Ends the experiment session.
@@ -377,7 +409,7 @@ namespace ExpMngr
                 if (inTrial)
                     currentTrial.End();
                 SaveResults();
-                fileIOManager.Manage(new FileIOCommand(FileIOFunction.Quit));
+                fileIOManager.Manage(new System.Action(fileIOManager.Quit));
             }
         }
 
@@ -386,8 +418,20 @@ namespace ExpMngr
             List<OrderedResultDict> results = trials.Select(t => t.result).ToList();
             string fileName = "trial_results.csv";
             string filePath = Path.Combine(sessionPath, fileName);
-            fileIOManager.Manage(new FileIOCommand(FileIOFunction.WriteTrials, results, filePath));
+            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteTrials(results, filePath)));
         }
+
+
+        public void ReadCSVFile(string path, System.Action<DataTable> action)
+        {
+            fileIOManager.Manage(new System.Action(() => fileIOManager.ReadCSV(path, action)));
+        }
+
+        public void WriteCSVFile(DataTable data, string path)
+        {
+            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteCSV(data, path)));
+        }
+
 
 
         void OnDestroy()
@@ -400,41 +444,7 @@ namespace ExpMngr
         }
 
     }
-
-    /// <summary>
-    /// Class which represents a command sent to the FileIO manager
-    /// </summary>
-    public class FileIOCommand
-    {
-        /// <summary>
-        /// Function the command should run
-        /// </summary>
-        public FileIOFunction function;
-        /// <summary>
-        /// Set of parameters to be sent to the function
-        /// </summary>
-        public object[] parameters;
-
-        /// <summary>
-        /// Creates a FileIOCommand for given function and paremeters
-        /// </summary>
-        /// <param name="func">Function</param>
-        /// <param name="funcParameters">Parameters to be sent to function</param>
-        public FileIOCommand(FileIOFunction func, params object[] funcParameters)
-        {
-            function = func;
-            parameters = funcParameters;
-        }
-    }
-
-    /// <summary>
-    /// Enum that maps onto various functions used in the FileIO manager
-    /// </summary>
-    public enum FileIOFunction
-    {
-        CopyFile, WriteTrials, WriteJson, WriteMovementData, Quit
-    }
-
+    
     /// <summary>
     /// Exception thrown in cases where we try to access a trial that does not exist.
     /// </summary>

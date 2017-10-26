@@ -13,5 +13,14 @@ namespace ExpMngr
             return toggle.isOn;
         }
 
+        public override void SetContents(object newContents)
+        {
+            toggle.isOn = ((string) newContents).ToLower() == "true";
+        }
+
+        public override void Clear()
+        {
+            toggle.isOn = false;
+        }
     }
 }

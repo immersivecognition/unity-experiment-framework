@@ -5,6 +5,9 @@ using System.IO;
 using System.Threading;
 using System.Linq;
 using System.Collections.Specialized;
+using UnityEngine.Events;
+using System.Data;
+
 
 namespace ExpMngr
 {
@@ -13,7 +16,7 @@ namespace ExpMngr
     /// </summary>
     public class FileIOManager
     {
-        BlockingQueue<FileIOCommand> bq = new BlockingQueue<FileIOCommand>();
+        BlockingQueue<System.Action> bq = new BlockingQueue<System.Action>();
         Thread t;
         ExperimentSession parentExperiment;
 
@@ -32,68 +35,79 @@ namespace ExpMngr
         /// Adds a new command to a queue which is executed in a worker thread when it is available.
         /// </summary>
         /// <param name="command"></param>
-        public void Manage(FileIOCommand command)
+        public void Manage(System.Action action)
         {
-            bq.Enqueue(command);
+            bq.Enqueue(action);
         }
 
         void Worker()
         {
             // performs FileIO tasks in seperate thread
-            foreach (FileIOCommand command in bq)
+            foreach (var action in bq)
             {
                 try
                 {
+                    action.Invoke();
                     //Debug.Log(string.Format("Manging command: {0}", command.function));
-                    switch (command.function)
-                    {
-                        case FileIOFunction.CopyFile:
-                            CopyFile(command.parameters);
-                            break;
-                        case FileIOFunction.WriteJson:
-                            WriteJson(command.parameters);
-                            break;
-                        case FileIOFunction.WriteMovementData:
-                            WriteMovementData(command.parameters);
-                            break;
-                        case FileIOFunction.WriteTrials:
-                            WriteTrials(command.parameters);
-                            break;
-                        case FileIOFunction.Quit:
-                            Quit();
-                            break;
-                        default:
-                            Debug.LogError(string.Format("Unhandled command {0}", command.function));
-                            break;
-                    }
+                    //switch (command.function)
+                    //{
+                    //    case FileIOFunction.CopyFile:
+                    //        CopyFile(command.parameters);
+                    //        break;
+                    //    case FileIOFunction.WriteJson:
+                    //        WriteJson(command.parameters);
+                    //        break;
+                    //    case FileIOFunction.WriteMovementData:
+                    //        WriteMovementData(command.parameters);
+                    //        break;
+                    //    case FileIOFunction.WriteTrials:
+                    //        WriteTrials(command.parameters);
+                    //        break;
+                    //    case FileIOFunction.ReadCSV:
+                    //        ReadCSV(ref command.refObject, command.parameters);
+                    //        break;
+                    //    case FileIOFunction.WriteCSV:
+                    //        WriteCSV(command.parameters);
+                    //        break;
+                    //    case FileIOFunction.Quit:
+                    //        Quit();
+                    //        break;
+                    //    default:
+                    //        Debug.LogError(string.Format("Unhandled command {0}", command.function));
+                    //        break;
+                    //}
                 }
                 catch (ThreadAbortException)
                 {
                     break;
                 }
+                catch (IOException e)
+                {
+                    Debug.LogError(string.Format("Error, file may be in use! Will keep retrying. Exception: {0}", e));
+                    Thread.Sleep(2000);
+                    Manage(action);
+                }
                 catch (System.Exception e)
                 {
+                    // stops thread aborting
                     Debug.LogError(e);
                 }
             }
         }
 
-        void CopyFile(object[] parameters)
+        public void CopyFile(string sourceFileName, string destFileName)
         {
-            File.Copy((string) parameters[0], (string) parameters[1]);
+            File.Copy(sourceFileName, destFileName);
         }
 
-        void WriteJson(object[] parameters)
+        public void WriteJson(string destFileName, object serializableObject)
         {            
-            string ppJson = MiniJSON.Json.Serialize(parameters[1]);
-            File.WriteAllText((string) parameters[0], ppJson);
+            string ppJson = MiniJSON.Json.Serialize(serializableObject);
+            File.WriteAllText(destFileName, ppJson);
         }
 
-        void WriteTrials(object[] parameters)
+        public void WriteTrials(List<OrderedResultDict> dataDict, string fpath)
         {
-            List<OrderedResultDict> dataDict = (List<OrderedResultDict>) parameters[0];
-            string fpath = (string) parameters[1];
-
             string[] csvRows = new string[dataDict.Count + 1];
             csvRows[0] = string.Join(",", parentExperiment.headers.ToArray());
             object[] row = new object[parentExperiment.headers.Count];
@@ -115,11 +129,8 @@ namespace ExpMngr
             File.WriteAllLines(fpath, csvRows);
         }
 
-        void WriteMovementData(object[] parameters)
+        public void WriteMovementData(List<float[]> data, string fpath)
         {
-            List<float[]> data = (List<float[]>) parameters[0];
-            string fpath = (string) parameters[1];
-
             string[] csvRows = new string[data.Count + 1];
             csvRows[0] = string.Join(",", Tracker.header);
             for (int i = 1; i <= data.Count; i++)
@@ -128,7 +139,35 @@ namespace ExpMngr
             File.WriteAllLines(fpath, csvRows);
         }
 
-        void Quit()
+
+        public void ReadCSV(string fpath, System.Action<DataTable> callback)
+        {
+            // This code assumes the file is on disk, and the first row of the file
+            // has the names of the columns on it
+
+            DataTable data = null;
+            try
+            {
+                data = CSVFile.CSV.LoadDataTable(fpath);
+            }
+            catch (FileNotFoundException)
+            {
+
+            }
+
+            System.Action action = new System.Action(() => callback.Invoke(data));
+            parentExperiment.executeOnMainThreadQueue.Enqueue(action);
+        }
+
+        public void WriteCSV(DataTable data, string fpath)
+        {
+            var writer = new CSVFile.CSVWriter(fpath);
+            writer.Write(data, true);
+            writer.Dispose();
+        }
+
+
+        public void Quit()
         {
             t.Abort();
         }
