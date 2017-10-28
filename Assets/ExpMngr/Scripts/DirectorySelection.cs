@@ -95,16 +95,6 @@ namespace ExpMngr
             {
                 Debug.LogWarning("No participant list found in directory! Creating an example one in the experiment directory.");
                 CreateNewPPList(ppListPath);
-
-                //// disable selector
-                //participantSelector.SelectNew();
-                //ExperimentStartupController.SetSelectableAndChildrenInteractable(participantSelector.gameObject, false);
-                //// disable form
-                //form.Clear();
-                //ExperimentStartupController.SetSelectableAndChildrenInteractable(form.gameObject, false);
-                //// disable start button
-                //ExperimentStartupController.SetSelectableAndChildrenInteractable(startButton.gameObject, false);
-
                 return;
             }
 
@@ -130,7 +120,18 @@ namespace ExpMngr
 
             foreach (var dataPoint in startup.participantDataPoints)
             {
-                dataPoint.controller.SetContents(row[dataPoint.internalName]);
+                try
+                {
+                    dataPoint.controller.SetContents(row[dataPoint.internalName]);
+                }
+                catch (ArgumentException e)
+                {
+                    string s = string.Format("Column '{0}' not found in data table - It will be added with empty values", e.ParamName);
+                    Debug.LogWarning(s);
+
+                    ppList.Columns.Add(new DataColumn(dataPoint.internalName, typeof(string)));
+                    dataPoint.controller.Clear();
+                }
             }
         }
 

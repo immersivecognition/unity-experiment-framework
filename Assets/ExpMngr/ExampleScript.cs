@@ -53,7 +53,7 @@ public class ExampleScript : MonoBehaviour {
     void Update()
     {
         // here we are mimicking some experiment behaviour 
-        if (Time.time > startNextTime)
+        if (Time.time > startNextTime && exp.inTrial)
         {
             exp.currentTrial.End();
             if (exp.currentTrial == exp.lastTrial)
