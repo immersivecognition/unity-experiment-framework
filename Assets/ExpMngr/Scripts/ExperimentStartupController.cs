@@ -57,6 +57,8 @@ namespace ExpMngr
             }
         }
 
+
+
         /// <summary>
         /// Called upon press of the start button in the UI. Creates the experiment session
         /// </summary>
@@ -64,7 +66,9 @@ namespace ExpMngr
         {
             string ppid = dirSelect.Finish();
             int sessionNum = int.Parse(sessionNumDropdown.GetContents().ToString());
-            experimentSession.InitSession(ppid, sessionNum, dirSelect.currentFolder);
+            var infoDict = dirSelect.GenerateDict();
+
+            experimentSession.InitSession(ppid, sessionNum, dirSelect.currentFolder, infoDict);
             gameObject.SetActive(false);
         }
 

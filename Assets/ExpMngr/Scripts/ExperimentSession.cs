@@ -24,9 +24,11 @@ namespace ExpMngr
         /// <summary>
         /// Name of the experiment (will be used for the generated folder name)
         /// </summary>
-        public string experimentName {
+        public string experimentName
+        {
             get { return _experimentName; }
-            set {
+            set
+            {
                 string safeName = Extensions.GetSafeFilename(value);
                 _experimentName = safeName;
             }
@@ -124,7 +126,7 @@ namespace ExpMngr
         /// </summary>
         [HideInInspector]
         public int sessionNum;
-        private string sessionFolderName {  get { return string.Format("S{0:000}", sessionNum); } }
+        private string sessionFolderName { get { return string.Format("S{0:000}", sessionNum); } }
 
         /// <summary>
         /// Currently active trial number.
@@ -174,6 +176,10 @@ namespace ExpMngr
         /// </summary>
         public readonly Queue<System.Action> executeOnMainThreadQueue = new Queue<System.Action>();
 
+        /// <summary>
+        /// Dictionary of objects .
+        /// </summary>
+        Dictionary<string, object> participantDetails;
 
         void Start()
         {
@@ -232,7 +238,7 @@ namespace ExpMngr
             string fname = string.Format("movement_{0}_T{1:000}.csv", objectName, trialNum);
             string fpath = Path.Combine(sessionPath, fname);
 
-            fileIOManager.Manage(new System.Action( () => fileIOManager.WriteMovementData(data, fpath)));
+            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteMovementData(data, fpath)));
 
             // return relative path so it can be saved
             Uri fullPath = new Uri(fpath);
@@ -278,13 +284,15 @@ namespace ExpMngr
         /// <summary>
         /// Initialises a session with given name
         /// </summary>
+        /// <param name="participantId">Unique participant id</param>
         /// <param name="sessionNumber">Session number for this particular participant</param>
         /// <param name="baseFolder">Path to the folder where data should be stored.</param>
-        public void InitSession(string participantId, int sessionNumber, string baseFolder)
+        public void InitSession(string participantId, int sessionNumber, string baseFolder, Dictionary<string, object> participantDetails)
         {
             ppid = participantId;
             sessionNum = sessionNumber;
             basePath = baseFolder;
+            this.participantDetails = participantDetails;
 
             // setup folders
             InitFolder();
@@ -311,7 +319,7 @@ namespace ExpMngr
                 // write empty settings to experiment folder
                 dict = new Dictionary<string, object>();
                 fileIOManager.Manage(new System.Action(() => fileIOManager.WriteJson(settingsPath, dict)));
-            }            
+            }
             return new Settings(dict);
         }
 
@@ -444,7 +452,7 @@ namespace ExpMngr
         }
 
     }
-    
+
     /// <summary>
     /// Exception thrown in cases where we try to access a trial that does not exist.
     /// </summary>

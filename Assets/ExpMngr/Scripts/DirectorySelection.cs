@@ -182,5 +182,11 @@ namespace ExpMngr
         }
 
 
+
+        public Dictionary<string, object> GenerateDict()
+        {
+            return form.GetCompletedForm();
+        }
+
     }
 }
