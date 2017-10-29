@@ -58,6 +58,7 @@ http://jackbrookes.github.io/unity-experiment-manager
 ## Usage
 
 Download the project and open in Unity. Alternatively import the ```.unitypackage``` file to your existing Unity project.
+Note: Users must change API Compatibility Level to .NET 2.0 in Unity player settings. 
 
 ## Future additions
 
