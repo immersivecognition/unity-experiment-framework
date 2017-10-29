@@ -177,9 +177,9 @@ namespace ExpMngr
         public readonly Queue<System.Action> executeOnMainThreadQueue = new Queue<System.Action>();
 
         /// <summary>
-        /// Dictionary of objects .
+        /// Dictionary of objects for datapoints collected via the UI.
         /// </summary>
-        Dictionary<string, object> participantDetails;
+        public Dictionary<string, object> participantDetails;
 
         void Start()
         {
@@ -301,6 +301,7 @@ namespace ExpMngr
             settings = ReadSettings();
 
             hasInitialised = true;
+            onSessionStart.Invoke();
         }
 
         Settings ReadSettings()
