@@ -27,8 +27,12 @@ namespace ExpMngr
         public FillableFormController ppInfoForm;
         public DropDownController sessionNumDropdown;
 
+        public PopupController popupController;
+
         [Space]
         public ExperimentSession experimentSession;
+
+
 
 
         void Awake()
@@ -67,10 +71,28 @@ namespace ExpMngr
             string ppid = dirSelect.Finish();
             int sessionNum = int.Parse(sessionNumDropdown.GetContents().ToString());
             var infoDict = dirSelect.GenerateDict();
+            
+            Action finish = new Action( () =>
+                {
+                    experimentSession.InitSession(ppid, sessionNum, dirSelect.currentFolder, infoDict);
+                    gameObject.SetActive(false);
+                } 
+            );
 
-            experimentSession.InitSession(ppid, sessionNum, dirSelect.currentFolder, infoDict);
-            gameObject.SetActive(false);
+            bool exists = experimentSession.CheckSessionExists(ppid, sessionNum, dirSelect.currentFolder);
+            if (exists)
+            {
+                Popup existsWarning = new Popup();
+                existsWarning.messageType = MessageType.Warning;
+                existsWarning.message = string.Format("Warning - session \\{0}\\{1:0000}\\ already exists. Pressing OK will overwrite all data collected for this session", new object[]{ppid, sessionNum});
+                existsWarning.onOK = finish;
+                popupController.DisplayPopup(existsWarning);
+            }
+            else
+            {
+                finish.Invoke();
+            }
+
         }
-
     }
 }

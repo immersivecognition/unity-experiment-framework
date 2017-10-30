@@ -83,9 +83,7 @@ namespace ExpMngr
                 }
                 catch (IOException e)
                 {
-                    Debug.LogError(string.Format("Error, file may be in use! Will keep retrying. Exception: {0}", e));
-                    Thread.Sleep(2000);
-                    Manage(action);
+                    Debug.LogError(string.Format("Error, file may be in use! Exception: {0}", e));
                 }
                 catch (System.Exception e)
                 {

@@ -32,7 +32,7 @@ namespace ExpMngr
         /// </summary>
         [NonSerialized] public Block block;
         float startTime, endTime;
-        ExperimentSession experiment;
+        protected ExperimentSession experiment;
         
         /// <summary>
         /// Trial settings. These will override block settings if set.

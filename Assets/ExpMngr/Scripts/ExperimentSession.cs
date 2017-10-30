@@ -280,6 +280,20 @@ namespace ExpMngr
             fileIOManager.Manage(new System.Action(() => fileIOManager.WriteJson(filePath, dict)));
         }
 
+        /// <summary>
+        /// Checks if a session folder already exists for this participant
+        /// </summary>
+        /// <param name="participantId"></param>
+        /// <param name="sessionNumber"></param>
+        /// <param name="baseFolder"></param>
+        /// <returns></returns>
+        public bool CheckSessionExists(string participantId, int sessionNumber, string baseFolder)
+        {
+            ppid = participantId;
+            sessionNum = sessionNumber;
+            basePath = baseFolder;
+            return System.IO.Directory.Exists(sessionPath);
+        }
 
         /// <summary>
         /// Initialises a session with given name

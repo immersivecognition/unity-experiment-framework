@@ -176,13 +176,36 @@ namespace ExpMngr
                 row[keyValuePair.Key] = keyValuePair.Value;     
 
             // write pplist
-            experiment.WriteCSVFile(ppList, ppListPath);
-            Debug.Log(string.Format("Updating: {0}", ppListPath));
+            CommitCSV();
             return ppid;
 
         }
 
+        public void UpdateDatapoint(string ppid, string datapointName, object value)
+        {
+            DataRow row = ppList.AsEnumerable().Single(r => r.Field<string>("ppid") == ppid);
+            
+            try
+            {
+                row[datapointName] = value;
+            }
+            catch (ArgumentException e)
+            {
+                string s = string.Format("Column '{0}' not found in data table - It will be added with empty values", e.ParamName);
+                Debug.LogWarning(s);
+                ppList.Columns.Add(new DataColumn(datapointName, typeof(string)));
+                row[datapointName] = value;
+            }
+            
+            
+        }
 
+        public void CommitCSV()
+        {
+            experiment.WriteCSVFile(ppList, ppListPath);
+            Debug.Log(string.Format("Updating: {0}", ppListPath));
+            experiment.participantDetails = GenerateDict();
+        }
 
         public Dictionary<string, object> GenerateDict()
         {
