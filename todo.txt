@@ -1,8 +1,5 @@
 * async folder
-* fix prefabs
-* Trial.experiment should be protected
-* UpdateDatapoint public function
-* public gameobject mainpanel
 * cant make trial without block
 * Folder select says "select experiment folder"
-* commit CSV should update ppdetails
+* Folder name overflow
+* Need a way to handle lack of settings file

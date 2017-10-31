@@ -22,6 +22,7 @@ namespace ExpMngr
         public ExperimentSession experiment;
         public ExperimentStartupController startup;
         public FillableFormController form;
+        public PopupController popupController;
         public Button startButton;
 
         void Start()
@@ -93,8 +94,12 @@ namespace ExpMngr
             ppList = data;
             if (ppList == null)
             {
-                Debug.LogWarning("No participant list found in directory! Creating an example one in the experiment directory.");
-                CreateNewPPList(ppListPath);
+
+                Popup pplistAttention = new Popup();
+                pplistAttention.messageType = MessageType.Attention;
+                pplistAttention.message = string.Format("No participant list exists at {0}. A an example one can be created there for you.", ppListPath);
+                pplistAttention.onOK = new System.Action( () => {CreateNewPPList(ppListPath);}) ;
+                popupController.DisplayPopup(pplistAttention);
                 return;
             }
 
@@ -128,7 +133,7 @@ namespace ExpMngr
                 {
                     string s = string.Format("Column '{0}' not found in data table - It will be added with empty values", e.ParamName);
                     Debug.LogWarning(s);
-
+                    
                     ppList.Columns.Add(new DataColumn(dataPoint.internalName, typeof(string)));
                     dataPoint.controller.Clear();
                 }
