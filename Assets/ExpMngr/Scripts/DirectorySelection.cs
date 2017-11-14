@@ -25,7 +25,7 @@ namespace ExpMngr
         public PopupController popupController;
         public Button startButton;
 
-        void Start()
+        public void Init()
         {
             ExperimentStartupController.SetSelectableAndChildrenInteractable(participantSelector.gameObject, false);
             ExperimentStartupController.SetSelectableAndChildrenInteractable(form.gameObject, false);

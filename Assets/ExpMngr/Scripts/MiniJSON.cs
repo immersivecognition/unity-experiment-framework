@@ -547,6 +547,7 @@ namespace MiniJSON
                 }
 
                 builder.Append(']');
+                
             }
 
             void SerializeString(string str)

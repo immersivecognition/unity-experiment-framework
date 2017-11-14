@@ -1817,7 +1817,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: (No folder selected)
 --- !u!114 &114417908121189628
@@ -3034,6 +3034,7 @@ MonoBehaviour:
   experiment: {fileID: 114988719885159162}
   startup: {fileID: 114292452189173136}
   form: {fileID: 114974541009875318}
+  popupController: {fileID: 114054802697837814}
   startButton: {fileID: 114205347775312050}
 --- !u!222 &222096309457217816
 CanvasRenderer:
@@ -3328,7 +3329,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5, y: 20}
+  m_AnchoredPosition: {x: 5, y: 23.7}
   m_SizeDelta: {x: 240, y: 20}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224077019522374422
@@ -3863,7 +3864,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000008583069}
+  m_AnchoredPosition: {x: 0, y: -0.0000046491623}
   m_SizeDelta: {x: 0, y: 140}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224602634012534166

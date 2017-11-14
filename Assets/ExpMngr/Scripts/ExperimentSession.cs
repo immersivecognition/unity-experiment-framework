@@ -162,6 +162,9 @@ namespace ExpMngr
         /// Path within the experiment path that points to the settings json file.
         /// </summary>
         public string settingsPath { get { return Path.Combine(experimentPath, "settings.json"); } }
+
+        private string defaultSettingsPath { get { return Path.Combine(Application.streamingAssetsPath, "default_settings.json"); }}
+
         /// <summary>
         /// List of file headers generated based on tracked objects.
         /// </summary>
@@ -328,11 +331,12 @@ namespace ExpMngr
             }
             catch (FileNotFoundException)
             {
-                string message = string.Format("Settings .json file not found! Creating an empty one in {0}.", settingsPath);
+                string message = string.Format("Settings .json file not found in {0}! Copying default one.", settingsPath);
                 Debug.LogWarning(message);
 
-                // write empty settings to experiment folder
-                dict = new Dictionary<string, object>();
+                // copy default settings to experiment folder
+                string dataAsJson = File.ReadAllText(defaultSettingsPath);
+                dict = MiniJSON.Json.Deserialize(dataAsJson) as Dictionary<string, object>;
                 fileIOManager.Manage(new System.Action(() => fileIOManager.WriteJson(settingsPath, dict)));
             }
             return new Settings(dict);

@@ -35,7 +35,7 @@ namespace ExpMngr
 
 
 
-        void Awake()
+        void Start()
         {
             ppInfoForm.Generate(participantDataPoints);
 
@@ -45,6 +45,8 @@ namespace ExpMngr
                 sessionList.Add(i.ToString());
             }
             sessionNumDropdown.SetItems(sessionList);
+
+            dirSelect.Init();
         }
 
 
