@@ -28,7 +28,7 @@ namespace ExpMngr
 
         public override void SetContents(object newContents)
         {
-            int index = optionNames.IndexOf((string) newContents);
+            int index = optionNames.IndexOf(newContents.ToString());
             if (index == -1)
             {
                 Clear();
