@@ -147,7 +147,7 @@ namespace ExpMngr
         string basePath;
 
         /// <summary>
-        /// Path to the folder used for readijng settings and storing the output. 
+        /// Path to the folder used for reading settings and storing the output. 
         /// </summary>
         public string experimentPath { get { return Path.Combine(basePath, experimentName); } }
         /// <summary>
@@ -323,6 +323,11 @@ namespace ExpMngr
 
         Settings ReadSettings()
         {
+            // read default settings
+            string defJson = File.ReadAllText(defaultSettingsPath);
+            Dictionary<string, object> defDict = MiniJSON.Json.Deserialize(defJson) as Dictionary<string, object>;
+            Settings _defaultSettings = new Settings(defDict);
+
             Dictionary<string, object> dict;
             try
             {
@@ -335,11 +340,14 @@ namespace ExpMngr
                 Debug.LogWarning(message);
 
                 // copy default settings to experiment folder
-                string dataAsJson = File.ReadAllText(defaultSettingsPath);
-                dict = MiniJSON.Json.Deserialize(dataAsJson) as Dictionary<string, object>;
-                fileIOManager.Manage(new System.Action(() => fileIOManager.WriteJson(settingsPath, dict)));
+                fileIOManager.Manage(new System.Action(() => fileIOManager.WriteJson(settingsPath, defDict)));
+                dict = defDict;
             }
-            return new Settings(dict);
+            // create settings, and set parent to default
+            Settings _settings = new Settings(dict);
+            _settings.SetParent(_defaultSettings);
+
+            return _settings;
         }
 
         /// <summary>
