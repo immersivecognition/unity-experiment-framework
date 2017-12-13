@@ -57,17 +57,13 @@ namespace ExpMngr
                     names.Add(f.internalName);
                     GameObject createdElement = CreateElement(f);
                     f.Initialise(createdElement.GetComponent<FormElementController>());
-                    createdElement.transform.position += new Vector3(0, -h, 0);
-                    //h += f.controller.height;
+                    //createdElement.transform.position += new Vector3(0, -h, 0);
                 }
                 else
                 {
                     throw new System.Exception("Duplicated internal names. They must be unique.");
                 }
             }
-            //RectTransform rt = contentParent.GetComponent<RectTransform>();
-            //rt.sizeDelta = new Vector2(0, h);
-
         }
 
 
