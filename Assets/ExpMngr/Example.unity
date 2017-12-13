@@ -336,7 +336,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1753075651}
   - component: {fileID: 1753075650}
-  - component: {fileID: 1753075649}
   - component: {fileID: 1753075648}
   - component: {fileID: 1753075647}
   m_Layer: 0
@@ -354,13 +353,6 @@ AudioListener:
   m_GameObject: {fileID: 1753075646}
   m_Enabled: 1
 --- !u!124 &1753075648
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1753075646}
-  m_Enabled: 1
---- !u!92 &1753075649
 Behaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -482,7 +474,7 @@ Prefab:
     - target: {fileID: 224546371281550106, guid: 628989ad7601cc449aa1a5ad29d1d483,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00002193451
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224602634012534166, guid: 628989ad7601cc449aa1a5ad29d1d483,
         type: 2}
@@ -549,6 +541,53 @@ Prefab:
       propertyPath: _participantDataPoints.Array.data[3].dropDownValues.Array.data[2]
       value: Both
       objectReference: {fileID: 0}
+    - target: {fileID: 224546371281550106, guid: 628989ad7601cc449aa1a5ad29d1d483,
+        type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 161.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224546371281550106, guid: 628989ad7601cc449aa1a5ad29d1d483,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224546371281550106, guid: 628989ad7601cc449aa1a5ad29d1d483,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224602634012534166, guid: 628989ad7601cc449aa1a5ad29d1d483,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 628989ad7601cc449aa1a5ad29d1d483, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1941879836 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1842745135702730, guid: 628989ad7601cc449aa1a5ad29d1d483,
+    type: 2}
+  m_PrefabInternal: {fileID: 1941879835}
+--- !u!114 &1941879837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1941879836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 0

@@ -58,15 +58,15 @@ namespace ExpMngr
                     GameObject createdElement = CreateElement(f);
                     f.Initialise(createdElement.GetComponent<FormElementController>());
                     createdElement.transform.position += new Vector3(0, -h, 0);
-                    h += f.controller.height;
+                    //h += f.controller.height;
                 }
                 else
                 {
                     throw new System.Exception("Duplicated internal names. They must be unique.");
                 }
             }
-            RectTransform rt = contentParent.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(0, h);
+            //RectTransform rt = contentParent.GetComponent<RectTransform>();
+            //rt.sizeDelta = new Vector2(0, h);
 
         }
 
