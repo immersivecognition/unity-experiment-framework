@@ -20,9 +20,11 @@ namespace ExpMngr
         /// Maximum number of "sessions" available to select via the UI
         /// </summary>
         public int maxNumSessions = 1;
-
+        
+        [HideInInspector]
         public string newParticipantName = "<i><color=grey>+ New participant</color></i>";
 
+        [Header("Instance references")]
         public DirectorySelection dirSelect;
         public FillableFormController ppInfoForm;
         public DropDownController sessionNumDropdown;
