@@ -14,10 +14,10 @@ namespace ExpMngr
     {
 
         public string currentFolder;
-        string ppListPath { get { return Path.Combine(currentFolder, "participant_list.csv"); } }
+        string ppListPath;
         public DataTable ppList = null;
 
-        public Text folderNameDisplay;
+        public Text ppListNameDisplay;
         public ParticipantSelector participantSelector;
         public ExperimentSession experiment;
         public ExperimentStartupController startup;
@@ -33,25 +33,35 @@ namespace ExpMngr
         }
 
 
-        public void SelectFolder()
+        public void SelectList()
         {
-            SFB.StandaloneFileBrowser.OpenFolderPanelAsync("Select participant list", currentFolder, false, (string[] paths) => { CheckSetFolder(paths); });
+            SFB.StandaloneFileBrowser.OpenFilePanelAsync("Select participant list", currentFolder, "csv", false, (string[] paths) => { CheckSetList(paths); });
+        }
+
+        public void CreateList()
+        {
+            SFB.StandaloneFileBrowser.SaveFilePanelAsync("Create participant list", currentFolder, "participant_list", "csv", (string path) => { CheckSetList(path); });
         }
 
 
-        public void CheckSetFolder(string[] paths)
+        public void CheckSetList(string[] paths)
         {
             if (paths.Length == 0) { return; }
-            string path = paths[0];
+            CheckSetList(paths[0]);
+        }
 
-            folderNameDisplay.text = path;
-            folderNameDisplay.color = Color.black;
-            currentFolder = path;
+
+        public void CheckSetList(string path)
+        {
+            ppListPath = path;
+
+            ppListNameDisplay.text = ppListPath;
+            ppListNameDisplay.color = Color.black;
+            currentFolder = Directory.GetParent(ppListPath).ToString();
 
             GetCheckParticipantList();
 
         }
-
 
         public void GetCheckParticipantList()
         {
@@ -62,7 +72,6 @@ namespace ExpMngr
         void CreateNewPPList(string filePath)
         {
             // create example table
-
             DataTable exampleData = new DataTable();
 
             // create headers
@@ -77,7 +86,7 @@ namespace ExpMngr
             {
                 row1[dataPoint.internalName] = dataPoint.controller.GetDefault();
             }
-            row1["ppid"] = "1";
+            row1["ppid"] = "example001";
 
             exampleData.Rows.Add(row1);
 
@@ -94,10 +103,9 @@ namespace ExpMngr
             ppList = data;
             if (ppList == null)
             {
-
                 Popup pplistAttention = new Popup();
                 pplistAttention.messageType = MessageType.Attention;
-                pplistAttention.message = string.Format("No participant list exists at {0}. A an example one can be created there for you.", ppListPath);
+                pplistAttention.message = string.Format("An empty participant list will be created at {0}. Data you collect will be stored in the same folder as this list.", ppListPath);
                 pplistAttention.onOK = new System.Action( () => {CreateNewPPList(ppListPath);}) ;
                 popupController.DisplayPopup(pplistAttention);
                 return;
@@ -127,11 +135,12 @@ namespace ExpMngr
             {
                 try
                 {
+                    print(dataPoint.internalName);
                     dataPoint.controller.SetContents(row[dataPoint.internalName]);
                 }
                 catch (ArgumentException e)
                 {
-                    string s = string.Format("Column '{0}' not found in data table - It will be added with empty values", e.ParamName);
+                    string s = string.Format("Column '{0}' not found in data table - It will be added with empty values", dataPoint.internalName);
                     Debug.LogWarning(s);
                     
                     ppList.Columns.Add(new DataColumn(dataPoint.internalName, typeof(string)));

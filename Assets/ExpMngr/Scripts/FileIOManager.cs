@@ -141,7 +141,7 @@ namespace ExpMngr
         public void ReadCSV(string fpath, System.Action<DataTable> callback)
         {
             // This code assumes the file is on disk, and the first row of the file
-            // has the names of the columns on it
+            // has the names of the columns on it. Returns null if not found
 
             DataTable data = null;
             try

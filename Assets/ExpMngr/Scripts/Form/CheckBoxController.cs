@@ -15,7 +15,7 @@ namespace ExpMngr
 
         public override void SetContents(object newContents)
         {
-            toggle.isOn = ((string) newContents).ToLower() == "true";
+            toggle.isOn = newContents.ToString().ToLower() == "true";
         }
 
         public override void Clear()
