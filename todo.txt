@@ -1,4 +1,0 @@
-* async folder
-* cant make trial without block
-* Folder select says "select experiment folder"
-* Folder name overflow
