@@ -42,7 +42,6 @@ namespace ExpMngr
                 DestroyImmediate(contentParent.transform.GetChild(0).gameObject);
             }
 
-            float h = 0;
             List<string> names = new List<string>();
             foreach (FormElementEntry f in formElements)
             {
