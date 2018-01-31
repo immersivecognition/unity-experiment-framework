@@ -56,7 +56,6 @@ namespace ExpMngr
                     names.Add(f.internalName);
                     GameObject createdElement = CreateElement(f);
                     f.Initialise(createdElement.GetComponent<FormElementController>());
-                    //createdElement.transform.position += new Vector3(0, -h, 0);
                 }
                 else
                 {
