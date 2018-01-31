@@ -11,7 +11,7 @@ namespace ExpMngr
         public ExperimentStartupController startup;
         public FillableFormController form;
         public DropDownController participantDropdown;
-        public DirectorySelection dirSelect;
+        public ParticipantListSelection ppListSelect;
 
         public List<string> ppList;
 
@@ -41,7 +41,7 @@ namespace ExpMngr
             }
             else
             {
-                dirSelect.UpdateFormByPPID((string) participantDropdown.GetContents());
+                ppListSelect.UpdateFormByPPID((string) participantDropdown.GetContents());
             }
         }
 

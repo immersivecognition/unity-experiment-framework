@@ -10,7 +10,7 @@ using System;
 
 namespace ExpMngr
 {
-    public class DirectorySelection : MonoBehaviour
+    public class ParticipantListSelection : MonoBehaviour
     {
 
         public string currentFolder;
@@ -35,7 +35,7 @@ namespace ExpMngr
 
         public void SelectFolder()
         {
-            SFB.StandaloneFileBrowser.OpenFolderPanelAsync("Select experiment folder", currentFolder, false, (string[] paths) => { CheckSetFolder(paths); });
+            SFB.StandaloneFileBrowser.OpenFolderPanelAsync("Select participant list", currentFolder, false, (string[] paths) => { CheckSetFolder(paths); });
         }
 
 

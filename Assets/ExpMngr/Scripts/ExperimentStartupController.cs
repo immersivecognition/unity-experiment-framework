@@ -25,7 +25,7 @@ namespace ExpMngr
         public string newParticipantName = "<i><color=grey>+ New participant</color></i>";
 
         [Header("Instance references")]
-        public DirectorySelection dirSelect;
+        public ParticipantListSelection ppListSelect;
         public FillableFormController ppInfoForm;
         public DropDownController sessionNumDropdown;
 
@@ -48,7 +48,7 @@ namespace ExpMngr
             }
             sessionNumDropdown.SetItems(sessionList);
 
-            dirSelect.Init();
+            ppListSelect.Init();
         }
 
 
@@ -72,18 +72,18 @@ namespace ExpMngr
         /// </summary>
         public void StartExperiment()
         {
-            string ppid = dirSelect.Finish();
+            string ppid = ppListSelect.Finish();
             int sessionNum = int.Parse(sessionNumDropdown.GetContents().ToString());
-            var infoDict = dirSelect.GenerateDict();
+            var infoDict = ppListSelect.GenerateDict();
             
             Action finish = new Action( () =>
                 {
-                    experimentSession.InitSession(ppid, sessionNum, dirSelect.currentFolder, infoDict);
+                    experimentSession.InitSession(ppid, sessionNum, ppListSelect.currentFolder, infoDict);
                     gameObject.SetActive(false);
                 } 
             );
 
-            bool exists = experimentSession.CheckSessionExists(ppid, sessionNum, dirSelect.currentFolder);
+            bool exists = experimentSession.CheckSessionExists(ppid, sessionNum, ppListSelect.currentFolder);
             if (exists)
             {
                 Popup existsWarning = new Popup();
