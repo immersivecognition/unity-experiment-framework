@@ -36,11 +36,11 @@ public class ExampleScript : MonoBehaviour {
         // practice block
         var practiceBlock = new ExpMngr.Block(exp); // block 1
         for (int i = 0; i < (long)exp.settings["n_practice_trials"]; i++)
-            new ExpMngr.Trial(exp, practiceBlock);
+            new ExpMngr.Trial(practiceBlock);
         // main block
         var mainBlock = new ExpMngr.Block(exp); // block 2
         for (int i = 0; i < (long) exp.settings["n_main_trials"]; i++)
-            new ExpMngr.Trial(exp, mainBlock);
+            new ExpMngr.Trial(mainBlock);
 
 
         // here we set a setting for the 2nd trial of the main block as an example.
