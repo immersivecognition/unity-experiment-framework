@@ -138,9 +138,9 @@ namespace ExpMngr
                     print(dataPoint.internalName);
                     dataPoint.controller.SetContents(row[dataPoint.internalName]);
                 }
-                catch (ArgumentException e)
+                catch (ArgumentException)
                 {
-                    string s = string.Format("Column '{0}' not found in data table - It will be added with empty values", dataPoint.internalName);
+                    string s = string.Format("Column '{0}' not found in participant list - It will be added with empty values", dataPoint.internalName);
                     Debug.LogWarning(s);
                     
                     ppList.Columns.Add(new DataColumn(dataPoint.internalName, typeof(string)));
