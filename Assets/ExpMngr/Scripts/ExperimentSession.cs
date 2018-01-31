@@ -40,6 +40,7 @@ namespace ExpMngr
         [HideInInspector]
         public List<Block> blocks = new List<Block>();
 
+        [Header("Data logging")]
         // serialzed private + public getter trick allows setting in inspector without being publicly settable
         [SerializeField] private List<Tracker> _trackedObjects = new List<Tracker>();
         /// <summary>
@@ -59,10 +60,21 @@ namespace ExpMngr
         /// </summary>
         public List<string> settingsToLog { get { return _settingsToLog; } }
 
+        [Header("Events")]
         /// <summary>
-        /// Event to trigger when the session is started via the UI
+        /// Event(s) to trigger when the session is started via the UI
         /// </summary>
-        public UnityEvent onSessionStart;
+        public SessionEvent onSessionStart;
+
+        /// <summary>
+        /// Event(s) to trigger when a trial begins
+        /// </summary>
+        public TrialEvent onTrialBegin;
+
+        /// <summary>
+        /// Event(s) to trigger when a trial ends
+        /// </summary>
+        public TrialEvent onTrialEnd;
 
         bool hasInitialised = false;
 
@@ -318,7 +330,7 @@ namespace ExpMngr
             settings = ReadSettings();
 
             hasInitialised = true;
-            onSessionStart.Invoke();
+            onSessionStart.Invoke(this);
         }
 
         Settings ReadSettings()
