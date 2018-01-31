@@ -2,4 +2,3 @@
 * cant make trial without block
 * Folder select says "select experiment folder"
 * Folder name overflow
-* Need a way to handle lack of settings file
