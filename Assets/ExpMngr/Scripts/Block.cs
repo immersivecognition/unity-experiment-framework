@@ -33,7 +33,7 @@ namespace ExpMngr
         /// </summary>
         public Settings settings = Settings.empty;
 
-        ExperimentSession experiment;
+        public ExperimentSession experiment;
 
         /// <summary>
         /// Creates a block for an associated experement session

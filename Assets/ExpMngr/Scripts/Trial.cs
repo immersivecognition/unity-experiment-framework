@@ -47,24 +47,13 @@ namespace ExpMngr
         /// <summary>
         /// Create trial with an associated block
         /// </summary>
-        /// <param name="exp">The experiment session the trial belongs to.</param>
         /// <param name="trialBlock">The block the trial belongs to.</param>
-        public Trial(ExperimentSession exp, Block trialBlock)
+        public Trial(Block trialBlock)
         {
             block = trialBlock;
             block.trials.Add(this);
-            experiment = exp;
+            experiment = block.experiment;
             settings.SetParent(block.settings);
-        }
-
-        /// <summary>
-        /// Create trial without an associated block
-        /// </summary>
-        /// <param name="exp">The experiment session the trial belongs to.</param>
-        public Trial(ExperimentSession exp)
-        {
-            experiment = exp;
-            settings.SetParent(experiment.settings);
         }
 
         /// <summary>
@@ -92,7 +81,7 @@ namespace ExpMngr
             {
                 tracker.StartRecording();
             }
-
+            experiment.onTrialBegin.Invoke(this);
             OnBegin();
         }
         
@@ -105,7 +94,7 @@ namespace ExpMngr
         }
 
         /// <summary>
-        /// Ends the rial, queues up saving results to output file, stops and saves tracked object data.
+        /// Ends the Trial, queues up saving results to output file, stops and saves tracked object data.
         /// </summary>
         public void End()
         {
@@ -126,7 +115,7 @@ namespace ExpMngr
             {
                 result[s] = settings[s];
             }
-
+            experiment.onTrialBegin.Invoke(this);
             OnEnd();
         }
 
@@ -143,7 +132,7 @@ namespace ExpMngr
     /// <summary>
     /// Status of a trial
     /// </summary>
-    public enum TrialStatus { NotDone, Preparing, InProgress, Done }
+    public enum TrialStatus { NotDone, InProgress, Done }
 
 
 }
