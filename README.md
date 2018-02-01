@@ -78,7 +78,7 @@ http://jackbrookes.github.io/unity-experiment-manager
 
 ## Get started
 
-Download the project and open in Unity. Alternatively import the ```.unitypackage``` file (see releases tab) to your existing Unity project.
+Download the project folder and open in Unity. Alternatively import the latest ```.unitypackage``` [release](/releases) to your existing Unity project.
 
 Note: Users must change API Compatibility Level to .NET 2.0 in Unity player settings. 
 
