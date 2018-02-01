@@ -468,7 +468,6 @@ namespace ExpMngr
             fileIOManager.Manage(new System.Action(() => fileIOManager.WriteTrials(results, filePath)));
         }
 
-
         public void ReadCSVFile(string path, System.Action<DataTable> action)
         {
             fileIOManager.Manage(new System.Action(() => fileIOManager.ReadCSV(path, action)));
@@ -478,8 +477,6 @@ namespace ExpMngr
         {
             fileIOManager.Manage(new System.Action(() => fileIOManager.WriteCSV(data, path)));
         }
-
-
 
         void OnDestroy()
         {
