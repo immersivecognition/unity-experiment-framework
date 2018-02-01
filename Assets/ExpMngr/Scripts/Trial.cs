@@ -115,7 +115,7 @@ namespace ExpMngr
             {
                 result[s] = settings[s];
             }
-            experiment.onTrialBegin.Invoke(this);
+            experiment.onTrialEnd.Invoke(this);
             OnEnd();
         }
 

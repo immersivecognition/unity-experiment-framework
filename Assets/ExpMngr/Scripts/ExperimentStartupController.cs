@@ -25,6 +25,7 @@ namespace ExpMngr
         public string newParticipantName = "<i><color=grey>+ New participant</color></i>";
 
         [Header("Instance references")]
+        public SettingsSelector settingsSelector;
         public ParticipantListSelection ppListSelect;
         public FillableFormController ppInfoForm;
         public DropDownController sessionNumDropdown;
@@ -75,10 +76,17 @@ namespace ExpMngr
             string ppid = ppListSelect.Finish();
             int sessionNum = int.Parse(sessionNumDropdown.GetContents().ToString());
             var infoDict = ppListSelect.GenerateDict();
-            
+            var settings = settingsSelector.GetSettings();
+
+            experimentSession.experimentName = settingsSelector.experimentName;
+
             Action finish = new Action( () =>
                 {
-                    experimentSession.InitSession(ppid, sessionNum, ppListSelect.currentFolder, infoDict);
+                    experimentSession.InitSession(ppid,
+                                                  sessionNum,
+                                                  ppListSelect.currentFolder,
+                                                  infoDict,
+                                                  settings);
                     gameObject.SetActive(false);
                 } 
             );
@@ -88,7 +96,7 @@ namespace ExpMngr
             {
                 Popup existsWarning = new Popup();
                 existsWarning.messageType = MessageType.Warning;
-                existsWarning.message = string.Format("Warning - session \\{0}\\{1:0000}\\ already exists. Pressing OK will overwrite all data collected for this session", new object[]{ppid, sessionNum});
+                existsWarning.message = string.Format("Warning - session \\{0}\\{1}\\{2:0000}\\ already exists. Pressing OK will overwrite all data collected for this session", experimentSession.experimentName, ppid, sessionNum);
                 existsWarning.onOK = finish;
                 popupController.DisplayPopup(existsWarning);
             }

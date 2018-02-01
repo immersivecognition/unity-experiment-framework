@@ -16,23 +16,10 @@ namespace ExpMngr
     public class ExperimentSession : MonoBehaviour
     {
 
-        [SerializeField] private string _experimentName = "experiment_name";
         /// <summary>
         /// Enable to automatically safely end the session when the application stops running.
         /// </summary>
         public bool endExperimentOnQuit = true;
-        /// <summary>
-        /// Name of the experiment (will be used for the generated folder name)
-        /// </summary>
-        public string experimentName
-        {
-            get { return _experimentName; }
-            set
-            {
-                string safeName = Extensions.GetSafeFilename(value);
-                _experimentName = safeName;
-            }
-        }
 
         /// <summary>
         /// List of blocks for this experiment
@@ -127,6 +114,9 @@ namespace ExpMngr
             }
         }
 
+        [HideInInspector]
+        public string experimentName;
+
         /// <summary>
         /// Unique string for this participant (participant ID)
         /// </summary>
@@ -170,12 +160,6 @@ namespace ExpMngr
         /// Path within the particpant path for this particular session.
         /// </summary>
         public string sessionPath { get { return Path.Combine(ppPath, sessionFolderName); } }
-        /// <summary>
-        /// Path within the experiment path that points to the settings json file.
-        /// </summary>
-        public string settingsPath { get { return Path.Combine(experimentPath, "settings.json"); } }
-
-        private string defaultSettingsPath { get { return Path.Combine(Application.streamingAssetsPath, "default_settings.json"); }}
 
         /// <summary>
         /// List of file headers generated based on tracked objects.
@@ -196,11 +180,8 @@ namespace ExpMngr
         /// </summary>
         public Dictionary<string, object> participantDetails;
 
-        void Start()
+        void Awake()
         {
-            // set name
-            experimentName = _experimentName;
-
             // start FileIOManager
             fileIOManager = new FileIOManager(this);
 
@@ -214,6 +195,9 @@ namespace ExpMngr
             ManageActions();
         }
 
+        /// <summary>
+        /// Any actions which are enqueued to run on Unity's main thread
+        /// </summary>
         void ManageActions()
         {
             while (executeOnMainThreadQueue.Count > 0)
@@ -316,50 +300,22 @@ namespace ExpMngr
         /// <param name="participantId">Unique participant id</param>
         /// <param name="sessionNumber">Session number for this particular participant</param>
         /// <param name="baseFolder">Path to the folder where data should be stored.</param>
-        public void InitSession(string participantId, int sessionNumber, string baseFolder, Dictionary<string, object> participantDetails)
+        public void InitSession(string participantId, int sessionNumber, string baseFolder, Dictionary<string, object> participantDetails, Settings settings)
         {
             ppid = participantId;
             sessionNum = sessionNumber;
             basePath = baseFolder;
             this.participantDetails = participantDetails;
+            this.settings = settings;
 
             // setup folders
             InitFolder();
 
-            // load experiment settings
-            settings = ReadSettings();
+            // copy Settings to session folder
+            WriteDictToSessionFolder(settings.baseDict, "settings");
 
             hasInitialised = true;
             onSessionStart.Invoke(this);
-        }
-
-        Settings ReadSettings()
-        {
-            // read default settings
-            string defJson = File.ReadAllText(defaultSettingsPath);
-            Dictionary<string, object> defDict = MiniJSON.Json.Deserialize(defJson) as Dictionary<string, object>;
-            Settings _defaultSettings = new Settings(defDict);
-
-            Dictionary<string, object> dict;
-            try
-            {
-                string dataAsJson = File.ReadAllText(settingsPath);
-                dict = MiniJSON.Json.Deserialize(dataAsJson) as Dictionary<string, object>;
-            }
-            catch (FileNotFoundException)
-            {
-                string message = string.Format("Settings .json file not found in {0}! Copying default one.", settingsPath);
-                Debug.LogWarning(message);
-
-                // copy default settings to experiment folder
-                fileIOManager.Manage(new System.Action(() => fileIOManager.WriteJson(settingsPath, defDict)));
-                dict = defDict;
-            }
-            // create settings, and set parent to default
-            Settings _settings = new Settings(dict);
-            _settings.SetParent(_defaultSettings);
-
-            return _settings;
         }
 
         /// <summary>
@@ -399,6 +355,14 @@ namespace ExpMngr
             {
                 throw new NoSuchTrialException("There is no next trial. Reached the end of trial list.");
             }
+        }
+
+        /// <summary>
+        /// Begins next trial. Useful to call from an inspector event
+        /// </summary>
+        public void BeginNextTrial()
+        {
+            nextTrial.Begin();
         }
 
         /// <summary>
@@ -468,14 +432,34 @@ namespace ExpMngr
             fileIOManager.Manage(new System.Action(() => fileIOManager.WriteTrials(results, filePath)));
         }
 
+        /// <summary>
+        /// Reads CSV file as DataTable then calls action with DataTable as parameter
+        /// </summary>
+        /// <param name="path">Path to CSV file</param>
+        /// <param name="action">Action to call when completed</param>
         public void ReadCSVFile(string path, System.Action<DataTable> action)
         {
             fileIOManager.Manage(new System.Action(() => fileIOManager.ReadCSV(path, action)));
         }
 
+        /// <summary>
+        /// Writes DataTable to CSV file
+        /// </summary>
+        /// <param name="data">DataTable containing data to write</param>
+        /// <param name="path">Path top store new CSV file</param>
         public void WriteCSVFile(DataTable data, string path)
         {
             fileIOManager.Manage(new System.Action(() => fileIOManager.WriteCSV(data, path)));
+        }
+
+        /// <summary>
+        /// Reads json settings file as Dictionary then calls actioon with Dictionary as parameter
+        /// </summary>
+        /// <param name="path">Location of .json file to read</param>
+        /// <param name="action">Action to call when completed</param>
+        public void ReadSettingsFile(string path, System.Action<Dictionary<string, object>> action)
+        {
+            fileIOManager.Manage(new System.Action(() => fileIOManager.ReadJSON(path, action)));
         }
 
         void OnDestroy()

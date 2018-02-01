@@ -48,34 +48,6 @@ namespace ExpMngr
                 try
                 {
                     action.Invoke();
-                    //Debug.Log(string.Format("Manging command: {0}", command.function));
-                    //switch (command.function)
-                    //{
-                    //    case FileIOFunction.CopyFile:
-                    //        CopyFile(command.parameters);
-                    //        break;
-                    //    case FileIOFunction.WriteJson:
-                    //        WriteJson(command.parameters);
-                    //        break;
-                    //    case FileIOFunction.WriteMovementData:
-                    //        WriteMovementData(command.parameters);
-                    //        break;
-                    //    case FileIOFunction.WriteTrials:
-                    //        WriteTrials(command.parameters);
-                    //        break;
-                    //    case FileIOFunction.ReadCSV:
-                    //        ReadCSV(ref command.refObject, command.parameters);
-                    //        break;
-                    //    case FileIOFunction.WriteCSV:
-                    //        WriteCSV(command.parameters);
-                    //        break;
-                    //    case FileIOFunction.Quit:
-                    //        Quit();
-                    //        break;
-                    //    default:
-                    //        Debug.LogError(string.Format("Unhandled command {0}", command.function));
-                    //        break;
-                    //}
                 }
                 catch (ThreadAbortException)
                 {
@@ -96,6 +68,24 @@ namespace ExpMngr
         public void CopyFile(string sourceFileName, string destFileName)
         {
             File.Copy(sourceFileName, destFileName);
+        }
+
+        public void ReadJSON(string fpath, System.Action<Dictionary<string, object>> callback)
+        {
+            Dictionary<string, object> dict = null;
+            try
+            {
+                string dataAsJson = File.ReadAllText(fpath);
+                dict = MiniJSON.Json.Deserialize(dataAsJson) as Dictionary<string, object>;
+            }
+            catch (FileNotFoundException)
+            {
+                string message = string.Format(".json file not found in {0}!", fpath);
+                Debug.LogWarning(message);
+            }
+
+            System.Action action = new System.Action(() => callback.Invoke(dict));
+            parentExperiment.executeOnMainThreadQueue.Enqueue(action);
         }
 
         public void WriteJson(string destFileName, object serializableObject)

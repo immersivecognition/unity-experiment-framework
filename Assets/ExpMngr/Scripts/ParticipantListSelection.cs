@@ -53,6 +53,7 @@ namespace ExpMngr
 
         public void CheckSetList(string path)
         {
+            if (path == "") return;
             ppListPath = path;
 
             ppListNameDisplay.text = ppListPath;
@@ -60,7 +61,6 @@ namespace ExpMngr
             currentFolder = Directory.GetParent(ppListPath).ToString();
 
             GetCheckParticipantList();
-
         }
 
         public void GetCheckParticipantList()
@@ -135,7 +135,6 @@ namespace ExpMngr
             {
                 try
                 {
-                    print(dataPoint.internalName);
                     dataPoint.controller.SetContents(row[dataPoint.internalName]);
                 }
                 catch (ArgumentException)

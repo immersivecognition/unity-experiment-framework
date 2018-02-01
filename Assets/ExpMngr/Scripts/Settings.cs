@@ -15,7 +15,7 @@ namespace ExpMngr
         public static Settings empty { get { return new Settings(new Dictionary<string, object>()); } }
 
         Settings parentSettings;
-        Dictionary<string, object> baseDict;
+        public Dictionary<string, object> baseDict;
 
         /// <summary>
         /// Creates settings from dictionary
@@ -23,7 +23,14 @@ namespace ExpMngr
         /// <param name="dict"></param>
         public Settings(Dictionary<string, object> dict)
         {
-            baseDict = dict;
+            if (dict != null)
+            {
+                baseDict = dict;
+            }
+            else
+            {
+                baseDict = new Dictionary<string, object>();
+            }
         }
 
         /// <summary>

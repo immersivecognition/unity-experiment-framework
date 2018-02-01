@@ -5,18 +5,38 @@ A set of C# scripts which simplifies management of human-based experiments devel
 
 ## Features
 
-* UI to load participant data from file (or add new participant data)
-* Classes for common experimental concepts such as ```Session```, ```Block``` & ```Trial```
-* Saves behavioural data to ```.CSV``` file, automatically handling file & directory naming
-* Allows for tracking of position/rotation of any objects in the scene and writes to ```.CSV```
-* Writes files in a separate thread to avoid frame drops
-* Cascading settings system, allowing setting independent variables at a Session, Block, or Trial level.
-* Serialises and saves information to ```JSON``` files
-* Helps create maintainable code using an Object-Oriented Programming style
+### Programming style
 
-## UI Screenshot
+* Classes for common experimental concepts such as `Session`, `Block` & `Trial`
+* Helps create maintainable and readable code using an Object-Oriented Programming style
+
+### Data collection
+
+ExpMngr automates the process of collecting behavioural and movement data. **Behavioural data** is collected with 1 row per `Trial`, and automatically records some values such as the timestamp of the start and end of the trial.
+**Movement data** is the position and rotation of any object in the scene, which is captured at whatever frame rate the application is running at (in the `Update()` loop). This can be used to track positions of user controlled objects (such as hands or head in a virtual reality application) or an arbitrary object in the scene (e.g. some kind of stimuli). 
+Data is stored in CSV files with automatic handling of file & directory naming.
+
+### Events
+
+A `UnityEvent` is invoked on `Trial` begin and end, allowing you to easily trigger presentation of stimuli at trial start (for example).
+
+### CSV Participant List
+
+A participant list feature is used allowing experimenters to optionally pre-prepare participant information. Additionally, this participant list is shared between experiments, allowing cross comparison of observations within participants.  
+
+### Settings system
+
+The settings is cascading, allowing setting independent variables at a `Session`, `Block`, or `Trial` level. Settings profiles can be stored as `.json` files and selected via the UI. This allows experimenters to deploy a single build of the experiment with several sub-experiments defined in settings profiles. The data for these sub-experiments is stored independently.   
+
+### UI
+
+A UI is available to load participant data from file (or add new participant data). Variables that are collected are customisable and can be used in the experiment (e.g. a parameter for a participant's age could be used to change the difficulty of the experiment).
 
 ![User interface](media/screenshot-1.PNG)
+
+### File IO
+
+Files are read and written in a separate thread to avoid frame drops, which can induce motion sickness in VR HMDs.
 
 ## Example
 
@@ -49,15 +69,16 @@ class ExperimentBuilder : Monobehaviour
 }
 ```
 
-See ```Assets/ExpMngr/ExampleScript.cs``` for another simple example.
+See `Assets/ExpMngr/ExampleScript.cs` for another simple example.
 
 ## Documentation
 
+(incomplete)
 http://jackbrookes.github.io/unity-experiment-manager
 
-## Usage
+## Get started
 
-Download the project and open in Unity. Alternatively import the ```.unitypackage``` file to your existing Unity project.
+Download the project and open in Unity. Alternatively import the ```.unitypackage``` file (see releases tab) to your existing Unity project.
 
 Note: Users must change API Compatibility Level to .NET 2.0 in Unity player settings. 
 
