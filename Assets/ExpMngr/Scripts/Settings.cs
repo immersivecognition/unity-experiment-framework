@@ -63,7 +63,8 @@ namespace ExpMngr
                     }
                     else
                     {
-                        throw new System.Exception(string.Format("There is no avaiable setting \"{0}\" for this trial, block or experiment.", key));
+                        Debug.LogError(string.Format("There is no avaiable setting \"{0}\" for this trial, block or experiment. Returning null.", key));
+                        return null;
                     }                    
                 }
             }
