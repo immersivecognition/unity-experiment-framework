@@ -29,7 +29,8 @@ namespace ExpMngr
 
         [Header("Data logging")]
         // serialzed private + public getter trick allows setting in inspector without being publicly settable
-        [SerializeField] private List<Tracker> _trackedObjects = new List<Tracker>();
+        [SerializeField]
+        private List<Tracker> _trackedObjects = new List<Tracker>();
         /// <summary>
         /// List of tracked objects. Add a tracker to a gameobject and set it here to track position and rotation of the object.
         /// </summary>
@@ -64,6 +65,12 @@ namespace ExpMngr
         public TrialEvent onTrialEnd;
 
         bool hasInitialised = false;
+
+        /// <summary>
+        /// True when session is attempting to quit.
+        /// </summary>
+        [HideInInspector]
+        public bool isQuitting = false;
 
         /// <summary>
         /// Settings for the experiment. These are automatically loaded from file on initialisation of the session.
@@ -417,10 +424,12 @@ namespace ExpMngr
         {
             if (hasInitialised)
             {
+                isQuitting = true;
                 if (inTrial)
                     currentTrial.End();
                 SaveResults();
                 fileIOManager.Manage(new System.Action(fileIOManager.Quit));
+                isQuitting = false;
             }
         }
 
@@ -429,7 +438,7 @@ namespace ExpMngr
             List<OrderedResultDict> results = trials.Select(t => t.result).ToList();
             string fileName = "trial_results.csv";
             string filePath = Path.Combine(sessionPath, fileName);
-            
+
             // in this case, write in main thread to block aborting
             fileIOManager.WriteTrials(results, filePath);
         }
