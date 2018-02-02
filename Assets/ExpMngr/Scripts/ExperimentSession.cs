@@ -429,7 +429,9 @@ namespace ExpMngr
             List<OrderedResultDict> results = trials.Select(t => t.result).ToList();
             string fileName = "trial_results.csv";
             string filePath = Path.Combine(sessionPath, fileName);
-            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteTrials(results, filePath)));
+            
+            // in this case, write in main thread to block aborting
+            fileIOManager.WriteTrials(results, filePath);
         }
 
         /// <summary>
