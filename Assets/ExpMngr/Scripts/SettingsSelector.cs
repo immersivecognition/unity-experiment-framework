@@ -9,6 +9,7 @@ namespace ExpMngr{
 
 		public DropDownController ddController;
 		public ExperimentSession session;
+		public PopupController popupController;
 		List<string> settingsNames;
 		string settingsFolder;
 		Dictionary<string, object> settingsDict;
@@ -18,17 +19,33 @@ namespace ExpMngr{
 		// Use this for initialization
 		void Start () {
 			settingsFolder = Application.streamingAssetsPath;
-
-			settingsNames = Directory.GetFiles(settingsFolder, "*.json")
-								.ToList()
-								.Select(f => Path.GetFileName(f))
-								.ToList();
-
-			ddController.SetItems(settingsNames);
-
-			LoadCurrentSettingsDict();
+			TryGetSettingsList();
 		}
 		
+
+		void TryGetSettingsList()
+		{
+			Debug.Log("getting settings");
+			settingsNames = Directory.GetFiles(settingsFolder, "*.json")
+                                .ToList()
+                                .Select(f => Path.GetFileName(f))
+                                .ToList();
+
+            if (settingsNames.Count > 0)
+            {
+                ddController.SetItems(settingsNames);
+                LoadCurrentSettingsDict();
+            }
+            else
+            {
+                Popup settingsError = new Popup();
+                settingsError.messageType = MessageType.Error;
+                settingsError.message = string.Format("No settings files found at {0}. Please create at least one .json file containing your settings.", settingsFolder);
+                settingsError.onOK = new System.Action(() => {TryGetSettingsList();});
+                popupController.DisplayPopup(settingsError);
+            }
+
+		}
 
 		public void LoadCurrentSettingsDict()
 		{
