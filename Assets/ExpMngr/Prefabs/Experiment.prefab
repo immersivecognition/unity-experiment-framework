@@ -2172,27 +2172,6 @@ MonoBehaviour:
     internalName: yob
     dataType: 2
     dropDownValues: []
-  - displayName: Gender
-    internalName: gender
-    dataType: 4
-    dropDownValues:
-    - Male
-    - Female
-    - Other
-  - displayName: Preferred hand
-    internalName: preferred_hand
-    dataType: 4
-    dropDownValues:
-    - Right
-    - Left
-    - Both
-  - displayName: AAA
-    internalName: aa
-    dataType: 3
-    dropDownValues:
-    - Right
-    - Left
-    - Both
   maxNumSessions: 1
   newParticipantName: <i><color=grey>+ New participant</color></i>
   settingsSelector: {fileID: 114625896843592106}
@@ -4395,18 +4374,7 @@ MonoBehaviour:
   _settingsToLog: []
   onSessionStart:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: GenerateAndRunExperiment
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: ExpMngr.SessionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   onTrialBegin:
@@ -4419,6 +4387,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: ExpMngr.TrialEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  isQuitting: 0
   experimentName: 
   ppid: 
   sessionNum: 0
