@@ -12,6 +12,7 @@ namespace ExpMngr{
 		List<string> settingsNames;
 		string settingsFolder;
 		Dictionary<string, object> settingsDict;
+		[HideInInspector]
 		public string experimentName;
 
 		// Use this for initialization
