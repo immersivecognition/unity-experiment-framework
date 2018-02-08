@@ -86,7 +86,7 @@ namespace ExpMngr
             {
                 row1[dataPoint.internalName] = dataPoint.controller.GetDefault();
             }
-            row1["ppid"] = "example001";
+            row1["ppid"] = "test";
 
             exampleData.Rows.Add(row1);
 
