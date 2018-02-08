@@ -9,11 +9,12 @@ using System.IO;
 /// </summary>
 public class ExampleScript : MonoBehaviour {
 
-    public ExpMngr.ExperimentSession exp;
+    ExpMngr.ExperimentSession exp;
     float startNextTime;
 
     
-    public void GenerateAndRunExperiment() {
+    public void GenerateAndRunExperiment(ExpMngr.ExperimentSession expSession) {
+        exp = expSession;
         /// This function can be called using the ExperimentSession inspector OnSessionStart() event, or otherwise
 
 
