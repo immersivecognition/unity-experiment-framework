@@ -105,7 +105,7 @@ namespace ExpMngr
             {
                 Popup pplistAttention = new Popup();
                 pplistAttention.messageType = MessageType.Attention;
-                pplistAttention.message = string.Format("An empty participant list will be created at {0}. Data you collect will be stored in the same folder as this list.", ppListPath);
+                pplistAttention.message = string.Format("An empty participant list has been created at {0}. Data you collect will be stored in the same folder as this list.", ppListPath);
                 pplistAttention.onOK = new System.Action( () => {CreateNewPPList(ppListPath);}) ;
                 popupController.DisplayPopup(pplistAttention);
                 return;
