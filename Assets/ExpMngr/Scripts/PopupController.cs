@@ -22,8 +22,8 @@ namespace ExpMngr{
 
 		public void OkPress()
 		{
-			nextAction.Invoke();
 			gameObject.SetActive(false);
+			nextAction.Invoke();
 		}
 
 		public void CancelPress()
