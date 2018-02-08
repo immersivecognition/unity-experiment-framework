@@ -25,7 +25,6 @@ namespace ExpMngr{
 
 		void TryGetSettingsList()
 		{
-			Debug.Log("getting settings");
 			settingsNames = Directory.GetFiles(settingsFolder, "*.json")
                                 .ToList()
                                 .Select(f => Path.GetFileName(f))
