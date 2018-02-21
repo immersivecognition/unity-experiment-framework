@@ -54,7 +54,7 @@ class ExperimentBuilder : Monobehaviour
 
         // Creating 10 trials within our block
         for (int i = 0; i < 10; i++)
-            new ExpMngr.Trial(exp, myBlock);
+            new ExpMngr.Trial(myBlock);
 
         // Add a new setting to trial 1
         var firstTrial = myBlock.GetTrial(1);//trial number not 0 indexed
