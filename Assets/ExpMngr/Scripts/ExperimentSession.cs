@@ -28,7 +28,7 @@ namespace ExpMngr
         public List<Block> blocks = new List<Block>();
 
         [Header("Data logging")]
-        // serialzed private + public getter trick allows setting in inspector without being publicly settable
+        // serialized private + public getter trick allows setting in inspector without being publicly settable
         [SerializeField]
         private List<Tracker> _trackedObjects = new List<Tracker>();
         /// <summary>
@@ -246,7 +246,7 @@ namespace ExpMngr
 
             fileIOManager.Manage(new System.Action(() => fileIOManager.WriteMovementData(data, fpath)));
 
-            // return relative path so it can be saved
+            // return relative path so it can be stored in behavioural data
             Uri fullPath = new Uri(fpath);
             Uri basePath = new Uri(experimentPath);
             return basePath.MakeRelativeUri(fullPath).ToString();

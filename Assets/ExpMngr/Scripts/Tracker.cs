@@ -56,7 +56,7 @@ namespace ExpMngr
         }
 
         /// <summary>
-        /// Stops recording object position.
+        /// Stops recording object position and rotation.
         /// </summary>
         public List<float[]> StopRecording()
         {
