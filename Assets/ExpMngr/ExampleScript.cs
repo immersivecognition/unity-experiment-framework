@@ -13,6 +13,12 @@ public class ExampleScript : MonoBehaviour {
     float startNextTime;
 
     
+    void Start()
+    {
+        // disable this behavior so the Update() function doesnt run.
+        enabled = false;
+    }
+    
     public void GenerateAndRunExperiment(ExpMngr.ExperimentSession expSession) {
         exp = expSession;
         /// This function can be called using the ExperimentSession inspector OnSessionStart() event, or otherwise
@@ -48,6 +54,9 @@ public class ExampleScript : MonoBehaviour {
         // here we set a setting for the 2nd trial of the main block as an example.
         exp.GetBlock(2).GetRelativeTrial(2).settings["size"] = 10;
 
+        // setting this script to enabled allows the MonoBehaviour scripts to run e.g. Update()
+        enabled = true;
+
         // begin first trial
         exp.BeginNextTrial();
     }
@@ -58,10 +67,11 @@ public class ExampleScript : MonoBehaviour {
         if (Time.time > startNextTime && exp.inTrial)
         {
             Debug.Log("Ending trial");
+            exp.currentTrial.End();
+            
             if (exp.currentTrial == exp.lastTrial)
             {
                 // end, then quit
-                exp.currentTrial.End();
                 #if UNITY_EDITOR
                     UnityEditor.EditorApplication.isPlaying = false;
                 #elif UNITY_WEBPLAYER
@@ -72,14 +82,16 @@ public class ExampleScript : MonoBehaviour {
             }
             else
             {
-                // end trial
-                exp.currentTrial.End();
+                // start next trial
+                exp.BeginNextTrial();
             }
         }
     }
 
     public void RunTrial()
     {
+
+        // we call this function via the event "On Trial Begin", which is called when the trial starts
         Debug.Log("Running trial!");
         
         // we can access our settings to (e.g.) modify our scene
