@@ -115,7 +115,7 @@ namespace ExpMngr
 
             List<string> participants = ppList.AsEnumerable().Select(x => x[0].ToString()).ToList();
             participantSelector.SetParticipants(participants);
-            participantSelector.SelectNew();
+            participantSelector.SelectNewList();
 
             // enable selector
             ExperimentStartupController.SetSelectableAndChildrenInteractable(participantSelector.gameObject, true);

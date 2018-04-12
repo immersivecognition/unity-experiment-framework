@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace ExpMngr
 {
@@ -35,6 +36,13 @@ namespace ExpMngr
         public override void Clear()
         {
             inputField.text = "";
+        }
+
+
+        public void SetToTimeNow()
+        {
+            DateTime dt = DateTime.Now;
+            inputField.text = dt.ToString("P_yyMMddHHmmss");
         }
 
         protected override void Setup()

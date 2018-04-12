@@ -62,6 +62,11 @@ namespace ExpMngr
                     throw new System.Exception("Duplicated internal names. They must be unique.");
                 }
             }
+
+            // set ppid field to current time
+            TextFormController ppidText = (TextFormController)ppidElement.controller;
+            ppidText.SetToTimeNow();
+
         }
 
 
@@ -121,6 +126,7 @@ namespace ExpMngr
         public List<string> dropDownValues = new List<string>() { "Option 1", "Option 2" };
 
         public FormElementController controller { get; set; }
+
 
         public void Initialise(FormElementController formElementController)
         {

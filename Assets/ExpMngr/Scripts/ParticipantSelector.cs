@@ -27,7 +27,7 @@ namespace ExpMngr
             participantDropdown.SetItems(ppList);
         }
 
-        public void SelectNew()
+        public void SelectNewList()
         {
             participantDropdown.Clear();
         }
@@ -38,6 +38,8 @@ namespace ExpMngr
             if (value == 0) // "new participant"
             {
                 form.Clear();
+                TextFormController ppidText = (TextFormController) form.ppidElement.controller;
+                ppidText.SetToTimeNow();
             }
             else
             {

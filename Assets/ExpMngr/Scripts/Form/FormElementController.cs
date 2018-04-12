@@ -14,7 +14,6 @@ namespace ExpMngr
         public FormDataType dataType;
         protected string originalTitle;
 
-
         public float height { get { return rectTransform.rect.height; } }
 
         [HideInInspector]
