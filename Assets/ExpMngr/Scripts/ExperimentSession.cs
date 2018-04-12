@@ -183,7 +183,7 @@ namespace ExpMngr
         public readonly Queue<System.Action> executeOnMainThreadQueue = new Queue<System.Action>();
 
         /// <summary>
-        /// Dictionary of objects for datapoints collected via the UI.
+        /// Dictionary of objects for datapoints collected via the UI, or otherwise.
         /// </summary>
         public Dictionary<string, object> participantDetails;
 
@@ -203,7 +203,7 @@ namespace ExpMngr
         }
 
         /// <summary>
-        /// Any actions which are enqueued to run on Unity's main thread
+        /// Any actions which are enqueued to run on Unity's main thread.
         /// </summary>
         void ManageActions()
         {
