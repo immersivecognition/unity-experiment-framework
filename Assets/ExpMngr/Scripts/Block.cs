@@ -56,6 +56,9 @@ namespace ExpMngr
             return trials[relativeTrialNumber - 1];
         }
 
+
+        
+
     }
 
 }

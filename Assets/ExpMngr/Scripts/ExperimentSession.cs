@@ -108,7 +108,8 @@ namespace ExpMngr
         public Block currentBlock { get { return GetBlock(); } }
 
         /// <summary>
-        /// return trials for all blocks
+        /// Returns a list of trials for all blocks.  Modifying the order of this list will not affect trial order. Modify block.trials to change order within blocks.
+        ///  
         /// </summary>
         public List<Trial> trials
         {
