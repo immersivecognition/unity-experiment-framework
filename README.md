@@ -57,7 +57,7 @@ class ExperimentBuilder : Monobehaviour
             new ExpMngr.Trial(myBlock);
 
         // Add a new setting to trial 1
-        var firstTrial = myBlock.GetTrial(1);//trial number not 0 indexed
+        var firstTrial = myBlock.GetTrial(1);//trial number is not 0 indexed
         firstTrial.settings["color"] = "red";
 
         // Run first trial
@@ -85,4 +85,4 @@ Note: Users must change API Compatibility Level to .NET 2.0 in Unity player sett
 ## Future additions
 
 * In experiment UI to monitor collection of data in real-time
-* Recording of an experiment via an in-game camera (useful for mixed reality, and watching back afterwards)
+* Better documentation and examples
