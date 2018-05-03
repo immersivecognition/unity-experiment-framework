@@ -73,7 +73,7 @@ namespace ExpMngr
         public bool isQuitting = false;
 
         /// <summary>
-        /// Settings for the experiment. These are automatically loaded from file on initialisation of the session.
+        /// Settings for the experiment. These are provided on initialisation of the session.
         /// </summary>
         public Settings settings;
 
@@ -93,12 +93,12 @@ namespace ExpMngr
         public Trial nextTrial { get { return NextTrial(); } }
 
         /// <summary>
-        /// Alias of PrevTrial()
+        /// Get the trial before the current trial.
         /// </summary>
         public Trial prevTrial { get { return PrevTrial(); } }
 
         /// <summary>
-        /// Alias of LastTrial()
+        /// Get the last trial in the last block of the session.
         /// </summary>
         public Trial lastTrial { get { return LastTrial(); } }
 
@@ -174,9 +174,9 @@ namespace ExpMngr
         /// </summary>
         public List<string> trackingHeaders { get { return trackedObjects.Select(t => t.objectNameHeader).ToList(); } }
         /// <summary>
-        /// Stores combined list of headers.
+        /// Stores combined list of headers for the behavioural output.
         /// </summary>
-        [HideInInspector] public List<string> headers;
+        public List<string> headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).Concat(trackingHeaders).ToList(); }}
 
         /// <summary>
         /// Queue of actions which gets emptied on each frame in the main thread.
@@ -192,9 +192,6 @@ namespace ExpMngr
         {
             // start FileIOManager
             fileIOManager = new FileIOManager(this);
-
-            // create headers
-            headers = baseHeaders.Concat(customHeaders).Concat(trackingHeaders).Concat(settingsToLog).ToList();
         }
 
         // Update is called once per frame
@@ -352,7 +349,7 @@ namespace ExpMngr
         /// Get next Trial
         /// </summary>
         /// <returns></returns>
-        public Trial NextTrial()
+        Trial NextTrial()
         {
             // non zero indexed
             try
@@ -377,7 +374,7 @@ namespace ExpMngr
         /// Get previous Trial
         /// </summary>
         /// <returns></returns>
-        public Trial PrevTrial()
+        Trial PrevTrial()
         {
             // non zero indexed
             try
@@ -394,7 +391,7 @@ namespace ExpMngr
         /// Get last Trial in experiment
         /// </summary>
         /// <returns></returns>
-        public Trial LastTrial()
+        Trial LastTrial()
         {
             return trials[trials.Count - 1];
         }
@@ -403,7 +400,7 @@ namespace ExpMngr
         /// Get currently active block.
         /// </summary>
         /// <returns>Currently active block.</returns>
-        public Block GetBlock()
+        Block GetBlock()
         {
             return blocks[blockNum - 1];
         }
@@ -411,7 +408,7 @@ namespace ExpMngr
         /// <summary>
         /// Get block by block number (non-zero indexed).
         /// </summary>
-        /// <returns>Currently active block.</returns>
+        /// <returns>Block.</returns>
         public Block GetBlock(int blockNumber)
         {
             return blocks[blockNumber - 1];

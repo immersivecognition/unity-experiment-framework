@@ -7,7 +7,7 @@ using System.IO;
 /// <summary>
 /// Example script used to test functionality of the Experiment Manager
 /// </summary>
-public class ExampleScript : MonoBehaviour {
+public class BasicExampleScript : MonoBehaviour {
 
     ExpMngr.ExperimentSession exp;
     float startNextTime;
@@ -15,11 +15,13 @@ public class ExampleScript : MonoBehaviour {
     
     void Start()
     {
-        // disable this behavior so the Update() function doesnt run.
+        // disable this behavior so the Update() function doesnt run just yet.
         enabled = false;
     }
     
-    public void GenerateAndRunExperiment(ExpMngr.ExperimentSession expSession) {
+    public void GenerateAndRunExperiment(ExpMngr.ExperimentSession expSession)
+    {
+
         exp = expSession;
         /// This function can be called using the ExperimentSession inspector OnSessionStart() event, or otherwise
 
@@ -40,7 +42,7 @@ public class ExampleScript : MonoBehaviour {
         // / of an ExperimentSession component as a dictionary 
 
         // create our blocks & trials
-
+        
         // practice block
         var practiceBlock = new ExpMngr.Block(exp); // block 1
         for (int i = 0; i < Convert.ToInt32(exp.settings["n_practice_trials"]); i++)
