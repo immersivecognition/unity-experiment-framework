@@ -94,7 +94,6 @@ public class BasicExampleScript : MonoBehaviour {
         // we can call this function via the event "On Trial Begin", which is called when the trial starts
         // here we can imagine presentation of some stimulus
 
-
         Debug.Log("Running trial!");
         
         // we can access our settings to (e.g.) modify our scene
