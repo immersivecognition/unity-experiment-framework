@@ -29,6 +29,12 @@ namespace ExpMngr
         /// </summary>
         public static string[] header = new string[] { "time", "pos_x", "pos_y", "pos_z", "rot_x", "rot_y", "rot_z" };
 
+        // called when component is added
+        void Reset()
+        {
+            objectName = gameObject.name.Replace(" ", "_").ToLower();
+        }
+
         void LateUpdate()
         {
             if (recording)

@@ -10,6 +10,7 @@ namespace ExpMngr{
 		public DropDownController ddController;
 		public ExperimentSession session;
 		public PopupController popupController;
+		public ExperimentStartupController startupController;
 		List<string> settingsNames;
 		string settingsFolder;
 		Dictionary<string, object> settingsDict;
@@ -25,7 +26,7 @@ namespace ExpMngr{
 
 		void TryGetSettingsList()
 		{
-			settingsNames = Directory.GetFiles(settingsFolder, "*.json")
+			settingsNames = Directory.GetFiles(settingsFolder, startupController.settingsSearchPattern)
                                 .ToList()
                                 .Select(f => Path.GetFileName(f))
                                 .ToList();
@@ -39,7 +40,10 @@ namespace ExpMngr{
             {
                 Popup settingsError = new Popup();
                 settingsError.messageType = MessageType.Error;
-                settingsError.message = string.Format("No settings files found at {0}. Please create at least one .json file containing your settings.", settingsFolder);
+                settingsError.message = string.Format(
+					"No settings files found at {0} that match pattern {1}. Please create at least one json-encoded file containing your settings.",
+					settingsFolder,
+					startupController.settingsSearchPattern);
                 settingsError.onOK = new System.Action(() => {TryGetSettingsList();});
                 popupController.DisplayPopup(settingsError);
             }

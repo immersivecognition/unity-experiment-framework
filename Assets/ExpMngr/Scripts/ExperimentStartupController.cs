@@ -21,6 +21,8 @@ namespace ExpMngr
         /// </summary>
         public int maxNumSessions = 1;
         
+        public string settingsSearchPattern = "*.json";
+
         [HideInInspector]
         public string newParticipantName = "<i><color=grey>+ New participant</color></i>";
 
@@ -78,20 +80,20 @@ namespace ExpMngr
             var infoDict = ppListSelect.GenerateDict();
             var settings = settingsSelector.GetSettings();
 
-            experimentSession.experimentName = settingsSelector.experimentName;
-
             Action finish = new Action( () =>
                 {
-                    experimentSession.InitSession(ppid,
+                    experimentSession.InitSession(settingsSelector.experimentName,
+                                                  ppid,
                                                   sessionNum,
                                                   ppListSelect.currentFolder,
                                                   infoDict,
                                                   settings);
-                    gameObject.SetActive(false);
+                    gameObject.SetActive(false); // hide self
                 } 
             );
 
-            bool exists = experimentSession.CheckSessionExists(ppid, sessionNum, ppListSelect.currentFolder);
+            bool exists = ExperimentSession.CheckSessionExists(settingsSelector.experimentName, ppid, sessionNum, ppListSelect.currentFolder);
+
             if (exists)
             {
                 Popup existsWarning = new Popup();

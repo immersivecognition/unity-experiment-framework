@@ -25,6 +25,11 @@
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ * Modified by Jack Brookes, 2018.
+ * Modified version, floats and ints in the JSON are stored as floats and ints (32bit) after being deserialized (32bit), respectively. 
+
+
  */
 using System;
 using System.Collections;
@@ -54,11 +59,13 @@ namespace MiniJSON
     //
     //          var dict = Json.Deserialize(jsonString) as Dictionary<string,object>;
     //
+    //          // in this modified version, floats stay as floats and ints stay as ints (32bit)
+    //
     //          Debug.Log("deserialized: " + dict.GetType());
     //          Debug.Log("dict['array'][0]: " + ((List<object>) dict["array"])[0]);
     //          Debug.Log("dict['string']: " + (string) dict["string"]);
-    //          Debug.Log("dict['float']: " + (double) dict["float"]); // floats come out as doubles
-    //          Debug.Log("dict['int']: " + (long) dict["int"]); // ints come out as longs
+    //          Debug.Log("dict['float']: " + (float) dict["float"]); // floats come out as floats
+    //          Debug.Log("dict['int']: " + (long) dict["int"]); // ints come out as ints
     //          Debug.Log("dict['unicode']: " + (string) dict["unicode"]);
     //
     //          var str = Json.Serialize(dict);
@@ -322,14 +329,14 @@ namespace MiniJSON
 
                 if (number.IndexOf('.') == -1)
                 {
-                    long parsedInt;
-                    Int64.TryParse(number, out parsedInt);
+                    int parsedInt;
+                    int.TryParse(number, out parsedInt);
                     return parsedInt;
                 }
 
-                double parsedDouble;
-                Double.TryParse(number, out parsedDouble);
-                return parsedDouble;
+                float parsedFloat;
+                float.TryParse(number, out parsedFloat);
+                return parsedFloat;
             }
 
             void EatWhitespace()

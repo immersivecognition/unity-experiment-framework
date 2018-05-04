@@ -9,7 +9,7 @@ using System.IO;
 /// </summary>
 public class BasicExampleScript : MonoBehaviour {
 
-    ExpMngr.ExperimentSession exp;
+    ExpMngr.ExperimentSession session;
     float startNextTime;
 
     
@@ -19,11 +19,11 @@ public class BasicExampleScript : MonoBehaviour {
         enabled = false;
     }
     
-    public void GenerateAndRunExperiment(ExpMngr.ExperimentSession expSession)
+    public void GenerateExperiment(ExpMngr.ExperimentSession expSession)
     {
-
-        exp = expSession;
-        /// This function can be called using the ExperimentSession inspector OnSessionStart() event, or otherwise
+        // save reference to session
+        session = expSession;
+        /// This function can be called using the ExperimentSession inspector OnSessionBegin() event, or otherwise
 
 
         // / In the StreamingAssets folder we have a several .json files that contain settings, e.g.
@@ -44,65 +44,67 @@ public class BasicExampleScript : MonoBehaviour {
         // create our blocks & trials
         
         // practice block
-        var practiceBlock = new ExpMngr.Block(exp); // block 1
-        for (int i = 0; i < Convert.ToInt32(exp.settings["n_practice_trials"]); i++)
-            new ExpMngr.Trial(practiceBlock);
-        // main block
-        var mainBlock = new ExpMngr.Block(exp); // block 2
-        for (int i = 0; i < Convert.ToInt32(exp.settings["n_main_trials"]); i++)
-            new ExpMngr.Trial(mainBlock);
 
+        // retrieve the n_practice_trials setting, which was loaded from our .json file
+        int numPracticeTrials = Convert.ToInt32(session.settings["n_practice_trials"]);
+        // create block 1
+        ExpMngr.Block practiceBlock = session.CreateBlock(numPracticeTrials);
+
+
+        // retrieve the n_main_trials setting, which was loaded from our .json file
+        int numMainTrials = Convert.ToInt32(session.settings["n_main_trials"]);
+        // create block 2
+        ExpMngr.Block mainBlock = session.CreateBlock(numMainTrials); // block 2
 
         // here we set a setting for the 2nd trial of the main block as an example.
-        exp.GetBlock(2).GetRelativeTrial(2).settings["size"] = 10;
+        mainBlock.GetRelativeTrial(2).settings["size"] = 10;
 
         // setting this script to enabled allows the MonoBehaviour scripts to run e.g. Update()
         enabled = true;
-
-        // begin first trial
-        exp.BeginNextTrial();
     }
 
     void Update()
     {
         // here we are mimicking some experiment behaviour, e.g waiting for user to interact with scene
-        if (Time.time > startNextTime && exp.inTrial)
+        if (Time.time > startNextTime && session.inTrial)
         {
             Debug.Log("Ending trial");
-            exp.currentTrial.End();
+            session.EndCurrentTrial();
             
-            if (exp.currentTrial == exp.lastTrial)
+            if (session.currentTrial == session.lastTrial)
             {
-                // end, then quit
-                #if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-                #elif UNITY_WEBPLAYER
-                    Application.OpenURL(webplayerQuitURL);
-                #else
-                    Application.Quit();
-                #endif
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_WEBPLAYER
+                Application.OpenURL(webplayerQuitURL);
+#else
+                Application.Quit();
+#endif
             }
             else
             {
                 // start next trial
-                exp.BeginNextTrial();
+                session.BeginNextTrial();
             }
         }
     }
 
-    public void RunTrial()
+    public void PresentStimulus(ExpMngr.Trial trial)
     {
+        // we can call this function via the event "On Trial Begin", which is called when the trial starts
+        // here we can imagine presentation of some stimulus
 
-        // we call this function via the event "On Trial Begin", which is called when the trial starts
+
         Debug.Log("Running trial!");
         
         // we can access our settings to (e.g.) modify our scene
-        Debug.LogFormat("The 'size' for this trial is: {0}", Convert.ToSingle(exp.currentTrial.settings["size"]));
+        int size = (int) trial.settings["size"];
+        Debug.LogFormat("The 'size' for this trial is: {0}", size);
 
         // record custom values...
         string observation = UnityEngine.Random.value.ToString();
         Debug.Log(string.Format("We observed: {0}", observation));
-        exp.currentTrial.result["some_variable"] = observation;
+        trial.result["some_variable"] = observation;
 
         // wait 1 second until we end trial and run the next one
         startNextTime = Time.time + 1;

@@ -20,7 +20,7 @@ namespace ExpMngr
         /// Enable to automatically safely end the session when the application stops running.
         /// </summary>
         public bool endExperimentOnQuit = true;
-
+        
         /// <summary>
         /// List of blocks for this experiment
         /// </summary>
@@ -28,7 +28,22 @@ namespace ExpMngr
         public List<Block> blocks = new List<Block>();
 
         [Header("Data logging")]
+
         // serialized private + public getter trick allows setting in inspector without being publicly settable
+        [SerializeField]
+        private List<string> _settingsToLog = new List<string>();
+        /// <summary>
+        /// List of settings you wish to log to the behavioural file for each trial.
+        /// </summary>
+        public List<string> settingsToLog { get { return _settingsToLog; } }
+
+        [SerializeField]
+        private List<string> _customHeaders = new List<string>();
+        /// <summary>
+        /// List of variables you want to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
+        /// </summary>
+        public List<string> customHeaders { get { return _customHeaders; } }
+
         [SerializeField]
         private List<Tracker> _trackedObjects = new List<Tracker>();
         /// <summary>
@@ -36,23 +51,11 @@ namespace ExpMngr
         /// </summary>
         public List<Tracker> trackedObjects { get { return _trackedObjects; } }
 
-        [SerializeField] private List<string> _customHeaders = new List<string>();
-        /// <summary>
-        /// List of variables you want to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
-        /// </summary>
-        public List<string> customHeaders { get { return _customHeaders; } }
-
-        [SerializeField] private List<string> _settingsToLog = new List<string>();
-        /// <summary>
-        /// List of settings you wish to log to the behavioural file for each trial.
-        /// </summary>
-        public List<string> settingsToLog { get { return _settingsToLog; } }
-
         [Header("Events")]
         /// <summary>
         /// Event(s) to trigger when the session is started via the UI
         /// </summary>
-        public SessionEvent onSessionStart;
+        public SessionEvent onSessionBegin;
 
         /// <summary>
         /// Event(s) to trigger when a trial begins
@@ -80,7 +83,7 @@ namespace ExpMngr
         /// <summary>
         /// Returns true if current trial is in progress
         /// </summary>
-        public bool inTrial { get { return (trialNum != 0) && (currentTrial.status == TrialStatus.InProgress); } }
+        public bool inTrial { get { return (currentTrialNum != 0) && (currentTrial.status == TrialStatus.InProgress); } }
 
         /// <summary>
         /// Alias of GetTrial()
@@ -111,16 +114,7 @@ namespace ExpMngr
         /// Returns a list of trials for all blocks.  Modifying the order of this list will not affect trial order. Modify block.trials to change order within blocks.
         ///  
         /// </summary>
-        public List<Trial> trials
-        {
-            get
-            {
-                List<Trial> ts = new List<Trial>();
-                foreach (Block block in blocks)
-                    ts.AddRange(block.trials);
-                return ts;
-            }
-        }
+        public IEnumerable<Trial> trials { get { return blocks.SelectMany(b => b.trials); } }
 
         [HideInInspector]
         public string experimentName;
@@ -136,19 +130,19 @@ namespace ExpMngr
         /// </summary>
         [HideInInspector]
         public int sessionNum;
-        private string sessionFolderName { get { return string.Format("S{0:000}", sessionNum); } }
+        private string sessionFolderName { get { return SessionNumToName(sessionNum); } }
 
         /// <summary>
         /// Currently active trial number.
         /// </summary>
         [HideInInspector]
-        public int trialNum = 0;
+        public int currentTrialNum = 0;
 
         /// <summary>
         /// Currently active block number.
         /// </summary>
         [HideInInspector]
-        public int blockNum = 0;
+        public int currentBlockNum = 0;
 
         FileIOManager fileIOManager;
 
@@ -170,7 +164,7 @@ namespace ExpMngr
         public string sessionPath { get { return Path.Combine(ppPath, sessionFolderName); } }
 
         /// <summary>
-        /// List of file headers generated based on tracked objects.
+        /// List of file headers generated for all referenced tracked objects.
         /// </summary>
         public List<string> trackingHeaders { get { return trackedObjects.Select(t => t.objectNameHeader).ToList(); } }
         /// <summary>
@@ -194,7 +188,7 @@ namespace ExpMngr
             fileIOManager = new FileIOManager(this);
         }
 
-        // Update is called once per frame
+        // Update is called once per frame by Unity
         void Update()
         {
             ManageActions();
@@ -239,7 +233,7 @@ namespace ExpMngr
         /// <returns>Path to the file</returns>
         public string SaveTrackingData(string objectName, List<float[]> data)
         {
-            string fname = string.Format("movement_{0}_T{1:000}.csv", objectName, trialNum);
+            string fname = string.Format("movement_{0}_T{1:000}.csv", objectName, currentTrialNum);
             string fpath = Path.Combine(sessionPath, fname);
 
             fileIOManager.Manage(new System.Action(() => fileIOManager.WriteMovementData(data, fpath)));
@@ -248,6 +242,7 @@ namespace ExpMngr
             Uri fullPath = new Uri(fpath);
             Uri basePath = new Uri(experimentPath);
             return basePath.MakeRelativeUri(fullPath).ToString();
+
         }
 
         /// <summary>
@@ -291,13 +286,12 @@ namespace ExpMngr
         /// <param name="sessionNumber"></param>
         /// <param name="baseFolder"></param>
         /// <returns></returns>
-        public bool CheckSessionExists(string participantId, int sessionNumber, string baseFolder)
+        public static bool CheckSessionExists(string experimentName, string participantId, int sessionNumber, string baseFolder)
         {
-            ppid = participantId;
-            sessionNum = sessionNumber;
-            basePath = baseFolder;
-            return System.IO.Directory.Exists(sessionPath);
+            string potentialPath = Extensions.CombinePaths(baseFolder, experimentName, participantId, SessionNumToName(sessionNumber));
+            return System.IO.Directory.Exists(potentialPath);
         }
+
 
         /// <summary>
         /// Initialises a session with given name
@@ -305,8 +299,11 @@ namespace ExpMngr
         /// <param name="participantId">Unique participant id</param>
         /// <param name="sessionNumber">Session number for this particular participant</param>
         /// <param name="baseFolder">Path to the folder where data should be stored.</param>
-        public void InitSession(string participantId, int sessionNumber, string baseFolder, Dictionary<string, object> participantDetails, Settings settings)
+        /// <param name="participantDetails">Dictionary of participant information</param>
+        /// <param name="settings"></param>
+        public void InitSession(string experimentName, string participantId, int sessionNumber, string baseFolder, Dictionary<string, object> participantDetails = null, Settings settings = null)
         {
+            this.experimentName = experimentName;
             ppid = participantId;
             sessionNum = sessionNumber;
             basePath = baseFolder;
@@ -320,7 +317,21 @@ namespace ExpMngr
             WriteDictToSessionFolder(settings.baseDict, "settings");
 
             hasInitialised = true;
-            onSessionStart.Invoke(this);
+            onSessionBegin.Invoke(this);
+        }
+
+        /// <summary>
+        /// Create a block containing a number of trials
+        /// </summary>
+        /// <param name="numberOfTrials">Number of trials. Must be greater than or equal to 1.</param>
+        /// <returns></returns>
+        public Block CreateBlock(int numberOfTrials)
+        {
+            if (numberOfTrials > 0)
+                return new Block((uint) numberOfTrials, this);
+            else
+                throw new Exception("Invalid number of trials supplied");
+               
         }
 
         /// <summary>
@@ -329,11 +340,11 @@ namespace ExpMngr
         /// <returns>Currently active trial.</returns>
         public Trial GetTrial()
         {
-            if (trialNum == 0)
+            if (currentTrialNum == 0)
             {
                 throw new NoSuchTrialException("There is no trial zero. If you are the start of the experiment please use nextTrial to get the first trial");
             }
-            return trials[trialNum - 1];
+            return trials.ToList()[currentTrialNum - 1];
         }
 
         /// <summary>
@@ -342,7 +353,7 @@ namespace ExpMngr
         /// <returns></returns>
         public Trial GetTrial(int trialNumber)
         {
-            return trials[trialNumber - 1];
+            return trials.ToList()[trialNumber - 1];
         }
 
         /// <summary>
@@ -354,12 +365,20 @@ namespace ExpMngr
             // non zero indexed
             try
             {
-                return trials[trialNum];
+                return trials.ToList()[currentTrialNum];
             }
             catch (ArgumentOutOfRangeException)
             {
                 throw new NoSuchTrialException("There is no next trial. Reached the end of trial list.");
             }
+        }
+
+        /// <summary>
+        /// Ends currently running trial. Useful to call from an inspector event
+        /// </summary>
+        public void EndCurrentTrial()
+        {
+            currentTrial.End();
         }
 
         /// <summary>
@@ -379,7 +398,7 @@ namespace ExpMngr
             // non zero indexed
             try
             {
-                return trials[trialNum - 2];
+                return trials.ToList()[currentTrialNum - 2];
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -393,7 +412,8 @@ namespace ExpMngr
         /// <returns></returns>
         Trial LastTrial()
         {
-            return trials[trials.Count - 1];
+            var lastBlock = blocks[blocks.Count- 1];
+            return lastBlock.trials[lastBlock.trials.Count - 1];
         }
 
         /// <summary>
@@ -402,7 +422,7 @@ namespace ExpMngr
         /// <returns>Currently active block.</returns>
         Block GetBlock()
         {
-            return blocks[blockNum - 1];
+            return blocks[currentBlockNum - 1];
         }
 
         /// <summary>
@@ -478,6 +498,11 @@ namespace ExpMngr
                 EndExperiment();
             }
 
+        }
+
+        public static string SessionNumToName(int num)
+        {
+            return string.Format("S{0:000}", num);
         }
 
     }

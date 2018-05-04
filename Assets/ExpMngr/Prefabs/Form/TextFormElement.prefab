@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224762906418741188}
-  - component: {fileID: 114848795744289444}
+  - component: {fileID: 114798589393879018}
   m_Layer: 5
   m_Name: TextFormElement
   m_TagString: Untagged
@@ -156,6 +156,29 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Form name
+--- !u!114 &114798589393879018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033861776628790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc5fcce056e4ac94b962dc74be6ee275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 224762906418741188}
+  title: {fileID: 114566013805535272}
+  dataType: 0
+  entry:
+    displayName: 
+    internalName: 
+    dataType: 0
+    dropDownValues:
+    - Option 1
+    - Option 2
+  placeholder: {fileID: 114812937645559530}
+  inputField: {fileID: 114970555796053392}
 --- !u!114 &114812937645559530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -189,29 +212,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Enter text...
---- !u!114 &114848795744289444
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1033861776628790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adb6233fd1f7c814390998c7bf3efaf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rectTransform: {fileID: 224762906418741188}
-  title: {fileID: 114566013805535272}
-  dataType: 0
-  entry:
-    displayName: 
-    internalName: 
-    dataType: 0
-    dropDownValues:
-    - Option 1
-    - Option 2
-  placeholder: {fileID: 114812937645559530}
-  inputField: {fileID: 114970555796053392}
 --- !u!114 &114871084140008742
 MonoBehaviour:
   m_ObjectHideFlags: 1

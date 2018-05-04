@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224762906418741188}
-  - component: {fileID: 114071601741257938}
+  - component: {fileID: 114631978527706272}
   m_Layer: 5
   m_Name: CheckBoxElement
   m_TagString: Untagged
@@ -94,28 +94,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114071601741257938
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1033861776628790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16c92663891dd584d962f78a29bcbd0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rectTransform: {fileID: 224762906418741188}
-  title: {fileID: 114566013805535272}
-  dataType: 3
-  entry:
-    displayName: 
-    internalName: 
-    dataType: 0
-    dropDownValues:
-    - Option 1
-    - Option 2
-  toggle: {fileID: 114771334041337836}
 --- !u!114 &114566013805535272
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -149,6 +127,28 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Form name
+--- !u!114 &114631978527706272
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033861776628790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b9c8e4790b9dd74e890ad37855eac54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 224762906418741188}
+  title: {fileID: 114566013805535272}
+  dataType: 0
+  entry:
+    displayName: 
+    internalName: 
+    dataType: 0
+    dropDownValues:
+    - Option 1
+    - Option 2
+  toggle: {fileID: 114771334041337836}
 --- !u!114 &114669961878429166
 MonoBehaviour:
   m_ObjectHideFlags: 1

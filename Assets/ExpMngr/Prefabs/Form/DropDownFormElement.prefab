@@ -256,7 +256,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224502893949471668}
-  - component: {fileID: 114048467972332334}
+  - component: {fileID: 114115873384231632}
   m_Layer: 5
   m_Name: DropDownFormElement
   m_TagString: Untagged
@@ -291,28 +291,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114048467972332334
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1969525990930008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be86d0138a351ac4e8b317b5be8bec59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rectTransform: {fileID: 224502893949471668}
-  title: {fileID: 114109489515450504}
-  dataType: 0
-  entry:
-    displayName: 
-    internalName: 
-    dataType: 0
-    dropDownValues:
-    - Option 1
-    - Option 2
-  dropdown: {fileID: 114130750569369474}
 --- !u!114 &114056038629667946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -358,6 +336,28 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Gender
+--- !u!114 &114115873384231632
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1969525990930008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ed274ecca13de47a16b9b00ba07a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 224502893949471668}
+  title: {fileID: 114109489515450504}
+  dataType: 0
+  entry:
+    displayName: 
+    internalName: 
+    dataType: 0
+    dropDownValues:
+    - Option 1
+    - Option 2
+  dropdown: {fileID: 114130750569369474}
 --- !u!114 &114130750569369474
 MonoBehaviour:
   m_ObjectHideFlags: 1

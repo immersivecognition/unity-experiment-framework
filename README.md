@@ -1,14 +1,14 @@
 ![Experiment manager for Unity](media/banner.png)
 
 # ExpMngr - Experiment Manager for Unity
-A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the example project, see Releases for latest Unity Package.
+A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the example project, see [Releases](https://github.com/jackbrookes/unity-experiment-manager/releases) for latest Unity Package.
 
 ## Features
 
 ### Programming style
 
 * Classes for common experimental concepts such as `Session`, `Block` & `Trial`
-* Helps create maintainable and readable code using an Object-Oriented Programming style
+* Helps create maintainable and readable code using an Object-Oriented Programming style, fitting in with Unity's Component System
 
 ### Data collection
 
@@ -40,34 +40,70 @@ Files are read and written in a separate thread to avoid frame drops, which can 
 
 ## Example
 
+ExpMngr classes will be useful in two main parts of your project: 
+
+#### 1. Building up your experiment structure, including the trials, blocks and their associated settings.
+
 ```csharp
 class ExperimentBuilder : Monobehaviour
 {
     // set this to your ExperimentSession instance in the inspector
-    public ExpMngr.ExperimentSession exp;
+    public ExpMngr.ExperimentSession session;
     
-    // call this function from ExperimentSession OnSessionStart UnityEvent in its inspector
+    // call this function from ExperimentSession OnSessionBegin UnityEvent in its inspector
     public void GenerateAndRun() 
     {
         // Creating a block
-        var myBlock = new ExpMngr.Block(exp); 
+        var myBlock = new ExpMngr.Block(session); 
 
         // Creating 10 trials within our block
         for (int i = 0; i < 10; i++)
             new ExpMngr.Trial(myBlock);
 
-        // Add a new setting to trial 1
+        // Add a new setting to trial 1, here just as an example we will apply a setting of "color" "red" 
         var firstTrial = myBlock.GetTrial(1);//trial number is not 0 indexed
         firstTrial.settings["color"] = "red";
 
         // Run first trial
-        exp.nextTrial.Begin();
+        session.nextTrial.Begin();
     }
 
     ...
 
 }
 ```
+
+
+#### 2. Accessing trial settings when they are needed: 
+
+```csharp
+class SceneManipulator : MonoBehaviour
+{
+    // set this to your ExperimentSession instance in the inspector
+    public ExpMngr.ExperimentSession session;
+
+    // call this function from ExperimentSession OnTrialBegin UnityEvent in its inspector
+    public void RunTrial(ExpMngr.Trial trial)
+    {
+        // pull out the color we applied for this trial
+        string colorManipulation = (string) trial.settings["color"];
+
+        // example of using the new setting to manipulate our scene
+        ManipulateSceneColor(colorManipulation);
+    }
+
+    // this could trigger on some user behaviour, collecting their score in a task
+    public void EndTrial(int score)
+    {
+        // store their score
+        session.currentTrial.results["score"] = score;
+        // end this trial
+        session.currentTrial.End();
+    }
+
+}
+```
+
 
 See `Assets/ExpMngr/ExampleScript.cs` for another simple example.
 

@@ -26,25 +26,34 @@ namespace ExpMngr
         /// <summary>
         /// Returns the block number of this block within the experiment session
         /// </summary>
-        public int number { get { return experiment.blocks.IndexOf(this) + 1; } }
+        public int number { get { return session.blocks.IndexOf(this) + 1; } }
 
         /// <summary>
         /// Block settings. These will be overidden by trial settings if set.
         /// </summary>
         public Settings settings = Settings.empty;
 
-        public ExperimentSession experiment;
+        public ExperimentSession session;
+
 
         /// <summary>
-        /// Creates a block for an associated experement session
+        /// Create a block with a given number of trials under a given session
         /// </summary>
-        /// <param name="exp">Experiment session</param>
-        public Block(ExperimentSession exp)
+        /// <param name="numberOfTrials"></param>
+        internal Block(uint numberOfTrials, ExperimentSession session)
         {
-            experiment = exp;
-            experiment.blocks.Add(this);
-            settings.SetParent(experiment.settings);
+            this.session = session;
+            this.session.blocks.Add(this);
+            settings.SetParent(this.session.settings);
+            for (int i = 0; i < numberOfTrials; i++)
+            {
+                var t = new Trial();
+                t.SetReferences(this);
+                trials.Add(t);
+            }
         }
+
+
 
         /// <summary>
         /// Get a trial in this block by relative trial number (non-zero indexed)
@@ -57,8 +66,19 @@ namespace ExpMngr
         }
 
 
-        
 
+
+        [Obsolete]
+        /// <summary>
+        /// Creates a block for an associated experement session
+        /// </summary>
+        /// <param name="session">Experiment session</param>
+        public Block(ExperimentSession session)
+        {
+            this.session = session;
+            this.session.blocks.Add(this);
+            settings.SetParent(this.session.settings);
+        }
     }
 
 }

@@ -18,7 +18,7 @@ namespace ExpMngr
         /// <summary>
         /// Returns non-zero indexed trial number.
         /// </summary>
-        public int number { get { return experiment.trials.IndexOf(this) + 1; } }
+        public int number { get { return session.trials.ToList().IndexOf(this) + 1; } }
         /// <summary>
         /// Returns non-zero indexed trial number for the current block.
         /// </summary>
@@ -32,7 +32,7 @@ namespace ExpMngr
         /// </summary>
         [NonSerialized] public Block block;
         float startTime, endTime;
-        protected ExperimentSession experiment;
+        protected ExperimentSession session;
         
         /// <summary>
         /// Trial settings. These will override block settings if set.
@@ -45,14 +45,21 @@ namespace ExpMngr
         public OrderedResultDict result;
 
         /// <summary>
-        /// Create trial with an associated block
+        /// Create a trial. You then need to add this trial to a block with block.trials.Add(...)
+        /// </summary>
+        internal Trial()
+        {
+            
+        }
+
+        /// <summary>
+        /// Set references for the trial.
         /// </summary>
         /// <param name="trialBlock">The block the trial belongs to.</param>
-        public Trial(Block trialBlock)
+        internal void SetReferences(Block trialBlock)
         {
             block = trialBlock;
-            block.trials.Add(this);
-            experiment = block.experiment;
+            session = block.session;
             settings.SetParent(block.settings);
         }
 
@@ -61,36 +68,27 @@ namespace ExpMngr
         /// </summary>
         public void Begin()
         {
-            experiment.trialNum = number;
-            experiment.blockNum = block.number;
+            session.currentTrialNum = number;
+            session.currentBlockNum = block.number;
 
             status = TrialStatus.InProgress;
             startTime = Time.time;
             result = new OrderedResultDict();
-            foreach (string h in experiment.headers)
+            foreach (string h in session.headers)
                 result.Add(h, string.Empty);
 
-            result["ppid"] = experiment.ppid;
-            result["session_num"] = experiment.sessionNum;
+            result["ppid"] = session.ppid;
+            result["session_num"] = session.sessionNum;
             result["trial_num"] = number;
             result["block_num"] = block.number;
             result["trial_num_in_block"] = numberInBlock;
             result["start_time"] = startTime;
 
-            foreach (Tracker tracker in experiment.trackedObjects)
+            foreach (Tracker tracker in session.trackedObjects)
             {
                 tracker.StartRecording();
             }
-            experiment.onTrialBegin.Invoke(this);
-            OnBegin();
-        }
-        
-        /// <summary>
-        /// Override this method to create custom behavior on trial start
-        /// </summary>
-        public virtual void OnBegin()
-        {
-
+            session.onTrialBegin.Invoke(this);
         }
 
         /// <summary>
@@ -103,31 +101,39 @@ namespace ExpMngr
             result["end_time"] = endTime;            
 
             // log tracked objects
-            foreach (Tracker tracker in experiment.trackedObjects)
+            foreach (Tracker tracker in session.trackedObjects)
             {
                 var trackingData = tracker.StopRecording();
-                string dataName = experiment.SaveTrackingData(tracker.objectName, trackingData);
+                string dataName = session.SaveTrackingData(tracker.objectName, trackingData);
                 result[tracker.objectNameHeader] = dataName;
             }
 
             // log any settings we need to for this trial
-            foreach (string s in experiment.settingsToLog)
+            foreach (string s in session.settingsToLog)
             {
                 result[s] = settings[s];
             }
-            experiment.onTrialEnd.Invoke(this);
-            OnEnd();
+            session.onTrialEnd.Invoke(this);
         }
 
+
+        [Obsolete("This constructor is obsolete, please create blocks and trials with the session.")]
         /// <summary>
-        /// Override this method to create custom behavior for after a trial ends.
+        /// Create trial with an associated block
         /// </summary>
-        public virtual void OnEnd()
+        /// <param name="trialBlock">The block the trial belongs to.</param>
+        public Trial(Block trialBlock)
         {
-
+            block = trialBlock;
+            block.trials.Add(this);
+            session = block.session;
+            settings.SetParent(block.settings);
         }
+
 
     }
+
+    
 
     /// <summary>
     /// Status of a trial

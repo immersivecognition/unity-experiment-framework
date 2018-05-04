@@ -86,8 +86,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224701982537466310}
-  - component: {fileID: 114791156828639392}
-  - component: {fileID: 114461261597153012}
+  - component: {fileID: 114748211904444846}
+  - component: {fileID: 114853351132010074}
   m_Layer: 5
   m_Name: SelectParticipant
   m_TagString: Untagged
@@ -224,8 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224121901402340148}
   - component: {fileID: 222568173676554448}
-  - component: {fileID: 114489760027213142}
-  - component: {fileID: 114606826494743466}
+  - component: {fileID: 114294998942013986}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -402,9 +401,9 @@ GameObject:
   - component: {fileID: 114779690502013180}
   - component: {fileID: 114164714382976794}
   - component: {fileID: 222848225162336506}
-  - component: {fileID: 114323703611014334}
+  - component: {fileID: 114375821934039048}
   m_Layer: 5
-  m_Name: Experiment UI
+  m_Name: Startup User Interface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -435,8 +434,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224504220619225392}
-  - component: {fileID: 114091985961433236}
-  - component: {fileID: 114625896843592106}
+  - component: {fileID: 114836492079796570}
+  - component: {fileID: 114842079726247728}
   m_Layer: 5
   m_Name: SelectSettingsProfile
   m_TagString: Untagged
@@ -641,7 +640,7 @@ GameObject:
   - component: {fileID: 222971748268801650}
   - component: {fileID: 114827608981199544}
   - component: {fileID: 114443777257704110}
-  - component: {fileID: 114974541009875318}
+  - component: {fileID: 114777271537702928}
   m_Layer: 5
   m_Name: ParticipantInfoForm
   m_TagString: Untagged
@@ -796,7 +795,7 @@ GameObject:
   - component: {fileID: 224236825170411128}
   - component: {fileID: 222258212732746166}
   - component: {fileID: 114429166750123242}
-  - component: {fileID: 114054802697837814}
+  - component: {fileID: 114833849460876412}
   m_Layer: 5
   m_Name: Popup
   m_TagString: Untagged
@@ -1252,7 +1251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224496367577756804}
   - component: {fileID: 222496511048415936}
-  - component: {fileID: 114874338718681980}
+  - component: {fileID: 114600504560500452}
   m_Layer: 5
   m_Name: Select/create participant list
   m_TagString: Untagged
@@ -1268,9 +1267,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4522850482104986}
-  - component: {fileID: 114734091223803794}
+  - component: {fileID: 114916036141644208}
   m_Layer: 0
-  m_Name: Experiment
+  m_Name: ExperimentWithUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1316,7 +1315,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224766179576789174}
-  - component: {fileID: 114660655817134526}
+  - component: {fileID: 114166651091209144}
   m_Layer: 5
   m_Name: SessionNum
   m_TagString: Untagged
@@ -1447,7 +1446,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114461261597153012}
+      - m_Target: {fileID: 0}
         m_MethodName: SelectItem
         m_Mode: 0
         m_Arguments:
@@ -1582,19 +1581,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Session #'
---- !u!114 &114054802697837814
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1666956126890146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b955cd91a4aea74b905530c4ac08191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popupTitle: {fileID: 114535748934390958}
-  popupMessage: {fileID: 114935579514487926}
 --- !u!114 &114065020587154674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1641,28 +1627,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Option A
---- !u!114 &114091985961433236
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1373970482493504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be86d0138a351ac4e8b317b5be8bec59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rectTransform: {fileID: 224504220619225392}
-  title: {fileID: 114255917651502752}
-  dataType: 0
-  entry:
-    displayName: 
-    internalName: 
-    dataType: 0
-    dropDownValues:
-    - Option 1
-    - Option 2
-  dropdown: {fileID: 114809165226433526}
 --- !u!114 &114097624211201906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1806,6 +1770,28 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114166651091209144
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1976053223312346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ed274ecca13de47a16b9b00ba07a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 224766179576789174}
+  title: {fileID: 114047337439519940}
+  dataType: 0
+  entry:
+    displayName: 
+    internalName: 
+    dataType: 0
+    dropDownValues:
+    - Option 1
+    - Option 2
+  dropdown: {fileID: 114041974201563530}
 --- !u!114 &114166830307039882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1845,7 +1831,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114874338718681980}
+      - m_Target: {fileID: 114600504560500452}
         m_MethodName: CreateList
         m_Mode: 1
         m_Arguments:
@@ -1930,7 +1916,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114323703611014334}
+      - m_Target: {fileID: 114375821934039048}
         m_MethodName: StartExperiment
         m_Mode: 1
         m_Arguments:
@@ -2069,7 +2055,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114874338718681980}
+      - m_Target: {fileID: 114600504560500452}
         m_MethodName: SelectList
         m_Mode: 1
         m_Arguments:
@@ -2279,6 +2265,32 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Scrollbar+ScrollEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114294998942013986
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1231406801500838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -98529514, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Texture: {fileID: 2800000, guid: 2105342618542bf40a8bcb8424f4fb49, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!114 &114298097371518228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2439,30 +2451,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114323703611014334
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1363197602275048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e86a9072abae5c246b912bf4a90ffbc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _participantDataPoints:
-  - displayName: Year of birth
-    internalName: yob
-    dataType: 2
-    dropDownValues: []
-  maxNumSessions: 1
-  newParticipantName: <i><color=grey>+ New participant</color></i>
-  settingsSelector: {fileID: 114625896843592106}
-  ppListSelect: {fileID: 114874338718681980}
-  ppInfoForm: {fileID: 114974541009875318}
-  sessionNumDropdown: {fileID: 114660655817134526}
-  popupController: {fileID: 114054802697837814}
-  experimentSession: {fileID: 114734091223803794}
 --- !u!114 &114344481789201668
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2563,6 +2551,31 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Scrollbar+ScrollEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114375821934039048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1363197602275048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67303b59714ae6141976cebbe8c7d961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _participantDataPoints:
+  - displayName: Age
+    internalName: age
+    dataType: 2
+    dropDownValues: []
+  maxNumSessions: 10
+  settingsSearchPattern: '*.json'
+  newParticipantName: <i><color=grey>+ New participant</color></i>
+  settingsSelector: {fileID: 114836492079796570}
+  ppListSelect: {fileID: 114600504560500452}
+  ppInfoForm: {fileID: 114777271537702928}
+  sessionNumDropdown: {fileID: 114166651091209144}
+  popupController: {fileID: 114833849460876412}
+  experimentSession: {fileID: 114916036141644208}
 --- !u!114 &114384538314970354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2875,22 +2888,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114461261597153012
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1126268066177972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 056a5cbea61df3348a36d0142ab92926, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startup: {fileID: 114323703611014334}
-  form: {fileID: 114974541009875318}
-  participantDropdown: {fileID: 114791156828639392}
-  ppListSelect: {fileID: 114874338718681980}
-  ppList: []
 --- !u!114 &114467030811277740
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2961,33 +2958,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114489760027213142
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1231406801500838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 17cdc9c66bc4a2343b6adbee1573733f, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
 --- !u!114 &114498849108257738
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3201,7 +3171,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114054802697837814}
+      - m_Target: {fileID: 114833849460876412}
         m_MethodName: CancelPress
         m_Mode: 1
         m_Arguments:
@@ -3241,18 +3211,25 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114606826494743466
+--- !u!114 &114600504560500452
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1231406801500838}
+  m_GameObject: {fileID: 1960283739056440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c18589b09cc11f4e8d92bf154cf87d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
+  currentFolder: 
+  ppListNameDisplay: {fileID: 114405637119466418}
+  participantSelector: {fileID: 114748211904444846}
+  experiment: {fileID: 114916036141644208}
+  startup: {fileID: 114375821934039048}
+  form: {fileID: 114777271537702928}
+  popupController: {fileID: 114833849460876412}
+  startButton: {fileID: 114205347775312050}
 --- !u!114 &114612603529143726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3309,21 +3286,6 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 0
---- !u!114 &114625896843592106
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1373970482493504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61924d4ebfd87ea49bd0a6d84ee81c3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ddController: {fileID: 114091985961433236}
-  session: {fileID: 114734091223803794}
-  popupController: {fileID: 114054802697837814}
-  experimentName: 
 --- !u!114 &114635208169945726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3437,7 +3399,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114054802697837814}
+      - m_Target: {fileID: 114833849460876412}
         m_MethodName: OkPress
         m_Mode: 1
         m_Arguments:
@@ -3477,28 +3439,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114660655817134526
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1976053223312346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be86d0138a351ac4e8b317b5be8bec59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rectTransform: {fileID: 224766179576789174}
-  title: {fileID: 114047337439519940}
-  dataType: 0
-  entry:
-    displayName: 
-    internalName: 
-    dataType: 0
-    dropDownValues:
-    - Option 1
-    - Option 2
-  dropdown: {fileID: 114041974201563530}
 --- !u!114 &114669911992908280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3631,44 +3571,22 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114734091223803794
+--- !u!114 &114748211904444846
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970900254558334}
+  m_GameObject: {fileID: 1126268066177972}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a3318d1a6878db47b0b9a8e0b74cc67, type: 3}
+  m_Script: {fileID: 11500000, guid: 0371c6c298113374eafcbb6fcd9c6a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endExperimentOnQuit: 1
-  blocks: []
-  _trackedObjects: []
-  _customHeaders: []
-  _settingsToLog: []
-  onSessionStart:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: ExpMngr.SessionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  onTrialBegin:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: ExpMngr.TrialEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  onTrialEnd:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: ExpMngr.TrialEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  isQuitting: 0
-  experimentName: 
-  ppid: 
-  sessionNum: 0
-  trialNum: 0
-  blockNum: 0
-  headers: []
+  startup: {fileID: 114375821934039048}
+  form: {fileID: 114777271537702928}
+  participantDropdown: {fileID: 114853351132010074}
+  ppListSelect: {fileID: 114600504560500452}
+  ppList: []
 --- !u!114 &114753538991231628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3768,6 +3686,30 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 1
+--- !u!114 &114777271537702928
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1538685988056704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad1c839fe03d1cc4bbeacc0b1c7169a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contentParent: {fileID: 1842745135702730}
+  textPrefab: {fileID: 1033861776628790, guid: 15c278d5156bae1489e9a38ad279bee2, type: 2}
+  checkBoxPrefab: {fileID: 1033861776628790, guid: da40aded34758074fb14ee4fa6273f94,
+    type: 2}
+  dropDownPrefab: {fileID: 1969525990930008, guid: 9e81924d28cd0d849a13e5abce816d3a,
+    type: 2}
+  ppidElement:
+    displayName: 
+    internalName: 
+    dataType: 0
+    dropDownValues:
+    - Option 1
+    - Option 2
 --- !u!114 &114779690502013180
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3921,28 +3863,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114791156828639392
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1126268066177972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be86d0138a351ac4e8b317b5be8bec59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rectTransform: {fileID: 224701982537466310}
-  title: {fileID: 114301337865392390}
-  dataType: 0
-  entry:
-    displayName: 
-    internalName: 
-    dataType: 0
-    dropDownValues:
-    - Option 1
-    - Option 2
-  dropdown: {fileID: 114040048644957610}
 --- !u!114 &114809165226433526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3990,7 +3910,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114625896843592106}
+      - m_Target: {fileID: 0}
         m_MethodName: LoadCurrentSettingsDict
         m_Mode: 1
         m_Arguments:
@@ -4063,6 +3983,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114833849460876412
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1666956126890146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67aacb5d557b4114fa72a9609b39010e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popupTitle: {fileID: 114535748934390958}
+  popupMessage: {fileID: 114935579514487926}
 --- !u!114 &114834986256995846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4090,25 +4023,66 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114874338718681980
+--- !u!114 &114836492079796570
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1960283739056440}
+  m_GameObject: {fileID: 1373970482493504}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 662081d54c885a4468737309b2f5ddac, type: 3}
+  m_Script: {fileID: 11500000, guid: fa31bf9a2e49d604dbd568755eb64ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentFolder: 
-  ppListNameDisplay: {fileID: 114405637119466418}
-  participantSelector: {fileID: 114461261597153012}
-  experiment: {fileID: 114734091223803794}
-  startup: {fileID: 114323703611014334}
-  form: {fileID: 114974541009875318}
-  popupController: {fileID: 114054802697837814}
-  startButton: {fileID: 114205347775312050}
+  ddController: {fileID: 114842079726247728}
+  session: {fileID: 114916036141644208}
+  popupController: {fileID: 114833849460876412}
+  startupController: {fileID: 114375821934039048}
+  experimentName: 
+--- !u!114 &114842079726247728
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1373970482493504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ed274ecca13de47a16b9b00ba07a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 224504220619225392}
+  title: {fileID: 114255917651502752}
+  dataType: 0
+  entry:
+    displayName: 
+    internalName: 
+    dataType: 0
+    dropDownValues:
+    - Option 1
+    - Option 2
+  dropdown: {fileID: 114809165226433526}
+--- !u!114 &114853351132010074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1126268066177972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ed274ecca13de47a16b9b00ba07a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 224701982537466310}
+  title: {fileID: 114301337865392390}
+  dataType: 0
+  entry:
+    displayName: 
+    internalName: 
+    dataType: 0
+    dropDownValues:
+    - Option 1
+    - Option 2
+  dropdown: {fileID: 114040048644957610}
 --- !u!114 &114876444687743338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4197,6 +4171,89 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &114916036141644208
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1970900254558334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa9f2505d11cc9e4aa44357b47b12905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endExperimentOnQuit: 1
+  blocks: []
+  _settingsToLog:
+  - size
+  _customHeaders:
+  - some_variable
+  _trackedObjects: []
+  onSessionBegin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: GenerateExperiment
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 114916036141644208}
+        m_MethodName: BeginNextTrial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: ExpMngr.SessionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onTrialBegin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: RunTrial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: ExpMngr.TrialEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onTrialEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: ExpMngr.TrialEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  isQuitting: 0
+  experimentName: 
+  ppid: 
+  sessionNum: 0
+  currentTrialNum: 0
+  currentBlockNum: 0
 --- !u!114 &114922365913132848
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4257,30 +4314,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Message
---- !u!114 &114974541009875318
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1538685988056704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71256379b40b61e439d38de2084b74e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  contentParent: {fileID: 1842745135702730}
-  textPrefab: {fileID: 1033861776628790, guid: 92d232620c9b3a84c8a18223ce281f36, type: 2}
-  checkBoxPrefab: {fileID: 1033861776628790, guid: 1c9b1bd6147f7024483957e1a2a60e32,
-    type: 2}
-  dropDownPrefab: {fileID: 1969525990930008, guid: 2a3af7ef58a68dd448cd01baee15bf06,
-    type: 2}
-  ppidElement:
-    displayName: 
-    internalName: 
-    dataType: 0
-    dropDownValues:
-    - Option 1
-    - Option 2
 --- !u!114 &114975396196302138
 MonoBehaviour:
   m_ObjectHideFlags: 1
