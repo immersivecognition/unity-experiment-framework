@@ -448,7 +448,7 @@ namespace ExpMngr
                     currentTrial.End();
                 SaveResults();
                 fileIOManager.Manage(new System.Action(fileIOManager.Quit));
-                isQuitting = false;
+                hasInitialised = false;
             }
         }
 
