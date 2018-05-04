@@ -386,7 +386,8 @@ namespace ExpMngr
         /// </summary>
         public void BeginNextTrial()
         {
-            nextTrial.Begin();
+            if (!isQuitting)
+                nextTrial.Begin();
         }
 
         /// <summary>

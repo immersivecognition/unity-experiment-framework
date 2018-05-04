@@ -81,11 +81,6 @@ public class BasicExampleScript : MonoBehaviour {
                 Application.Quit();
 #endif
             }
-            else
-            {
-                // start next trial
-                session.BeginNextTrial();
-            }
         }
     }
 

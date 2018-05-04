@@ -339,9 +339,45 @@ Prefab:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 224546371281550106, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: onTrialEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1059772516}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: onTrialBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PresentStimulus
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: onTrialBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: onTrialEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BeginNextTrial
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: onTrialEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a3b6392f04558844bd340e68ced1ff9, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1059772516 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+    type: 2}
+  m_PrefabInternal: {fileID: 448968640}
+  m_Script: {fileID: 11500000, guid: fa9f2505d11cc9e4aa44357b47b12905, type: 3}
 --- !u!1 &1294342339
 GameObject:
   m_ObjectHideFlags: 0
