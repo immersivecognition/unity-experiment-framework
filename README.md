@@ -107,10 +107,7 @@ class SceneManipulator : MonoBehaviour
 
 See `Assets/ExpMngr/ExampleScript.cs` for another simple example.
 
-## Documentation
 
-(incomplete)
-http://jackbrookes.github.io/unity-experiment-manager
 
 ## Get started
 
@@ -121,4 +118,12 @@ Note: Users must change API Compatibility Level to .NET 2.0 in Unity player sett
 
 ## Development
 
-This project is under Unity  2017.3.0f3.
+This project is developed under Unity 2017.3.0f3.
+
+## Documentation
+
+(In development)
+
+## FAQ
+
+(In development)

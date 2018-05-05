@@ -37,9 +37,9 @@ public class BasicExampleScript : MonoBehaviour {
         //
         //  }        
         //
-        // / You can add any new settings to the JSON file
-        // / It will automatically be loaded into the settings property
-        // / of an ExperimentSession component as a dictionary 
+        /* You can add any new settings to the JSON file
+        it will automatically be loaded into the settings property
+        of an ExperimentSession component as .settings */
 
         // create our blocks & trials
         
@@ -92,7 +92,8 @@ public class BasicExampleScript : MonoBehaviour {
         Debug.Log("Running trial!");
         
         // we can access our settings to (e.g.) modify our scene
-        int size = (int) trial.settings["size"];
+        // for more information about retrieving settings see the documentation
+        float size = Convert.ToSingle(trial.settings["size"]);
         Debug.LogFormat("The 'size' for this trial is: {0}", size);
 
         // record custom values...
