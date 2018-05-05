@@ -1,0 +1,124 @@
+
+
+\section*{Exp\+Mngr -\/ Experiment Manager for Unity}
+
+A set of C\# scripts which simplifies management of human-\/based experiments developed in Unity. This is the development project, if you want to download the package, see \href{https://github.com/jackbrookes/unity-experiment-manager/releases}{\tt Releases}.
+
+\subsection*{Features}
+
+\subsubsection*{Programming style}
+
+
+\begin{DoxyItemize}
+\item Classes for common experimental concepts such as {\ttfamily Session}, {\ttfamily Block} \& {\ttfamily Trial}
+\item Helps create maintainable and readable code using an Object-\/\+Oriented Programming style, fitting in with Unity\textquotesingle{}s Component System
+\end{DoxyItemize}
+
+\subsubsection*{Data collection}
+
+Exp\+Mngr automates the process of collecting behavioural and movement data. {\bfseries Behavioural data} is collected with 1 row per {\ttfamily Trial}, and automatically records some values such as the timestamp of the start and end of the trial. {\bfseries Movement data} is the position and rotation of any object in the scene, which is captured at whatever frame rate the application is running at (in the {\ttfamily Update()} loop) by adding a {\ttfamily Tracker} component to a Game\+Object. This can be used to track positions of user controlled objects (such as hands or head in a virtual reality application) or an arbitrary object in the scene (e.\+g. some kind of stimuli). Data is stored in C\+SV files with automatic handling of file \& directory naming.
+
+\subsubsection*{Events}
+
+A {\ttfamily Unity\+Event} is invoked on {\ttfamily Trial} begin and end, allowing you to easily trigger presentation of stimuli at trial start (for example).
+
+\subsubsection*{C\+SV Participant List}
+
+A participant list feature is used allowing experimenters to optionally pre-\/prepare participant information. Additionally, this participant list is shared between experiments, allowing cross comparison of observations within participants. ~\newline
+ \subsubsection*{Settings system}
+
+The settings is cascading, allowing setting independent variables at a {\ttfamily Session}, {\ttfamily Block}, or {\ttfamily Trial} level. Settings profiles can be stored as {\ttfamily .json} files and selected via the UI. This allows experimenters to deploy a single build of the experiment with several sub-\/experiments defined in settings profiles. The data for these sub-\/experiments is stored independently. ~\newline
+ \subsubsection*{UI}
+
+A UI is available to load participant data from file (or add new participant data). Variables that are collected are customisable and can be used in the experiment (e.\+g. a parameter for a participant\textquotesingle{}s age could be used to change the difficulty of the experiment).
+
+
+
+\subsubsection*{File IO}
+
+Files are read and written in a separate thread to avoid frame drops, which can induce motion sickness in VR H\+M\+Ds.
+
+\subsection*{Example}
+
+Exp\+Mngr classes will be useful in two main parts of your project\+:
+
+\paragraph*{1. Building up your experiment structure, including the trials, blocks and their associated settings.}
+
+
+\begin{DoxyCode}
+class ExperimentBuilder : Monobehaviour
+\{
+    // set this to your ExperimentSession instance in the inspector
+    public ExpMngr.ExperimentSession session;
+
+    // call this function from ExperimentSession OnSessionBegin UnityEvent in its inspector
+    public void GenerateAndRun() 
+    \{
+        // Creating a block
+        var myBlock = new ExpMngr.Block(session); 
+
+        // Creating 10 trials within our block
+        for (int i = 0; i < 10; i++)
+            new ExpMngr.Trial(myBlock);
+
+        // Add a new setting to trial 1, here just as an example we will apply a setting of "color" "red" 
+        var firstTrial = myBlock.GetTrial(1);//trial number is not 0 indexed
+        firstTrial.settings["color"] = "red";
+
+        // Run first trial
+        session.nextTrial.Begin();
+    \}
+
+    ...
+
+\}
+\end{DoxyCode}
+
+
+\paragraph*{2. Accessing trial settings when they are needed\+:}
+
+
+\begin{DoxyCode}
+class SceneManipulator : MonoBehaviour
+\{
+    // set this to your ExperimentSession instance in the inspector
+    public ExpMngr.ExperimentSession session;
+
+    // call this function from ExperimentSession OnTrialBegin UnityEvent in its inspector
+    public void RunTrial(ExpMngr.Trial trial)
+    \{
+        // pull out the color we applied for this trial
+        string colorManipulation = (string) trial.settings["color"];
+
+        // example of using the new setting to manipulate our scene
+        ManipulateSceneColor(colorManipulation);
+    \}
+
+    // this could trigger on some user behaviour, collecting their score in a task
+    public void EndTrial(int score)
+    \{
+        // store their score
+        session.currentTrial.results["score"] = score;
+        // end this trial
+        session.currentTrial.End();
+    \}
+
+\}
+\end{DoxyCode}
+
+
+See {\ttfamily Assets/\+Exp\+Mngr/\+Example\+Script.\+cs} for another simple example.
+
+\subsection*{Get started}
+
+Download the project folder and open in Unity. Alternatively import the latest {\ttfamily .unitypackage} \href{https://github.com/jackbrookes/unity-experiment-manager/releases}{\tt release} to your existing Unity project.
+
+Note\+: Users must change A\+PI Compatibility Level to .N\+ET 2.\+0 in Unity player settings.
+
+\subsection*{Development}
+
+This project is developed under Unity 2017.\+3.\+0f3.
+
+\subsubsection*{Documentation}
+
+\href{http://jackbrookes.github.io/unity-experiment-manager}{\tt http\+://jackbrookes.\+github.\+io/unity-\/experiment-\/manager} 
