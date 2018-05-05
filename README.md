@@ -1,7 +1,7 @@
 ![Experiment manager for Unity](media/banner.png)
 
 # ExpMngr - Experiment Manager for Unity
-A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the example project, see [Releases](https://github.com/jackbrookes/unity-experiment-manager/releases) for latest Unity Package.
+A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the development project, if you want to download the package, see [Releases](https://github.com/jackbrookes/unity-experiment-manager/releases). 
 
 ## Features
 
@@ -118,7 +118,7 @@ Download the project folder and open in Unity. Alternatively import the latest `
 
 Note: Users must change API Compatibility Level to .NET 2.0 in Unity player settings. 
 
-## Future additions
 
-* In experiment UI to monitor collection of data in real-time
-* Better documentation and examples
+## Development
+
+This project is under Unity  2017.3.0f3.
