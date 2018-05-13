@@ -1,6 +1,6 @@
-![Experiment manager for Unity](media/banner.png)
+![Unity Experiment Framework](media/banner.png)
 
-# ExpMngr - Experiment Manager for Unity
+# UXF - Unity Experiment Framework
 A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the development project, if you want to download the package, see [Releases](https://github.com/jackbrookes/unity-experiment-manager/releases). 
 
 ## Features
@@ -40,7 +40,7 @@ Files are read and written in a separate thread to avoid frame drops, which can 
 
 ## Example
 
-ExpMngr classes will be useful in two main parts of your project: 
+UXF classes will be useful in two main parts of your project: 
 
 #### 1. Building up your experiment structure, including the trials, blocks and their associated settings.
 

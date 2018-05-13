@@ -5,6 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/ExpMngr/Example.unity
-    guid: 34d9455c43eb93e4ab3505551102876e
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
