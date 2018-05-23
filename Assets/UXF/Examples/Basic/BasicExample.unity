@@ -235,7 +235,7 @@ Prefab:
     - target: {fileID: 224546371281550106, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a3b6392f04558844bd340e68ced1ff9, type: 2}
@@ -579,7 +579,7 @@ MonoBehaviour:
     function that runs each frame. Here we just check if it is time for us to end
     the trial and start the next one. \n\nNotice, in the inspector of our Session
     component (attached to the ExperimentWithUI GameObject), several Events have been
-    created which call functions from our BasicExampleScript"
+    created which call functions from our BasicExampleScript component."
 --- !u!222 &1335906556
 CanvasRenderer:
   m_ObjectHideFlags: 0

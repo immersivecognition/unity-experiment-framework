@@ -13,7 +13,7 @@ namespace UXF
 		[InspectorButton("DisplaySessionProtocol")]
 		public bool displaySessionProtocol;
 
-		[TextArea]
+		[TextArea(20, 20)]
 		public string sessionProtocol;
 
 		Session session;
