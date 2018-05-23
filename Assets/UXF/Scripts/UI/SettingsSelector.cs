@@ -17,7 +17,7 @@ namespace UXF{
 		[HideInInspector]
 		public string experimentName;
 
-		void Awake ()
+		void Start ()
 		{
 			settingsFolder = Application.streamingAssetsPath;
 			TryGetSettingsList();
