@@ -1355,7 +1355,8 @@ GameObject:
   - component: {fileID: 4522850482104986}
   - component: {fileID: 114916036141644208}
   - component: {fileID: 114324480150258046}
-  - component: {fileID: 114144126297904522}
+  - component: {fileID: 114155219626309100}
+  - component: {fileID: 114908171941659672}
   m_Layer: 0
   m_Name: ExperimentWithUI
   m_TagString: Untagged
@@ -1806,20 +1807,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventSystemPrefab: {fileID: 1601148747235938, guid: e558e6a724cb5824ca99dd67064d4563,
     type: 2}
---- !u!114 &114144126297904522
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970900254558334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93551dc7197ac2347b099263053405aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  displaysSessionProtocol: 0
-  sessionProtocol: Press the above button after generating your blocks and trials
-    to list all blocks and trials in the session.
 --- !u!114 &114146136751964714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1893,6 +1880,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114155219626309100
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1970900254558334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 325d8bc56dfbdf4439627ee58ed3a5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114164683737562590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2772,7 +2770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67303b59714ae6141976cebbe8c7d961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quickStartMode: 1
+  quickStartMode: 0
   saveDataLocation: example_output
   experimentSettingsName: basic_example_1.json
   _participantDataPoints:
@@ -3488,7 +3486,7 @@ MonoBehaviour:
   currentFolder: 
   ppListNameDisplay: {fileID: 114405637119466418}
   participantSelector: {fileID: 114748211904444846}
-  experiment: {fileID: 114916036141644208}
+  fileIOManager: {fileID: 114324480150258046}
   startup: {fileID: 114375821934039048}
   form: {fileID: 114777271537702928}
   popupController: {fileID: 114833849460876412}
@@ -4531,6 +4529,21 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &114908171941659672
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1970900254558334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93551dc7197ac2347b099263053405aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displaySessionProtocol: 0
+  sessionProtocol: 'Press the above button after generating your blocks and trials
+    to list all blocks and trials with their associated setting in the session. This
+    helps you make sure settings are being applied to the correct trials. '
 --- !u!114 &114916036141644208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4543,7 +4556,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endExperimentOnQuit: 1
-  blocks: []
   _settingsToLog:
   - size
   _customHeaders:
@@ -4614,7 +4626,6 @@ MonoBehaviour:
   number: 0
   currentTrialNum: 0
   currentBlockNum: 0
-  fileIOManager: {fileID: 114324480150258046}
 --- !u!114 &114922365913132848
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6250,7 +6261,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000063180923}
+  m_AnchoredPosition: {x: 0, y: 0.0000059604645}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224594001841352330

@@ -10,6 +10,7 @@ namespace UXF
     public class ExperimentStartupController : MonoBehaviour
     {
 
+        [Header("Quick start")]
         [Tooltip("When enabled, the experiment will instantly start using the 'quick_start' as the participant id, 1 as the session, and the save folder and settings path provided")]
         public bool quickStartMode;
 
@@ -22,7 +23,7 @@ namespace UXF
         [ConditionalHide("quickStartMode", true)]
         public string experimentSettingsName = "example_experiment_1.json";
 
-        [Space]
+        [Header("User interface")]
 
         [Tooltip("List of datapoints you want to collect per participant. These will be generated for the GUI and added as new columns in the participant list. Participant ID is added automatically.")]
         [SerializeField]

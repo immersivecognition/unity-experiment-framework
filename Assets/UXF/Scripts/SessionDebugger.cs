@@ -13,7 +13,7 @@ namespace UXF
 		[InspectorButton("DisplaySessionProtocol")]
 		public bool displaySessionProtocol;
 
-		[TextArea(20, 20)]
+		[TextArea(15, 15)]
 		public string sessionProtocol;
 
 		Session session;
@@ -92,7 +92,7 @@ namespace UXF
 
 		private void ResetDisplay()
 		{
-			sessionProtocol = "Press the above button after generating your blocks and trials to list all blocks and trials with their associated setting in the session.";
+			sessionProtocol = "Press the above button after generating your blocks and trials to list all blocks and trials with their associated setting in the session. This helps you make sure settings are being applied to the correct trials. ";
 		}
 
 

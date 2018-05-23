@@ -145,6 +145,11 @@ namespace UXF
         /// </summary>
         private FileIOManager fileIOManager;
 
+        /// <summary>
+        /// Reference to the associated SessionLogger which automatically stores all Debug.Log calls
+        /// </summary>
+        private SessionLogger logger;
+
         List<string> baseHeaders = new List<string> { "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
 
         string basePath;
@@ -177,17 +182,14 @@ namespace UXF
         /// </summary>
         public Dictionary<string, object> participantDetails;
 
-
         void Awake()
         {
             // Get attached FileIOManager
             fileIOManager = GetComponent<FileIOManager>();
 
-            if (fileIOManager == null)
-            {
-                Debug.LogError("No FileIOManager component attached to this GameObject!");
-            }
-        
+            // Get attached SessionLogger
+            logger = GetComponent<SessionLogger>();
+
         }
 
         /// <summary>
@@ -292,6 +294,7 @@ namespace UXF
         /// <param name="settings">A Settings instance (optional: default empty settings)</param>
         public void InitSession(string experimentName, string participantId, string baseFolder, int sessionNumber = 1, Dictionary<string, object> participantDetails = null, Settings settings = null)
         {
+
             this.experimentName = experimentName;
             ppid = participantId;
             number = sessionNumber;
@@ -308,6 +311,10 @@ namespace UXF
 
             // copy Settings to session folder
             WriteDictToSessionFolder(settings.baseDict, "settings");
+
+            // Initialise logger
+            logger.Initialise();
+
 
             hasInitialised = true;
             onSessionBegin.Invoke(this);
@@ -435,10 +442,16 @@ namespace UXF
         {
             if (hasInitialised)
             {
+
+
                 isQuitting = true;
                 if (inTrial)
                     currentTrial.End();
                 SaveResults();
+
+                // Initialise logger
+                logger.Finalise();
+
                 fileIOManager.Manage(new System.Action(fileIOManager.Quit));
                 hasInitialised = false;
             }
@@ -454,25 +467,6 @@ namespace UXF
             fileIOManager.WriteTrials(results, headers.ToArray(), filePath);
         }
 
-        /// <summary>
-        /// Reads CSV file as DataTable then calls action with DataTable as parameter
-        /// </summary>
-        /// <param name="path">Path to CSV file</param>
-        /// <param name="action">Action to call when completed</param>
-        public void ReadCSVFile(string path, System.Action<DataTable> action)
-        {
-            fileIOManager.Manage(new System.Action(() => fileIOManager.ReadCSV(path, action)));
-        }
-
-        /// <summary>
-        /// Writes DataTable to CSV file
-        /// </summary>
-        /// <param name="data">DataTable containing data to write</param>
-        /// <param name="path">Path top store new CSV file</param>
-        public void WriteCSVFile(DataTable data, string path)
-        {
-            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteCSV(data, path)));
-        }
 
         /// <summary>
         /// Reads json settings file as Dictionary then calls actioon with Dictionary as parameter

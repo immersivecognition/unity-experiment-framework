@@ -16,10 +16,9 @@ namespace UXF
         public string currentFolder;
         string ppListPath;
         public DataTable ppList = null;
-
         public Text ppListNameDisplay;
         public ParticipantSelector participantSelector;
-        public Session experiment;
+        public FileIOManager fileIOManager;
         public ExperimentStartupController startup;
         public FillableFormController form;
         public PopupController popupController;
@@ -65,7 +64,7 @@ namespace UXF
 
         public void GetCheckParticipantList()
         {
-            experiment.ReadCSVFile(ppListPath, new System.Action<DataTable>((data) => SetPPList(data)));
+            fileIOManager.ReadCSV(ppListPath, new System.Action<DataTable>((data) => SetPPList(data)));
         }
 
         void PrepNewPPList(string path)
@@ -100,7 +99,7 @@ namespace UXF
             exampleData.Rows.Add(row1);
 
             // save
-            experiment.WriteCSVFile(exampleData, filePath);
+            fileIOManager.WriteCSV(exampleData, filePath);
 
             ppListPath = filePath;
 
@@ -220,9 +219,8 @@ namespace UXF
 
         public void CommitCSV()
         {
-            experiment.WriteCSVFile(ppList, ppListPath);
+            fileIOManager.WriteCSV(ppList, ppListPath);
             Debug.Log(string.Format("Updating: {0}", ppListPath));
-            experiment.participantDetails = GenerateDict();
         }
 
         public Dictionary<string, object> GenerateDict()
