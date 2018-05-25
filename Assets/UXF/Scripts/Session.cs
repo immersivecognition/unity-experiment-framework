@@ -150,7 +150,7 @@ namespace UXF
         /// </summary>
         private SessionLogger logger;
 
-        List<string> baseHeaders = new List<string> { "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
+        List<string> baseHeaders = new List<string> { "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
 
         string basePath;
 
@@ -170,12 +170,12 @@ namespace UXF
         /// <summary>
         /// List of file headers generated for all referenced tracked objects.
         /// </summary>
-        public List<string> trackingHeaders { get { return trackedObjects.Select(t => t.objectNameHeader).ToList(); } }
+        public List<string> trackingHeaders { get { return trackedObjects.Select(t => t.measurementDescriptor).ToList(); } }
+
         /// <summary>
         /// Stores combined list of headers for the behavioural output.
         /// </summary>
         public List<string> headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).Concat(trackingHeaders).ToList(); }}
-
 
         /// <summary>
         /// Dictionary of objects for datapoints collected via the UI, or otherwise.
@@ -213,12 +213,12 @@ namespace UXF
         /// <param name="objectName"></param>
         /// <param name="data"></param>
         /// <returns>Path to the file</returns>
-        public string SaveTrackingData(string objectName, List<float[]> data)
+        public string SaveTrackerData(Tracker tracker)
         {
-            string fname = string.Format("movement_{0}_T{1:000}.csv", objectName, currentTrialNum);
+            string fname = string.Format("movement_{0}_T{1:000}.csv", tracker.objectName, currentTrialNum);
             string fpath = Path.Combine(path, fname);
 
-            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteMovementData(data, fpath)));
+            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteCSV(tracker.header, tracker.GetDataCopy(), fpath)));
 
             // return relative path so it can be stored in behavioural data
             Uri fullPath = new Uri(fpath);

@@ -39,7 +39,7 @@ namespace UXF
         public Settings settings = Settings.empty;
 
         /// <summary>
-        /// Ordered dictionary of results in a order.
+        /// Dictionary of results in a order.
         /// </summary>
         public OrderedResultDict result;
 
@@ -76,6 +76,7 @@ namespace UXF
             foreach (string h in session.headers)
                 result.Add(h, string.Empty);
 
+            result["experiment"] = session.experimentName;
             result["ppid"] = session.ppid;
             result["session_num"] = session.number;
             result["trial_num"] = number;
@@ -102,9 +103,9 @@ namespace UXF
             // log tracked objects
             foreach (Tracker tracker in session.trackedObjects)
             {
-                var trackingData = tracker.StopRecording();
-                string dataName = session.SaveTrackingData(tracker.objectName, trackingData);
-                result[tracker.objectNameHeader] = dataName;
+                tracker.StopRecording();
+                string dataName = session.SaveTrackerData(tracker);
+                result[tracker.measurementDescriptor] = dataName;
             }
 
             // log any settings we need to for this trial

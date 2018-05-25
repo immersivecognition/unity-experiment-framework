@@ -62,13 +62,10 @@ public class BasicExampleScript : MonoBehaviour {
 
         // create our blocks & trials
 
-        // practice block
-
         // retrieve the n_practice_trials setting, which was loaded from our .json file
         int numPracticeTrials = Convert.ToInt32(session.settings["n_practice_trials"]);
         // create block 1
         UXF.Block practiceBlock = session.CreateBlock(numPracticeTrials);
-
 
         // retrieve the n_main_trials setting, which was loaded from our .json file
         int numMainTrials = Convert.ToInt32(session.settings["n_main_trials"]);
@@ -104,5 +101,4 @@ public class BasicExampleScript : MonoBehaviour {
         startNextTime = Time.time + 1;
     }
 }
-
 

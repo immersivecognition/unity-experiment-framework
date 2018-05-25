@@ -235,6 +235,26 @@ Prefab:
     - target: {fileID: 224546371281550106, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
       propertyPath: m_SizeDelta.y
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 224546371281550106, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000011920929
+      objectReference: {fileID: 0}
+    - target: {fileID: 114345737082279174, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224130118367839794, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114375821934039048, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: quickStartMode
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -423,10 +443,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1294342339}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4f3a3956a7d23649a55f93fefa9f7b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 13dbc7aef009231419c2e645c8e8579b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: mygameobjects
+  objectName: mygameobject
+  measurementDescriptor: movement
+  customHeader:
+  - pos_x
+  - pos_y
+  - pos_z
+  - rot_x
+  - rot_y
+  - rot_z
 --- !u!4 &1294342341
 Transform:
   m_ObjectHideFlags: 0

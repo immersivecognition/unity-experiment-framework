@@ -122,12 +122,12 @@ namespace UXF
             File.WriteAllLines(fpath, csvRows);
         }
 
-        public void WriteMovementData(List<float[]> data, string fpath)
+        public void WriteCSV(string[] header, IList<string[]> data, string fpath)
         {
             string[] csvRows = new string[data.Count + 1];
-            csvRows[0] = string.Join(",", Tracker.header);
+            csvRows[0] = string.Join(",", header);
             for (int i = 1; i <= data.Count; i++)
-                csvRows[i] = string.Join(",", data[i-1].Select(f => f.ToString("0.####")).ToArray());
+                csvRows[i] = string.Join(",", data[i-1]);
 
             File.WriteAllLines(fpath, csvRows);
         }
