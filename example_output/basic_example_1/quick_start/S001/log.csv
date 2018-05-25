@@ -1,16 +1,60 @@
 timestamp,log_type,message
 0,Log,Running trial!
 0,Log,The 'size' for this trial is: 1
-0,Log,We observed: 0.9443811
-1.001682,Log,Ending trial
-1.001682,Log,Running trial!
-1.001682,Log,The 'size' for this trial is: 1
-1.001682,Log,We observed: 0.2167636
-2.012699,Log,Ending trial
-2.012699,Log,Running trial!
-2.012699,Log,The 'size' for this trial is: 1
-2.012699,Log,We observed: 0.2754216
-3.023544,Log,Ending trial
-3.023544,Log,Running trial!
-3.023544,Log,The 'size' for this trial is: 1
-3.023544,Log,We observed: 0.8005224
+0,Log,We observed: 0.2585504
+1.016154,Log,Ending trial
+1.016154,Log,Running trial!
+1.016154,Log,The 'size' for this trial is: 1
+1.016154,Log,We observed: 0.7506925
+2.026541,Log,Ending trial
+2.026541,Log,Running trial!
+2.026541,Log,The 'size' for this trial is: 1
+2.026541,Log,We observed: 0.4282282
+3.03127,Log,Ending trial
+3.03127,Log,Running trial!
+3.03127,Log,The 'size' for this trial is: 1
+3.03127,Log,We observed: 0.9844433
+4.042314,Log,Ending trial
+4.042314,Log,Running trial!
+4.042314,Log,The 'size' for this trial is: 1
+4.042314,Log,We observed: 0.5983264
+5.053154,Log,Ending trial
+5.053154,Log,Running trial!
+5.053154,Log,The 'size' for this trial is: 1
+5.053154,Log,We observed: 0.6822236
+6.064105,Log,Ending trial
+6.064105,Log,Running trial!
+6.064105,Log,The 'size' for this trial is: 10
+6.064105,Log,We observed: 0.4904974
+7.07567,Log,Ending trial
+7.07567,Log,Running trial!
+7.07567,Log,The 'size' for this trial is: 1
+7.07567,Log,We observed: 0.7285928
+8.086767,Log,Ending trial
+8.086767,Log,Running trial!
+8.086767,Log,The 'size' for this trial is: 1
+8.086767,Log,We observed: 0.9109503
+9.096951,Log,Ending trial
+9.096951,Log,Running trial!
+9.096951,Log,The 'size' for this trial is: 1
+9.096951,Log,We observed: 0.7644506
+10.10796,Log,Ending trial
+10.10796,Log,Running trial!
+10.10796,Log,The 'size' for this trial is: 1
+10.10796,Log,We observed: 0.652816
+11.11906,Log,Ending trial
+11.11906,Log,Running trial!
+11.11906,Log,The 'size' for this trial is: 1
+11.11906,Log,We observed: 0.5210512
+12.1298,Log,Ending trial
+12.1298,Log,Running trial!
+12.1298,Log,The 'size' for this trial is: 1
+12.1298,Log,We observed: 0.4548693
+13.14075,Log,Ending trial
+13.14075,Log,Running trial!
+13.14075,Log,The 'size' for this trial is: 1
+13.14075,Log,We observed: 0.46755
+14.1517,Log,Ending trial
+14.1517,Log,Running trial!
+14.1517,Log,The 'size' for this trial is: 1
+14.1517,Log,We observed: 0.7944266

@@ -39,7 +39,7 @@ namespace UXF
         /// Create a block with a given number of trials under a given session
         /// </summary>
         /// <param name="numberOfTrials"></param>
-        internal Block(uint numberOfTrials, Session session)
+        public Block(uint numberOfTrials, Session session)
         {
             this.session = session;
             this.session.blocks.Add(this);
@@ -51,6 +51,16 @@ namespace UXF
             }
         }
 
+        /// <summary>
+        /// Create a trial within this block
+        /// </summary>
+        /// <returns></returns>
+        public Trial CreateTrial()
+        {
+            var t = new Trial(this);
+            trials.Add(t);
+            return t;
+        }
 
 
         /// <summary>
@@ -62,8 +72,6 @@ namespace UXF
         {
             return trials[relativeTrialNumber - 1];
         }
-
-
 
 
         [Obsolete]

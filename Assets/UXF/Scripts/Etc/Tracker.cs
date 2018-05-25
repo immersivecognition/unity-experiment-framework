@@ -15,21 +15,19 @@ namespace UXF
         /// </summary>
         public string objectName;
 
-        [ReadOnly]
         /// <summary>
         /// Description of the type of measurement this tracker will perform.
         /// </summary>
+        [ReadOnly]
         public string measurementDescriptor;
 
-        [ReadOnly]
-        [Tooltip("Custom column headers for each measurement.")]
         /// <summary>
         /// Custom column headers for tracked objects
         /// </summary>
+        [ReadOnly]
+        [Tooltip("Custom column headers for each measurement.")]
         public string[] customHeader = new string[] { };
-
-        
-
+   
         /// <summary>
         /// The header used when saving the relative filename string within our behavioural data.
         /// </summary>
@@ -42,7 +40,9 @@ namespace UXF
             }
         }
 
-        bool recording;
+        [SerializeField]
+        [ReadOnly]
+        private bool recording;
 
         List<string[]> data = new List<string[]>();
         string[] row = new string[6];
@@ -103,7 +103,10 @@ namespace UXF
             recording = false;
         }
 
-
+        /// <summary>
+        /// Returns a copy of the data collected by this tracker.
+        /// </summary>
+        /// <returns></returns>
         public IList<string[]> GetDataCopy()
         {
             return data.Clone();

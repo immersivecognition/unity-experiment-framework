@@ -16,8 +16,8 @@ namespace UXF
     public class Session : MonoBehaviour
     {
 
-        [Tooltip("Enable to automatically safely end the session when the application stops running.")]
-        public bool endExperimentOnQuit = true;
+        [Tooltip("Enable to automatically safely end the session when this object is destroyed (or the application stops running).")]
+        public bool endOnDestroy = true;
         
         /// <summary>
         /// List of blocks for this experiment
@@ -28,31 +28,27 @@ namespace UXF
         [Header("Data logging")]
 
         // serialized private + public getter trick allows setting in inspector without being publicly settable
-        [Tooltip("List of settings you wish to log to the behavioural file for each trial.")]
-        [SerializeField]
-        private List<string> _settingsToLog = new List<string>();
         /// <summary>
         /// List of settings you wish to log to the behavioural file for each trial.
         /// </summary>
-        public List<string> settingsToLog { get { return _settingsToLog; } }
+        [Tooltip("List of settings you wish to log to the behavioural data output for each trial.")]
+        public List<string> settingsToLog;
 
-        [Tooltip("List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.")]
-        [SerializeField]
-        private List<string> _customHeaders = new List<string>();
         /// <summary>
         /// List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
         /// </summary>
-        public List<string> customHeaders { get { return _customHeaders; } }
+        [Tooltip("List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.")]
+        public List<string> customHeaders;
 
-        [Tooltip("List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().")]
-        [SerializeField]
-        private List<Tracker> _trackedObjects = new List<Tracker>();
         /// <summary>
         /// List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().
         /// </summary>
-        public List<Tracker> trackedObjects { get { return _trackedObjects; } }
+        [Tooltip("List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().")]
+        public List<Tracker> trackedObjects;
+
 
         [Header("Events")]
+        
         [Tooltip("Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument")]
         public SessionEvent onSessionBegin;
 
@@ -63,7 +59,43 @@ namespace UXF
         [Tooltip("Event(s) to trigger when a trial ends. Can pass the instance of the Trial as a dynamic argument")]
         public TrialEvent onTrialEnd;
 
+        [Header("Session information")]
+
+        [ReadOnly]
+        [SerializeField]
         bool hasInitialised = false;
+
+        /// <summary>
+        /// Name of the experiment. Data is saved in a folder with this name.
+        /// </summary>
+        [ReadOnly]
+        public string experimentName;
+
+        /// <summary>
+        /// Unique string for this participant (participant ID)
+        /// </summary>
+        [ReadOnly]
+        public string ppid;
+
+        /// <summary>
+        /// Current session number for this participant
+        /// </summary>
+        [ReadOnly]
+        public int number;
+
+        /// <summary>
+        /// Currently active trial number.
+        /// </summary>
+        [ReadOnly]
+        public int currentTrialNum = 0;
+
+        /// <summary>
+        /// Currently active block number.
+        /// </summary>
+        [ReadOnly]
+        public int currentBlockNum = 0;
+
+
 
         /// <summary>
         /// True when session is attempting to quit.
@@ -112,34 +144,6 @@ namespace UXF
         /// </summary>
         public IEnumerable<Trial> trials { get { return blocks.SelectMany(b => b.trials); } }
 
-        [HideInInspector]
-        public string experimentName;
-
-        /// <summary>
-        /// Unique string for this participant (participant ID)
-        /// </summary>
-        [HideInInspector]
-        public string ppid;
-
-        /// <summary>
-        /// Current session number for this participant
-        /// </summary>
-        [HideInInspector]
-        public int number;
-        private string folderName { get { return SessionNumToName(number); } }
-
-        /// <summary>
-        /// Currently active trial number.
-        /// </summary>
-        [HideInInspector]
-        public int currentTrialNum = 0;
-
-        /// <summary>
-        /// Currently active block number.
-        /// </summary>
-        [HideInInspector]
-        public int currentBlockNum = 0;
-
         /// <summary>
         /// Reference to the associated FileIOManager which deals with inputting and outputting files.
         /// </summary>
@@ -154,6 +158,7 @@ namespace UXF
 
         string basePath;
 
+
         /// <summary>
         /// Path to the folder used for reading settings and storing the output. 
         /// </summary>
@@ -166,6 +171,9 @@ namespace UXF
         /// Path within the particpant path for this particular session.
         /// </summary>
         public string path { get { return Path.Combine(ppPath, folderName); } }
+
+        private string folderName { get { return SessionNumToName(number); } }
+
 
         /// <summary>
         /// List of file headers generated for all referenced tracked objects.
@@ -215,7 +223,7 @@ namespace UXF
         /// <returns>Path to the file</returns>
         public string SaveTrackerData(Tracker tracker)
         {
-            string fname = string.Format("movement_{0}_T{1:000}.csv", tracker.objectName, currentTrialNum);
+            string fname = string.Format("{0}_{1}_T{1:000}.csv", tracker.objectName, tracker.measurementDescriptor, currentTrialNum);
             string fpath = Path.Combine(path, fname);
 
             fileIOManager.Manage(new System.Action(() => fileIOManager.WriteCSV(tracker.header, tracker.GetDataCopy(), fpath)));
@@ -319,6 +327,13 @@ namespace UXF
             hasInitialised = true;
             onSessionBegin.Invoke(this);
         }
+
+
+        public Block CreateBlock()
+        {
+            return new Block(0, this);
+        }
+
 
         /// <summary>
         /// Create a block containing a number of trials
@@ -442,8 +457,6 @@ namespace UXF
         {
             if (hasInitialised)
             {
-
-
                 isQuitting = true;
                 if (inTrial)
                     currentTrial.End();
@@ -480,7 +493,7 @@ namespace UXF
 
         void OnDestroy()
         {
-            if (endExperimentOnQuit)
+            if (endOnDestroy)
             {
                 End();
             }
