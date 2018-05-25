@@ -96,10 +96,3 @@ namespace UXF
         }
     }
 }
-
-
-public class Setting : System.Object
-{
-
-
-}
