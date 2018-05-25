@@ -46,7 +46,7 @@ namespace UXF
         }
 
         /// <summary>
-        /// Get a setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. If one is not found, it will return null.
+        /// Get a setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. If one is never found, it will return null.
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
@@ -95,4 +95,11 @@ namespace UXF
             return new Settings(dict);
         }
     }
+}
+
+
+public class Setting : System.Object
+{
+
+
 }

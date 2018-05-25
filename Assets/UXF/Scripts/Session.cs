@@ -95,14 +95,6 @@ namespace UXF
         [ReadOnly]
         public int currentBlockNum = 0;
 
-
-
-        /// <summary>
-        /// True when session is attempting to quit.
-        /// </summary>
-        [HideInInspector]
-        public bool isQuitting = false;
-
         /// <summary>
         /// Settings for the experiment. These are provided on initialisation of the session.
         /// </summary>
@@ -313,11 +305,11 @@ namespace UXF
             number = sessionNumber;
             basePath = baseFolder;
             this.participantDetails = participantDetails;
+
             if (settings == null)
                 settings = Settings.empty;
             else
                 this.settings = settings;
-
 
             // setup folders
             InitFolder();
@@ -327,7 +319,6 @@ namespace UXF
 
             // Initialise logger
             logger.Initialise();
-
 
             hasInitialised = true;
             onSessionBegin.Invoke(this);
@@ -405,7 +396,7 @@ namespace UXF
         /// </summary>
         public void BeginNextTrial()
         {
-            if (!isQuitting)
+            if (hasInitialised)
                 nextTrial.Begin();
         }
 
@@ -415,9 +406,9 @@ namespace UXF
         /// <returns></returns>
         Trial PrevTrial()
         {
-            // non zero indexed
             try
-            {
+            { 
+                // non zero indexed
                 return trials.ToList()[currentTrialNum - 2];
             }
             catch (ArgumentOutOfRangeException)
@@ -472,7 +463,6 @@ namespace UXF
         {
             if (hasInitialised)
             {
-                isQuitting = true;
                 if (inTrial)
                     currentTrial.End();
                 SaveResults();

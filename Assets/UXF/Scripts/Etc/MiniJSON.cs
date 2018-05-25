@@ -26,9 +26,6 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
- * Modified by Jack Brookes, 2018.
- * Modified version, floats and ints in the JSON are stored as floats and ints (32bit) after being deserialized (32bit), respectively. 
-
 
  */
 using System;
@@ -53,18 +50,16 @@ namespace MiniJSON
     //                          "\"string\": \"The quick brown fox \\\"jumps\\\" over the lazy dog \", " +
     //                          "\"unicode\": \"\\u3041 Men\u00fa sesi\u00f3n\", " +
     //                          "\"int\": 65536, " +
-    //                          "\"float\": 3.1415926, " +
+    //                          "\"double\": 3.1415926, " +
     //                          "\"bool\": true, " +
     //                          "\"null\": null }";
     //
     //          var dict = Json.Deserialize(jsonString) as Dictionary<string,object>;
     //
-    //          // in this modified version, floats stay as floats and ints stay as ints (32bit)
-    //
     //          Debug.Log("deserialized: " + dict.GetType());
     //          Debug.Log("dict['array'][0]: " + ((List<object>) dict["array"])[0]);
     //          Debug.Log("dict['string']: " + (string) dict["string"]);
-    //          Debug.Log("dict['float']: " + (float) dict["float"]); // floats come out as floats
+    //          Debug.Log("dict['float']: " + (double) dict["float"]); // floats come out as floats
     //          Debug.Log("dict['int']: " + (long) dict["int"]); // ints come out as ints
     //          Debug.Log("dict['unicode']: " + (string) dict["unicode"]);
     //
@@ -329,14 +324,14 @@ namespace MiniJSON
 
                 if (number.IndexOf('.') == -1)
                 {
-                    int parsedInt;
-                    int.TryParse(number, out parsedInt);
-                    return parsedInt;
+                    long parsedLong;
+                    long.TryParse(number, out parsedLong);
+                    return parsedLong;
                 }
 
-                float parsedFloat;
-                float.TryParse(number, out parsedFloat);
-                return parsedFloat;
+                double parsedDouble;
+                double.TryParse(number, out parsedDouble);
+                return parsedDouble;
             }
 
             void EatWhitespace()
@@ -621,9 +616,9 @@ namespace MiniJSON
                 // NOTE: decimals lose precision during serialization.
                 // They always have, I'm just letting you know.
                 // Previously floats and doubles lost precision too.
-                if (value is float)
+                if (value is double)
                 {
-                    builder.Append(((float)value).ToString("R"));
+                    builder.Append(((double) value).ToString("R"));
                 }
                 else if (value is int
                   || value is uint

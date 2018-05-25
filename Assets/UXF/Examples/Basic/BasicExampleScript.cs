@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
+// add the UXF namespace
+using UXF;
+
 /// <summary>
 /// Example script used to test functionality of the Experiment Manager
 /// </summary>
@@ -38,7 +41,7 @@ public class BasicExampleScript : MonoBehaviour {
         }
     }
     
-    public void GenerateExperiment(UXF.Session experimentSession)
+    public void GenerateExperiment(Session experimentSession)
     {
         // save reference to session
         session = experimentSession;
@@ -65,12 +68,13 @@ public class BasicExampleScript : MonoBehaviour {
         // retrieve the n_practice_trials setting, which was loaded from our .json file
         int numPracticeTrials = Convert.ToInt32(session.settings["n_practice_trials"]);
         // create block 1
-        UXF.Block practiceBlock = session.CreateBlock(numPracticeTrials);
+        Block practiceBlock = session.CreateBlock(numPracticeTrials);
+        practiceBlock.settings["practice"] = true;
 
         // retrieve the n_main_trials setting, which was loaded from our .json file
         int numMainTrials = Convert.ToInt32(session.settings["n_main_trials"]);
         // create block 2
-        UXF.Block mainBlock = session.CreateBlock(numMainTrials); // block 2
+        Block mainBlock = session.CreateBlock(numMainTrials); // block 2
 
         // here we set a setting for the 2nd trial of the main block as an example.
         mainBlock.GetRelativeTrial(2).settings["size"] = 10;
@@ -80,7 +84,7 @@ public class BasicExampleScript : MonoBehaviour {
         enabled = true;
     }
 
-    public void PresentStimulus(UXF.Trial trial)
+    public void PresentStimulus(Trial trial)
     {
         // we can call this function via the event "On Trial Begin", which is called when the trial starts
         // here we can imagine presentation of some stimulus
@@ -89,7 +93,8 @@ public class BasicExampleScript : MonoBehaviour {
         
         // we can access our settings to (e.g.) modify our scene
         // for more information about retrieving settings see the documentation
-        float size = Convert.ToSingle(trial.settings["size"]);
+
+        float size = trial.settings["size"].ToFloat();
         Debug.LogFormat("The 'size' for this trial is: {0}", size);
 
         // record custom values...
