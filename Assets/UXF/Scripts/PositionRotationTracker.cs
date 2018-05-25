@@ -15,6 +15,7 @@ namespace UXF
         protected override void SetupDescriptorAndHeader()
         {
             measurementDescriptor = "movement";
+            
             customHeader = new string[]
             {
                 "pos_x",
@@ -37,12 +38,12 @@ namespace UXF
             // return position, rotation (x, y, z) as an array
             var values =  new string[]
             {
-                 p.x.ToString(format),
-                 p.y.ToString(format),
-                 p.z.ToString(format),
-                 r.x.ToString(format),
-                 r.y.ToString(format),
-                 r.z.ToString(format)
+                p.x.ToString(format),
+                p.y.ToString(format),
+                p.z.ToString(format),
+                r.x.ToString(format),
+                r.y.ToString(format),
+                r.z.ToString(format)
             };
 
             return values;
