@@ -131,6 +131,11 @@ namespace UXF
         /// <summary>
         /// Get the last trial in the last block of the session.
         /// </summary>
+        public Trial firstTrial { get { return FirstTrial(); } }
+
+        /// <summary>
+        /// Get the last trial in the last block of the session.
+        /// </summary>
         public Trial lastTrial { get { return LastTrial(); } }
 
         /// <summary>
@@ -212,7 +217,7 @@ namespace UXF
             if (!System.IO.Directory.Exists(path))
                 System.IO.Directory.CreateDirectory(path);
             else
-                Debug.LogWarning("Warning session already exists! Continuing will overwrite");
+                Debug.LogWarning("Warning: Session already exists! Continuing will overwrite");
         }
 
         /// <summary>
@@ -223,7 +228,7 @@ namespace UXF
         /// <returns>Path to the file</returns>
         public string SaveTrackerData(Tracker tracker)
         {
-            string fname = string.Format("{0}_{1}_T{1:000}.csv", tracker.objectName, tracker.measurementDescriptor, currentTrialNum);
+            string fname = string.Format("{0}_{1}_T{2:000}.csv", tracker.objectName, tracker.measurementDescriptor, currentTrialNum);
             string fpath = Path.Combine(path, fname);
 
             fileIOManager.Manage(new System.Action(() => fileIOManager.WriteCSV(tracker.header, tracker.GetDataCopy(), fpath)));
@@ -405,7 +410,7 @@ namespace UXF
         }
 
         /// <summary>
-        /// Get previous Trial
+        /// Get previous Trial.
         /// </summary>
         /// <returns></returns>
         Trial PrevTrial()
@@ -417,12 +422,22 @@ namespace UXF
             }
             catch (ArgumentOutOfRangeException)
             {
-                throw new NoSuchTrialException("There is no previous trial. Probably currently at the start of experiment.");
+                throw new NoSuchTrialException("There is no previous trial. Probably, currently at the start of session.");
             }
         }
 
         /// <summary>
-        /// Get last Trial in experiment
+        /// Get first Trial in this session.
+        /// </summary>
+        /// <returns></returns>
+        Trial FirstTrial()
+        {
+            var firstBlock = blocks[0];
+            return firstBlock.trials[0];
+        }
+
+        /// <summary>
+        /// Get last Trial in this session.
         /// </summary>
         /// <returns></returns>
         Trial LastTrial()

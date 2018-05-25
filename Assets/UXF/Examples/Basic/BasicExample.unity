@@ -160,6 +160,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: customHeaders.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: trackedObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4522850482104986, guid: 0a3b6392f04558844bd340e68ced1ff9, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -210,7 +220,7 @@ Prefab:
     - target: {fileID: 224130118367839794, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0.8679246
       objectReference: {fileID: 0}
     - target: {fileID: 224286096967890162, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
@@ -235,12 +245,12 @@ Prefab:
     - target: {fileID: 224546371281550106, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224546371281550106, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000011920929
+      value: -0.0000051259995
       objectReference: {fileID: 0}
     - target: {fileID: 114345737082279174, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
@@ -257,6 +267,16 @@ Prefab:
       propertyPath: quickStartMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: customHeaders.Array.data[0]
+      value: some_variable
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: trackedObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 1294342340}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a3b6392f04558844bd340e68ced1ff9, type: 2}
   m_IsPrefabParent: 0
@@ -455,6 +475,7 @@ MonoBehaviour:
   - rot_x
   - rot_y
   - rot_z
+  recording: 0
 --- !u!4 &1294342341
 Transform:
   m_ObjectHideFlags: 0

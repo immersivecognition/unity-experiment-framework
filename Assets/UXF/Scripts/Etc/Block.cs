@@ -14,14 +14,17 @@ namespace UXF
         /// List of trials associated with this block
         /// </summary>
         public List<Trial> trials = new List<Trial>();
+        
         /// <summary>
         /// Return the first trial in this block
         /// </summary>
         public Trial firstTrial { get { return trials.Count > 0 ? trials[0] : null; } }
+
         /// <summary>
         /// Return the last trial in this block
         /// </summary>
         public Trial lastTrial { get { return trials.Count > 0 ? trials[trials.Count-1] : null; } }
+
         /// <summary>
         /// Returns the block number of this block, based on its position in the session.
         /// </summary>

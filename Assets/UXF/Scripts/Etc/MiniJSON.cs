@@ -487,8 +487,6 @@ namespace MiniJSON
                 IDictionary asDict;
                 string asStr;
 
-                string spaces = Spaces(level);
-
                 if (value == null)
                 {
                     builder.Append("null");

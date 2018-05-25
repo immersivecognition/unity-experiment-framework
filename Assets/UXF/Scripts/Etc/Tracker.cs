@@ -45,7 +45,6 @@ namespace UXF
         private bool recording;
 
         List<string[]> data = new List<string[]>();
-        string[] row = new string[6];
 
         public string[] header
         { 
@@ -70,16 +69,22 @@ namespace UXF
         {
             if (recording)
             {
-                row = GetCurrentValues();
-                if (row.Length != customHeader.Length)
-                    throw new InvalidDataException(string.Format("GetCurrentValues provided {0} values but expected the same as the number of headers! {1}", row.Length, customHeader.Length));
+                string[] values = GetCurrentValues();
+
+                if (values.Length != customHeader.Length)
+                    throw new InvalidDataException(string.Format("GetCurrentValues provided {0} values but expected the same as the number of headers! {1}", values.Length, customHeader.Length));
+
+                string[] row = new string[values.Length + 1];
+
+                row[0] = Time.time.ToString();
+                values.CopyTo(row, 1);
 
                 data.Add(row);
             }
         }
 
         /// <summary>
-        /// Begins recording object position.
+        /// Begins recording.
         /// </summary>
         public void StartRecording()
         {
@@ -88,7 +93,7 @@ namespace UXF
         }
 
         /// <summary>
-        /// Pauses recording object position.
+        /// Pauses recording.
         /// </summary>
         public void PauseRecording()
         {

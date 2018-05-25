@@ -13,10 +13,11 @@ namespace UXF
     /// <summary>
     /// The base unit of experiments. A Trial is usually a singular attempt at a task by a participant after/during the presentation of a stimulus.
     /// </summary>
-    public class Trial {
+    public class Trial
+    {
 
         /// <summary>
-        /// Returns non-zero indexed trial number. This is generated based on it's position in the block, and the ordering of the blocks within the session.
+        /// Returns non-zero indexed trial number. This is generated based on its position in the block, and the ordering of the blocks within the session.
         /// </summary>
         public int number { get { return session.trials.ToList().IndexOf(this) + 1; } }
         /// <summary>
@@ -30,7 +31,7 @@ namespace UXF
         /// <summary>
         ///  The block the trial belongs to
         /// </summary>
-        [NonSerialized] public Block block;
+        public Block block;
         float startTime, endTime;
         protected Session session;
         

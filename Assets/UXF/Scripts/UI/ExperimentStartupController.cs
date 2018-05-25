@@ -81,12 +81,20 @@ namespace UXF
 
             string experimentName = Path.GetFileNameWithoutExtension(experimentSettingsName);
 
+            string path = Path.IsPathRooted(saveDataLocation) ? saveDataLocation : Path.Combine(Directory.GetCurrentDirectory(), saveDataLocation);
+
+            if (!Directory.Exists(path))
+            {
+                Debug.LogErrorFormat("Quick start failed: Cannot find path {0}", path);
+                return;
+            }
+
             Action<Dictionary<string, object>> finish = new Action<Dictionary<string, object>>((dict) =>
             {
                 session.InitSession(
                     experimentName,
                     "quick_start",
-                    saveDataLocation,
+                    path,
                     1,
                     null,
                     new Settings(dict)
