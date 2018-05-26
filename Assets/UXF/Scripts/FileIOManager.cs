@@ -33,8 +33,9 @@ namespace UXF
 
         void Update()
         {
-            ManageActions();
+            ManageMainThreadActions();
         }
+
 
         /// <summary>
         /// Adds a new command to a queue which is executed in a separate worker thread when it is available.
@@ -160,15 +161,20 @@ namespace UXF
         }
 
         /// <summary>
-        /// Any actions which are enqueued to run on Unity's main thread.
+        /// Handles any actions which are enqueued to run on Unity's main thread.
         /// </summary>
-        void ManageActions()
+        void ManageMainThreadActions()
         {
             while (executeOnMainThreadQueue.Count > 0)
             {
                 executeOnMainThreadQueue.Dequeue().Invoke();
             }
         }
+
+        void OnDestroy()
+        {
+            Manage(new System.Action(Quit));
+        } 
 
         /// <summary>
         /// Aborts the FileIOManager's thread.

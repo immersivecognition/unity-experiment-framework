@@ -94,7 +94,7 @@ public class BasicExampleScript : MonoBehaviour {
         // we can access our settings to (e.g.) modify our scene
         // for more information about retrieving settings see the documentation
 
-        float size = trial.settings["size"].ToFloat();
+        float size = Convert.ToInt32(trial.settings["size"]);
         Debug.LogFormat("The 'size' for this trial is: {0}", size);
 
         // record custom values...

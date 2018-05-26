@@ -50,20 +50,26 @@ namespace UXF
         [Header("Events")]
         
         [Tooltip("Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument")]
-        public SessionEvent onSessionBegin;
+        public SessionEvent onSessionBegin = new SessionEvent();
 
 
         [Tooltip("Event(s) to trigger when a trial begins. Can pass the instance of the Trial as a dynamic argument")]
-        public TrialEvent onTrialBegin;
+        public TrialEvent onTrialBegin = new TrialEvent();
 
         [Tooltip("Event(s) to trigger when a trial ends. Can pass the instance of the Trial as a dynamic argument")]
-        public TrialEvent onTrialEnd;
+        public TrialEvent onTrialEnd = new TrialEvent();
 
         [Header("Session information")]
 
         [ReadOnly]
         [SerializeField]
-        bool hasInitialised = false;
+        private bool _hasInitialised = false;
+
+        /// <summary>
+        /// Returns true if session has been intialised
+        /// </summary>
+        /// <returns></returns>
+        public bool hasInitialised { get { return _hasInitialised; } }
 
         /// <summary>
         /// Name of the experiment. Data is saved in a folder with this name.
@@ -206,10 +212,10 @@ namespace UXF
                 System.IO.Directory.CreateDirectory(experimentPath);
             if (!System.IO.Directory.Exists(ppPath))
                 System.IO.Directory.CreateDirectory(ppPath);
-            if (!System.IO.Directory.Exists(path))
-                System.IO.Directory.CreateDirectory(path);
+            if (System.IO.Directory.Exists(path))
+                Debug.LogWarning("Warning: Session already exists! Continuing will overwrite"); 
             else
-                Debug.LogWarning("Warning: Session already exists! Continuing will overwrite");
+                System.IO.Directory.CreateDirectory(path);
         }
 
         /// <summary>
@@ -297,8 +303,12 @@ namespace UXF
         /// <param name="sessionNumber">A number for the session (optional: default 1)</param>
         /// <param name="participantDetails">Dictionary of information about the participant to be used within the experiment (optional: default null)</param>
         /// <param name="settings">A Settings instance (optional: default empty settings)</param>
-        public void InitSession(string experimentName, string participantId, string baseFolder, int sessionNumber = 1, Dictionary<string, object> participantDetails = null, Settings settings = null)
+        public void Begin(string experimentName, string participantId, string baseFolder, int sessionNumber = 1, Dictionary<string, object> participantDetails = null, Settings settings = null)
         {
+            baseFolder = Path.IsPathRooted(baseFolder) ? baseFolder : Path.Combine(Directory.GetCurrentDirectory(), baseFolder);
+
+            if (!Directory.Exists(baseFolder))
+                throw new DirectoryNotFoundException(string.Format("Initialising session failed, cannot find {0}", baseFolder));
 
             this.experimentName = experimentName;
             ppid = participantId;
@@ -314,14 +324,16 @@ namespace UXF
             // setup folders
             InitFolder();
 
-            // copy Settings to session folder
-            WriteDictToSessionFolder(settings.baseDict, "settings");
-
             // Initialise logger
-            logger.Initialise();
+            if (logger != null)
+                logger.Initialise();
 
-            hasInitialised = true;
+            _hasInitialised = true;
             onSessionBegin.Invoke(this);
+
+            // copy Settings to session folder
+            if (fileIOManager != null)
+                WriteDictToSessionFolder(settings.baseDict, "settings");
         }
 
 
@@ -467,11 +479,12 @@ namespace UXF
                     currentTrial.End();
                 SaveResults();
 
-                // Initialise logger
-                logger.Finalise();
-
-                fileIOManager.Manage(new System.Action(fileIOManager.Quit));
-                hasInitialised = false;
+                // end logger
+                if (logger != null)
+                    logger.Finalise();
+                
+                blocks = new List<Block>();
+                _hasInitialised = false;
             }
         }
 

@@ -83,16 +83,5 @@ namespace UXF
         {
             baseDict.Add(k, v);
         }
-
-
-        /// <summary>
-        /// Attempts to create a Settings instance from a json string.static this uses a modified version of MiniJSON, supplied with this package. See the MiniJSON class for information
-        /// </summary>
-        /// <param name="jsonString">Valid json string.</param>
-        public static Settings FromJSON(string jsonString)
-        {
-            var dict = MiniJSON.Json.Deserialize(jsonString) as Dictionary<string, object>;
-            return new Settings(dict);
-        }
     }
 }

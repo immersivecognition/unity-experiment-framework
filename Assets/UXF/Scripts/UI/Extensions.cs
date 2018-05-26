@@ -21,17 +21,6 @@ namespace UXF
             return listToClone.Select(item => (T)item.Clone()).ToList();
         }
 
-        public static float ToFloat(this object obj)
-        {
-            return System.Convert.ToSingle(obj);
-        }
-
-        public static int ToInt(this object obj)
-        {
-            return System.Convert.ToInt32(obj);
-        }
-
-
         public static string GetSafeFilename(string filename)
         {
             return string.Join("", filename.Split(Path.GetInvalidFileNameChars()));

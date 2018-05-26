@@ -50,7 +50,7 @@ namespace MiniJSON
     //                          "\"string\": \"The quick brown fox \\\"jumps\\\" over the lazy dog \", " +
     //                          "\"unicode\": \"\\u3041 Men\u00fa sesi\u00f3n\", " +
     //                          "\"int\": 65536, " +
-    //                          "\"double\": 3.1415926, " +
+    //                          "\"float\": 3.1415926, " +
     //                          "\"bool\": true, " +
     //                          "\"null\": null }";
     //

@@ -91,7 +91,7 @@ namespace UXF
 
             Action<Dictionary<string, object>> finish = new Action<Dictionary<string, object>>((dict) =>
             {
-                session.InitSession(
+                session.Begin(
                     experimentName,
                     "quick_start",
                     path,
@@ -135,7 +135,7 @@ namespace UXF
 
             Action finish = new Action(() =>
                {
-                   session.InitSession(settingsSelector.experimentName,
+                   session.Begin(settingsSelector.experimentName,
                                                  ppid,
                                                  ppListSelect.currentFolder,
                                                  sessionNum,
