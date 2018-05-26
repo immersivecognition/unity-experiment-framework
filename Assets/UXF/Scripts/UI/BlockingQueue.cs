@@ -14,6 +14,7 @@ class BlockingQueue<T> : IEnumerable<T>
 
     private Queue<T> _queue = new Queue<T>();
 
+
     public T Dequeue()
     {
         lock (_queue)
@@ -61,4 +62,10 @@ class BlockingQueue<T> : IEnumerable<T>
     {
         return ((IEnumerable<T>)this).GetEnumerator();
     }
+
+    public int NumItems()
+    {
+        return _count;
+    }
+
 }

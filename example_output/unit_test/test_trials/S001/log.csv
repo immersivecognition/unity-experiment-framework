@@ -1,0 +1,4 @@
+timestamp,log_type,message
+0.8184061,Log,Managing action: UXF.Session+<WriteDictToSessionFolder>c__AnonStorey2.<>m__0
+0.9732285,Log,Managing action: UXF.Session+<SaveResults>c__AnonStorey3.<>m__0
+0.9732285,Log,Managing action: UXF.SessionLogger+<Finalise>c__AnonStorey0.<>m__0

@@ -7,7 +7,7 @@ using System.IO;
 namespace UXF
 {
 
-    static class Extensions
+    public static class Extensions
     {
 
         /// <summary>

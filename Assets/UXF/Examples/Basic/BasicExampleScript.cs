@@ -13,34 +13,7 @@ using UXF;
 public class BasicExampleScript : MonoBehaviour {
 
     UXF.Session session;
-    float startNextTime;
-
-    
-    void Start()
-    {
-        // disable this behavior so the Update() function doesnt run just yet.
-        enabled = false;
-    }
-
-    void Update()
-    {
-        // here we are mimicking some experiment behaviour, e.g waiting for user to interact with scene
-        if (Time.time > startNextTime && session.inTrial)
-        {
-            Debug.Log("Ending trial");
-            session.EndCurrentTrial();
-
-            if (session.currentTrial == session.lastTrial)
-            {
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#else
-                Application.Quit();
-#endif
-            }
-        }
-    }
-    
+       
     public void GenerateExperiment(Session experimentSession)
     {
         // save reference to session
@@ -71,7 +44,7 @@ public class BasicExampleScript : MonoBehaviour {
         Block practiceBlock = session.CreateBlock(numPracticeTrials);
         practiceBlock.settings["practice"] = true;
 
-        // retrieve the n_main_trials setting, which was loaded from our .json file
+        // retrieve the n_main_trials setting, which was loaded from our .json file into our session settings
         int numMainTrials = Convert.ToInt32(session.settings["n_main_trials"]);
         // create block 2
         Block mainBlock = session.CreateBlock(numMainTrials); // block 2
@@ -80,8 +53,6 @@ public class BasicExampleScript : MonoBehaviour {
         mainBlock.GetRelativeTrial(2).settings["size"] = 10;
         mainBlock.GetRelativeTrial(1).settings["color"] = Color.red;
 
-        // setting this script to enabled allows the MonoBehaviour scripts to run e.g. Update()
-        enabled = true;
     }
 
     public void PresentStimulus(Trial trial)
@@ -102,8 +73,30 @@ public class BasicExampleScript : MonoBehaviour {
         Debug.Log(string.Format("We observed: {0}", observation));
         trial.result["some_variable"] = observation;
 
-        // wait 1 second until we end trial and run the next one
-        startNextTime = Time.time + 1;
+        // end trial and prepare next trial in 1 second
+        Invoke("EndAndPrepare", 1);
     }
+
+
+    public void EndAndPrepare()
+    {
+        Debug.Log("Ending trial");
+        session.currentTrial.End();
+
+        if (session.currentTrial == session.lastTrial)
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
+        else
+        {
+            session.BeginNextTrial();
+        }
+
+    }
+
 }
 

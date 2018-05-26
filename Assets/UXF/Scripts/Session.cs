@@ -13,6 +13,7 @@ namespace UXF
     /// <summary>
     /// The main class used to manage your experiment. Attach this to a gameobject, and it will manage your experiment "session".
     /// </summary>
+    [ExecuteInEditMode]
     public class Session : MonoBehaviour
     {
 
@@ -32,19 +33,19 @@ namespace UXF
         /// List of settings you wish to log to the behavioural file for each trial.
         /// </summary>
         [Tooltip("List of settings you wish to log to the behavioural data output for each trial.")]
-        public List<string> settingsToLog;
+        public List<string> settingsToLog = new List<string>();
 
         /// <summary>
         /// List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
         /// </summary>
         [Tooltip("List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.")]
-        public List<string> customHeaders;
+        public List<string> customHeaders = new List<string>();
 
         /// <summary>
         /// List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().
         /// </summary>
         [Tooltip("List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().")]
-        public List<Tracker> trackedObjects;
+        public List<Tracker> trackedObjects = new List<Tracker>();
 
 
         [Header("Events")]
@@ -195,12 +196,22 @@ namespace UXF
 
         void Awake()
         {
-            // Get attached FileIOManager
-            fileIOManager = GetComponent<FileIOManager>();
+            // get components attached to this gameobject and store their references 
+            AttachReferences(
+                GetComponent<FileIOManager>(),
+                GetComponent<SessionLogger>()
+                );
+        }
 
-            // Get attached SessionLogger
-            logger = GetComponent<SessionLogger>();
-
+        /// <summary>
+        /// Provide references to other components 
+        /// </summary>
+        /// <param name="newFileIOManager"></param>
+        /// <param name="newSessionLogger"></param>
+        public void AttachReferences(FileIOManager newFileIOManager = null, SessionLogger newSessionLogger = null)
+        {
+            if (newFileIOManager != null) fileIOManager = newFileIOManager;
+            if (newSessionLogger != null) logger = newSessionLogger;
         }
 
         /// <summary>
@@ -229,7 +240,7 @@ namespace UXF
             string fname = string.Format("{0}_{1}_T{2:000}.csv", tracker.objectName, tracker.measurementDescriptor, currentTrialNum);
             string fpath = Path.Combine(path, fname);
 
-            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteCSV(tracker.header, tracker.GetDataCopy(), fpath)));
+            fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(tracker.header, tracker.GetDataCopy(), fpath));
 
             // return relative path so it can be stored in behavioural data
             Uri fullPath = new Uri(fpath);
@@ -245,31 +256,20 @@ namespace UXF
         public void CopyFileToSessionFolder(string filePath)
         {
             string newPath = Path.Combine(path, Path.GetFileName(filePath));
-            fileIOManager.Manage(new System.Action(() => fileIOManager.CopyFile(filePath, newPath)));
+            fileIOManager.ManageInWorker(() => fileIOManager.CopyFile(filePath, newPath));
         }
 
         /// <summary>
-        /// Copies a file to the folder for this session
-        /// </summary>
-        /// <param name="filePath">Path to the file to copy to the session folder</param>
-        /// <param name="newName">New name of the file</param>
-        public void CopyFileToSessionFolder(string filePath, string newName)
-        {
-            string newPath = Path.Combine(path, newName);
-            fileIOManager.Manage(new System.Action(() => fileIOManager.CopyFile(filePath, newPath)));
-        }
-
-        /// <summary>
-        /// Write a dictionary object to a JSON file in the session folder
+        /// Write a dictionary object to a JSON file in the session folder (in a new FileIOManager thread)
         /// </summary>
         /// <param name="dict">Dictionary object to write</param>
 
         /// <param name="objectName">Name of the object (is used for file name)</param>
-        public void WriteDictToSessionFolder(Dictionary<string, object> dict, string objectName)
+        void WriteDictToSessionFolder(Dictionary<string, object> dict, string objectName)
         {
             string fileName = string.Format("{0}.json", objectName);
             string filePath = Path.Combine(path, fileName);
-            fileIOManager.Manage(new System.Action(() => fileIOManager.WriteJson(filePath, dict)));
+            fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(filePath, dict));
         }
 
         /// <summary>
@@ -332,8 +332,7 @@ namespace UXF
             onSessionBegin.Invoke(this);
 
             // copy Settings to session folder
-            if (fileIOManager != null)
-                WriteDictToSessionFolder(settings.baseDict, "settings");
+            WriteDictToSessionFolder(settings.baseDict, "settings");
         }
 
 
@@ -495,7 +494,7 @@ namespace UXF
             string filePath = Path.Combine(path, fileName);
 
             // in this case, write in main thread to block aborting
-            fileIOManager.WriteTrials(results, headers.ToArray(), filePath);
+            fileIOManager.ManageInWorker(() => fileIOManager.WriteTrials(results, headers.ToArray(), filePath));
         }
 
 
@@ -506,7 +505,7 @@ namespace UXF
         /// <param name="action">Action to call when completed</param>
         public void ReadSettingsFile(string path, System.Action<Dictionary<string, object>> action)
         {
-            fileIOManager.Manage(new System.Action(() => fileIOManager.ReadJSON(path, action)));
+            fileIOManager.ManageInWorker(() => fileIOManager.ReadJSON(path, action));
         }
 
         void OnDestroy()

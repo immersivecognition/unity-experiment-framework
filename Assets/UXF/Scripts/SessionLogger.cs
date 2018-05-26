@@ -9,16 +9,29 @@ using UnityEngine;
 namespace UXF {
 
 	public class SessionLogger : MonoBehaviour
-	{
+	{	
 		private Session session;
 		private FileIOManager fileIOManager;
 		private DataTable table;
 
 		void Awake()
 		{
-            session = GetComponent<Session>();
-            fileIOManager = GetComponent<FileIOManager>();
+			AttachReferences(
+				newFileIOManager: GetComponent<FileIOManager>(),
+				newSession: GetComponent<Session>()
+			);
 		}
+
+        /// <summary>
+        /// Provide references to other components 
+        /// </summary>
+        /// <param name="newFileIOManager"></param>
+        /// <param name="newSession"></param>
+        public void AttachReferences(FileIOManager newFileIOManager = null, Session newSession = null)
+        {
+            if (newFileIOManager != null) fileIOManager = newFileIOManager;
+            if (newSession != null) session = newSession;
+        }
 
 		public void Initialise()
 		{
@@ -41,14 +54,14 @@ namespace UXF {
 			DataRow row = table.NewRow();
 			row["timestamp"] = Time.time;
 			row["log_type"] = type.ToString();
-			row["message"] = logString;
+			row["message"] = logString.Replace(",", string.Empty);
 			table.Rows.Add(row);
 		}
 		
 		public void Finalise()
 		{
 			string filepath = Path.Combine(session.path, "log.csv");
-			fileIOManager.WriteCSV(table, filepath);
+			fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(table, filepath));
             Application.logMessageReceived -= HandleLog;
         }
 

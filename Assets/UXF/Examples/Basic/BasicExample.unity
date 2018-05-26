@@ -160,16 +160,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: customHeaders.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: trackedObjects.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4522850482104986, guid: 0a3b6392f04558844bd340e68ced1ff9, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -204,6 +194,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
+      propertyPath: trackedObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 1294342340}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
       propertyPath: onSessionBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 42531503}
@@ -222,61 +217,6 @@ Prefab:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 224286096967890162, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224286096967890162, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224286096967890162, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 164
-      objectReference: {fileID: 0}
-    - target: {fileID: 224286096967890162, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 318
-      objectReference: {fileID: 0}
-    - target: {fileID: 224546371281550106, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 224546371281550106, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.0000051259995
-      objectReference: {fileID: 0}
-    - target: {fileID: 114345737082279174, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: m_Value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224130118367839794, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114375821934039048, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: quickStartMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: customHeaders.Array.data[0]
-      value: some_variable
-      objectReference: {fileID: 0}
-    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 2}
-      propertyPath: trackedObjects.Array.data[0]
-      value: 
-      objectReference: {fileID: 1294342340}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a3b6392f04558844bd340e68ced1ff9, type: 2}
   m_IsPrefabParent: 0

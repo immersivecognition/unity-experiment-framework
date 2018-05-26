@@ -1891,6 +1891,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 325d8bc56dfbdf4439627ee58ed3a5a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  session: {fileID: 114916036141644208}
+  fileIOManager: {fileID: 114324480150258046}
 --- !u!114 &114164683737562590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2659,6 +2661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bd92b5564a1d343b07363d3453a980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 1
 --- !u!114 &114344481789201668
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2770,7 +2773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67303b59714ae6141976cebbe8c7d961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quickStartMode: 0
+  quickStartMode: 1
   saveDataLocation: example_output
   experimentSettingsName: basic_example_1.json
   _participantDataPoints:
@@ -4555,12 +4558,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa9f2505d11cc9e4aa44357b47b12905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endExperimentOnQuit: 1
-  _settingsToLog:
-  - size
-  _customHeaders:
+  endOnDestroy: 1
+  settingsToLog: []
+  customHeaders:
   - some_variable
-  _trackedObjects: []
+  trackedObjects:
+  - {fileID: 0}
   onSessionBegin:
     m_PersistentCalls:
       m_Calls:
@@ -4606,26 +4609,17 @@ MonoBehaviour:
       PublicKeyToken=null
   onTrialEnd:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114916036141644208}
-        m_MethodName: BeginNextTrial
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UXF.TrialEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  isQuitting: 0
+  _hasInitialised: 0
   experimentName: 
   ppid: 
   number: 0
   currentTrialNum: 0
   currentBlockNum: 0
+  fileIOManager: {fileID: 114324480150258046}
+  logger: {fileID: 114155219626309100}
 --- !u!114 &114922365913132848
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6261,7 +6255,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0000059604645}
+  m_AnchoredPosition: {x: 0, y: -0.0000051259995}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224594001841352330

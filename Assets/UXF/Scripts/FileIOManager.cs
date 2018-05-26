@@ -1,21 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System.IO;
 using System.Threading;
 using System.Linq;
 using System.Collections.Specialized;
-using UnityEngine.Events;
 using System.Data;
 
 
 namespace UXF
 {
     /// <summary>
-    /// Singleton class which manages File I/O in a seperate thread to avoid hitches.
+    /// Component which manages File I/O in a seperate thread to avoid hitches.
     /// </summary>
     public class FileIOManager : MonoBehaviour
     {
+        
+        [Tooltip("Enable to print debug messages to the console.")]
+        public bool debug = false;
 
         /// <summary>
         /// Queue of actions which gets emptied on each frame in the main thread.
@@ -25,15 +28,25 @@ namespace UXF
         BlockingQueue<System.Action> bq = new BlockingQueue<System.Action>();
         Thread t;
 
+        bool quitting = false;
+
         void Awake()
         {
+            Begin();
+        }
+
+        public void Begin()
+        {
+            if (t != null && t.IsAlive)
+                throw new ThreadStateException("Cannot Begin. FileIOManager thread has already been started!");
+
             t = new Thread(Worker);
             t.Start();
         }
 
         void Update()
         {
-            ManageMainThreadActions();
+            ManageInMain();
         }
 
 
@@ -41,8 +54,22 @@ namespace UXF
         /// Adds a new command to a queue which is executed in a separate worker thread when it is available.
         /// </summary>
         /// <param name="command"></param>
-        public void Manage(System.Action action)
+        public void ManageInWorker(System.Action action)
         {
+            if (debug)
+                Debug.LogFormat("Managing action: {0}.{1}", action.Method.ReflectedType.FullName, action.Method.Name);
+
+            if (quitting)
+            {
+                throw new System.InvalidOperationException(
+                    string.Format(
+                        "Cant add action to FileIOManager, is currently quitting. Action: {0}.{1}",
+                        action.Method.ReflectedType.FullName,
+                        action.Method.Name
+                        )
+                );
+            }
+
             bq.Enqueue(action);
         }
 
@@ -65,10 +92,16 @@ namespace UXF
                 }
                 catch (System.Exception e)
                 {
-                    // stops thread aborting
-                    Debug.LogError(e);
+                    // stops thread aborting upon an exception
+                    Debug.LogException(e);
                 }
+                
+                if (quitting && bq.NumItems() == 0)
+                    break;
             }
+
+            if (debug)
+                Debug.Log("Finished worker thread");
         }
 
         public void CopyFile(string sourceFileName, string destFileName)
@@ -163,7 +196,7 @@ namespace UXF
         /// <summary>
         /// Handles any actions which are enqueued to run on Unity's main thread.
         /// </summary>
-        void ManageMainThreadActions()
+        void ManageInMain()
         {
             while (executeOnMainThreadQueue.Count > 0)
             {
@@ -173,7 +206,7 @@ namespace UXF
 
         void OnDestroy()
         {
-            Manage(new System.Action(Quit));
+            Quit();
         } 
 
         /// <summary>
@@ -181,7 +214,8 @@ namespace UXF
         /// </summary>
         public void Quit()
         {
-            t.Abort();
+            quitting = true;
+            t.Join();
         }
 
     }

@@ -24,7 +24,7 @@ public class OrderedResultDict : OrderedDictionary
             }
             else
             {
-                throw new Exception(string.Format("Custom header \"{0}\" does not exist!", key));
+                throw new KeyNotFoundException(string.Format("Custom header \"{0}\" does not exist!", key));
             }
         }
     }
