@@ -1,7 +1,14 @@
 ![Unity Experiment Framework](media/banner.png)
 
 # UXF - Unity Experiment Framework
-A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the development project, if you want to download the package, see [Releases](https://github.com/jackbrookes/unity-experiment-manager/releases). 
+A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the development project, if you want to download the package, see [Releases](https://github.com/jackbrookes/unity-experiment-framework/releases). 
+
+## Get started
+
+Import the latest ```.unitypackage``` [release](https://github.com/jackbrookes/unity-experiment-framework/releases) to your existing Unity project.
+
+Note: Users must change API Compatibility Level to .NET 2.0 in Unity player settings. 
+
 
 ## Features
 
@@ -47,22 +54,21 @@ UXF classes will be useful in two main parts of your project:
 ```csharp
 class ExperimentBuilder : Monobehaviour
 {
-    // set this to your ExperimentSession instance in the inspector
-    public ExpMngr.ExperimentSession session;
+    // set this to your Session instance in the inspector
+    public UXF.Session session;
     
-    // call this function from ExperimentSession OnSessionBegin UnityEvent in its inspector
-    public void GenerateAndRun() 
-    {
-        // Creating a block
-        var myBlock = new ExpMngr.Block(session); 
-
-        // Creating 10 trials within our block
-        for (int i = 0; i < 10; i++)
-            new ExpMngr.Trial(myBlock);
+    // assign this method to the Session OnSessionBegin UnityEvent in its inspector
+    public void GenerateAndRun(UXF.Session session) 
+    {       
+        // Creating a block of 10 trials
+        var myBlock = session.CreateBlock(10);
 
         // Add a new setting to trial 1, here just as an example we will apply a setting of "color" "red" 
-        var firstTrial = myBlock.GetTrial(1);//trial number is not 0 indexed
+        var firstTrial = myBlock.GetTrial(1); //trial number is not 0 indexed
         firstTrial.settings["color"] = "red";
+
+        // Save session instance reference
+        this.session = session;
 
         // Run first trial
         session.nextTrial.Begin();
@@ -79,11 +85,12 @@ class ExperimentBuilder : Monobehaviour
 ```csharp
 class SceneManipulator : MonoBehaviour
 {
-    // set this to your ExperimentSession instance in the inspector
-    public ExpMngr.ExperimentSession session;
+    public UXF.Session session;
 
-    // call this function from ExperimentSession OnTrialBegin UnityEvent in its inspector
-    public void RunTrial(ExpMngr.Trial trial)
+    ...
+
+    // assign this method to the Session OnTrialBegin UnityEvent in its inspector
+    public void ShowStimulus(UXF.Trial trial)
     {
         // pull out the color we applied for this trial
         string colorManipulation = (string) trial.settings["color"];
@@ -93,7 +100,7 @@ class SceneManipulator : MonoBehaviour
     }
 
     // this could trigger on some user behaviour, collecting their score in a task
-    public void EndTrial(int score)
+    public void RecordResultsAndEnd(int score)
     {
         // store their score
         session.currentTrial.results["score"] = score;
@@ -106,14 +113,6 @@ class SceneManipulator : MonoBehaviour
 
 
 See `Assets/ExpMngr/ExampleScript.cs` for another simple example.
-
-
-
-## Get started
-
-Download the project folder and open in Unity. Alternatively import the latest ```.unitypackage``` [release](https://github.com/jackbrookes/unity-experiment-manager/releases) to your existing Unity project.
-
-Note: Users must change API Compatibility Level to .NET 2.0 in Unity player settings. 
 
 
 ## Development
