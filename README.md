@@ -5,9 +5,9 @@ A set of C# scripts which simplifies management of human-based experiments devel
 
 ## Get started
 
-Import the latest ```.unitypackage``` [release](https://github.com/jackbrookes/unity-experiment-framework/releases) to your existing Unity project.
+1. Import the latest ```UXF.unitypackage``` [release](https://github.com/jackbrookes/unity-experiment-framework/releases) to your existing Unity project.
 
-Note: Users must change API Compatibility Level to .NET 2.0 in Unity player settings. 
+2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0 in Unity player settings. 
 
 
 ## Features
@@ -19,7 +19,7 @@ Note: Users must change API Compatibility Level to .NET 2.0 in Unity player sett
 
 ### Data collection
 
-ExpMngr automates the process of collecting behavioural and movement data. **Behavioural data** is collected with 1 row per `Trial`, and automatically records some values such as the timestamp of the start and end of the trial.
+UXF automates the process of collecting behavioural and movement data. **Behavioural data** is collected with 1 row per `Trial`, and automatically records some values such as the timestamp of the start and end of the trial.
 **Movement data** is the position and rotation of any object in the scene, which is captured at whatever frame rate the application is running at (in the `Update()` loop) by adding a `Tracker` component to a GameObject. This can be used to track positions of user controlled objects (such as hands or head in a virtual reality application) or an arbitrary object in the scene (e.g. some kind of stimuli). 
 Data is stored in CSV files with automatic handling of file & directory naming.
 
@@ -54,6 +54,7 @@ UXF classes will be useful in two main parts of your project:
 ```csharp
 class ExperimentBuilder : Monobehaviour
 {
+
     // set this to your Session instance in the inspector
     public UXF.Session session;
     
@@ -85,6 +86,7 @@ class ExperimentBuilder : Monobehaviour
 ```csharp
 class SceneManipulator : MonoBehaviour
 {
+
     public UXF.Session session;
 
     ...
@@ -111,9 +113,7 @@ class SceneManipulator : MonoBehaviour
 }
 ```
 
-
-See `Assets/ExpMngr/ExampleScript.cs` for another simple example.
-
+More examples are contained in the package.
 
 ## Development
 
