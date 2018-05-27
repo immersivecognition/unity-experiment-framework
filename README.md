@@ -9,13 +9,18 @@ A set of C# scripts which simplifies management of human-based experiments devel
 
 2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0 in Unity player settings. 
 
+3. Open an example scene or add the `[UXF_Rig]` prefab to your scene.
+
+4. Press play, and use the UI to create a new participant list in an appropriate directory.
+
+5. Press start to begin the session.
 
 ## Features
 
 ### Programming style
 
 * Classes for common experimental concepts such as `Session`, `Block` & `Trial`
-* Helps create maintainable and readable code using an Object-Oriented Programming style, fitting in with Unity's Component System
+* Helps create maintainable and readable code fitting with Unity's Component System
 
 ### Data collection
 
