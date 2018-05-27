@@ -37,7 +37,7 @@ The settings is cascading, allowing setting independent variables at a `Session`
 
 ### UI
 
-A UI is available to load participant data from file (or add new participant data). Variables that are collected are customisable and can be used in the experiment (e.g. a parameter for a participant's age could be used to change the difficulty of the experiment).
+A UI is available (but optional) allowing loading of participant data from file (or add new participant data). Variables that are collected are customisable and can be used in the experiment (e.g. a parameter for a participant's age could be used to change the difficulty of the experiment).
 
 ![User interface](media/screenshot-1.PNG)
 
