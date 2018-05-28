@@ -68,6 +68,26 @@ namespace UXF.Tests
                 System.IO.File.Delete(file);
             }
         }
+
+
+        [Test]
+        public void EarlyExit()
+        {
+            fileIOManager.Begin();
+            fileIOManager.End();
+			
+			Assert.Throws<System.InvalidOperationException>(
+				() => {
+                    fileIOManager.ManageInWorker(() => Debug.Log("Code enqueued after FileIOManager ended"));
+				}
+			);
+
+            fileIOManager.Begin();
+            fileIOManager.ManageInWorker(() => Debug.Log("Code enqueued after FileIOManager re-opened"));
+            fileIOManager.End();
+
+        }
+
     }
 
 }

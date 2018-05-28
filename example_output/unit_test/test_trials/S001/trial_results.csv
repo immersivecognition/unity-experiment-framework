@@ -1,6 +1,6 @@
-experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation
-unit_test,test_trials,1,1,1,1,0.9902837,0.9902837,1
-unit_test,test_trials,1,2,1,2,0.9902837,0.9902837,2
-unit_test,test_trials,1,3,2,1,0.9902837,0.9902837,3
-unit_test,test_trials,1,4,2,2,0.9902837,0.9902837,4
-unit_test,test_trials,1,5,2,3,0.9902837,0.9902837,5
+experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation
+unit_test,test_trials,1,1,1,1,1.435732,1.435732,1,
+unit_test,test_trials,1,2,1,2,1.435732,1.435732,2,
+unit_test,test_trials,1,3,2,1,1.435732,1.435732,3,
+unit_test,test_trials,1,4,2,2,1.435732,1.435732,4,
+unit_test,test_trials,1,5,2,3,1.435732,1.435732,5,

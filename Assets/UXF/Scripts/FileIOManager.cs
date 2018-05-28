@@ -30,6 +30,8 @@ namespace UXF
 
         bool quitting = false;
 
+        public static System.Action doNothing = () => { };
+
         void Awake()
         {
             Begin();
@@ -40,6 +42,7 @@ namespace UXF
             if (t != null && t.IsAlive)
                 throw new ThreadStateException("Cannot Begin. FileIOManager thread has already been started!");
 
+            quitting = false;
             t = new Thread(Worker);
             t.Start();
         }
@@ -147,16 +150,8 @@ namespace UXF
 
             for (int i = 1; i <= dataDict.Count; i++)
             {
-                try
-                {
-                    dataDict[i - 1].Values.CopyTo(row, 0);
-                    csvRows[i] = string.Join(",", row.Select(v => v.ToString()).ToArray());
-                }
-                catch (System.NullReferenceException)
-                {
-                    
-                }              
-                
+                dataDict[i - 1].Values.CopyTo(row, 0);
+                csvRows[i] = string.Join(",", row.Select(v => System.Convert.ToString(v)).ToArray());
             }
 
             File.WriteAllLines(fpath, csvRows);
@@ -223,6 +218,8 @@ namespace UXF
             if (debug)
                 Debug.Log("Joining FileIOManagerThread");
             quitting = true;
+
+            bq.Enqueue(doNothing); // ensures bq breaks from foreach loop
             t.Join();
         }
 

@@ -36,6 +36,8 @@ namespace UXF.Tests
                 session
             );
 
+            sessionLogger.Initialise();
+
             fileIOManager.debug = true;
             fileIOManager.Begin();
 
@@ -43,6 +45,7 @@ namespace UXF.Tests
             string ppid = "test_trials";
             session.Begin(experimentName, ppid, "example_output");
             session.customHeaders.Add("observation");
+            session.customHeaders.Add("null_observation");
 
 			// generate trials
 			session.CreateBlock(2);
@@ -65,9 +68,10 @@ namespace UXF.Tests
             {
                 trial.Begin();
                 trial.result["observation"] = ++i;
+                trial.result["null_observation"] = null;
 
                 Assert.Throws<KeyNotFoundException>(
-                    delegate { trial.result["other_observation"] = "something"; }
+                    delegate { trial.result["not_customheader_observation"] = "something"; }
                 );
 
                 Assert.AreSame(trial, session.currentTrial);
