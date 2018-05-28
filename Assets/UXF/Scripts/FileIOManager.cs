@@ -52,12 +52,11 @@ namespace UXF
 
         /// <summary>
         /// Adds a new command to a queue which is executed in a separate worker thread when it is available.
+        /// Warning: The Unity Engine API is not thread safe, so do not attempt to put any Unity commands here.
         /// </summary>
         /// <param name="command"></param>
         public void ManageInWorker(System.Action action)
         {
-            if (debug)
-                Debug.LogFormat("Managing action: {0}.{1}", action.Method.ReflectedType.FullName, action.Method.Name);
 
             if (quitting)
             {
@@ -75,9 +74,16 @@ namespace UXF
 
         void Worker()
         {
+            if (debug)
+                Debug.Log("Started worker thread");
+
             // performs FileIO tasks in seperate thread
             foreach (var action in bq)
             {
+
+                if (debug && action != null)
+                    Debug.LogFormat("Managing action: {0}.{1}", action.Method.ReflectedType.FullName, action.Method.Name);
+
                 try
                 {
                     action.Invoke();
@@ -206,14 +212,16 @@ namespace UXF
 
         void OnDestroy()
         {
-            Quit();
+            End();
         } 
 
         /// <summary>
         /// Aborts the FileIOManager's thread.
         /// </summary>
-        public void Quit()
+        public void End()
         {
+            if (debug)
+                Debug.Log("Joining FileIOManagerThread");
             quitting = true;
             t.Join();
         }

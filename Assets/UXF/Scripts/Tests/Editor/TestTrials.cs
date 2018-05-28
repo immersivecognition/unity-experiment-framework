@@ -7,7 +7,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UXF.Tests {
+namespace UXF.Tests
+{
 
 	public class TestTrials
 	{
@@ -52,7 +53,7 @@ namespace UXF.Tests {
         public void TearDown()
         {
             session.End();
-            fileIOManager.Quit();
+            fileIOManager.End();
             GameObject.DestroyImmediate(gameObject);
         }
 
