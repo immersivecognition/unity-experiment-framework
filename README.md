@@ -1,4 +1,4 @@
-![Unity Experiment Framework](docs/media/banner.png)
+![UXF - Unity Experiment Framework](media/banner-tp-small.png)
 
 # UXF - Unity Experiment Framework
 A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the development project, if you want to download the package, see [Releases](https://github.com/jackbrookes/unity-experiment-framework/releases). 
@@ -44,7 +44,7 @@ The settings is cascading, allowing setting independent variables at a `Session`
 
 A UI is available (but optional) allowing loading of participant data from file (or add new participant data). Variables that are collected are customisable and can be used in the experiment (e.g. a parameter for a participant's age could be used to change the difficulty of the experiment).
 
-![User interface](docs/media/screenshot-1.png)
+![User interface](media/screenshot-1.png)
 
 ### File IO
 
