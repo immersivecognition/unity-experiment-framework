@@ -15,7 +15,7 @@ namespace UXF
         public static Settings empty { get { return new Settings(new Dictionary<string, object>()); } }
 
         Settings parentSettings;
-        public Dictionary<string, object> baseDict;
+        public Dictionary<string, object> baseDict { get; private set; }
 
         public Dictionary<string, object>.KeyCollection Keys { get { return baseDict.Keys; }}
 
