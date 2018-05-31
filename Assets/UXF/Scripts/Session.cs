@@ -332,7 +332,10 @@ namespace UXF
             onSessionBegin.Invoke(this);
 
             // copy Settings to session folder
-            WriteDictToSessionFolder(settings.baseDict, "settings");
+            
+            WriteDictToSessionFolder(
+                new Dictionary<string, object>(settings.baseDict), // makes a copy
+                "settings");
         }
 
 
