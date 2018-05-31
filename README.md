@@ -1,13 +1,15 @@
-![UXF - Unity Experiment Framework](media/banner-tp-small.png)
+<p align="center">
+  <img src="media/banner-tp-small.png">
+</p>
 
 # UXF - Unity Experiment Framework
-A set of C# scripts which simplifies management of human-based experiments developed in Unity. This is the development project, if you want to download the package, see [Releases](https://github.com/jackbrookes/unity-experiment-framework/releases/latest). 
+A set of components which simplify human behaviour experiments developed in the Unity engine. This is the development project, if you want to download the package, see [Releases](https://github.com/jackbrookes/unity-experiment-framework/releases/latest). 
 
 ## Get started
 
 1. Import the latest ```UXF.unitypackage``` [release](https://github.com/jackbrookes/unity-experiment-framework/releases/latest) to your existing Unity project.
 
-2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0 in Unity player settings. 
+2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0. 
 
 3. Open an example scene or add the `[UXF_Rig]` prefab to your scene.
 
