@@ -9,10 +9,10 @@ using System.Collections.Specialized;
 
 namespace UXF
 {
-    [Serializable]
     /// <summary>
     /// The base unit of experiments. A Trial is usually a singular attempt at a task by a participant after/during the presentation of a stimulus.
     /// </summary>
+    [Serializable]
     public class Trial
     {
 

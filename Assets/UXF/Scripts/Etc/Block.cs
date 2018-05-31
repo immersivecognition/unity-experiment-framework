@@ -6,7 +6,7 @@ using System.Text;
 namespace UXF
 {
     /// <summary>
-    /// A set of trials – often used to group a number of consecutive Trial objects that share something in common.
+    /// A set of trials, often used to group a number of consecutive Trial objects that share something in common.
     /// </summary>
     public class Block
     {
@@ -80,17 +80,6 @@ namespace UXF
             return trials[relativeTrialNumber - 1];
         }
 
-        /// <summary>
-        /// Creates a block for an associated experement session
-        /// </summary>
-        /// <param name="session">Experiment session</param>
-        [Obsolete]        
-        public Block(Session session)
-        {
-            this.session = session;
-            this.session.blocks.Add(this);
-            settings.SetParent(this.session.settings);
-        }
     }
 
 }
