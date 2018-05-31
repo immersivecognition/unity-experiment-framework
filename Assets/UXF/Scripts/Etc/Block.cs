@@ -35,13 +35,17 @@ namespace UXF
         /// </summary>
         public Settings settings = Settings.empty;
 
-        public Session session;
+        /// <summary>
+        /// The session associated with this block
+        /// </summary>
+        public Session session { get; private set; }
 
 
         /// <summary>
         /// Create a block with a given number of trials under a given session
         /// </summary>
         /// <param name="numberOfTrials"></param>
+        /// <param name="session"></param>
         public Block(uint numberOfTrials, Session session)
         {
             this.session = session;
@@ -76,12 +80,11 @@ namespace UXF
             return trials[relativeTrialNumber - 1];
         }
 
-
-        [Obsolete]
         /// <summary>
         /// Creates a block for an associated experement session
         /// </summary>
         /// <param name="session">Experiment session</param>
+        [Obsolete]        
         public Block(Session session)
         {
             this.session = session;

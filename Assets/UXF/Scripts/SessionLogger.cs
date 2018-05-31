@@ -6,8 +6,11 @@ using System.IO;
 using UnityEngine;
 
 
-namespace UXF {
-
+namespace UXF
+{
+	/// <summary>
+	/// Component that handles collecting all Debug.Log calls
+	/// </summary>
 	public class SessionLogger : MonoBehaviour
 	{	
 		private Session session;
@@ -33,6 +36,9 @@ namespace UXF {
             if (newSession != null) session = newSession;
         }
 
+		/// <summary>
+		/// Initialises the session logger, creating the internal data structures, and attaching its logging method to handle Debug.Log messages 
+		/// </summary>
 		public void Initialise()
 		{
 			table = new DataTable();
@@ -57,8 +63,11 @@ namespace UXF {
 			row["message"] = logString.Replace(",", string.Empty);
 			table.Rows.Add(row);
 		}
-		
-		public void Finalise()
+
+        /// <summary>
+        /// Finalises the session logger, saving the data and detaching its logging method from handling Debug.Log messages  
+        /// </summary>
+        public void Finalise()
 		{
 			string filepath = Path.Combine(session.path, "log.csv");
 			fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(table, filepath));

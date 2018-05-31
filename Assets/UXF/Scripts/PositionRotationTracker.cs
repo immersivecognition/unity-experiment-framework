@@ -11,7 +11,9 @@ namespace UXF
     /// </summary>
     public class PositionRotationTracker : Tracker
     {
-
+        /// <summary>
+        /// Sets measurementDescriptor and customHeader to appropriate values
+        /// </summary>
         protected override void SetupDescriptorAndHeader()
         {
             measurementDescriptor = "movement";
@@ -27,6 +29,10 @@ namespace UXF
             };
         }
 
+        /// <summary>
+        /// Returns current position and rotation values
+        /// </summary>
+        /// <returns></returns>
         protected override string[] GetCurrentValues()
         {
             // get position and rotation

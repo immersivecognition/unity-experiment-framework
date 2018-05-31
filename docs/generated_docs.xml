@@ -1,0 +1,1254 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Assembly-CSharp.dll</name>
+    </assembly>
+    <members>
+        <member name="T:BasicExampleScript">
+            <summary>
+            Example script used to test functionality of the Experiment Manager
+            </summary>
+        </member>
+        <member name="M:BasicExampleScript.GenerateExperiment(UXF.Session)">
+            <summary>
+            generates the trials and blocks for the session
+            </summary>
+            <param name="experimentSession"></param>
+        </member>
+        <member name="M:BasicExampleScript.PresentStimulus(UXF.Trial)">
+            <summary>
+            Example method presenting a stimulus to a user
+            </summary>
+            <param name="trial"></param>
+        </member>
+        <member name="M:CSVFile.CSV.ParseMultiLine(System.IO.StreamReader,System.Char,System.Char)">
+            <summary>
+            Parse a line whose values may include newline symbols or CR/LF
+            </summary>
+            <param name="sr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CSVFile.CSV.ParseLine(System.String,System.Char,System.Char)">
+            <summary>
+            Parse the line and return the array if it succeeds, or as best as we can get
+            </summary>
+            <param name="s"></param>
+            <param name="delimiter"></param>
+            <param name="text_qualifier"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CSVFile.CSV.TryParseLine(System.String,System.Char,System.Char,System.String[]@)">
+            <summary>
+            Read in a line of text, and use the Add() function to add these items to the current CSV structure
+            </summary>
+            <param name="s"></param>
+        </member>
+        <member name="M:CSVFile.CSV.LoadDataTable(System.String,System.Boolean,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Read in a single CSV file into a datatable in memory
+            </summary>
+            <param name="filename"></param>
+            <param name="delim">The CSV field delimiter character.</param>
+            <param name="qual">The CSV text qualifier character.</param>
+            <returns>An data table of strings that were retrieved from the CSV file.</returns>
+        </member>
+        <member name="M:CSVFile.CSV.LoadDataTable(System.IO.StreamReader,System.Boolean,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Read in a single CSV file into a datatable in memory
+            </summary>
+            <param name="filename"></param>
+            <param name="delim">The CSV field delimiter character.</param>
+            <param name="qual">The CSV text qualifier character.</param>
+            <returns>An data table of strings that were retrieved from the CSV file.</returns>
+        </member>
+        <member name="M:CSVFile.CSV.LoadDataTable(System.String,System.String[],System.Boolean,System.Char,System.Char)">
+            <summary>
+            Read in a single CSV file into a datatable in memory
+            </summary>
+            <param name="filename"></param>
+            <param name="delim">The CSV field delimiter character.</param>
+            <param name="qual">The CSV text qualifier character.</param>
+            <returns>An data table of strings that were retrieved from the CSV file.</returns>
+        </member>
+        <member name="M:CSVFile.CSV.LoadDataTable(System.IO.StreamReader,System.String[],System.Boolean,System.Char,System.Char)">
+            <summary>
+            Read in a single CSV file into a datatable in memory
+            </summary>
+            <param name="filename"></param>
+            <param name="delim">The CSV field delimiter character.</param>
+            <param name="qual">The CSV text qualifier character.</param>
+            <returns>An data table of strings that were retrieved from the CSV file.</returns>
+        </member>
+        <member name="M:CSVFile.CSV.LoadString(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Convert a CSV file (in string form) into a data table
+            </summary>
+            <param name="source_string"></param>
+            <param name="first_row_are_headers"></param>
+            <param name="ignore_dimension_errors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CSVFile.CSV.SaveAsCSV(System.Data.DataTable,System.String,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Write a data table to disk at the designated file name in CSV format
+            </summary>
+            <param name="dt"></param>
+            <param name="fn"></param>
+        </member>
+        <member name="M:CSVFile.CSV.SendCsvAttachment(System.Data.DataTable,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Send this 
+            </summary>
+            <param name="dt"></param>
+            <param name="from_address"></param>
+            <param name="to_address"></param>
+            <param name="subject"></param>
+            <param name="body"></param>
+            <param name="??"></param>
+        </member>
+        <member name="M:CSVFile.CSV.WriteToStream(System.Data.DataTable,System.IO.StreamWriter,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Write the data table to a stream in CSV format
+            </summary>
+            <param name="dt">The data table to write</param>
+            <param name="sw">The stream where the CSV text will be written</param>
+            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
+            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
+            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
+        </member>
+        <member name="M:CSVFile.CSV.WriteToString(System.Data.DataTable,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Write a DataTable to a string in CSV format
+            </summary>
+            <param name="dt">The datatable to write</param>
+            <param name="sw">The stream where the CSV text will be written</param>
+            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
+            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
+            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
+            <returns>The CSV string representing the object array.</returns>
+        </member>
+        <member name="M:CSVFile.CSV.WriteToStream``1(System.Collections.Generic.IEnumerable{``0},System.IO.StreamWriter,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Serialize an object array to a stream in CSV format
+            </summary>
+            <param name="list">The object array to write</param>
+            <param name="sw">The stream where the CSV text will be written</param>
+            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
+            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
+            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
+        </member>
+        <member name="M:CSVFile.CSV.WriteToStream``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Serialize an object array to a stream in CSV format
+            </summary>
+            <param name="list">The object array to write</param>
+            <param name="sw">The stream where the CSV text will be written</param>
+            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
+            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
+            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
+        </member>
+        <member name="M:CSVFile.CSV.WriteToString``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Char,System.Char)">
+            <summary>
+            Serialize an object array to a string in CSV format
+            </summary>
+            <param name="list">The object array to write</param>
+            <param name="sw">The stream where the CSV text will be written</param>
+            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
+            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
+            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
+            <returns>The CSV string representing the object array.</returns>
+        </member>
+        <member name="M:CSVFile.CSV.LoadArray``1(System.String,System.Boolean,System.Boolean,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Read in a single CSV file as an array of objects
+            </summary>
+            <typeparam name="T">The type of objects to deserialize from this CSV.</typeparam>
+            <param name="stream">The stream to read.</param>
+            <param name="ignore_dimension_errors">Set to true if you wish to ignore rows that have a different number of columns.</param>
+            <param name="ignore_bad_columns">Set to true if you wish to ignore column headers that don't match up to object attributes.</param>
+            <param name="ignore_type_conversion_errors">Set to true if you wish to overlook elements in the CSV array that can't be properly converted.</param>
+            <param name="delim">The CSV field delimiter character.</param>
+            <param name="qual">The CSV text qualifier character.</param>
+            <returns>An array of objects that were retrieved from the CSV file.</returns>
+        </member>
+        <member name="M:CSVFile.CSV.Output(System.Collections.Generic.IEnumerable{System.Object},System.Char,System.Char,System.Boolean)">
+            <summary>
+            Output a single field value as appropriate
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CSVFile.CSV.SaveArray``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Saves an array of objects to a CSV string in memory.
+            </summary>
+            <typeparam name="T">The type of objects to serialize from this CSV.</typeparam>
+            <param name="list">The array of objects to serialize.</param>
+            <param name="save_column_names">Set to true if you wish the first line of the CSV to contain the field names.</param>
+            <param name="force_qualifiers">Set to true to force qualifier characters around each field.</param>
+            <param name="delim">The CSV field delimiter character.</param>
+            <param name="qual">The CSV text qualifier character.</param>
+            <returns>The CSV string.</returns>
+        </member>
+        <member name="M:CSVFile.CSV.LoadArray``1(System.IO.StreamReader,System.Boolean,System.Boolean,System.Boolean,System.Char,System.Char)">
+            <summary>
+            Read in a single CSV file as an array of objects
+            </summary>
+            <typeparam name="T">The type of objects to deserialize from this CSV.</typeparam>
+            <param name="stream">The stream to read.</param>
+            <param name="ignore_dimension_errors">Set to true if you wish to ignore rows that have a different number of columns.</param>
+            <param name="ignore_bad_columns">Set to true if you wish to ignore column headers that don't match up to object attributes.</param>
+            <param name="ignore_type_conversion_errors">Set to true if you wish to overlook elements in the CSV array that can't be properly converted.</param>
+            <param name="delim">The CSV field delimiter character.</param>
+            <param name="qual">The CSV text qualifier character.</param>
+            <returns>An array of objects that were retrieved from the CSV file.</returns>
+        </member>
+        <member name="M:CSVFile.CSV.ChopFile(System.String,System.String,System.Boolean,System.Int32,System.Char,System.Char)">
+            <summary>
+            Take a CSV file and chop it into multiple chunks of a specified maximum size.
+            </summary>
+            <param name="filename"></param>
+            <param name="out_folder"></param>
+            <param name="first_row_are_headers"></param>
+            <param name="max_lines_per_file"></param>
+            <returns>Number of files chopped</returns>
+        </member>
+        <member name="F:CSVFile.CSVReader.Headers">
+            <summary>
+            If the first row in the file is a header row, this will be populated
+            </summary>
+        </member>
+        <member name="M:CSVFile.CSVReader.#ctor(System.IO.StreamReader,System.Char,System.Char,System.Boolean)">
+            <summary>
+            Construct a new CSV reader off a streamed source
+            </summary>
+        </member>
+        <member name="M:CSVFile.CSVReader.#ctor(System.IO.Stream,System.Char,System.Char,System.Boolean)">
+            <summary>
+            Construct a new CSV reader off a streamed source
+            </summary>
+        </member>
+        <member name="M:CSVFile.CSVReader.#ctor(System.String,System.Char,System.Char,System.Boolean)">
+            <summary>
+            Initialize a new CSV file structure to write to disk
+            </summary>
+        </member>
+        <member name="M:CSVFile.CSVReader.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Iterate through all lines in this CSV file
+            </summary>
+            <returns>An array of all data columns in the line</returns>
+        </member>
+        <member name="M:CSVFile.CSVReader.System#Collections#Generic#IEnumerable{System#String[]}#GetEnumerator">
+            <summary>
+            Iterate through all lines in this CSV file
+            </summary>
+            <returns>An array of all data columns in the line</returns>
+        </member>
+        <member name="M:CSVFile.CSVReader.Lines">
+            <summary>
+            Iterate through all lines in this CSV file
+            </summary>
+            <returns>An array of all data columns in the line</returns>
+        </member>
+        <member name="M:CSVFile.CSVReader.NextLine">
+            <summary>
+            Retrieve the next line from the file.
+            </summary>
+            <returns>One line from the file.</returns>
+        </member>
+        <member name="M:CSVFile.CSVReader.ReadAsDataTable(System.Boolean,System.Boolean,System.String[])">
+            <summary>
+            Read this file into a data table in memory
+            </summary>
+            <param name="first_row_are_headers"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CSVFile.CSVReader.Dispose">
+            <summary>
+            Close our resources - specifically, the stream reader
+            </summary>
+        </member>
+        <member name="M:CSVFile.CSVReader.Deserialize``1(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Deserialize a CSV file into a list of typed objects
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:CSVFile.CSVWriter.#ctor(System.IO.StreamWriter,System.Char,System.Char)">
+            <summary>
+            Construct a new CSV writer to produce output on the enclosed StreamWriter
+            </summary>
+        </member>
+        <member name="M:CSVFile.CSVWriter.#ctor(System.IO.Stream,System.Char,System.Char)">
+            <summary>
+            Construct a new CSV reader to produce output on the specified stream
+            </summary>
+        </member>
+        <member name="M:CSVFile.CSVWriter.#ctor(System.String,System.Char,System.Char)">
+            <summary>
+            Initialize a new CSV file structure to write data to disk
+            </summary>
+        </member>
+        <member name="M:CSVFile.CSVWriter.WriteLine(System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            Write one line to the file
+            </summary>
+            <param name="line">The array of values for this line</param>
+            <param name="force_qualifiers">True if you want to force qualifiers for this line.</param>
+        </member>
+        <member name="M:CSVFile.CSVWriter.Write(System.Data.DataTable,System.Boolean,System.Boolean)">
+            <summary>
+            Write the data table to a stream in CSV format
+            </summary>
+            <param name="dt">The data table to write</param>
+            <param name="sw">The stream where the CSV text will be written</param>
+            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
+            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
+            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
+        </member>
+        <member name="M:CSVFile.CSVWriter.WriteObjects``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Boolean)">
+            <summary>
+            Serialize a list of objects to CSV using this writer
+            </summary>
+            <typeparam name="IEnumerable">An IEnumerable that produces the list of objects to serialize.</typeparam>
+        </member>
+        <member name="M:CSVFile.CSVWriter.Dispose">
+            <summary>
+            Close our resources - specifically, the stream reader
+            </summary>
+        </member>
+        <member name="T:UXF.Block">
+            <summary>
+            A set of trials – often used to group a number of consecutive Trial objects that share something in common.
+            </summary>
+        </member>
+        <member name="F:UXF.Block.trials">
+            <summary>
+            List of trials associated with this block
+            </summary>
+        </member>
+        <member name="P:UXF.Block.firstTrial">
+            <summary>
+            Return the first trial in this block
+            </summary>
+        </member>
+        <member name="P:UXF.Block.lastTrial">
+            <summary>
+            Return the last trial in this block
+            </summary>
+        </member>
+        <member name="P:UXF.Block.number">
+            <summary>
+            Returns the block number of this block, based on its position in the session.
+            </summary>
+        </member>
+        <member name="F:UXF.Block.settings">
+            <summary>
+            Block settings. These will be overidden by trial settings if set.
+            </summary>
+        </member>
+        <member name="P:UXF.Block.session">
+            <summary>
+            The session associated with this block
+            </summary>
+        </member>
+        <member name="M:UXF.Block.#ctor(System.UInt32,UXF.Session)">
+            <summary>
+            Create a block with a given number of trials under a given session
+            </summary>
+            <param name="numberOfTrials"></param>
+            <param name="session"></param>
+        </member>
+        <member name="M:UXF.Block.CreateTrial">
+            <summary>
+            Create a trial within this block
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Block.GetRelativeTrial(System.Int32)">
+            <summary>
+            Get a trial in this block by relative trial number (non-zero indexed)
+            </summary>
+            <param name="relativeTrialNumber">Trial number relative to block (non zero indexed)</param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Block.#ctor(UXF.Session)">
+            <summary>
+            Creates a block for an associated experement session
+            </summary>
+            <param name="session">Experiment session</param>
+        </member>
+        <member name="T:UXF.SessionEvent">
+            <summary>
+            Event containing a Session as a parameter 
+            </summary>
+        </member>
+        <member name="T:UXF.TrialEvent">
+            <summary>
+            Event containing a Trial as a parameter
+            </summary>
+        </member>
+        <member name="T:UXF.Settings">
+            <summary>
+            Class which handles the cascading settings system. Wraps a Dictionary.
+            </summary>
+        </member>
+        <member name="P:UXF.Settings.empty">
+            <summary>
+            Returns a new empty settings object.
+            </summary>
+        </member>
+        <member name="P:UXF.Settings.baseDict">
+            <summary>
+            The underlying dictionary
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:UXF.Settings.Keys">
+            <summary>
+            The keys for the underlying dictionary
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Settings.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Creates Settings instance from dictionary
+            </summary>
+            <param name="dict"></param>
+        </member>
+        <member name="M:UXF.Settings.SetParent(UXF.Settings)">
+            <summary>
+            Sets the parent setting object, which is accessed when a setting is not found in the dictionary.
+            </summary>
+            <param name="parent"></param>
+        </member>
+        <member name="P:UXF.Settings.Item(System.String)">
+            <summary>
+            Get a setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. If one is never found, it will return null.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Settings.Add(System.String,System.Object)">
+            <summary>
+            Add a new setting to the dictionary
+            </summary>
+            <param name="k">Key</param>
+            <param name="v">Value</param>
+        </member>
+        <member name="T:UXF.Tracker">
+            <summary>
+            Create a new class that inherits from this component to create custom tracking behaviour on a frame-by-frame basis.
+            </summary>
+        </member>
+        <member name="F:UXF.Tracker.objectName">
+            <summary>
+            Name of the object used in saving
+            </summary>
+        </member>
+        <member name="F:UXF.Tracker.measurementDescriptor">
+            <summary>
+            Description of the type of measurement this tracker will perform.
+            </summary>
+        </member>
+        <member name="F:UXF.Tracker.customHeader">
+            <summary>
+            Custom column headers for tracked objects
+            </summary>
+        </member>
+        <member name="P:UXF.Tracker.pathHeader">
+            <summary>
+            The header used when saving the relative filename string within our behavioural data.
+            </summary>
+        </member>
+        <member name="P:UXF.Tracker.header">
+            <summary>
+            The header that will go at the top of the output file associated with this tracker
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Tracker.StartRecording">
+            <summary>
+            Begins recording.
+            </summary>
+        </member>
+        <member name="M:UXF.Tracker.PauseRecording">
+            <summary>
+            Pauses recording.
+            </summary>
+        </member>
+        <member name="M:UXF.Tracker.StopRecording">
+            <summary>
+            Stops recording.
+            </summary>
+        </member>
+        <member name="M:UXF.Tracker.GetDataCopy">
+            <summary>
+            Returns a copy of the data collected by this tracker.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Tracker.GetCurrentValues">
+            <summary>
+            Acquire values for this frame and store them in an array.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Tracker.SetupDescriptorAndHeader">
+            <summary>
+            Override this method and define your own descriptor and header.
+            </summary>
+        </member>
+        <member name="P:UXF.Trial.number">
+            <summary>
+            Returns non-zero indexed trial number. This is generated based on its position in the block, and the ordering of the blocks within the session.
+            </summary>
+        </member>
+        <member name="P:UXF.Trial.numberInBlock">
+            <summary>
+            Returns non-zero indexed trial number for the current block.
+            </summary>
+        </member>
+        <member name="F:UXF.Trial.status">
+            <summary>
+            Status of the trial (enum)
+            </summary>
+        </member>
+        <member name="F:UXF.Trial.block">
+            <summary>
+            The block associated with this session
+            </summary>
+        </member>
+        <member name="P:UXF.Trial.session">
+            <summary>
+            The session associated with this trial
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:UXF.Trial.settings">
+            <summary>
+            Trial settings. These will override block settings if set.
+            </summary>
+        </member>
+        <member name="F:UXF.Trial.result">
+            <summary>
+            Dictionary of results in a order.
+            </summary>
+        </member>
+        <member name="M:UXF.Trial.#ctor(UXF.Block)">
+            <summary>
+            Manually create a trial. When doing this you need to add this trial to a block with block.trials.Add(trial)
+            </summary>
+        </member>
+        <member name="M:UXF.Trial.SetReferences(UXF.Block)">
+            <summary>
+            Set references for the trial.
+            </summary>
+            <param name="trialBlock">The block the trial belongs to.</param>
+        </member>
+        <member name="M:UXF.Trial.Begin">
+            <summary>
+            Begins the trial, updating the current trial and block number, setting the status to in progress, starting the timer for the trial, and beginning recording positions of every object with an attached tracker
+            </summary>
+        </member>
+        <member name="M:UXF.Trial.End">
+            <summary>
+            Ends the Trial, queues up saving results to output file, stops and saves tracked object data.
+            </summary>
+        </member>
+        <member name="T:UXF.TrialStatus">
+            <summary>
+            Status of a trial
+            </summary>
+        </member>
+        <member name="T:UXF.EventSystemFallback">
+            <summary>
+            Simple script to make an event system if one does not exist already.
+            </summary>
+        </member>
+        <member name="T:UXF.FileIOManager">
+            <summary>
+            Component which manages File I/O in a seperate thread to avoid hitches.
+            </summary>
+        </member>
+        <member name="F:UXF.FileIOManager.debug">
+            <summary>
+            Enable to print debug messages to the console.
+            </summary>
+        </member>
+        <member name="F:UXF.FileIOManager.executeOnMainThreadQueue">
+            <summary>
+            Queue of actions which gets emptied on each frame in the main thread.
+            </summary>
+        </member>
+        <member name="F:UXF.FileIOManager.doNothing">
+            <summary>
+            An action which does nothing. Useful if a method requires an Action
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.FileIOManager.Begin">
+            <summary>
+            Starts the FileIOManager Worker thread.
+            </summary>
+        </member>
+        <member name="M:UXF.FileIOManager.ManageInWorker(System.Action)">
+            <summary>
+            Adds a new command to a queue which is executed in a separate worker thread when it is available.
+            Warning: The Unity Engine API is not thread safe, so do not attempt to put any Unity commands here.
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:UXF.FileIOManager.CopyFile(System.String,System.String)">
+            <summary>
+            Copy file from one place to another.
+            </summary>
+            <param name="sourceFileName"></param>
+            <param name="destFileName"></param>
+        </member>
+        <member name="M:UXF.FileIOManager.ReadJSON(System.String,System.Action{System.Collections.Generic.Dictionary{System.String,System.Object}})">
+            <summary>
+            Reads a JSON file from a path then calls a given action with the deserialzed object as the first argument 
+            </summary>
+            <param name="fpath"></param>
+            <param name="callback"></param>
+        </member>
+        <member name="M:UXF.FileIOManager.WriteJson(System.String,System.Object)">
+            <summary>
+            Serializes an object using MiniJSON and writes to a given path
+            </summary>
+            <param name="destFileName"></param>
+            <param name="serializableObject"></param>
+        </member>
+        <member name="M:UXF.FileIOManager.WriteTrials(System.Collections.Generic.List{OrderedResultDict},System.String[],System.String)">
+            <summary>
+            Writes trial data (List of OrderedResultsDict) to file at fpath
+            </summary>
+            <param name="dataDict"></param>
+            <param name="headers"></param>
+            <param name="fpath"></param>
+        </member>
+        <member name="M:UXF.FileIOManager.WriteCSV(System.String[],System.Collections.Generic.IList{System.String[]},System.String)">
+            <summary>
+            Writes a list of string arrays with a given header to a file at given path.
+            </summary>
+            <param name="header"></param>
+            <param name="data"></param>
+            <param name="fpath"></param>
+        </member>
+        <member name="M:UXF.FileIOManager.ReadCSV(System.String,System.Action{System.Data.DataTable})">
+            <summary>
+            Read a CSV file from path, then runs an action that takes a DataTable as an argument. This code assumes the file is on disk, and the first row of the file has the names of the columns on it. Returns null if not found
+            </summary>
+            <param name="fpath"></param>
+            <param name="callback"></param>
+        </member>
+        <member name="M:UXF.FileIOManager.WriteCSV(System.Data.DataTable,System.String)">
+            <summary>
+            Writes a DataTable to file to a path.
+            </summary>
+            <param name="data"></param>
+            <param name="fpath"></param>
+        </member>
+        <member name="M:UXF.FileIOManager.ManageInMain">
+            <summary>
+            Handles any actions which are enqueued to run on Unity's main thread.
+            </summary>
+        </member>
+        <member name="M:UXF.FileIOManager.End">
+            <summary>
+            Aborts the FileIOManager's thread.
+            </summary>
+        </member>
+        <member name="T:UXF.PositionRotationTracker">
+            <summary>
+            Attach this component to a gameobject and assign it in the trackedObjects field in an ExperimentSession to automatically record position/rotation of the object at each frame.
+            </summary>
+        </member>
+        <member name="M:UXF.PositionRotationTracker.SetupDescriptorAndHeader">
+            <summary>
+            Sets measurementDescriptor and customHeader to appropriate values
+            </summary>
+        </member>
+        <member name="M:UXF.PositionRotationTracker.GetCurrentValues">
+            <summary>
+            Returns current position and rotation values
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UXF.Session">
+            <summary>
+            The main class used to manage your experiment. Attach this to a gameobject, and it will manage your experiment "session".
+            </summary>
+        </member>
+        <member name="F:UXF.Session.endOnDestroy">
+            <summary>
+            Enable to automatically safely end the session when this object is destroyed (or the application stops running).
+            </summary>
+        </member>
+        <member name="F:UXF.Session.blocks">
+            <summary>
+            List of blocks for this experiment
+            </summary>
+        </member>
+        <member name="F:UXF.Session.settingsToLog">
+            <summary>
+            List of settings you wish to log to the behavioural file for each trial.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:UXF.Session.customHeaders">
+            <summary>
+            List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.trackedObjects">
+            <summary>
+            List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().
+            </summary>
+        </member>
+        <member name="F:UXF.Session.onSessionBegin">
+            <summary>
+            Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:UXF.Session.onTrialBegin">
+            <summary>
+            Event(s) to trigger when a trial begins. Can pass the instance of the Trial as a dynamic argument
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:UXF.Session.onTrialEnd">
+            <summary>
+            Event(s) to trigger when a trial ends. Can pass the instance of the Trial as a dynamic argument
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:UXF.Session.hasInitialised">
+            <summary>
+            Returns true if session has been intialised
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:UXF.Session.experimentName">
+            <summary>
+            Name of the experiment. Data is saved in a folder with this name.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.ppid">
+            <summary>
+            Unique string for this participant (participant ID)
+            </summary>
+        </member>
+        <member name="F:UXF.Session.number">
+            <summary>
+            Current session number for this participant
+            </summary>
+        </member>
+        <member name="F:UXF.Session.currentTrialNum">
+            <summary>
+            Currently active trial number.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.currentBlockNum">
+            <summary>
+            Currently active block number.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.settings">
+            <summary>
+            Settings for the experiment. These are provided on initialisation of the session.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.inTrial">
+            <summary>
+            Returns true if current trial is in progress
+            </summary>
+        </member>
+        <member name="P:UXF.Session.currentTrial">
+            <summary>
+            Alias of GetTrial()
+            </summary>
+        </member>
+        <member name="P:UXF.Session.nextTrial">
+            <summary>
+            Alias of NextTrial()
+            </summary>
+        </member>
+        <member name="P:UXF.Session.prevTrial">
+            <summary>
+            Get the trial before the current trial.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.firstTrial">
+            <summary>
+            Get the last trial in the last block of the session.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.lastTrial">
+            <summary>
+            Get the last trial in the last block of the session.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.currentBlock">
+            <summary>
+            Alias of GetBlock()
+            </summary>
+        </member>
+        <member name="P:UXF.Session.trials">
+            <summary>
+            Returns a list of trials for all blocks.  Modifying the order of this list will not affect trial order. Modify block.trials to change order within blocks.
+             
+            </summary>
+        </member>
+        <member name="F:UXF.Session.fileIOManager">
+            <summary>
+            Reference to the associated FileIOManager which deals with inputting and outputting files.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.logger">
+            <summary>
+            Reference to the associated SessionLogger which automatically stores all Debug.Log calls
+            </summary>
+        </member>
+        <member name="P:UXF.Session.experimentPath">
+            <summary>
+            Path to the folder used for reading settings and storing the output. 
+            </summary>
+        </member>
+        <member name="P:UXF.Session.ppPath">
+            <summary>
+            Path within the experiment path for this particular particpant.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.path">
+            <summary>
+            Path within the particpant path for this particular session.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.trackingHeaders">
+            <summary>
+            List of file headers generated for all referenced tracked objects.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.headers">
+            <summary>
+            Stores combined list of headers for the behavioural output.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.participantDetails">
+            <summary>
+            Dictionary of objects for datapoints collected via the UI, or otherwise.
+            </summary>
+        </member>
+        <member name="M:UXF.Session.AttachReferences(UXF.FileIOManager,UXF.SessionLogger)">
+            <summary>
+            Provide references to other components 
+            </summary>
+            <param name="newFileIOManager"></param>
+            <param name="newSessionLogger"></param>
+        </member>
+        <member name="M:UXF.Session.InitFolder">
+            <summary>
+            Folder error checks (creates folders, has set save folder, etc)     
+            </summary>
+        </member>
+        <member name="M:UXF.Session.SaveTrackerData(UXF.Tracker)">
+            <summary>
+            Save tracking data for this trial
+            </summary>
+            <param name="tracker">The tracker to take data from to save</param>
+            <returns>Path to the saved file</returns>
+        </member>
+        <member name="M:UXF.Session.CopyFileToSessionFolder(System.String)">
+            <summary>
+            Copies a file to the folder for this session
+            </summary>
+            <param name="filePath"></param>
+        </member>
+        <member name="M:UXF.Session.WriteDictToSessionFolder(System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            Write a dictionary object to a JSON file in the session folder (in a new FileIOManager thread)
+            </summary>
+            <param name="dict">Dictionary object to write</param>
+            <param name="objectName">Name of the object (is used for file name)</param>
+        </member>
+        <member name="M:UXF.Session.CheckSessionExists(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Checks if a session folder already exists for this participant
+            </summary>
+            <param name="experimentName"></param>
+            <param name="participantId"></param>
+            <param name="baseFolder"></param>
+            <param name="sessionNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Session.Begin(System.String,System.String,System.String,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object},UXF.Settings)">
+            <summary>
+            Initialises a Session
+            </summary>
+            <param name="experimentName">A name for the experiment</param>
+            <param name="participantId">A unique ID associated with a participant</param>
+            <param name="baseFolder">Location where data should be stored</param>
+            <param name="sessionNumber">A number for the session (optional: default 1)</param>
+            <param name="participantDetails">Dictionary of information about the participant to be used within the experiment (optional: default null)</param>
+            <param name="settings">A Settings instance (optional: default empty settings)</param>
+        </member>
+        <member name="M:UXF.Session.CreateBlock">
+            <summary>
+            Create and return 1 Block, which then gets automatically added to Session.blocks  
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Session.CreateBlock(System.Int32)">
+            <summary>
+            Create and return block containing a number of trials, which then gets automatically added to Session.blocks  
+            </summary>
+            <param name="numberOfTrials">Number of trials. Must be greater than or equal to 1.</param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Session.GetTrial">
+            <summary>
+            Get currently active trial.
+            </summary>
+            <returns>Currently active trial.</returns>
+        </member>
+        <member name="M:UXF.Session.GetTrial(System.Int32)">
+            <summary>
+            Get trial by trial number (non zero indexed)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Session.NextTrial">
+            <summary>
+            Get next Trial
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Session.EndCurrentTrial">
+            <summary>
+            Ends currently running trial. Useful to call from an inspector event
+            </summary>
+        </member>
+        <member name="M:UXF.Session.BeginNextTrial">
+            <summary>
+            Begins next trial. Useful to call from an inspector event
+            </summary>
+        </member>
+        <member name="M:UXF.Session.PrevTrial">
+            <summary>
+            Get previous Trial.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Session.FirstTrial">
+            <summary>
+            Get first Trial in this session.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Session.LastTrial">
+            <summary>
+            Get last Trial in this session.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Session.GetBlock">
+            <summary>
+            Get currently active block.
+            </summary>
+            <returns>Currently active block.</returns>
+        </member>
+        <member name="M:UXF.Session.GetBlock(System.Int32)">
+            <summary>
+            Get block by block number (non-zero indexed).
+            </summary>
+            <returns>Block.</returns>
+        </member>
+        <member name="M:UXF.Session.End">
+            <summary>
+            Ends the experiment session.
+            </summary>
+        </member>
+        <member name="M:UXF.Session.ReadSettingsFile(System.String,System.Action{System.Collections.Generic.Dictionary{System.String,System.Object}})">
+            <summary>
+            Reads json settings file as Dictionary then calls actioon with Dictionary as parameter
+            </summary>
+            <param name="path">Location of .json file to read</param>
+            <param name="action">Action to call when completed</param>
+        </member>
+        <member name="M:UXF.Session.SessionNumToName(System.Int32)">
+            <summary>
+            Convert a session number to a session name
+            </summary>
+            <param name="num"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UXF.NoSuchTrialException">
+            <summary>
+            Exception thrown in cases where we try to access a trial that does not exist.
+            </summary>
+        </member>
+        <member name="T:UXF.SessionDebugger">
+            <summary>
+            Component which assists in debugging session structure.
+            </summary>
+        </member>
+        <member name="T:UXF.SessionLogger">
+            <summary>
+            Component that handles collecting all Debug.Log calls
+            </summary>
+        </member>
+        <member name="M:UXF.SessionLogger.AttachReferences(UXF.FileIOManager,UXF.Session)">
+            <summary>
+            Provide references to other components 
+            </summary>
+            <param name="newFileIOManager"></param>
+            <param name="newSession"></param>
+        </member>
+        <member name="M:UXF.SessionLogger.Initialise">
+            <summary>
+            Initialises the session logger, creating the internal data structures, and attaching its logging method to handle Debug.Log messages 
+            </summary>
+        </member>
+        <member name="M:UXF.SessionLogger.Finalise">
+            <summary>
+            Finalises the session logger, saving the data and detaching its logging method from handling Debug.Log messages  
+            </summary>
+        </member>
+        <member name="P:UXF.ExperimentStartupController.participantDataPoints">
+            <summary>
+            List of datapoints you want to collect per participant. These will be generated for the GUI and added as new columns in the participant list. Participant ID is added automatically.
+            </summary>
+        </member>
+        <member name="M:UXF.ExperimentStartupController.StartExperiment">
+            <summary>
+            Called upon press of the start button in the UI. Creates the experiment session
+            </summary>
+        </member>
+        <member name="T:UXF.Extensions">
+            <summary>
+            Useful methods
+            </summary>
+        </member>
+        <member name="F:UXF.Extensions.rng">
+            <summary>
+            Random number generator with seed based on current time.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Extensions.Clone``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Clones a list and all items inside
+            </summary>
+            <param name="listToClone"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Extensions.GetSafeFilename(System.String)">
+            <summary>
+            Modify a string to remove any unsafe characters
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Extensions.Shuffle``1(System.Collections.Generic.IList{``0},System.Random)">
+            <summary>
+            Shuffles a list in-place with a given random number generator.
+            </summary>
+            <param name="list">List to shuffle</param>
+            <param name="rng">Random number generator via which the shuffling occurs</param>
+        </member>
+        <member name="M:UXF.Extensions.Shuffle``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Shuffles a list in-place with the current time based random number generator. 
+            </summary>
+            <param name="list">List to shuffle</param>
+        </member>
+        <member name="M:UXF.Extensions.CombinePaths(System.String,System.String[])">
+            <summary>
+            Combine many path parts into a single path.
+            </summary>
+            <param name="path1">Base path</param>
+            <param name="paths">Array of subsequent paths</param>
+            <returns></returns>
+        </member>
+        <member name="T:InspectorButtonAttribute">
+            <summary>
+            This attribute can only be applied to fields because its
+            associated PropertyDrawer only operates on fields (either
+            public or tagged with the [SerializeField] attribute) in
+            the target MonoBehaviour.
+            </summary>
+        </member>
+        <member name="T:MiniJSON.Json">
+             <summary>
+             This class encodes and decodes JSON strings.
+             Spec. details, see http://www.json.org/
+            
+             JSON uses Arrays and Objects. These correspond here to the datatypes IList and IDictionary.
+             All numbers are parsed to doubles.
+             </summary>
+        </member>
+        <member name="M:MiniJSON.Json.Deserialize(System.String)">
+            <summary>
+            Parses the string json into a value
+            </summary>
+            <param name="json">A JSON string.</param>
+            <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
+        </member>
+        <member name="M:MiniJSON.Json.Serialize(System.Object)">
+            <summary>
+            Converts a IDictionary / IList object or a simple type (string, int, etc.) into a JSON string
+            </summary>
+            <param name="obj">A Dictionary&lt;string, object&gt; / List&lt;object&gt;</param>
+            <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
+        </member>
+        <member name="T:ReadOnlyAttribute">
+            <summary>
+            Display a field as read-only in the inspector.
+            CustomPropertyDrawers will not work when this attribute is used.
+            </summary>
+            <seealso cref="T:BeginReadOnlyGroupAttribute"/>
+            <seealso cref="T:EndReadOnlyGroupAttribute"/>
+        </member>
+        <member name="T:BeginReadOnlyGroupAttribute">
+            <summary>
+            Display one or more fields as read-only in the inspector.
+            Use <see cref="T:EndReadOnlyGroupAttribute"/> to close the group.
+            Works with CustomPropertyDrawers.
+            </summary>
+            <seealso cref="T:EndReadOnlyGroupAttribute"/>
+            <seealso cref="T:ReadOnlyAttribute"/>
+        </member>
+        <member name="T:EndReadOnlyGroupAttribute">
+            <summary>
+            Use with <see cref="T:BeginReadOnlyGroupAttribute"/>.
+            Close the read-only group and resume editable fields.
+            </summary>
+            <seealso cref="T:BeginReadOnlyGroupAttribute"/>
+            <seealso cref="T:ReadOnlyAttribute"/>
+        </member>
+        <member name="T:BlockingQueue`1">
+            <summary>
+            Queue class used to manage multithreaded file IO.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:OrderedResultDict">
+            <summary>
+            Class used to store trial results. Is a dictionary that stores its entries in a given order.
+            </summary>
+        </member>
+        <member name="P:OrderedResultDict.Item(System.String)">
+            <summary>
+            Access or set an observation
+            </summary>
+            <param name="key">Name (header) of the observation</param>
+            <returns></returns>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.OpenFilePanel(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Native open file dialog
+            </summary>
+            <param name="title">Dialog title</param>
+            <param name="directory">Root directory</param>
+            <param name="extension">Allowed extension</param>
+            <param name="multiselect">Allow multiple file selection</param>
+            <returns>Returns array of chosen paths. Zero length array when cancelled</returns>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.OpenFilePanel(System.String,System.String,SFB.ExtensionFilter[],System.Boolean)">
+            <summary>
+            Native open file dialog
+            </summary>
+            <param name="title">Dialog title</param>
+            <param name="directory">Root directory</param>
+            <param name="extensions">List of extension filters. Filter Example: new ExtensionFilter("Image Files", "jpg", "png")</param>
+            <param name="multiselect">Allow multiple file selection</param>
+            <returns>Returns array of chosen paths. Zero length array when cancelled</returns>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.OpenFilePanelAsync(System.String,System.String,System.String,System.Boolean,System.Action{System.String[]})">
+            <summary>
+            Native open file dialog async
+            </summary>
+            <param name="title">Dialog title</param>
+            <param name="directory">Root directory</param>
+            <param name="extension">Allowed extension</param>
+            <param name="multiselect">Allow multiple file selection</param>
+            <param name="cb">Callback")</param>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.OpenFilePanelAsync(System.String,System.String,SFB.ExtensionFilter[],System.Boolean,System.Action{System.String[]})">
+            <summary>
+            Native open file dialog async
+            </summary>
+            <param name="title">Dialog title</param>
+            <param name="directory">Root directory</param>
+            <param name="extensions">List of extension filters. Filter Example: new ExtensionFilter("Image Files", "jpg", "png")</param>
+            <param name="multiselect">Allow multiple file selection</param>
+            <param name="cb">Callback")</param>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.OpenFolderPanel(System.String,System.String,System.Boolean)">
+            <summary>
+            Native open folder dialog
+            NOTE: Multiple folder selection doesn't supported on Windows
+            </summary>
+            <param name="title"></param>
+            <param name="directory">Root directory</param>
+            <param name="multiselect"></param>
+            <returns>Returns array of chosen paths. Zero length array when cancelled</returns>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.OpenFolderPanelAsync(System.String,System.String,System.Boolean,System.Action{System.String[]})">
+            <summary>
+            Native open folder dialog async
+            NOTE: Multiple folder selection doesn't supported on Windows
+            </summary>
+            <param name="title"></param>
+            <param name="directory">Root directory</param>
+            <param name="multiselect"></param>
+            <param name="cb">Callback")</param>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.SaveFilePanel(System.String,System.String,System.String,System.String)">
+            <summary>
+            Native save file dialog
+            </summary>
+            <param name="title">Dialog title</param>
+            <param name="directory">Root directory</param>
+            <param name="defaultName">Default file name</param>
+            <param name="extension">File extension</param>
+            <returns>Returns chosen path. Empty string when cancelled</returns>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.SaveFilePanel(System.String,System.String,System.String,SFB.ExtensionFilter[])">
+            <summary>
+            Native save file dialog
+            </summary>
+            <param name="title">Dialog title</param>
+            <param name="directory">Root directory</param>
+            <param name="defaultName">Default file name</param>
+            <param name="extensions">List of extension filters. Filter Example: new ExtensionFilter("Image Files", "jpg", "png")</param>
+            <returns>Returns chosen path. Empty string when cancelled</returns>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.SaveFilePanelAsync(System.String,System.String,System.String,System.String,System.Action{System.String})">
+            <summary>
+            Native save file dialog async
+            </summary>
+            <param name="title">Dialog title</param>
+            <param name="directory">Root directory</param>
+            <param name="defaultName">Default file name</param>
+            <param name="extension">File extension</param>
+            <param name="cb">Callback")</param>
+        </member>
+        <member name="M:SFB.StandaloneFileBrowser.SaveFilePanelAsync(System.String,System.String,System.String,SFB.ExtensionFilter[],System.Action{System.String})">
+            <summary>
+            Native save file dialog async
+            </summary>
+            <param name="title">Dialog title</param>
+            <param name="directory">Root directory</param>
+            <param name="defaultName">Default file name</param>
+            <param name="extensions">List of extension filters. Filter Example: new ExtensionFilter("Image Files", "jpg", "png")</param>
+            <param name="cb">Callback")</param>
+        </member>
+    </members>
+</doc>

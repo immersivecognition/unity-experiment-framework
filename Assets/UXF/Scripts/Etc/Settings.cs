@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UXF
 {
     /// <summary>
-    /// Class which handles the cascading settings system.
+    /// Class which handles the cascading settings system. Wraps a Dictionary.
     /// </summary>
     public class Settings
     {
@@ -15,8 +15,16 @@ namespace UXF
         public static Settings empty { get { return new Settings(new Dictionary<string, object>()); } }
 
         Settings parentSettings;
+        /// <summary>
+        /// The underlying dictionary
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, object> baseDict { get; private set; }
 
+        /// <summary>
+        /// The keys for the underlying dictionary
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, object>.KeyCollection Keys { get { return baseDict.Keys; }}
 
         /// <summary>

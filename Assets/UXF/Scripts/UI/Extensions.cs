@@ -6,7 +6,9 @@ using System.IO;
 
 namespace UXF
 {
-
+    /// <summary>
+    /// Useful methods
+    /// </summary>
     public static class Extensions
     {
 
@@ -16,11 +18,22 @@ namespace UXF
         /// <returns></returns>
         private static System.Random rng = new System.Random();
 
+        /// <summary>
+        /// Clones a list and all items inside
+        /// </summary>
+        /// <param name="listToClone"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IList<T> Clone<T>(this IList<T> listToClone) where T : ICloneable
         {
             return listToClone.Select(item => (T)item.Clone()).ToList();
         }
 
+        /// <summary>
+        /// Modify a string to remove any unsafe characters
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public static string GetSafeFilename(string filename)
         {
             return string.Join("", filename.Split(Path.GetInvalidFileNameChars()));

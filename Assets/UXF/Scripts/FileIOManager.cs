@@ -16,7 +16,9 @@ namespace UXF
     /// </summary>
     public class FileIOManager : MonoBehaviour
     {
-        
+        /// <summary>
+        /// Enable to print debug messages to the console.
+        /// </summary>
         [Tooltip("Enable to print debug messages to the console.")]
         public bool debug = false;
 
@@ -29,7 +31,11 @@ namespace UXF
         Thread t;
 
         bool quitting = false;
-
+        
+        /// <summary>
+        /// An action which does nothing. Useful if a method requires an Action
+        /// </summary>
+        /// <returns></returns>
         public static System.Action doNothing = () => { };
 
         void Awake()
@@ -37,6 +43,9 @@ namespace UXF
             Begin();
         }
 
+        /// <summary>
+        /// Starts the FileIOManager Worker thread.
+        /// </summary>
         public void Begin()
         {
             if (t != null && t.IsAlive)
@@ -57,7 +66,7 @@ namespace UXF
         /// Adds a new command to a queue which is executed in a separate worker thread when it is available.
         /// Warning: The Unity Engine API is not thread safe, so do not attempt to put any Unity commands here.
         /// </summary>
-        /// <param name="command"></param>
+        /// <param name="action"></param>
         public void ManageInWorker(System.Action action)
         {
 
@@ -113,11 +122,21 @@ namespace UXF
                 Debug.Log("Finished worker thread");
         }
 
+        /// <summary>
+        /// Copy file from one place to another.
+        /// </summary>
+        /// <param name="sourceFileName"></param>
+        /// <param name="destFileName"></param>
         public void CopyFile(string sourceFileName, string destFileName)
         {
             File.Copy(sourceFileName, destFileName);
         }
 
+        /// <summary>
+        /// Reads a JSON file from a path then calls a given action with the deserialzed object as the first argument 
+        /// </summary>
+        /// <param name="fpath"></param>
+        /// <param name="callback"></param>
         public void ReadJSON(string fpath, System.Action<Dictionary<string, object>> callback)
         {
             Dictionary<string, object> dict = null;
@@ -136,12 +155,23 @@ namespace UXF
             executeOnMainThreadQueue.Enqueue(action);
         }
 
+        /// <summary>
+        /// Serializes an object using MiniJSON and writes to a given path
+        /// </summary>
+        /// <param name="destFileName"></param>
+        /// <param name="serializableObject"></param>
         public void WriteJson(string destFileName, object serializableObject)
         {            
             string ppJson = MiniJSON.Json.Serialize(serializableObject);
             File.WriteAllText(destFileName, ppJson);
         }
 
+        /// <summary>
+        /// Writes trial data (List of OrderedResultsDict) to file at fpath
+        /// </summary>
+        /// <param name="dataDict"></param>
+        /// <param name="headers"></param>
+        /// <param name="fpath"></param>
         public void WriteTrials(List<OrderedResultDict> dataDict, string[] headers, string fpath)
         {
             string[] csvRows = new string[dataDict.Count + 1];
@@ -157,6 +187,12 @@ namespace UXF
             File.WriteAllLines(fpath, csvRows);
         }
 
+        /// <summary>
+        /// Writes a list of string arrays with a given header to a file at given path.
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="data"></param>
+        /// <param name="fpath"></param>
         public void WriteCSV(string[] header, IList<string[]> data, string fpath)
         {
             string[] csvRows = new string[data.Count + 1];
@@ -167,12 +203,13 @@ namespace UXF
             File.WriteAllLines(fpath, csvRows);
         }
 
-
+        /// <summary>
+        /// Read a CSV file from path, then runs an action that takes a DataTable as an argument. This code assumes the file is on disk, and the first row of the file has the names of the columns on it. Returns null if not found
+        /// </summary>
+        /// <param name="fpath"></param>
+        /// <param name="callback"></param>
         public void ReadCSV(string fpath, System.Action<DataTable> callback)
         {
-            // This code assumes the file is on disk, and the first row of the file
-            // has the names of the columns on it. Returns null if not found
-
             DataTable data = null;
             try
             {
@@ -187,6 +224,11 @@ namespace UXF
             executeOnMainThreadQueue.Enqueue(action);
         }
 
+        /// <summary>
+        /// Writes a DataTable to file to a path.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="fpath"></param>
         public void WriteCSV(DataTable data, string fpath)
         {
             var writer = new CSVFile.CSVWriter(fpath);

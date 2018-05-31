@@ -20,20 +20,28 @@ namespace UXF
         /// Returns non-zero indexed trial number. This is generated based on its position in the block, and the ordering of the blocks within the session.
         /// </summary>
         public int number { get { return session.trials.ToList().IndexOf(this) + 1; } }
+
         /// <summary>
         /// Returns non-zero indexed trial number for the current block.
         /// </summary>
         public int numberInBlock { get { return block.trials.IndexOf(this) + 1; } }
+
         /// <summary>
         /// Status of the trial (enum)
         /// </summary>
         public TrialStatus status = TrialStatus.NotDone;
+
         /// <summary>
-        ///  The block the trial belongs to
+        /// The block associated with this session
         /// </summary>
         public Block block;
         float startTime, endTime;
-        protected Session session;
+
+        /// <summary>
+        /// The session associated with this trial
+        /// </summary>
+        /// <returns></returns>
+        public Session session { get; private set; }
         
         /// <summary>
         /// Trial settings. These will override block settings if set.
@@ -125,7 +133,12 @@ namespace UXF
     /// <summary>
     /// Status of a trial
     /// </summary>
-    public enum TrialStatus { NotDone, InProgress, Done }
+    public enum TrialStatus
+    {
+        NotDone,
+        InProgress,
+        Done
+    }
 
 
 }

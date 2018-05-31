@@ -13,12 +13,16 @@ using UXF;
 public class BasicExampleScript : MonoBehaviour {
 
     UXF.Session session;
-       
+    
+    /// <summary>
+    /// generates the trials and blocks for the session
+    /// </summary>
+    /// <param name="experimentSession"></param>
     public void GenerateExperiment(Session experimentSession)
     {
         // save reference to session
         session = experimentSession;
-        /// This function can be called using the Session inspector OnSessionBegin() event, or otherwise
+        // This function can be called using the Session inspector OnSessionBegin() event, or otherwise
 
 
         // / In the StreamingAssets folder we have a several .json files that contain settings, e.g.
@@ -55,6 +59,10 @@ public class BasicExampleScript : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Example method presenting a stimulus to a user
+    /// </summary>
+    /// <param name="trial"></param>
     public void PresentStimulus(Trial trial)
     {
         // we can call this function via the event "On Trial Begin", which is called when the trial starts
@@ -78,7 +86,7 @@ public class BasicExampleScript : MonoBehaviour {
     }
 
 
-    public void EndAndPrepare()
+    void EndAndPrepare()
     {
         Debug.Log("Ending trial");
         session.currentTrial.End();

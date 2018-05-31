@@ -7,6 +7,9 @@ using UnityEditor;
 
 namespace UXF
 {	
+	/// <summary>
+	/// Component which assists in debugging session structure.
+	/// </summary>
 	[ExecuteInEditMode]
 	public class SessionDebugger : MonoBehaviour
 	{

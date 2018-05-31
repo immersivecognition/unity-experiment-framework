@@ -45,7 +45,11 @@ namespace UXF
         private bool recording;
 
         List<string[]> data = new List<string[]>();
-
+        
+        /// <summary>
+        /// The header that will go at the top of the output file associated with this tracker
+        /// </summary>
+        /// <returns></returns>
         public string[] header
         { 
             get

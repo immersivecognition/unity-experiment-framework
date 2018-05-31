@@ -16,7 +16,9 @@ namespace UXF
     [ExecuteInEditMode]
     public class Session : MonoBehaviour
     {
-
+        /// <summary>
+        /// Enable to automatically safely end the session when this object is destroyed (or the application stops running).
+        /// </summary>
         [Tooltip("Enable to automatically safely end the session when this object is destroyed (or the application stops running).")]
         public bool endOnDestroy = true;
         
@@ -26,12 +28,11 @@ namespace UXF
         [HideInInspector]
         public List<Block> blocks = new List<Block>();
 
-        [Header("Data logging")]
-
-        // serialized private + public getter trick allows setting in inspector without being publicly settable
         /// <summary>
         /// List of settings you wish to log to the behavioural file for each trial.
         /// </summary>
+        /// <returns></returns>
+        [Header("Data logging")]
         [Tooltip("List of settings you wish to log to the behavioural data output for each trial.")]
         public List<string> settingsToLog = new List<string>();
 
@@ -47,16 +48,25 @@ namespace UXF
         [Tooltip("List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().")]
         public List<Tracker> trackedObjects = new List<Tracker>();
 
-
+        /// <summary>
+        /// Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument
+        /// </summary>
+        /// <returns></returns>
         [Header("Events")]
-        
         [Tooltip("Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument")]
         public SessionEvent onSessionBegin = new SessionEvent();
 
-
+        /// <summary>
+        /// Event(s) to trigger when a trial begins. Can pass the instance of the Trial as a dynamic argument
+        /// </summary>
+        /// <returns></returns>
         [Tooltip("Event(s) to trigger when a trial begins. Can pass the instance of the Trial as a dynamic argument")]
         public TrialEvent onTrialBegin = new TrialEvent();
 
+        /// <summary>
+        /// Event(s) to trigger when a trial ends. Can pass the instance of the Trial as a dynamic argument
+        /// </summary>
+        /// <returns></returns>
         [Tooltip("Event(s) to trigger when a trial ends. Can pass the instance of the Trial as a dynamic argument")]
         public TrialEvent onTrialEnd = new TrialEvent();
 
@@ -232,9 +242,8 @@ namespace UXF
         /// <summary>
         /// Save tracking data for this trial
         /// </summary>
-        /// <param name="objectName"></param>
-        /// <param name="data"></param>
-        /// <returns>Path to the file</returns>
+        /// <param name="tracker">The tracker to take data from to save</param>
+        /// <returns>Path to the saved file</returns>
         public string SaveTrackerData(Tracker tracker)
         {
             string fname = string.Format("{0}_{1}_T{2:000}.csv", tracker.objectName, tracker.measurementDescriptor, currentTrialNum);
@@ -272,12 +281,14 @@ namespace UXF
             fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(filePath, dict));
         }
 
+
         /// <summary>
         /// Checks if a session folder already exists for this participant
         /// </summary>
+        /// <param name="experimentName"></param>
         /// <param name="participantId"></param>
-        /// <param name="sessionNumber"></param>
         /// <param name="baseFolder"></param>
+        /// <param name="sessionNumber"></param>
         /// <returns></returns>
         public static bool CheckSessionExists(string experimentName, string participantId, string baseFolder, int sessionNumber)
         {
@@ -285,14 +296,6 @@ namespace UXF
             return System.IO.Directory.Exists(potentialPath);
         }
 
-
-        /// <summary>
-        /// </summary>
-        /// <param name="participantId">Unique participant id</param>
-        /// <param name="sessionNumber">Session number for this particular participant</param>
-        /// <param name="baseFolder">Path to the folder where data should be stored.</param>
-        /// <param name="participantDetails">Dictionary of participant information</param>
-        /// <param name="settings"></param>
 
         /// <summary>
         /// Initialises a Session
@@ -338,7 +341,10 @@ namespace UXF
                 "settings");
         }
 
-
+        /// <summary>
+        /// Create and return 1 Block, which then gets automatically added to Session.blocks  
+        /// </summary>
+        /// <returns></returns>
         public Block CreateBlock()
         {
             return new Block(0, this);
@@ -346,7 +352,7 @@ namespace UXF
 
 
         /// <summary>
-        /// Create a block containing a number of trials
+        /// Create and return block containing a number of trials, which then gets automatically added to Session.blocks  
         /// </summary>
         /// <param name="numberOfTrials">Number of trials. Must be greater than or equal to 1.</param>
         /// <returns></returns>
@@ -518,7 +524,12 @@ namespace UXF
                 End();
             }
         }
-
+        
+        /// <summary>
+        /// Convert a session number to a session name
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
         public static string SessionNumToName(int num)
         {
             return string.Format("S{0:000}", num);
@@ -530,7 +541,7 @@ namespace UXF
     /// Exception thrown in cases where we try to access a trial that does not exist.
     /// </summary>
     public class NoSuchTrialException : Exception
-    {
+    {   
         public NoSuchTrialException()
         {
         }

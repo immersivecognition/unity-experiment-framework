@@ -12,7 +12,7 @@ namespace UXF
     [ExecuteInEditMode]
     public class EventSystemFallback : MonoBehaviour
     {
-
+        
         public GameObject eventSystemPrefab;
 
         void Reset()
