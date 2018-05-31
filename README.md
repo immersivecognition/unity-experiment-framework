@@ -9,7 +9,7 @@ A set of components which simplify human behaviour experiments developed in the 
 
 1. Import the latest ```UXF.unitypackage``` [release](https://github.com/jackbrookes/unity-experiment-framework/releases/latest) to your existing Unity project.
 
-2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0 in Unity player settings. 
+2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0. 
 
 3. Open an example scene or add the `[UXF_Rig]` prefab to your scene.
 
