@@ -49,7 +49,7 @@ class DocParser(object):
 
             writer.write_heading("Fields", 3)
             if len(self.fields) == 0:
-                writer.write(mg.emphasis("None"))
+                writer.writeline(mg.emphasis("None"))
             else:
                 for field in self.fields:
                     symbol = symbol_from_member(field)
@@ -64,7 +64,7 @@ class DocParser(object):
 
             writer.write_heading("Properties", 3)
             if len(self.properties) == 0:
-                writer.write(mg.emphasis("None"))
+                writer.writeline(mg.emphasis("None"))
             else:
                 for prop in self.properties:
                     symbol = symbol_from_member(prop)
@@ -79,7 +79,7 @@ class DocParser(object):
 
             writer.write_heading("Methods", 3)
             if len(self.methods) == 0:
-                writer.write(mg.emphasis("None"))
+                writer.writeline(mg.emphasis("None"))
             else:
                 for method in self.methods:
                     symbol = symbol_from_member(method)
