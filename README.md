@@ -128,4 +128,4 @@ This project is developed under Unity 2017.3.0f3.
 
 ## Documentation
 
-Visit the [https://github.com/jackbrookes/unity-experiment-framework/wiki](Wiki)
+Visit the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki)
