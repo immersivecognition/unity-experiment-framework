@@ -39,7 +39,7 @@ class DocParser(object):
             writer = mg.Writer(f)
 
             full_name = symbol_from_member(self.type_member)
-            writer.write_heading(inline_code(full_name), 3)
+            writer.write_heading(inline_code(full_name), 4)
         
             writer.writeline(mg.emphasis(summary_from_member(self.type_member)))
             
@@ -47,7 +47,7 @@ class DocParser(object):
             
             # FIELDS
 
-            writer.write_heading("Fields", 2)
+            writer.write_heading("Fields", 3)
             if len(self.fields) == 0:
                 writer.write(mg.emphasis("None"))
             else:
@@ -58,11 +58,11 @@ class DocParser(object):
 
                     writer.writeline(
                         inline_code(short_name) + " " + \
-                        mg.emphasis(summary_from_member(field)))
+                        summary_from_member(field))
 
             # PROPERTIES
 
-            writer.write_heading("Properties", 2)
+            writer.write_heading("Properties", 3)
             if len(self.properties) == 0:
                 writer.write(mg.emphasis("None"))
             else:
@@ -73,11 +73,11 @@ class DocParser(object):
 
                     writer.writeline(
                         inline_code(short_name) + " " +
-                        mg.emphasis(summary_from_member(prop)))
+                        summary_from_member(prop))
 
             # METHODS
 
-            writer.write_heading("Methods", 2)
+            writer.write_heading("Methods", 3)
             if len(self.methods) == 0:
                 writer.write(mg.emphasis("None"))
             else:
@@ -86,8 +86,8 @@ class DocParser(object):
 
                     short_name = symbol.replace(full_name + ".", "")
 
-                    writer.write_heading(inline_code(short_name), 3)
-                    writer.writeline(mg.emphasis(summary_from_member(method)))
+                    writer.write_heading(inline_code(short_name), 4)
+                    writer.writeline(summary_from_member(method))
 
             writer.write_hrule()
             writer.writeline(mg.emphasis("Note: This file was automatically generated"))
