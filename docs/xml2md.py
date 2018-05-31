@@ -57,7 +57,7 @@ class DocParser(object):
                     short_name = symbol.replace(full_name + ".", "")
 
                     writer.writeline(
-                        inline_code(short_name) + " " + \
+                        inline_code(short_name) + ": " + \
                         summary_from_member(field))
 
             # PROPERTIES
@@ -72,7 +72,7 @@ class DocParser(object):
                     short_name = symbol.replace(full_name + ".", "")
 
                     writer.writeline(
-                        inline_code(short_name) + " " +
+                        inline_code(short_name) + ": " +
                         summary_from_member(prop))
 
             # METHODS
@@ -86,7 +86,10 @@ class DocParser(object):
 
                     short_name = symbol.replace(full_name + ".", "")
 
-                    writer.write_heading(inline_code(short_name), 4)
+                    if "#ctor" in short_name:
+                        short_name = short_name.replace("#ctor", full_name)
+
+                    writer.writeline(inline_code(short_name))
                     writer.writeline(summary_from_member(method))
 
             writer.write_hrule()
