@@ -346,7 +346,7 @@
         </member>
         <member name="F:UXF.Block.settings">
             <summary>
-            Block settings. These will be overidden by trial settings if set.
+            Block settings. These will be overridden by trial settings if set.
             </summary>
         </member>
         <member name="P:UXF.Block.session">

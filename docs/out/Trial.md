@@ -12,12 +12,16 @@
 `session`: The session associated with this trial
 ### Methods
 `UXF.Trial(UXF.Block)`
-Manually create a trial. When doing this you need to add this trial to a block with block.trials.Add(trial)
+> Manually create a trial. When doing this you need to add this trial to a block with block.trials.Add(trial)
+
 `SetReferences(UXF.Block)`
-Set references for the trial.
+> Set references for the trial.
+
 `Begin`
-Begins the trial, updating the current trial and block number, setting the status to in progress, starting the timer for the trial, and beginning recording positions of every object with an attached tracker
+> Begins the trial, updating the current trial and block number, setting the status to in progress, starting the timer for the trial, and beginning recording positions of every object with an attached tracker
+
 `End`
-Ends the Trial, queues up saving results to output file, stops and saves tracked object data.
+> Ends the Trial, queues up saving results to output file, stops and saves tracked object data.
+
 ---
 *Note: This file was automatically generated*

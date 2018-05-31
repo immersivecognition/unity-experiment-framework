@@ -36,48 +36,70 @@
 `headers`: Stores combined list of headers for the behavioural output.
 ### Methods
 `AttachReferences(UXF.FileIOManager,UXF.SessionLogger)`
-Provide references to other components
+> Provide references to other components
+
 `InitFolder`
-Folder error checks (creates folders, has set save folder, etc)
+> Folder error checks (creates folders, has set save folder, etc)
+
 `SaveTrackerData(UXF.Tracker)`
-Save tracking data for this trial
+> Save tracking data for this trial
+
 `CopyFileToSessionFolder(System.String)`
-Copies a file to the folder for this session
+> Copies a file to the folder for this session
+
 `WriteDictToSessionFolder(System.Collections.Generic.Dictionary{System.String,System.Object},System.String)`
-Write a dictionary object to a JSON file in the session folder (in a new FileIOManager thread)
+> Write a dictionary object to a JSON file in the session folder (in a new FileIOManager thread)
+
 `CheckSessionExists(System.String,System.String,System.String,System.Int32)`
-Checks if a session folder already exists for this participant
+> Checks if a session folder already exists for this participant
+
 `Begin(System.String,System.String,System.String,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object},UXF.Settings)`
-Initialises a Session
+> Initialises a Session
+
 `CreateBlock`
-Create and return 1 Block, which then gets automatically added to Session.blocks
+> Create and return 1 Block, which then gets automatically added to Session.blocks
+
 `CreateBlock(System.Int32)`
-Create and return block containing a number of trials, which then gets automatically added to Session.blocks
+> Create and return block containing a number of trials, which then gets automatically added to Session.blocks
+
 `GetTrial`
-Get currently active trial.
+> Get currently active trial.
+
 `GetTrial(System.Int32)`
-Get trial by trial number (non zero indexed)
+> Get trial by trial number (non zero indexed)
+
 `NextTrial`
-Get next Trial
+> Get next Trial
+
 `EndCurrentTrial`
-Ends currently running trial. Useful to call from an inspector event
+> Ends currently running trial. Useful to call from an inspector event
+
 `BeginNextTrial`
-Begins next trial. Useful to call from an inspector event
+> Begins next trial. Useful to call from an inspector event
+
 `PrevTrial`
-Get previous Trial.
+> Get previous Trial.
+
 `FirstTrial`
-Get first Trial in this session.
+> Get first Trial in this session.
+
 `LastTrial`
-Get last Trial in this session.
+> Get last Trial in this session.
+
 `GetBlock`
-Get currently active block.
+> Get currently active block.
+
 `GetBlock(System.Int32)`
-Get block by block number (non-zero indexed).
+> Get block by block number (non-zero indexed).
+
 `End`
-Ends the experiment session.
+> Ends the experiment session.
+
 `ReadSettingsFile(System.String,System.Action{System.Collections.Generic.Dictionary{System.String,System.Object}})`
-Reads json settings file as Dictionary then calls actioon with Dictionary as parameter
+> Reads json settings file as Dictionary then calls actioon with Dictionary as parameter
+
 `SessionNumToName(System.Int32)`
-Convert a session number to a session name
+> Convert a session number to a session name
+
 ---
 *Note: This file was automatically generated*

@@ -5,8 +5,10 @@
 *None*### Properties
 *None*### Methods
 `SetupDescriptorAndHeader`
-Sets measurementDescriptor and customHeader to appropriate values
+> Sets measurementDescriptor and customHeader to appropriate values
+
 `GetCurrentValues`
-Returns current position and rotation values
+> Returns current position and rotation values
+
 ---
 *Note: This file was automatically generated*

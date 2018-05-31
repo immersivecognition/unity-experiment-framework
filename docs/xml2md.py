@@ -90,7 +90,10 @@ class DocParser(object):
                         short_name = short_name.replace("#ctor", full_name)
 
                     writer.writeline(inline_code(short_name))
-                    writer.writeline(summary_from_member(method))
+                    blockquote = mg.BlockQuote()
+                    blockquote.append(summary_from_member(method))
+                    writer.write(blockquote)
+
 
             writer.write_hrule()
             writer.writeline(mg.emphasis("Note: This file was automatically generated"))

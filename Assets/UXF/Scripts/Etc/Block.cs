@@ -31,7 +31,7 @@ namespace UXF
         public int number { get { return session.blocks.IndexOf(this) + 1; } }
 
         /// <summary>
-        /// Block settings. These will be overidden by trial settings if set.
+        /// Block settings. These will be overridden by trial settings if set.
         /// </summary>
         public Settings settings = Settings.empty;
 
