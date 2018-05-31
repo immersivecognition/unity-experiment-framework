@@ -84,12 +84,10 @@ class DocParser(object):
                 for method in self.methods:
                     symbol = symbol_from_member(method)
 
-                    short_name = symbol.replace(full_name + ".", "")
+                    if "#ctor" in symbol:
+                        symbol = symbol.replace("#ctor", full_name)
 
-                    if "#ctor" in short_name:
-                        short_name = short_name.replace("#ctor", full_name)
-
-                    writer.writeline(inline_code(short_name))
+                    writer.writeline(inline_code(symbol))
                     blockquote = mg.BlockQuote()
                     blockquote.append(summary_from_member(method))
                     writer.write(blockquote)
@@ -144,5 +142,5 @@ if __name__ == "__main__":
             types_dict[associated_class].add_child(symbol_type, child)
 
     for type_doc in types_dict:
-        types_dict[type_doc].to_md("out")
+        types_dict[type_doc].to_md("wiki/Generated")
 
