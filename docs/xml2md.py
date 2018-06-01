@@ -121,6 +121,20 @@ def symbol_from_member(member):
 def summary_from_member(member):
     return member[0].text.strip()
 
+
+def write_types_list(types_dict, location):
+    with open(location, 'w') as f:
+        writer = mg.Writer(f)
+        for type_name in types_dict:
+            member = types_dict[type_name].type_member
+            full_name = symbol_from_member(member)
+            writer.write_heading(inline_code(f"[[{full_name}|{type_name}]]"), 4)
+            writer.writeline(summary_from_member(member))
+
+        writer.writeline(mg.emphasis(
+            "Note: This file was automatically generated"))
+
+
 if __name__ == "__main__":
     filepath = sys.argv[1]
     tree = ET.parse(filepath)
@@ -155,7 +169,9 @@ if __name__ == "__main__":
         associated_class = symbol_path[1]
         if associated_class in types_dict:
             types_dict[associated_class].add_child(symbol_type, child)
+    
+    write_types_list(types_dict, "wiki/Generated/Classes.md")
 
-    for type_doc in types_dict:
-        types_dict[type_doc].to_md("wiki/Generated")
+    for type_name in types_dict:
+        types_dict[type_name].to_md("wiki/Generated")
 
