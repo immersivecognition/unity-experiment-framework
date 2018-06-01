@@ -90,6 +90,17 @@ class DocParser(object):
                     writer.writeline(inline_code(symbol))
                     blockquote = mg.BlockQuote()
                     blockquote.append(summary_from_member(method))
+
+                    blockquote.append(mg.strong("Parameters"))
+                    params = [p for p in method if p.tag == "param"]
+                    if len(params) == 0:
+                        blockquote.append(mg.emphasis("None"))
+                    else:
+                        for param in params:
+                            param_name = param.attrib["name"]
+                            param_text = param.text if param.text is not None else ""
+                            blockquote.append(inline_code(param_name) + ": " + param_text)
+
                     writer.write(blockquote)
 
 
