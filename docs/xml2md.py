@@ -128,7 +128,7 @@ def write_types_list(types_dict, location):
         for type_name in types_dict:
             member = types_dict[type_name].type_member
             full_name = symbol_from_member(member)
-            writer.write_heading(inline_code(f"[[{full_name}|{type_name}]]"), 4)
+            writer.write_heading(f"[[{full_name}|{type_name}]]", 4)
             writer.writeline(summary_from_member(member))
 
         writer.writeline(mg.emphasis(
