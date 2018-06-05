@@ -93,6 +93,9 @@ class DocParser(object):
                     symbol = symbol.replace("System.Single", "float")
                     symbol = symbol.replace("System.Object", "object")
 
+                    if not symbol[-1] == ")":
+                        symbol += "()"
+
                     writer.writeline(inline_code(symbol))
                     blockquote = mg.BlockQuote()
                     blockquote.append(summary_from_member(method))

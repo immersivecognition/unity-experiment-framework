@@ -193,7 +193,7 @@ namespace UXF
         /// <summary>
         /// List of file headers generated for all referenced tracked objects.
         /// </summary>
-        public List<string> trackingHeaders { get { return trackedObjects.Select(t => t.measurementDescriptor).ToList(); } }
+        public List<string> trackingHeaders { get { return trackedObjects.Select(t => t.pathHeader).ToList(); } }
 
         /// <summary>
         /// Stores combined list of headers for the behavioural output.

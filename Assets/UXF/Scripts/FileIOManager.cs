@@ -179,9 +179,13 @@ namespace UXF
             object[] row = new object[headers.Length];
 
             for (int i = 1; i <= dataDict.Count; i++)
-            {
-                dataDict[i - 1].Values.CopyTo(row, 0);
-                csvRows[i] = string.Join(",", row.Select(v => System.Convert.ToString(v)).ToArray());
+            {   
+                OrderedResultDict dict = dataDict[i - 1];
+                if (dict != null)
+                {
+                    dict.Values.CopyTo(row, 0);
+                    csvRows[i] = string.Join(",", row.Select(v => System.Convert.ToString(v)).ToArray());
+                }
             }
 
             File.WriteAllLines(fpath, csvRows);

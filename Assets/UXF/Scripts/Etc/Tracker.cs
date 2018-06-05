@@ -35,7 +35,7 @@ namespace UXF
         {
             get
             {
-                Debug.AssertFormat(measurementDescriptor.Length > 0, "No measurement descriptor has been specified for the Tracker on {0}!", name);
+                Debug.AssertFormat(measurementDescriptor.Length > 0, "No measurement descriptor has been specified for this Tracker!");
                 return string.Join("_", new string[]{ objectName, measurementDescriptor, "relpath" });
             }
         }

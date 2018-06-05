@@ -115,7 +115,7 @@ namespace UXF
             {
                 tracker.StopRecording();
                 string dataName = session.SaveTrackerData(tracker);
-                result[tracker.measurementDescriptor] = dataName;
+                result[tracker.pathHeader] = dataName;
             }
 
             // log any settings we need to for this trial
