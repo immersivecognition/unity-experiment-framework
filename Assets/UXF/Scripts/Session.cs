@@ -11,9 +11,10 @@ using UnityEngine.Events;
 namespace UXF
 {
     /// <summary>
-    /// The main class used to manage your experiment. Attach this to a gameobject, and it will manage your experiment "session".
+    /// The Session represents a single "run" of an experiment, and contains all information about that run. 
     /// </summary>
     [ExecuteInEditMode]
+    [RequireComponent(typeof(FileIOManager))]
     public class Session : MonoBehaviour
     {
         /// <summary>

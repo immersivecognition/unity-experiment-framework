@@ -679,7 +679,7 @@
         </member>
         <member name="T:UXF.Session">
             <summary>
-            The main class used to manage your experiment. Attach this to a gameobject, and it will manage your experiment "session".
+            The Session represents a single "run" of an experiment, and contains all information about that run. 
             </summary>
         </member>
         <member name="F:UXF.Session.endOnDestroy">

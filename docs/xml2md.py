@@ -84,8 +84,14 @@ class DocParser(object):
                 for method in self.methods:
                     symbol = symbol_from_member(method)
 
-                    if "#ctor" in symbol:
-                        symbol = symbol.replace("#ctor", full_name)
+                    symbol = symbol.replace("#ctor", full_name)
+                    symbol = symbol.replace(",", ", ")
+                    symbol = symbol.replace("{", "<")
+                    symbol = symbol.replace("}", ">")
+                    symbol = symbol.replace("System.String", "string")
+                    symbol = symbol.replace("System.Int32", "int")
+                    symbol = symbol.replace("System.Single", "float")
+                    symbol = symbol.replace("System.Object", "object")
 
                     writer.writeline(inline_code(symbol))
                     blockquote = mg.BlockQuote()
