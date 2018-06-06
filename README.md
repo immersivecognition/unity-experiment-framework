@@ -62,8 +62,7 @@ UXF classes will be useful in two main parts of your project:
 class ExperimentBuilder : Monobehaviour
 {
 
-    // set this to your Session instance in the inspector
-    public UXF.Session session;
+    UXF.Session session;
     
     // assign this method to the Session OnSessionBegin UnityEvent in its inspector
     public void GenerateAndRun(UXF.Session session) 
@@ -94,6 +93,7 @@ class ExperimentBuilder : Monobehaviour
 class SceneManipulator : MonoBehaviour
 {
 
+    // set this to reference your Session in the inspector
     public UXF.Session session;
 
     ...
