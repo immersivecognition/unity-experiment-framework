@@ -71,6 +71,14 @@ namespace UXF
         // called by unity just before rendering the frame
         void LateUpdate()
         {
+            RecordRow();
+        }
+
+        /// <summary>
+        /// Records a new row of data at current time.
+        /// </summary>
+        public void RecordRow()
+        {
             if (recording)
             {
                 string[] values = GetCurrentValues();
@@ -86,6 +94,7 @@ namespace UXF
                 data.Add(row);
             }
         }
+
 
         /// <summary>
         /// Begins recording.
@@ -116,7 +125,7 @@ namespace UXF
         /// Returns a copy of the data collected by this tracker.
         /// </summary>
         /// <returns></returns>
-        public IList<string[]> GetDataCopy()
+        public List<string[]> GetDataCopy()
         {
             return data.Clone();
         }

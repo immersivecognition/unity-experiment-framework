@@ -250,7 +250,9 @@ namespace UXF
             string fname = string.Format("{0}_{1}_T{2:000}.csv", tracker.objectName, tracker.measurementDescriptor, currentTrialNum);
             string fpath = Path.Combine(path, fname);
 
-            fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(tracker.header, tracker.GetDataCopy(), fpath));
+            List<string[]> dataCopy = tracker.GetDataCopy();
+
+            fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(tracker.header, dataCopy, fpath));
 
             // return relative path so it can be stored in behavioural data
             Uri fullPath = new Uri(fpath);
