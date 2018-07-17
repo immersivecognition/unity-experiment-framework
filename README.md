@@ -26,8 +26,12 @@ A set of components which simplify human behaviour experiments developed in the 
 
 ### Data collection
 
-UXF automates the process of collecting behavioural and movement data. **Behavioural data** is collected with 1 row per `Trial`, and automatically records some values such as the timestamp of the start and end of the trial.
-**Movement data** is the position and rotation of any object in the scene, which is captured at whatever frame rate the application is running at (in the `Update()` loop) by adding a `Tracker` component to a GameObject. This can be used to track positions of user controlled objects (such as hands or head in a virtual reality application) or an arbitrary object in the scene (e.g. some kind of stimuli). 
+UXF automates the process of collecting data.
+
+**Behavioural data** is collected with 1 row per `Trial`, and automatically records some values such as the timestamp of the start and end of the trial.
+
+**Continuous data** is data that is measured contunously over time during a trial. The main use case of this is to track the position and rotation of any object in the scene, which is captured at whatever frame rate the application is running at (in the `Update()` loop) by adding a `PositionRotationTracker` component to a GameObject. This can be used to track positions of user controlled objects (such as hands or head in a virtual reality application) or an arbitrary object in the scene (e.g. some kind of stimuli). However this system is generic and developers can create their own `Tracker` classes that perform measurements of any variable during trials. 
+
 Data is stored in CSV files with automatic handling of file & directory naming.
 
 ### Events
@@ -36,7 +40,7 @@ A `UnityEvent` is invoked on `Trial` begin and end, allowing you to easily trigg
 
 ### CSV Participant List
 
-A participant list feature is used allowing experimenters to optionally pre-prepare participant information. Additionally, this participant list is shared between experiments, allowing cross comparison of observations within participants.  
+A participant list feature is used allowing experimenters to optionally pre-prepare participant information. Additionally, this participant list is shared between experiments, allowing easy cross comparison of observations within participants.  
 
 ### Settings system
 
