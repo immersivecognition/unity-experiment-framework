@@ -22,8 +22,9 @@ namespace UXFExamples
 		public Session session;
 
         StartBlockState state = StartBlockState.Waiting;
-
 		SpriteRenderer spriteRenderer;
+		Coroutine runningSequence;
+
 
 		void Awake()
         {
@@ -31,13 +32,28 @@ namespace UXFExamples
             SetState(StartBlockState.Waiting);
         }
 
-		public void SetState(StartBlockState newState)
+
+		IEnumerator RunSequence()
 		{
-            StartBlockState oldState = state;
+			GetReady();
+
+            // Take the delay time (seconds) for the next trial, wait for that time
+            // If we move from the start block too early, StopCoroutine(runningSequence); will halt the execution of this coroutine
+            // System.Convert: Safely convert to single (float)
+            float delayTime = System.Convert.ToSingle(session.nextTrial.settings["delay_time"]);
+			yield return new WaitForSeconds(delayTime);
+
+			Go();
+		}
+
+		void SetState(StartBlockState newState)
+		{
 			state = newState;
 
+			// modify colour based on state
 			switch (state)
 			{
+				// could be dictionary
 				case StartBlockState.Waiting:
                     spriteRenderer.color = mainColor;
 					break;
@@ -59,13 +75,7 @@ namespace UXFExamples
 		void GetReady()
 		{
             Debug.Log("Get ready...");
-
 			SetState(StartBlockState.GetReady);
-
-			// Take the delay time (seconds) for the next trial, and invoke the "Go" method after that time
-			// safely convert to single (float)
-			float delayTime = System.Convert.ToSingle(session.nextTrial.settings["delay_time"]);
-			Invoke("Go", delayTime);
 		}
 
 		void Go()
@@ -82,7 +92,8 @@ namespace UXFExamples
             switch (state)
             {
 				case StartBlockState.Waiting:
-                    GetReady();
+					// begin the sequence
+				    runningSequence = StartCoroutine(RunSequence());
 					break;
 			}	
 		}
@@ -92,7 +103,9 @@ namespace UXFExamples
             switch (state)
             {
                 case StartBlockState.GetReady:
-                    CancelInvoke("Go");
+					// stop the sequence
+                    Debug.Log("Moved too early!");
+                    StopCoroutine(runningSequence);
                     ResetToNormal();
                     break;
 				case StartBlockState.Go:
