@@ -277,11 +277,18 @@ namespace UXF
         /// <param name="dict">Dictionary object to write</param>
 
         /// <param name="objectName">Name of the object (is used for file name)</param>
-        void WriteDictToSessionFolder(Dictionary<string, object> dict, string objectName)
+        public void WriteDictToSessionFolder(Dictionary<string, object> dict, string objectName)
         {
-            string fileName = string.Format("{0}.json", objectName);
-            string filePath = Path.Combine(path, fileName);
-            fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(filePath, dict));
+            if (hasInitialised)
+            {
+                string fileName = string.Format("{0}.json", objectName);
+                string filePath = Path.Combine(path, fileName);
+                fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(filePath, dict));
+            }
+            else
+            {
+                throw new System.InvalidOperationException("Can't write dictionary before session has initalised!");
+            }
         }
 
 

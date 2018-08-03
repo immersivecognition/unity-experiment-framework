@@ -84,7 +84,7 @@ namespace UXF
                 string[] values = GetCurrentValues();
 
                 if (values.Length != customHeader.Length)
-                    throw new InvalidDataException(string.Format("GetCurrentValues provided {0} values but expected the same as the number of headers! {1}", values.Length, customHeader.Length));
+                    throw new System.InvalidOperationException(string.Format("GetCurrentValues provided {0} values but expected the same as the number of headers! {1}", values.Length, customHeader.Length));
 
                 string[] row = new string[values.Length + 1];
 
