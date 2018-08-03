@@ -1,9 +1,25 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Assembly-CSharp.dll</name>
+        <name>Assembly-CSharp</name>
     </assembly>
     <members>
+        <member name="M:UXFExamples.ExperimentGenerator.MakeCatchTrials(UXF.Block)">
+            <summary>
+            Modify a block by adding several catch trials and then shuffling the trial list.
+            </summary>
+            <param name="block"></param>
+        </member>
+        <member name="T:UXFExamples.StartBlockController">
+            <summary>
+            Controls the start block gameobject
+            </summary>
+        </member>
+        <member name="F:UXFExamples.StartBlockController.session">
+            <summary>
+            Reference to the associated session.
+            </summary>
+        </member>
         <member name="T:BasicExampleScript">
             <summary>
             Example script used to test functionality of the Experiment Manager
@@ -462,6 +478,11 @@
             The header that will go at the top of the output file associated with this tracker
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:UXF.Tracker.RecordRow">
+            <summary>
+            Records a new row of data at current time.
+            </summary>
         </member>
         <member name="M:UXF.Tracker.StartRecording">
             <summary>
