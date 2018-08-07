@@ -133,6 +133,7 @@ namespace UXF.Tests
         void DoSomethingWithFile(WriteFileInfo writeFileInfo)
         {
             Debug.LogFormat("Received {0} file: {1}", writeFileInfo.fileType, writeFileInfo.paths[writeFileInfo.paths.Length-1]);
+            System.Threading.Thread.Sleep(100); // sleep here to force producer loop to end early
             writtenFiles.Add(writeFileInfo);
         }
 

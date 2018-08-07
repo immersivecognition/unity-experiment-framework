@@ -71,6 +71,12 @@ namespace UXF
         [Tooltip("Event(s) to trigger when a trial ends. Can pass the instance of the Trial as a dynamic argument")]
         public TrialEvent onTrialEnd = new TrialEvent();
 
+        /// <summary>
+        /// Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event.
+        /// </summary>
+        /// <returns></returns>
+        [Tooltip("Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event")]
+        public SessionEvent onSessionEnd = new SessionEvent();
 
         [Header("Session information")]
 
@@ -362,6 +368,9 @@ namespace UXF
             // setup folders
             InitFolder();
 
+            // Initialise FileIOManager
+            if (!fileIOManager.IsActive) fileIOManager.Begin();
+
             // Initialise logger
             if (logger != null)
                 logger.Initialise();
@@ -526,8 +535,16 @@ namespace UXF
                 if (logger != null)
                     logger.Finalise();
 
+                // end FileIOManager
+                fileIOManager.End();
+                
+                currentTrialNum = 0;
+                currentBlockNum = 0;
                 blocks = new List<Block>();
                 _hasInitialised = false;
+
+                Debug.Log("Ended session.");
+                onSessionEnd.Invoke(this);
             }
         }
 

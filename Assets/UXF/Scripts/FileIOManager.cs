@@ -40,15 +40,17 @@ namespace UXF
         /// <returns></returns>
         public static System.Action doNothing = () => { };
 
+        public bool IsActive { get { return t != null && t.IsAlive; } }
+
         BlockingQueue<System.Action> bq = new BlockingQueue<System.Action>();
         Thread t;
 
         bool quitting = false;
-        
+
 
         void Awake()
-        {
-            Begin();
+        {   
+            if (!IsActive) Begin();
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace UXF
         /// </summary>
         public void Begin()
         {
-            if (t != null && t.IsAlive)
+            if (IsActive)
                 throw new ThreadStateException("Cannot Begin. FileIOManager thread has already been started!");
 
             quitting = false;
@@ -121,7 +123,7 @@ namespace UXF
                     // stops thread aborting upon an exception
                     Debug.LogException(e);
                 }
-                
+
                 if (quitting && bq.NumItems() == 0)
                     break;
             }
@@ -169,10 +171,10 @@ namespace UXF
         /// <param name="destFileName"></param>
         /// <param name="serializableObject"></param>
         public void WriteJson(object serializableObject, WriteFileInfo writeFileInfo)
-        {            
+        {
             string ppJson = MiniJSON.Json.Serialize(serializableObject);
             File.WriteAllText(writeFileInfo.FullPath, ppJson);
-            onWriteFile.Invoke(writeFileInfo);
+            executeOnMainThreadQueue.Enqueue(() => onWriteFile.Invoke(writeFileInfo));
         }
 
         /// <summary>
@@ -188,7 +190,7 @@ namespace UXF
             object[] row = new object[headers.Length];
 
             for (int i = 1; i <= dataDict.Count; i++)
-            {   
+            {
                 OrderedResultDict dict = dataDict[i - 1];
                 if (dict != null)
                 {
@@ -198,7 +200,7 @@ namespace UXF
             }
 
             File.WriteAllLines(writeFileInfo.FullPath, csvRows);
-            onWriteFile.Invoke(writeFileInfo);
+            executeOnMainThreadQueue.Enqueue(() => onWriteFile.Invoke(writeFileInfo));
         }
 
         /// <summary>
@@ -212,10 +214,10 @@ namespace UXF
             string[] csvRows = new string[data.Count + 1];
             csvRows[0] = string.Join(",", header);
             for (int i = 1; i <= data.Count; i++)
-                csvRows[i] = string.Join(",", data[i-1]);
+                csvRows[i] = string.Join(",", data[i - 1]);
 
             File.WriteAllLines(writeFileInfo.FullPath, csvRows);
-            onWriteFile.Invoke(writeFileInfo);
+            executeOnMainThreadQueue.Enqueue(() => onWriteFile.Invoke(writeFileInfo));
         }
 
         /// <summary>
@@ -249,13 +251,13 @@ namespace UXF
             var writer = new CSVFile.CSVWriter(writeFileInfo.FullPath);
             writer.Write(data, true);
             writer.Dispose();
-            onWriteFile.Invoke(writeFileInfo);
+            executeOnMainThreadQueue.Enqueue(() => onWriteFile.Invoke(writeFileInfo));
         }
 
         /// <summary>
         /// Handles any actions which are enqueued to run on Unity's main thread.
         /// </summary>
-        void ManageInMain()
+        public void ManageInMain()
         {
             while (executeOnMainThreadQueue.Count > 0)
             {
@@ -266,7 +268,7 @@ namespace UXF
         void OnDestroy()
         {
             End();
-        } 
+        }
 
         /// <summary>
         /// Aborts the FileIOManager's thread and joins the thread to the calling thread.
@@ -276,8 +278,8 @@ namespace UXF
             if (debug)
                 Debug.Log("Joining FileIOManagerThread");
             quitting = true;
-
             bq.Enqueue(doNothing); // ensures bq breaks from foreach loop
+            ManageInMain(); // empties main thread queue
             t.Join();
         }
 

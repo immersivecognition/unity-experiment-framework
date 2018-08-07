@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 940390171}
   - component: {fileID: 940390170}
   - component: {fileID: 940390169}
+  - component: {fileID: 940390172}
   m_Layer: 0
   m_Name: MyExample
   m_TagString: Untagged
@@ -231,6 +232,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &940390172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 940390168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d778ec9c292f1194a910cb94deb76b74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1036796532
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,6 +703,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114916036141644208, guid: 9b2e014df0d8b3040be89cdd29676e36,
         type: 2}
+      propertyPath: onSessionEnd.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 9b2e014df0d8b3040be89cdd29676e36,
+        type: 2}
       propertyPath: onSessionBegin.m_PersistentCalls.m_Calls.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -805,6 +822,31 @@ Prefab:
         type: 2}
       propertyPath: onTrialBegin.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 9b2e014df0d8b3040be89cdd29676e36,
+        type: 2}
+      propertyPath: onSessionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 9b2e014df0d8b3040be89cdd29676e36,
+        type: 2}
+      propertyPath: onSessionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 9b2e014df0d8b3040be89cdd29676e36,
+        type: 2}
+      propertyPath: onSessionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 940390172}
+    - target: {fileID: 114916036141644208, guid: 9b2e014df0d8b3040be89cdd29676e36,
+        type: 2}
+      propertyPath: onSessionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 9b2e014df0d8b3040be89cdd29676e36,
+        type: 2}
+      propertyPath: onSessionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9b2e014df0d8b3040be89cdd29676e36, type: 2}
