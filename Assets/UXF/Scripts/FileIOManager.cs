@@ -279,8 +279,8 @@ namespace UXF
                 Debug.Log("Joining FileIOManagerThread");
             quitting = true;
             bq.Enqueue(doNothing); // ensures bq breaks from foreach loop
-            ManageInMain(); // empties main thread queue
             t.Join();
+            ManageInMain(); // empties main thread queue
         }
 
     }
