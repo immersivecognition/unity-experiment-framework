@@ -22,7 +22,7 @@ namespace UXF
         /// </summary>
         [Tooltip("Enable to automatically safely end the session when this object is destroyed (or the application stops running).")]
         public bool endOnDestroy = true;
-        
+
         /// <summary>
         /// List of blocks for this experiment
         /// </summary>
@@ -70,6 +70,7 @@ namespace UXF
         /// <returns></returns>
         [Tooltip("Event(s) to trigger when a trial ends. Can pass the instance of the Trial as a dynamic argument")]
         public TrialEvent onTrialEnd = new TrialEvent();
+
 
         [Header("Session information")]
 
@@ -171,7 +172,11 @@ namespace UXF
 
         List<string> baseHeaders = new List<string> { "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
 
-        string basePath;
+        /// <summary>
+        /// The path in which the experiment data are stored.
+        /// </summary>
+        /// <value></value>
+        public string basePath { get; private set; }
 
 
         /// <summary>
@@ -187,7 +192,11 @@ namespace UXF
         /// </summary>
         public string path { get { return Path.Combine(ppPath, folderName); } }
 
-        private string folderName { get { return SessionNumToName(number); } }
+        /// <summary>
+        /// Name of the Session folder 
+        /// </summary>
+        /// <returns></returns>
+        public string folderName { get { return SessionNumToName(number); } }
 
 
         /// <summary>
@@ -198,7 +207,7 @@ namespace UXF
         /// <summary>
         /// Stores combined list of headers for the behavioural output.
         /// </summary>
-        public List<string> headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).Concat(trackingHeaders).ToList(); }}
+        public List<string> headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).Concat(trackingHeaders).ToList(); } }
 
         /// <summary>
         /// Dictionary of objects for datapoints collected via the UI, or otherwise.
@@ -235,7 +244,7 @@ namespace UXF
             if (!System.IO.Directory.Exists(ppPath))
                 System.IO.Directory.CreateDirectory(ppPath);
             if (System.IO.Directory.Exists(path))
-                Debug.LogWarning("Warning: Session already exists! Continuing will overwrite"); 
+                Debug.LogWarning("Warning: Session already exists! Continuing will overwrite");
             else
                 System.IO.Directory.CreateDirectory(path);
         }
@@ -248,16 +257,22 @@ namespace UXF
         public string SaveTrackerData(Tracker tracker)
         {
             string fname = string.Format("{0}_{1}_T{2:000}.csv", tracker.objectName, tracker.measurementDescriptor, currentTrialNum);
-            string fpath = Path.Combine(path, fname);
+
+            WriteFileInfo fileInfo = new WriteFileInfo(
+                WriteFileType.Tracker,
+                this.basePath,
+                experimentName,
+                ppid,
+                folderName,
+                fname
+                );
 
             List<string[]> dataCopy = tracker.GetDataCopy();
 
-            fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(tracker.header, dataCopy, fpath));
+            fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(tracker.header, dataCopy, fileInfo));
 
             // return relative path so it can be stored in behavioural data
-            Uri fullPath = new Uri(fpath);
-            Uri basePath = new Uri(experimentPath);
-            return basePath.MakeRelativeUri(fullPath).ToString();
+            return fileInfo.RelativePath;
 
         }
 
@@ -279,11 +294,21 @@ namespace UXF
         /// <param name="objectName">Name of the object (is used for file name)</param>
         public void WriteDictToSessionFolder(Dictionary<string, object> dict, string objectName)
         {
+
             if (hasInitialised)
             {
                 string fileName = string.Format("{0}.json", objectName);
-                string filePath = Path.Combine(path, fileName);
-                fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(filePath, dict));
+
+                WriteFileInfo fileInfo = new WriteFileInfo(
+                    WriteFileType.Dictionary,
+                    this.basePath,
+                    experimentName,
+                    ppid,
+                    folderName,
+                    fileName
+                );
+
+                fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(dict, fileInfo));
             }
             else
             {
@@ -345,7 +370,7 @@ namespace UXF
             onSessionBegin.Invoke(this);
 
             // copy Settings to session folder
-            
+
             WriteDictToSessionFolder(
                 new Dictionary<string, object>(settings.baseDict), // makes a copy
                 "settings");
@@ -369,13 +394,13 @@ namespace UXF
         public Block CreateBlock(int numberOfTrials)
         {
             if (numberOfTrials > 0)
-                return new Block((uint) numberOfTrials, this);
+                return new Block((uint)numberOfTrials, this);
             else
                 throw new Exception("Invalid number of trials supplied");
         }
 
         /// <summary>
-        /// Get currently active trial.
+        /// Get currently active trial. When not in a trial, gets previous trial.
         /// </summary>
         /// <returns>Currently active trial.</returns>
         public Trial GetTrial()
@@ -437,7 +462,7 @@ namespace UXF
         Trial PrevTrial()
         {
             try
-            { 
+            {
                 // non zero indexed
                 return trials.ToList()[currentTrialNum - 2];
             }
@@ -463,7 +488,7 @@ namespace UXF
         /// <returns></returns>
         Trial LastTrial()
         {
-            var lastBlock = blocks[blocks.Count- 1];
+            var lastBlock = blocks[blocks.Count - 1];
             return lastBlock.trials[lastBlock.trials.Count - 1];
         }
 
@@ -500,7 +525,7 @@ namespace UXF
                 // end logger
                 if (logger != null)
                     logger.Finalise();
-                
+
                 blocks = new List<Block>();
                 _hasInitialised = false;
             }
@@ -510,10 +535,18 @@ namespace UXF
         {
             List<OrderedResultDict> results = trials.Select(t => t.result).ToList();
             string fileName = "trial_results.csv";
-            string filePath = Path.Combine(path, fileName);
+
+            WriteFileInfo fileInfo = new WriteFileInfo(
+                WriteFileType.Trials,
+                this.basePath,
+                experimentName,
+                ppid,
+                folderName,
+                fileName
+                );
 
             // in this case, write in main thread to block aborting
-            fileIOManager.ManageInWorker(() => fileIOManager.WriteTrials(results, headers.ToArray(), filePath));
+            fileIOManager.ManageInWorker(() => fileIOManager.WriteTrials(results, headers.ToArray(), fileInfo));
         }
 
 
@@ -534,7 +567,7 @@ namespace UXF
                 End();
             }
         }
-        
+
         /// <summary>
         /// Convert a session number to a session name
         /// </summary>
@@ -551,7 +584,7 @@ namespace UXF
     /// Exception thrown in cases where we try to access a trial that does not exist.
     /// </summary>
     public class NoSuchTrialException : Exception
-    {   
+    {
         public NoSuchTrialException()
         {
         }

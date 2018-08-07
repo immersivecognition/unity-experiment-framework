@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,5 +24,35 @@ namespace UXF
 
     }
 
+    /// <summary>
+    /// Event containing a WriteFileInfo object as a parameter
+    /// </summary>
+    [Serializable]
+    public class WriteFileEvent : UnityEvent<WriteFileInfo>
+    {
+
+    }
+
+
+    public struct WriteFileInfo
+    {
+        public WriteFileType fileType;
+        public string basePath;
+        public string[] paths;
+        public string RelativePath { get { return Extensions.CombinePaths("", paths); }}
+        public string FullPath { get { return Extensions.CombinePaths(basePath, paths); } }
+        public WriteFileInfo(WriteFileType fileType, string basePath, params string[] paths)
+        {
+            this.fileType = fileType;
+            this.basePath = basePath;
+            this.paths = paths;
+        }
+
+    }
+
+    public enum WriteFileType
+    {
+        Test, Trials, Tracker, Dictionary, ParticipantList, Log
+    }
 
 }

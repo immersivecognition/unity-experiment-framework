@@ -69,8 +69,16 @@ namespace UXF
         /// </summary>
         public void Finalise()
 		{
-			string filepath = Path.Combine(session.path, "log.csv");
-			fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(table, filepath));
+            WriteFileInfo fileInfo = new WriteFileInfo(
+                WriteFileType.Log,
+                session.basePath,
+                session.experimentName,
+                session.ppid,
+                session.folderName,
+                "log.csv"
+                );
+
+			fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(table, fileInfo));
             Application.logMessageReceived -= HandleLog;
         }
 

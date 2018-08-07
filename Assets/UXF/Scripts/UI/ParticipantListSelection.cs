@@ -98,8 +98,16 @@ namespace UXF
 
             exampleData.Rows.Add(row1);
 
+            FileInfo fileInfo = new FileInfo(filePath);
+
+            WriteFileInfo writeFileInfo = new WriteFileInfo(
+                WriteFileType.ParticipantList,
+                fileInfo.DirectoryName,
+                fileInfo.Name
+                );
+
             // save, this is single threaded in this case
-            fileIOManager.WriteCSV(exampleData, filePath);
+            fileIOManager.WriteCSV(exampleData, writeFileInfo);
 
             // re-read it back in
             CheckSetList(filePath);
@@ -212,12 +220,19 @@ namespace UXF
                 row[datapointName] = value;
             }
             
-            
         }
 
         public void CommitCSV()
         {
-            fileIOManager.WriteCSV(ppList, ppListPath);
+            FileInfo fileInfo = new FileInfo(ppListPath);
+
+            WriteFileInfo writeFileInfo = new WriteFileInfo(
+                WriteFileType.ParticipantList,
+                fileInfo.DirectoryName,
+                fileInfo.Name
+                );
+
+            fileIOManager.WriteCSV(ppList, writeFileInfo);
             Debug.Log(string.Format("Updating: {0}", ppListPath));
         }
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using UnityEngine.Events;
 using UnityEngine.TestTools;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -14,13 +15,14 @@ namespace UXF.Tests
         string path = "example_output/fileiomanager_test";
 		FileIOManager fileIOManager;
 
+        List<WriteFileInfo> writtenFiles;
+
         [SetUp]
         public void SetUp()
         {
 			var gameObject = new GameObject();
 			fileIOManager = gameObject.AddComponent<FileIOManager>();
 			fileIOManager.debug = true;
-			
         }
 
 
@@ -54,9 +56,10 @@ namespace UXF.Tests
 			int n = 100;
 			for (int i = 0; i < n; i++)
 			{
-				string fileName = System.IO.Path.Combine(path, string.Format("{0:000}.json", i));
+				string fileName = string.Format("{0:000}.json", i);
+                WriteFileInfo fileInfo = new WriteFileInfo(WriteFileType.Test, path, fileName);
 				Debug.LogFormat("Queueing {0}", fileName);
-            	fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(fileName, dict));
+            	fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(dict, fileInfo));
 			}
 
             fileIOManager.End();
@@ -86,6 +89,51 @@ namespace UXF.Tests
             fileIOManager.ManageInWorker(() => Debug.Log("Code enqueued after FileIOManager re-opened"));
             fileIOManager.End();
 
+        }
+
+        [Test]
+        public void WriteFileEventTest()
+        {
+            writtenFiles = new List<WriteFileInfo>();
+            fileIOManager.onWriteFile.AddListener(new UnityAction<WriteFileInfo>(DoSomethingWithFile));
+            fileIOManager.Begin();
+
+            // generate a dictionary
+            var dict = new Dictionary<string, object>();
+
+            var intArray = new int[10];
+            for (int i = 0; i < intArray.Length; i++)
+                intArray[i] = i;
+            dict["int_array"] = intArray;
+
+            // write lots of JSON files
+            int n = 100;
+            WriteFileInfo[] fileInfos = new WriteFileInfo[n];
+            for (int i = 0; i < n; i++)
+            {
+                string fileName = string.Format("{0:000}.json", i);
+                WriteFileInfo fileInfo = new WriteFileInfo(WriteFileType.Test, path, fileName);
+                fileInfos[i] = fileInfo;
+                Debug.LogFormat("Queueing {0}", fileName);
+                fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(dict, fileInfo));
+            }
+
+            // end and join
+            fileIOManager.End();
+
+            // now check each file was passed to the event (i.e. added to the written files list)
+            for (int i = 0; i < n; i++)
+            {
+                Assert.AreEqual(fileInfos[i], writtenFiles[i]);
+            }
+
+            writtenFiles.Clear();
+        }
+
+        void DoSomethingWithFile(WriteFileInfo writeFileInfo)
+        {
+            Debug.LogFormat("Received {0} file: {1}", writeFileInfo.fileType, writeFileInfo.paths[writeFileInfo.paths.Length-1]);
+            writtenFiles.Add(writeFileInfo);
         }
 
     }

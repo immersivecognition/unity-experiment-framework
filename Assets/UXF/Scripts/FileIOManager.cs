@@ -23,20 +23,28 @@ namespace UXF
         public bool debug = false;
 
         /// <summary>
+        /// Event(s) to trigger when we write a file. Not performed in amin thread so cannot include most Unity actions.
+        /// </summary>
+        /// <returns></returns>
+        [Tooltip("Event(s) to trigger when we write a file. Not performed in amin thread so cannot include most Unity actions.")]
+        public WriteFileEvent onWriteFile = new WriteFileEvent();
+
+        /// <summary>
         /// Queue of actions which gets emptied on each frame in the main thread.
         /// </summary>
         public readonly Queue<System.Action> executeOnMainThreadQueue = new Queue<System.Action>();
+
+        /// <summary>
+        /// An action which does nothing. Useful if a method requires an Action
+        /// </summary>
+        /// <returns></returns>
+        public static System.Action doNothing = () => { };
 
         BlockingQueue<System.Action> bq = new BlockingQueue<System.Action>();
         Thread t;
 
         bool quitting = false;
         
-        /// <summary>
-        /// An action which does nothing. Useful if a method requires an Action
-        /// </summary>
-        /// <returns></returns>
-        public static System.Action doNothing = () => { };
 
         void Awake()
         {
@@ -160,10 +168,11 @@ namespace UXF
         /// </summary>
         /// <param name="destFileName"></param>
         /// <param name="serializableObject"></param>
-        public void WriteJson(string destFileName, object serializableObject)
+        public void WriteJson(object serializableObject, WriteFileInfo writeFileInfo)
         {            
             string ppJson = MiniJSON.Json.Serialize(serializableObject);
-            File.WriteAllText(destFileName, ppJson);
+            File.WriteAllText(writeFileInfo.FullPath, ppJson);
+            onWriteFile.Invoke(writeFileInfo);
         }
 
         /// <summary>
@@ -172,7 +181,7 @@ namespace UXF
         /// <param name="dataDict"></param>
         /// <param name="headers"></param>
         /// <param name="fpath"></param>
-        public void WriteTrials(List<OrderedResultDict> dataDict, string[] headers, string fpath)
+        public void WriteTrials(List<OrderedResultDict> dataDict, string[] headers, WriteFileInfo writeFileInfo)
         {
             string[] csvRows = new string[dataDict.Count + 1];
             csvRows[0] = string.Join(",", headers.ToArray());
@@ -188,23 +197,25 @@ namespace UXF
                 }
             }
 
-            File.WriteAllLines(fpath, csvRows);
+            File.WriteAllLines(writeFileInfo.FullPath, csvRows);
+            onWriteFile.Invoke(writeFileInfo);
         }
 
         /// <summary>
         /// Writes a list of string arrays with a given header to a file at given path.
         /// </summary>
-        /// <param name="header"></param>
+        /// <param name="header">Row of headers</param>
         /// <param name="data"></param>
         /// <param name="fpath"></param>
-        public void WriteCSV(string[] header, IList<string[]> data, string fpath)
+        public void WriteCSV(string[] header, IList<string[]> data, WriteFileInfo writeFileInfo)
         {
             string[] csvRows = new string[data.Count + 1];
             csvRows[0] = string.Join(",", header);
             for (int i = 1; i <= data.Count; i++)
                 csvRows[i] = string.Join(",", data[i-1]);
 
-            File.WriteAllLines(fpath, csvRows);
+            File.WriteAllLines(writeFileInfo.FullPath, csvRows);
+            onWriteFile.Invoke(writeFileInfo);
         }
 
         /// <summary>
@@ -221,7 +232,7 @@ namespace UXF
             }
             catch (FileNotFoundException)
             {
-
+                Debug.LogErrorFormat("Cannot find file {0}", fpath);
             }
 
             System.Action action = new System.Action(() => callback.Invoke(data));
@@ -233,11 +244,12 @@ namespace UXF
         /// </summary>
         /// <param name="data"></param>
         /// <param name="fpath"></param>
-        public void WriteCSV(DataTable data, string fpath)
+        public void WriteCSV(DataTable data, WriteFileInfo writeFileInfo)
         {
-            var writer = new CSVFile.CSVWriter(fpath);
+            var writer = new CSVFile.CSVWriter(writeFileInfo.FullPath);
             writer.Write(data, true);
             writer.Dispose();
+            onWriteFile.Invoke(writeFileInfo);
         }
 
         /// <summary>
@@ -257,7 +269,7 @@ namespace UXF
         } 
 
         /// <summary>
-        /// Aborts the FileIOManager's thread.
+        /// Aborts the FileIOManager's thread and joins the thread to the calling thread.
         /// </summary>
         public void End()
         {
