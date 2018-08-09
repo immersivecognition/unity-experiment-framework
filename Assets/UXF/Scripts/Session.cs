@@ -18,9 +18,15 @@ namespace UXF
     public class Session : MonoBehaviour
     {
         /// <summary>
-        /// Enable to automatically safely end the session when this object is destroyed (or the application stops running).
+        /// Enable to automatically safely end the session when the application is quitting.
         /// </summary>
-        [Tooltip("Enable to automatically safely end the session when this object is destroyed (or the application stops running).")]
+        [Tooltip("Enable to automatically safely end the session when the application is quitting.")]
+        public bool endOnQuit = true;
+
+        /// <summary>
+        /// Enable to automatically safely end the session when this object is destroyed.
+        /// </summary>
+        [Tooltip("Enable to automatically safely end the session when this object is destroyed.")]
         public bool endOnDestroy = true;
 
         /// <summary>
@@ -575,6 +581,14 @@ namespace UXF
         public void ReadSettingsFile(string path, System.Action<Dictionary<string, object>> action)
         {
             fileIOManager.ManageInWorker(() => fileIOManager.ReadJSON(path, action));
+        }
+
+        void OnApplicationQuit()
+        {
+            if (endOnQuit)
+            {
+                End();
+            }
         }
 
         void OnDestroy()
