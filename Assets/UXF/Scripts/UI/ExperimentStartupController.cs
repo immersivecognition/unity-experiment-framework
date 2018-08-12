@@ -62,7 +62,7 @@ namespace UXF
             }
             else
             {
-                ppInfoForm.Generate(participantDataPoints);
+                ppInfoForm.Generate(participantDataPoints, true);
 
                 List<string> sessionList = new List<string>();
                 for (int i = 1; i <= maxNumSessions; i++)

@@ -28,13 +28,17 @@ namespace UXF
             }
         }
 
-        public void Generate(List<FormElementEntry> formElements)
+        public void Generate(List<FormElementEntry> formElements, bool insertPpidElement)
         {
-            ppidElement = new FormElementEntry();
-            ppidElement.displayName = "Participant ID";
-            ppidElement.internalName = "ppid";
-            ppidElement.dataType = FormDataType.String;
-            formElements.Insert(0, ppidElement);
+            if (insertPpidElement)
+            {
+                ppidElement = new FormElementEntry();
+                ppidElement.displayName = "Participant ID";
+                ppidElement.internalName = "ppid";
+                ppidElement.dataType = FormDataType.String;
+                formElements.Insert(0, ppidElement);
+
+            }
 
             this.formElements = formElements;
             while (contentParent.transform.childCount != 0)
@@ -63,9 +67,12 @@ namespace UXF
                 }
             }
 
-            // set ppid field to current time
-            TextFormController ppidText = (TextFormController)ppidElement.controller;
-            ppidText.SetToTimeNow();
+            if (insertPpidElement)
+            {
+                // set ppid field to current time
+                TextFormController ppidText = (TextFormController)ppidElement.controller;
+                ppidText.SetToTimeNow();
+            }
 
         }
 
