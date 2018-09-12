@@ -130,7 +130,7 @@ More examples are contained in the package.
 
 ## Development
 
-This project is developed under Unity 2017.3.0f3.
+This project is developed under Unity 2017.3.0f3 but should work on all recent versions of Unity.
 
 ## Documentation
 
