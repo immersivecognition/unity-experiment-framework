@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 114916036141644208}
   - component: {fileID: 114324480150258046}
   - component: {fileID: 114155219626309100}
-  - component: {fileID: 114908171941659672}
   - component: {fileID: 114291432593817218}
   m_Layer: 0
   m_Name: '[UXF_Core]'
@@ -85,21 +84,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UXF.WriteFileEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
---- !u!114 &114908171941659672
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1970900254558334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93551dc7197ac2347b099263053405aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  displaySessionProtocol: 0
-  sessionProtocol: 'Press the above button after generating your blocks and trials
-    to list all blocks and trials with their associated setting in the session. This
-    helps you make sure settings are being applied to the correct trials. '
 --- !u!114 &114916036141644208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa9f2505d11cc9e4aa44357b47b12905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  endOnQuit: 1
   endOnDestroy: 1
   settingsToLog: []
   customHeaders: []
@@ -129,6 +114,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UXF.TrialEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onSessionEnd:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UXF.SessionEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   _hasInitialised: 0
   experimentName: 

@@ -11,6 +11,7 @@ namespace UXF
 	/// Component which assists in debugging session structure.
 	/// </summary>
 	[ExecuteInEditMode]
+	[System.Obsolete("Component is obsolete. Use the new Session Debugger editor tool.")]
 	public class SessionDebugger : MonoBehaviour
 	{
 		[InspectorButton("DisplaySessionProtocol")]
