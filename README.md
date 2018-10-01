@@ -7,21 +7,20 @@ A set of components which simplify human behaviour experiments developed in the 
 
 If you have developed a project using UXF please [let me know](http://twitter.com/jackbrookes)! 
 
-
-- [UXF - Unity Experiment Framework](#uxf---unity-experiment-framework)
-    - [Get started](#get-started)
-    - [Features](#features)
-        - [Programming style](#programming-style)
-        - [Data collection](#data-collection)
-        - [Events](#events)
-        - [CSV Participant List](#csv-participant-list)
-        - [Settings system](#settings-system)
-        - [UI](#ui)
-        - [File IO](#file-io)
-    - [Example](#example)
-    - [Development](#development)
-    - [Documentation](#documentation)
-    - [Related packages](#related-packages)
+**Contents**
+- [Get started](#get-started)
+- [Features](#features)
+    - [Programming style](#programming-style)
+    - [Data collection](#data-collection)
+    - [Events](#events)
+    - [CSV Participant List](#csv-participant-list)
+    - [Settings system](#settings-system)
+    - [UI](#ui)
+    - [File IO](#file-io)
+- [Example](#example)
+- [Development](#development)
+- [Documentation](#documentation)
+- [Related packages](#related-packages)
 
 ## Get started
 
