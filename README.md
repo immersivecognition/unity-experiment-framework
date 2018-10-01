@@ -7,6 +7,22 @@ A set of components which simplify human behaviour experiments developed in the 
 
 If you have developed a project using UXF please [let me know](http://twitter.com/jackbrookes)! 
 
+
+- [UXF - Unity Experiment Framework](#uxf---unity-experiment-framework)
+    - [Get started](#get-started)
+    - [Features](#features)
+        - [Programming style](#programming-style)
+        - [Data collection](#data-collection)
+        - [Events](#events)
+        - [CSV Participant List](#csv-participant-list)
+        - [Settings system](#settings-system)
+        - [UI](#ui)
+        - [File IO](#file-io)
+    - [Example](#example)
+    - [Development](#development)
+    - [Documentation](#documentation)
+    - [Related packages](#related-packages)
+
 ## Get started
 
 1. Import the latest ```UXF.unitypackage``` [release](https://github.com/jackbrookes/unity-experiment-framework/releases/latest) to your existing Unity project.
@@ -135,3 +151,8 @@ This project is developed under Unity 2017.3.0f3 but should work on all recent v
 ## Documentation
 
 Visit the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki)
+
+## Related packages
+
+* [UXF Web Settings](https://github.com/jackbrookes/uxf-web-settings)
+* [UXF S3 Uploader](https://github.com/jackbrookes/uxf-s3-uploader)
