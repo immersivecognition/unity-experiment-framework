@@ -27,8 +27,7 @@ namespace UXF.Tests
             session = gameObject.AddComponent<Session>();
 
             session.AttachReferences(
-                fileIOManager,
-                sessionLogger
+                fileIOManager
             );
 
             sessionLogger.AttachReferences(
@@ -39,8 +38,6 @@ namespace UXF.Tests
             sessionLogger.Initialise();
 
             fileIOManager.debug = true;
-            fileIOManager.Begin();
-
         }
 
         [TearDown]
