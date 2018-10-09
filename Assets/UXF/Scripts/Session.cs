@@ -371,12 +371,14 @@ namespace UXF
             ppid = participantId;
             number = sessionNumber;
             basePath = baseFolder;
+
+            if (participantDetails == null)
+                participantDetails = new Dictionary<string, object>();
             this.participantDetails = participantDetails;
 
             if (settings == null)
                 settings = Settings.empty;
-            else
-                this.settings = settings;
+            this.settings = settings;
 
             // setup folders
             InitFolder();
@@ -388,6 +390,11 @@ namespace UXF
             // raise the session events
             if (onInitialise != null) onInitialise();
             onSessionBegin.Invoke(this);
+
+            // copy participant details to session folder
+            WriteDictToSessionFolder(
+                new Dictionary<string, object>(participantDetails), // makes a copy
+                "participant_details");
 
             // copy Settings to session folder
             WriteDictToSessionFolder(
