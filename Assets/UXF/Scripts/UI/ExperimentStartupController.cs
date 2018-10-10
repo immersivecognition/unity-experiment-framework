@@ -47,8 +47,10 @@ namespace UXF
         public ParticipantListSelection ppListSelect;
         public FillableFormController ppInfoForm;
         public DropDownController sessionNumDropdown;
-
+        
         public PopupController popupController;
+
+        public GameObject startupPanel;
 
         [Space]
         public Session session;
@@ -99,7 +101,7 @@ namespace UXF
                     null,
                     new Settings(dict)
                 );
-                gameObject.SetActive(false);
+                startupPanel.SetActive(false);
             });
 
             session.ReadSettingsFile(
@@ -134,15 +136,15 @@ namespace UXF
             var settings = settingsSelector.GetSettings();
 
             Action finish = new Action(() =>
-               {
-                   session.Begin(settingsSelector.experimentName,
-                                                 ppid,
-                                                 ppListSelect.currentFolder,
-                                                 sessionNum,
-                                                 infoDict,
-                                                 settings);
-                   gameObject.SetActive(false); // hide self
-               }
+                {
+                    session.Begin(settingsSelector.experimentName,
+                                                    ppid,
+                                                    ppListSelect.currentFolder,
+                                                    sessionNum,
+                                                    infoDict,
+                                                    settings);
+                    startupPanel.SetActive(false);
+                }
             );
 
             bool exists = Session.CheckSessionExists(settingsSelector.experimentName, ppid, ppListSelect.currentFolder, sessionNum);
