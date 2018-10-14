@@ -221,14 +221,9 @@ namespace UXF
         public Dictionary<string, object> participantDetails;
 
         /// <summary>
-        /// An event handler for a C# event containing the session as an argument.
+        /// An event handler for a C# event.
         /// </summary>
         public delegate void EventHandler();
-
-        /// <summary>
-        /// Event raised after session has been initialised, used for UXF functionality. Users should use similar OnSessionBegin UnityEvent.
-        /// </summary>
-        public event EventHandler onInitialise;
 
         /// <summary>
         /// Event raised before session finished, used for UXF functionality. Users should use the similar OnSessionEnd UnityEvent.
@@ -388,7 +383,6 @@ namespace UXF
             _hasInitialised = true;
 
             // raise the session events
-            if (onInitialise != null) onInitialise();
             onSessionBegin.Invoke(this);
 
             // copy participant details to session folder
