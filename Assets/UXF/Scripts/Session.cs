@@ -176,12 +176,7 @@ namespace UXF
         /// Reference to the associated FileIOManager which deals with inputting and outputting files.
         /// </summary>
         private FileIOManager fileIOManager;
-
-        /// <summary>
-        /// Reference to the associated SessionLogger which automatically stores all Debug.Log calls
-        /// </summary>
-        private SessionLogger logger;
-
+        
         List<string> baseHeaders = new List<string> { "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
 
         /// <summary>
@@ -189,7 +184,6 @@ namespace UXF
         /// </summary>
         /// <value></value>
         public string basePath { get; private set; }
-
 
         /// <summary>
         /// Path to the folder used for reading settings and storing the output. 
@@ -226,24 +220,32 @@ namespace UXF
         /// </summary>
         public Dictionary<string, object> participantDetails;
 
+        /// <summary>
+        /// An event handler for a C# event.
+        /// </summary>
+        public delegate void EventHandler();
+
+        /// <summary>
+        /// Event raised before session finished, used for UXF functionality. Users should use the similar OnSessionEnd UnityEvent.
+        /// </summary>
+        public event EventHandler cleanUp;
+
+        /// <summary>
+        /// Provide references to other components 
+        /// </summary>
         void Awake()
         {
             // get components attached to this gameobject and store their references 
-            AttachReferences(
-                GetComponent<FileIOManager>(),
-                GetComponent<SessionLogger>()
-                );
+            AttachReferences(GetComponent<FileIOManager>());
         }
 
         /// <summary>
         /// Provide references to other components 
         /// </summary>
         /// <param name="newFileIOManager"></param>
-        /// <param name="newSessionLogger"></param>
-        public void AttachReferences(FileIOManager newFileIOManager = null, SessionLogger newSessionLogger = null)
+        public void AttachReferences(FileIOManager newFileIOManager = null)
         {
             if (newFileIOManager != null) fileIOManager = newFileIOManager;
-            if (newSessionLogger != null) logger = newSessionLogger;
         }
 
         /// <summary>
@@ -364,28 +366,31 @@ namespace UXF
             ppid = participantId;
             number = sessionNumber;
             basePath = baseFolder;
+
+            if (participantDetails == null)
+                participantDetails = new Dictionary<string, object>();
             this.participantDetails = participantDetails;
 
             if (settings == null)
                 settings = Settings.empty;
-            else
-                this.settings = settings;
+            this.settings = settings;
 
             // setup folders
             InitFolder();
 
             // Initialise FileIOManager
             if (!fileIOManager.IsActive) fileIOManager.Begin();
-
-            // Initialise logger
-            if (logger != null)
-                logger.Initialise();
-
             _hasInitialised = true;
+
+            // raise the session events
             onSessionBegin.Invoke(this);
 
-            // copy Settings to session folder
+            // copy participant details to session folder
+            WriteDictToSessionFolder(
+                new Dictionary<string, object>(participantDetails), // makes a copy
+                "participant_details");
 
+            // copy Settings to session folder
             WriteDictToSessionFolder(
                 new Dictionary<string, object>(settings.baseDict), // makes a copy
                 "settings");
@@ -537,11 +542,10 @@ namespace UXF
                     currentTrial.End();
                 SaveResults();
 
-                // end logger
-                if (logger != null)
-                    logger.Finalise();
+                // raise cleanup event
+                if (cleanUp != null) cleanUp();
 
-                // end FileIOManager
+                // end FileIOManager - forces immediate writing of all files
                 fileIOManager.End();
                 
                 currentTrialNum = 0;
@@ -568,7 +572,6 @@ namespace UXF
                 fileName
                 );
 
-            // in this case, write in main thread to block aborting
             fileIOManager.ManageInWorker(() => fileIOManager.WriteTrials(results, headers.ToArray(), fileInfo));
         }
 

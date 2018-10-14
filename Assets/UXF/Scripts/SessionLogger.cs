@@ -23,6 +23,7 @@ namespace UXF
 				newFileIOManager: GetComponent<FileIOManager>(),
 				newSession: GetComponent<Session>()
 			);
+			Initialise();
 		}
 
         /// <summary>
@@ -53,6 +54,7 @@ namespace UXF
             );
 
             Application.logMessageReceived += HandleLog;
+			session.cleanUp += Finalise; // finilise logger when cleaning up the session
 		}		
 
 		void HandleLog(string logString, string stackTrace, LogType type)
@@ -80,6 +82,7 @@ namespace UXF
 
 			fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(table, fileInfo));
             Application.logMessageReceived -= HandleLog;
+			session.cleanUp -= Finalise;
         }
 
 	}
