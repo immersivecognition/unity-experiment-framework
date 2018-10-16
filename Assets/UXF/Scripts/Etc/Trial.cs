@@ -86,6 +86,7 @@ namespace UXF
             foreach (string h in session.headers)
                 result.Add(h, string.Empty);
 
+            result["directory"] = Extensions.CombinePaths(session.experimentName, session.ppid, session.folderName).Replace('\\', '/');
             result["experiment"] = session.experimentName;
             result["ppid"] = session.ppid;
             result["session_num"] = session.number;
@@ -115,7 +116,7 @@ namespace UXF
             {
                 tracker.StopRecording();
                 string dataName = session.SaveTrackerData(tracker);
-                result[tracker.pathHeader] = dataName;
+                result[tracker.filenameHeader] = dataName;
             }
 
             // log any settings we need to for this trial

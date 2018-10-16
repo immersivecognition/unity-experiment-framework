@@ -41,6 +41,7 @@ namespace UXF
         public string[] paths;
         public string RelativePath { get { return Extensions.CombinePaths("", paths); }}
         public string FullPath { get { return Extensions.CombinePaths(basePath, paths); } }
+        public string FileName { get { return paths[paths.GetLength(0) - 1]; } }
         public WriteFileInfo(WriteFileType fileType, string basePath, params string[] paths)
         {
             this.fileType = fileType;

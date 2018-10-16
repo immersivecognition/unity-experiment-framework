@@ -6,24 +6,30 @@ using UnityEngine.Events;
 
 namespace UXF
 {
-	/// <summary>
-	/// A script that can be added to an object with an input field, when enter is pressed while editing the input field a UnityEvent will be invoked
-	/// </summary>
-	public class InputFieldKeyboardReturnEvent : MonoBehaviour 
-	{
-		private InputField inputField;
+    /// <summary>
+    /// A script that can be added to an object with an input field, when enter is pressed while editing the input field a UnityEvent will be invoked
+    /// </summary>
+    public class InputFieldKeyboardReturnEvent : MonoBehaviour
+    {
+        private InputField inputField;
 
-		public UnityEvent onReturn;
+        public UnityEvent onReturn;
 
-		void Start()
-		{
-			inputField = GetComponent<InputField>();
-		}
+        void Start()
+        {
+            inputField = GetComponent<InputField>();
+        }
 
-		void OnGUI()
-		{
-			if (inputField.isFocused && !string.IsNullOrEmpty(inputField.text) && Input.GetKeyDown(KeyCode.Return))
-				onReturn.Invoke();
-		}
-	}
+        void OnGUI()
+        {
+            if (inputField.isFocused &&
+            	!string.IsNullOrEmpty(inputField.text) &&
+				(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
+            {
+                onReturn.Invoke();
+                inputField.Select();
+                inputField.ActivateInputField();
+            }
+        }
+    }
 }

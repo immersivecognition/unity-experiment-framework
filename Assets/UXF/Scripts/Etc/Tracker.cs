@@ -29,14 +29,14 @@ namespace UXF
         public string[] customHeader = new string[] { };
    
         /// <summary>
-        /// The header used when saving the relative filename string within our behavioural data.
+        /// The header used when saving the filename string within our behavioural data.
         /// </summary>
-        public string pathHeader
+        public string filenameHeader
         {
             get
             {
                 Debug.AssertFormat(measurementDescriptor.Length > 0, "No measurement descriptor has been specified for this Tracker!");
-                return string.Join("_", new string[]{ objectName, measurementDescriptor, "relpath" });
+                return string.Join("_", new string[]{ objectName, measurementDescriptor, "filename" });
             }
         }
 
