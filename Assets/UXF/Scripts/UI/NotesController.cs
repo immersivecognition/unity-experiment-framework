@@ -92,7 +92,7 @@ namespace UXF
 
 			sessionNotes.Add(notesKey, notesValue);
 
-			session.WriteDictToSessionFolder(sessionNotes, "session_notes");
+			session.WriteDictToSessionFolder(sessionNotes, "notes");
 		}
 
 		/// <summary>

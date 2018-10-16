@@ -86,6 +86,7 @@ namespace UXF
             foreach (string h in session.headers)
                 result.Add(h, string.Empty);
 
+            result["directory"] = Extensions.CombinePaths(session.experimentName, session.ppid, session.folderName).Replace('\\', '/');
             result["experiment"] = session.experimentName;
             result["ppid"] = session.ppid;
             result["session_num"] = session.number;

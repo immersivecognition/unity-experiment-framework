@@ -177,7 +177,7 @@ namespace UXF
         /// </summary>
         private FileIOManager fileIOManager;
         
-        List<string> baseHeaders = new List<string> { "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
+        List<string> baseHeaders = new List<string> { "directory", "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
 
         /// <summary>
         /// The path in which the experiment data are stored.
@@ -267,7 +267,7 @@ namespace UXF
         /// Save tracking data for this trial
         /// </summary>
         /// <param name="tracker">The tracker to take data from to save</param>
-        /// <returns>Path to the saved file</returns>
+        /// <returns>Name of the saved file</returns>
         public string SaveTrackerData(Tracker tracker)
         {
             string fname = string.Format("{0}_{1}_T{2:000}.csv", tracker.objectName, tracker.measurementDescriptor, currentTrialNum);
@@ -285,9 +285,8 @@ namespace UXF
 
             fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(tracker.header, dataCopy, fileInfo));
 
-            // return relative path so it can be stored in behavioural data
-            return fileInfo.RelativePath;
-
+            // return name of the file so it can be stored in behavioural data
+            return fileInfo.FileName;
         }
 
         /// <summary>
