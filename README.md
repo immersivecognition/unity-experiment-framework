@@ -51,7 +51,7 @@ UXF automates the process of collecting data.
 
 Data is stored in CSV files with automatic handling of file & directory naming.
 
-UXF also stores other data in the form of .json files (full details on the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki).
+UXF also stores other data in the form of `.json` files (full details on the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki))
 
 ### Events
 
