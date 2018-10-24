@@ -51,7 +51,22 @@ UXF automates the process of collecting data.
 
 Data is stored in CSV files with automatic handling of file & directory naming.
 
-UXF also stores other data in the form of `.json` files (full details on the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki))
+UXF also stores other data in the form of `.json` files (full details on the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki)). Running a session with UXF will result in an output like this (assuming three trials with a tracked object called `object`).
+
+```
+Path: /experiment_name/participant_id/session_number/
+
+Filename                   Description
+------------------------ | ----------------------------------------------------------
+log.csv                  | Copy of all Debug.Log calls during the Session
+notes.csv                | Notes collected by the Notes UI
+participant_details.json | Copy of participant details (e.g. info entered via the UI)
+object_movement_T001.csv | Position and rotation of tracked_object within trial 1
+object_movement_T002.csv | Position and rotation of tracked_object within trial 2
+object_movement_T003.csv | Position and rotation of tracked_object within trial 3
+settings.json            | Copy of the settings applied to the Session
+trial_results.csv        | Main results file (behavioural data)
+```
 
 ### Events
 
