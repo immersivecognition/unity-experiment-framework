@@ -51,6 +51,8 @@ UXF automates the process of collecting data.
 
 Data is stored in CSV files with automatic handling of file & directory naming.
 
+UXF also stores other data in the form of .json files (full details on the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki).
+
 ### Events
 
 A `UnityEvent` is invoked on `Trial` begin and end, allowing you to easily trigger presentation of stimuli at trial start (for example).
