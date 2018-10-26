@@ -61,9 +61,9 @@ Filename                   Description
 log.csv                  | Copy of all Debug.Log calls during the Session
 notes.csv                | Notes collected by the Notes UI
 participant_details.json | Copy of participant details (e.g. info entered via the UI)
-object_movement_T001.csv | Position and rotation of tracked_object within trial 1
-object_movement_T002.csv | Position and rotation of tracked_object within trial 2
-object_movement_T003.csv | Position and rotation of tracked_object within trial 3
+object_movement_T001.csv | Position and rotation of "object" within trial 1
+object_movement_T002.csv | Position and rotation of "object" within trial 2
+object_movement_T003.csv | Position and rotation of "object" within trial 3
 settings.json            | Copy of the settings applied to the Session
 trial_results.csv        | Main results file (behavioural data)
 ```
