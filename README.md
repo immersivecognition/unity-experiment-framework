@@ -3,7 +3,7 @@
 </p>
 
 # UXF - Unity Experiment Framework
-A set of components which simplify human behaviour experiments developed in the Unity engine. This is the development project, if you want to download the package, see [Releases](https://github.com/jackbrookes/unity-experiment-framework/releases/latest). 
+A set of components which simplify human behaviour experiments developed in the Unity engine. This is the development project, if you want to download the package, do not clone this repository, see Getting Started below. 
 
 Read the [paper](https://doi.org/10.1101/459339) (preprint)
 
