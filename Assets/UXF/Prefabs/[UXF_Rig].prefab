@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 222018038411044730}
   - component: {fileID: 114531160504100936}
   m_Layer: 5
-  m_Name: PPID
+  m_Name: Folder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4721,7 +4721,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'PPID: None'
+  m_Text: experiment/ppid/S000
 --- !u!114 &114535399967479660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4828,7 +4828,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   session: {fileID: 114916036141644208}
   trialStatus: {fileID: 114343438554048266}
-  ppid: {fileID: 114531160504100936}
+  folder: {fileID: 114531160504100936}
   blockNum: {fileID: 114231761504221568}
   trialNum: {fileID: 114741870969616342}
 --- !u!114 &114545143169975566

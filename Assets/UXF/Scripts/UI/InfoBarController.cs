@@ -12,7 +12,7 @@ namespace UXF
 
         public Session session;
 
-        public Text trialStatus, ppid, blockNum, trialNum;
+        public Text trialStatus, folder, blockNum, trialNum;
 
         /// <summary>
 		/// Awake is called when the script instance is being loaded.
@@ -36,7 +36,7 @@ namespace UXF
 
         void ResetToNormal()
         {
-            ppid.text = "PPID: None";
+            folder.text = "experiment/ppid/S000";
             trialStatus.text = "Awaiting session start";
             trialNum.text = FormatProgress("Trial", 0, 0);
 			blockNum.text = FormatProgress("Block", 0, 0);
@@ -45,7 +45,7 @@ namespace UXF
         void SessionBegin(Session session)
         {
             trialStatus.text = "Awaiting trial start";
-            ppid.text = "PPID: " + session.ppid;
+            folder.text = session.experimentName + "\\" + session.ppid + "\\" + session.folderName;
         }
 
         void TrialBegin(Trial trial)
