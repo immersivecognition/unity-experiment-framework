@@ -7,18 +7,18 @@ A set of components which simplify human behaviour experiments developed in the 
 
 Read the [paper](https://doi.org/10.1101/459339) (preprint)
 
-If you have developed a project using UXF please [let me know](http://twitter.com/jackbrookes)! 
+If you have developed a project using UXF please [let me know](http://twitter.com/immersivecognition)! 
 
 **Contents**
 - [Get started](#get-started)
 - [Features](#features)
-    - [Programming style](#programming-style)
-    - [Data collection](#data-collection)
-    - [Events](#events)
-    - [CSV Participant List](#csv-participant-list)
-    - [Settings system](#settings-system)
-    - [UI](#ui)
-    - [File IO](#file-io)
+  - [Programming style](#programming-style)
+  - [Data collection](#data-collection)
+  - [Events](#events)
+  - [CSV Participant List](#csv-participant-list)
+  - [Settings system](#settings-system)
+  - [UI](#ui)
+  - [File IO](#file-io)
 - [Example](#example)
 - [Development](#development)
 - [Documentation](#documentation)
@@ -26,7 +26,7 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 ## Get started
 
-1. Import the latest ```UXF.unitypackage``` [release](https://github.com/jackbrookes/unity-experiment-framework/releases/latest) to your existing Unity project.
+1. Import the latest ```UXF.unitypackage``` [release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) to your existing Unity project.
 
 2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0. 
 
@@ -53,7 +53,7 @@ UXF automates the process of collecting data.
 
 Data is stored in CSV files with automatic handling of file & directory naming.
 
-UXF also stores other data in the form of `.json` files (full details on the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki)). Running a session with UXF will result in an output like this (assuming three trials with a tracked object called `object`).
+UXF also stores other data in the form of `.json` files (full details on the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki)). Running a session with UXF will result in an output like this (assuming three trials with a tracked object called `object`).
 
 ```
 Path: /experiment_name/participant_id/session_number/
@@ -168,7 +168,7 @@ This project is developed under Unity 2017.3.0f3 but should work on all recent v
 
 ## Documentation
 
-Visit the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki)
+Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki)
 
 ## Related packages
 

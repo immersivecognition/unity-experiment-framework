@@ -6,6 +6,6 @@
 
 ## Notes   
 
-* Documentation is posted on the [Wiki](https://github.com/jackbrookes/unity-experiment-framework/wiki)
+* Documentation is posted on the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki)
 * The python script requires [markdown-generator](https://github.com/cmccandless/markdown-generator) to run (`pip install markdown-generator`)
 

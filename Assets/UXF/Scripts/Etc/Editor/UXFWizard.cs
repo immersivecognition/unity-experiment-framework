@@ -71,12 +71,12 @@ namespace UXFTools
 
             GUILayout.Label("The GitHub page contains the most up-to-date information & release.", labelStyle);
 			if (GUILayout.Button("Visit GitHub"))
-				Application.OpenURL("https://github.com/jackbrookes/unity-experiment-framework/");
+				Application.OpenURL("https://github.com/immersivecognition/unity-experiment-framework/");
 
             EditorGUILayout.Space();
             GUILayout.Label("The GitHub Wiki contains documentation and in-depth explanations of concepts.", labelStyle);
             if (GUILayout.Button("Visit Wiki"))
-                Application.OpenURL("https://github.com/jackbrookes/unity-experiment-framework/wiki");
+                Application.OpenURL("https://github.com/immersivecognition/unity-experiment-framework/wiki");
 
 
             EditorGUILayout.Separator();
