@@ -26,7 +26,7 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 ## Get started
 
-1. Import the latest ```UXF.unitypackage``` [release](https://github.com/jackbrookes/unity-experiment-framework/releases/latest) to your existing Unity project.
+1. Import the latest ```UXF.unitypackage``` [release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) to your existing Unity project.
 
 2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0. 
 
@@ -35,6 +35,8 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 4. Press play, and use the UI to create a new participant list in an appropriate directory.
 
 5. Press start to begin the session.
+
+Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki) for more detail.
 
 ## Features
 
