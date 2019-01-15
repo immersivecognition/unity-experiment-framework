@@ -30,7 +30,7 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0. 
 
-3. Open an example scene or add the `[UXF_Rig]` prefab to your scene.
+3. Open an example scene.
 
 4. Press play, and use the UI to create a new participant list in an appropriate directory.
 
