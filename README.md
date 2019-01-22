@@ -3,7 +3,7 @@
 </p>
 
 # UXF - Unity Experiment Framework
-A set of components which simplify human behaviour experiments developed in the Unity engine. This is the development project, if you want to download the package, do not clone this repository, see Getting Started below. 
+A set of components which simplify human behaviour experiments developed in the Unity engine. This is the development project, if you want to download the package, do not clone this repository, see "Get Started" below. 
 
 Read the [paper](https://doi.org/10.1101/459339) (preprint)
 
@@ -30,11 +30,13 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0. 
 
-3. Open an example scene or add the `[UXF_Rig]` prefab to your scene.
+3. Open an example scene.
 
 4. Press play, and use the UI to create a new participant list in an appropriate directory.
 
 5. Press start to begin the session.
+
+Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki) for more detail.
 
 ## Features
 
