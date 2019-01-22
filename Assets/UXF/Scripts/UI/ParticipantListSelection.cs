@@ -24,13 +24,28 @@ namespace UXF
         public PopupController popupController;
         public Button startButton;
 
+        string ppListLocKey = "ParticipantListLocation";
+
         public void Init()
         {
             ExperimentStartupController.SetSelectableAndChildrenInteractable(participantSelector.gameObject, false);
             ExperimentStartupController.SetSelectableAndChildrenInteractable(form.gameObject, false);
             ExperimentStartupController.SetSelectableAndChildrenInteractable(startButton.gameObject, false);
+            SetFromCache();
         }
 
+        public void SetFromCache()
+        {            
+            if (PlayerPrefs.HasKey(ppListLocKey))
+            {
+                string loc = PlayerPrefs.GetString(ppListLocKey);
+                if (File.Exists(loc))
+                {
+                    CheckSetList(loc);
+                }
+            }
+        }
+        
 
         public void SelectList()
         {
@@ -69,6 +84,8 @@ namespace UXF
 
         void PrepNewPPList(string path)
         {
+            if (path == "") return;
+    
             Popup pplistAttention = new Popup();
             pplistAttention.messageType = MessageType.Attention;
             pplistAttention.message = string.Format("An empty participant list has been created at {0}. Data you collect will be stored in the same folder as this list.", ppListPath);
@@ -128,12 +145,22 @@ namespace UXF
             participantSelector.SetParticipants(participants);
             participantSelector.SelectNewList();
 
+            PlayerPrefs.SetString(ppListLocKey, ppListPath);
+
             // enable selector
             ExperimentStartupController.SetSelectableAndChildrenInteractable(participantSelector.gameObject, true);
             // enable form
             ExperimentStartupController.SetSelectableAndChildrenInteractable(form.gameObject, true);
             // enable start button
             ExperimentStartupController.SetSelectableAndChildrenInteractable(startButton.gameObject, true);
+
+            foreach (var dataPoint in startup.participantDataPoints)
+            {
+                if (!ppList.Columns.Contains(dataPoint.internalName))
+                {
+                    ppList.Columns.Add(new DataColumn(dataPoint.internalName, typeof(string)));
+                }
+            }
         }
 
 

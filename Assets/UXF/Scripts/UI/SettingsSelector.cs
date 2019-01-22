@@ -17,10 +17,13 @@ namespace UXF{
 		[HideInInspector]
 		public string experimentName;
 
+		string settingsFileKey = "SettingsFile";
+
 		void Start ()
 		{
 			settingsFolder = Application.streamingAssetsPath;
 			TryGetSettingsList();
+			SetFromCache();
 		}
 		
 
@@ -33,7 +36,6 @@ namespace UXF{
             if (settingsNames.Count > 0)
             {
                 ddController.SetItems(settingsNames);
-                LoadCurrentSettingsDict();
             }
             else
             {
@@ -49,6 +51,29 @@ namespace UXF{
 
 		}
 
+	    void SetFromCache()
+        {            
+            if (PlayerPrefs.HasKey(settingsFileKey))
+            {
+                string fname = PlayerPrefs.GetString(settingsFileKey);
+				string settingsPath = Path.Combine(settingsFolder, fname);
+				if (File.Exists(settingsPath))
+				{
+	                ReadSettingsDict(fname);
+	            	experimentName = Path.GetFileNameWithoutExtension(fname);
+					ddController.SetContents(fname);
+				}
+				else
+				{
+					LoadCurrentSettingsDict();
+				}
+            }
+			else
+			{
+				LoadCurrentSettingsDict();
+			}
+        }
+
 		public void LoadCurrentSettingsDict()
 		{
 			string fname = ddController.GetContents().ToString();
@@ -56,9 +81,10 @@ namespace UXF{
             experimentName = Path.GetFileNameWithoutExtension(fname);
         }
 
-        void ReadSettingsDict(string settingsName)
+        void ReadSettingsDict(string fname)
         {
-			string settingsPath = Path.Combine(settingsFolder, settingsName);
+			string settingsPath = Path.Combine(settingsFolder, fname);
+			PlayerPrefs.SetString(settingsFileKey, fname);
             session.ReadSettingsFile(settingsPath, new System.Action<Dictionary<string, object>>((dict) => HandleSettingsDict(dict)));
         }
 
