@@ -7,7 +7,7 @@ A set of components which simplify human behaviour experiments developed in the 
 
 Read the [paper](https://doi.org/10.1101/459339) (preprint)
 
-If you have developed a project using UXF please [let me know](http://twitter.com/immersivecognition)! 
+If you have developed a project using UXF please [let me know](http://twitter.com/jackbrookes)! 
 
 **Contents**
 - [Get started](#get-started)
