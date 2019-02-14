@@ -63,7 +63,7 @@ Path: /experiment_name/participant_id/session_number/
 Filename                   Description
 ------------------------ | ----------------------------------------------------------
 log.csv                  | Copy of all Debug.Log calls during the Session
-notes.csv                | Notes collected by the Notes UI
+notes.json               | Notes collected by the Notes UI
 participant_details.json | Copy of participant details (e.g. info entered via the UI)
 object_movement_T001.csv | Position and rotation of "object" within trial 1
 object_movement_T002.csv | Position and rotation of "object" within trial 2
