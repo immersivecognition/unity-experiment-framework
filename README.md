@@ -2,6 +2,8 @@
   <img src="media/banner-tp-small.png">
 </p>
 
+⚠️ NOTE: There may be issues with the newest versions of Unity (2018.3). If you are having issues try downloading 2018.1 from the [Unity Download Archive](https://unity3d.com/get-unity/download/archive) until the issues are resolved.
+
 # UXF - Unity Experiment Framework
 A set of components which simplify human behaviour experiments developed in the Unity engine. This is the development project, if you want to download the package, do not clone this repository, see "Get Started" below. 
 
