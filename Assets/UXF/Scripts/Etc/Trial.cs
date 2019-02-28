@@ -19,7 +19,7 @@ namespace UXF
         /// <summary>
         /// Returns non-zero indexed trial number. This is generated based on its position in the block, and the ordering of the blocks within the session.
         /// </summary>
-        public int number { get { return session.trials.ToList().IndexOf(this) + 1; } }
+        public int number { get { return session.Trials.ToList().IndexOf(this) + 1; } }
 
         /// <summary>
         /// Returns non-zero indexed trial number for the current block.
@@ -83,10 +83,10 @@ namespace UXF
             status = TrialStatus.InProgress;
             startTime = Time.time;
             result = new OrderedResultDict();
-            foreach (string h in session.headers)
+            foreach (string h in session.Headers)
                 result.Add(h, string.Empty);
 
-            result["directory"] = Extensions.CombinePaths(session.experimentName, session.ppid, session.folderName).Replace('\\', '/');
+            result["directory"] = Extensions.CombinePaths(session.experimentName, session.ppid, session.FolderName).Replace('\\', '/');
             result["experiment"] = session.experimentName;
             result["ppid"] = session.ppid;
             result["session_num"] = session.number;

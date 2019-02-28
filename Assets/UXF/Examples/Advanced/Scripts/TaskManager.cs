@@ -17,7 +17,7 @@ namespace UXFExamples
 
         public void EndIfLastTrial(Trial trial)
         {
-            if (trial == trial.session.lastTrial)
+            if (trial == trial.session.LastTrial)
             {
                 trial.session.End();
             }

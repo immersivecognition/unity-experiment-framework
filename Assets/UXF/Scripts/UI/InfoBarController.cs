@@ -45,13 +45,13 @@ namespace UXF
         void SessionBegin(Session session)
         {
             trialStatus.text = "Awaiting trial start";
-            folder.text = session.experimentName + "\\" + session.ppid + "\\" + session.folderName;
+            folder.text = session.experimentName + "\\" + session.ppid + "\\" + session.FolderName;
         }
 
         void TrialBegin(Trial trial)
         {
             trialStatus.text = "Trial in progress";
-			trialNum.text = FormatProgress("Trial", trial.number, trial.session.trials.ToList().Count);
+			trialNum.text = FormatProgress("Trial", trial.number, trial.session.Trials.ToList().Count);
 			blockNum.text = FormatProgress("Block", trial.block.number, trial.session.blocks.Count);
         }
 

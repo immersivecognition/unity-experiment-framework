@@ -63,7 +63,7 @@ namespace UXF.Tests
         public void RunTrials()
         {   
             int i = 0;
-            foreach (var trial in session.trials)
+            foreach (var trial in session.Trials)
             {
                 trial.Begin();
                 trial.result["observation"] = ++i;
@@ -73,14 +73,14 @@ namespace UXF.Tests
                     delegate { trial.result["not_customheader_observation"] = "something"; }
                 );
 
-                Assert.AreSame(trial, session.currentTrial);
+                Assert.AreSame(trial, session.CurrentTrial);
                 Assert.AreEqual(trial.number, session.currentTrialNum);
 
                 trial.End();
             }
 
             i = 0;
-            foreach (var trial in session.trials)
+            foreach (var trial in session.Trials)
             {
                 Assert.AreEqual(trial.result["observation"], ++i);
             }

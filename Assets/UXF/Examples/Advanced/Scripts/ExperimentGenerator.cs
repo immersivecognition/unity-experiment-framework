@@ -21,7 +21,7 @@ namespace UXFExamples
             MakeCatchTrials(block2);
 
 			// for each trial in the session, 50/50 chance of correct target being on left or right
-            foreach (Trial trial in session.trials)
+            foreach (Trial trial in session.Trials)
 			{
                 TargetPosition pos = Random.value > 0.5 ? TargetPosition.Left : TargetPosition.Right;
 				trial.settings["correct_target_position"] = pos;

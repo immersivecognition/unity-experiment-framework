@@ -32,7 +32,7 @@ namespace UXFExamples
 
 			try
 			{
-                nextTrial = session.nextTrial;
+                nextTrial = session.NextTrial;
 			}
 			catch (NoSuchTrialException)
 			{

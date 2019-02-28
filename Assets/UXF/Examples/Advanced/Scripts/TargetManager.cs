@@ -38,7 +38,7 @@ namespace UXFExamples
 
 		public void TargetHit(TargetController target)
 		{
-			Trial currentTrial = session.currentTrial;
+			Trial currentTrial = session.CurrentTrial;
 			currentTrial.result["correct"] = target.isCorrect;
             currentTrial.End();
 		}

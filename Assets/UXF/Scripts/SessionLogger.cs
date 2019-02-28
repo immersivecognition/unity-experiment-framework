@@ -54,7 +54,7 @@ namespace UXF
             );
 
             Application.logMessageReceived += HandleLog;
-			session.cleanUp += Finalise; // finilise logger when cleaning up the session
+			session.cleanUp += Finalise; // finalise logger when cleaning up the session
 		}		
 
 		void HandleLog(string logString, string stackTrace, LogType type)
@@ -73,10 +73,10 @@ namespace UXF
 		{
             WriteFileInfo fileInfo = new WriteFileInfo(
                 WriteFileType.Log,
-                session.basePath,
+                session.BasePath,
                 session.experimentName,
                 session.ppid,
-                session.folderName,
+                session.FolderName,
                 "log.csv"
                 );
 
