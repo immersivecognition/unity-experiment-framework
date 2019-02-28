@@ -78,7 +78,7 @@ namespace UXF.Tests
         {
 			Random.InitState(1); // reproducible
 
-			foreach (var trial in session.trials)
+			foreach (var trial in session.Trials)
 			{
 
 				trial.Begin();

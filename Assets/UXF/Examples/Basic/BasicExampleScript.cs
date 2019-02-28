@@ -89,9 +89,9 @@ public class BasicExampleScript : MonoBehaviour {
     void EndAndPrepare()
     {
         Debug.Log("Ending trial");
-        session.currentTrial.End();
+        session.CurrentTrial.End();
 
-        if (session.currentTrial == session.lastTrial)
+        if (session.CurrentTrial == session.LastTrial)
         {
             session.End();
         }

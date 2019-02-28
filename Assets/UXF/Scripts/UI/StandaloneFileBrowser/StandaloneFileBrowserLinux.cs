@@ -1,10 +1,14 @@
-#if UNITY_STANDALONE_OSX
+#if UNITY_STANDALONE_LINUX
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace SFB {
-    public class StandaloneFileBrowserMac : IStandaloneFileBrowser {
+
+    public class StandaloneFileBrowserLinux : IStandaloneFileBrowser {
+        
         private static Action<string[]> _openFileCb;
         private static Action<string[]> _openFolderCb;
         private static Action<string> _saveFileCb;
@@ -12,21 +16,8 @@ namespace SFB {
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void AsyncCallback(string path);
 
-        [AOT.MonoPInvokeCallback(typeof(AsyncCallback))]
-        private static void openFileCb(string result) {
-            _openFileCb.Invoke(result.Split((char)28));
-        }
-
-        [AOT.MonoPInvokeCallback(typeof(AsyncCallback))]
-        private static void openFolderCb(string result) {
-            _openFolderCb.Invoke(result.Split((char)28));
-        }
-
-        [AOT.MonoPInvokeCallback(typeof(AsyncCallback))]
-        private static void saveFileCb(string result) {
-            _saveFileCb.Invoke(result);
-        }
-
+        [DllImport("StandaloneFileBrowser")]
+        private static extern void DialogInit();
         [DllImport("StandaloneFileBrowser")]
         private static extern IntPtr DialogOpenFilePanel(string title, string directory, string extension, bool multiselect);
         [DllImport("StandaloneFileBrowser")]
@@ -39,6 +30,11 @@ namespace SFB {
         private static extern IntPtr DialogSaveFilePanel(string title, string directory, string defaultName, string extension);
         [DllImport("StandaloneFileBrowser")]
         private static extern void DialogSaveFilePanelAsync(string title, string directory, string defaultName, string extension, AsyncCallback callback);
+
+        public StandaloneFileBrowserLinux()
+        {
+            DialogInit();
+        }
 
         public string[] OpenFilePanel(string title, string directory, ExtensionFilter[] extensions, bool multiselect) {
             var paths = Marshal.PtrToStringAnsi(DialogOpenFilePanel(
@@ -56,7 +52,7 @@ namespace SFB {
                 directory,
                 GetFilterFromFileExtensionList(extensions),
                 multiselect,
-                openFileCb);
+                (string result) => { _openFileCb.Invoke(result.Split((char)28)); });
         }
 
         public string[] OpenFolderPanel(string title, string directory, bool multiselect) {
@@ -73,7 +69,7 @@ namespace SFB {
                 title,
                 directory,
                 multiselect,
-                openFolderCb);
+                (string result) => { _openFolderCb.Invoke(result.Split((char)28)); });
         }
 
         public string SaveFilePanel(string title, string directory, string defaultName, ExtensionFilter[] extensions) {
@@ -91,7 +87,7 @@ namespace SFB {
                 directory,
                 defaultName,
                 GetFilterFromFileExtensionList(extensions),
-                saveFileCb);
+                (string result) => { _saveFileCb.Invoke(result); });
         }
 
         private static string GetFilterFromFileExtensionList(ExtensionFilter[] extensions) {

@@ -36,18 +36,18 @@ namespace UXF
         public List<Block> blocks = new List<Block>();
 
         /// <summary>
+        /// List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
+        /// </summary>
+        [Tooltip("List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.")]
+        public List<string> customHeaders = new List<string>();
+
+        /// <summary>
         /// List of settings you wish to log to the behavioural file for each trial.
         /// </summary>
         /// <returns></returns>
         [Header("Data logging")]
         [Tooltip("List of settings you wish to log to the behavioural data output for each trial.")]
         public List<string> settingsToLog = new List<string>();
-
-        /// <summary>
-        /// List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
-        /// </summary>
-        [Tooltip("List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.")]
-        public List<string> customHeaders = new List<string>();
 
         /// <summary>
         /// List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().
@@ -134,86 +134,169 @@ namespace UXF
         /// <summary>
         /// Returns true if current trial is in progress
         /// </summary>
-        public bool inTrial { get { return (currentTrialNum != 0) && (currentTrial.status == TrialStatus.InProgress); } }
+        public bool InTrial { get { return (currentTrialNum != 0) && (CurrentTrial.status == TrialStatus.InProgress); } }
 
         /// <summary>
-        /// Alias of GetTrial()
+        /// Returns the current trial object.
         /// </summary>
-        public Trial currentTrial { get { return GetTrial(); } }
+        public Trial CurrentTrial { get { return GetTrial(); } }
 
         /// <summary>
-        /// Alias of NextTrial()
+        /// Returns the next trial object (i.e. trial with trial number currentTrialNum + 1 ).
         /// </summary>
-        public Trial nextTrial { get { return NextTrial(); } }
+        public Trial NextTrial { get { return GetNextTrial(); } }
 
         /// <summary>
         /// Get the trial before the current trial.
         /// </summary>
-        public Trial prevTrial { get { return PrevTrial(); } }
+        public Trial PrevTrial { get { return GetPrevTrial(); } }
 
         /// <summary>
         /// Get the last trial in the last block of the session.
         /// </summary>
-        public Trial firstTrial { get { return FirstTrial(); } }
+        public Trial FirstTrial { get { return GetFirstTrial(); } }
 
         /// <summary>
         /// Get the last trial in the last block of the session.
         /// </summary>
-        public Trial lastTrial { get { return LastTrial(); } }
+        public Trial LastTrial { get { return GetLastTrial(); } }
 
         /// <summary>
-        /// Alias of GetBlock()
+        /// Returns the current block object.
         /// </summary>
-        public Block currentBlock { get { return GetBlock(); } }
+        public Block CurrentBlock { get { return GetBlock(); } }
 
         /// <summary>
         /// Returns a list of trials for all blocks.  Modifying the order of this list will not affect trial order. Modify block.trials to change order within blocks.
-        ///  
         /// </summary>
-        public IEnumerable<Trial> trials { get { return blocks.SelectMany(b => b.trials); } }
-
-        /// <summary>
-        /// Reference to the associated FileIOManager which deals with inputting and outputting files.
-        /// </summary>
-        private FileIOManager fileIOManager;
+        public IEnumerable<Trial> Trials { get { return blocks.SelectMany(b => b.trials); } }
         
-        List<string> baseHeaders = new List<string> { "directory", "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
-
         /// <summary>
         /// The path in which the experiment data are stored.
         /// </summary>
-        /// <value></value>
-        public string basePath { get; private set; }
+        public string BasePath { get; private set; }
 
         /// <summary>
         /// Path to the folder used for reading settings and storing the output. 
         /// </summary>
-        public string experimentPath { get { return Path.Combine(basePath, experimentName); } }
+        public string ExperimentPath { get { return Path.Combine(BasePath, experimentName); } }
+
         /// <summary>
         /// Path within the experiment path for this particular particpant.
         /// </summary>
-        public string ppPath { get { return Path.Combine(experimentPath, ppid); } }
+        public string ParticipantPath { get { return Path.Combine(ExperimentPath, ppid); } }
+
         /// <summary>
         /// Path within the particpant path for this particular session.
         /// </summary>
-        public string path { get { return Path.Combine(ppPath, folderName); } }
+        public string FullPath { get { return Path.Combine(ParticipantPath, FolderName); } }
 
         /// <summary>
         /// Name of the Session folder 
         /// </summary>
         /// <returns></returns>
-        public string folderName { get { return SessionNumToName(number); } }
-
+        public string FolderName { get { return SessionNumToName(number); } }
 
         /// <summary>
         /// List of file headers generated for all referenced tracked objects.
         /// </summary>
-        public List<string> trackingHeaders { get { return trackedObjects.Select(t => t.filenameHeader).ToList(); } }
+        public List<string> TrackingHeaders { get { return trackedObjects.Select(t => t.filenameHeader).ToList(); } }
 
         /// <summary>
         /// Stores combined list of headers for the behavioural output.
         /// </summary>
-        public List<string> headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).Concat(trackingHeaders).ToList(); } }
+        public List<string> Headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).Concat(TrackingHeaders).ToList(); } }
+
+        /// <summary>
+        /// Returns true if current trial is in progress
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'InTrial' instead. These will be removed in a future update.")]
+        public bool inTrial { get { return InTrial; } }
+
+        /// <summary>
+        /// Returns the current trial object.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'CurrentTrial' instead. These will be removed in a future update.")]
+        public Trial currentTrial { get { return CurrentTrial; } }
+
+        /// <summary>
+        /// Returns the next trial object (i.e. trial with trial number currentTrialNum + 1 ).
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'NextTrial' instead. These will be removed in a future update.")]
+        public Trial nextTrial { get { return NextTrial; } }
+
+        /// <summary>
+        /// Get the trial before the current trial.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'PrevTrial' instead. These will be removed in a future update.")]
+        public Trial prevTrial { get { return PrevTrial; } }
+
+        /// <summary>
+        /// Get the last trial in the last block of the session.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'FirstTrial' instead. These will be removed in a future update.")]
+        public Trial firstTrial { get { return FirstTrial; } }
+
+        /// <summary>
+        /// Get the last trial in the last block of the session.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'LastTrial' instead. These will be removed in a future update.")]
+        public Trial lastTrial { get { return LastTrial; } }
+
+        /// <summary>
+        /// Returns the current block object.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'CurrentBlock' instead. These will be removed in a future update.")]
+        public Block currentBlock { get { return CurrentBlock; } }
+
+        /// <summary>
+        /// Returns a list of trials for all blocks.  Modifying the order of this list will not affect trial order. Modify block.trials to change order within blocks.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'Trials' instead. These will be removed in a future update.")]
+        public IEnumerable<Trial> trials { get { return Trials; } }
+        
+        /// <summary>
+        /// The path in which the experiment data are stored.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'BasePath' instead. These will be removed in a future update.")]
+        public string basePath { get {return BasePath; } private set { BasePath = value; } }
+
+        /// <summary>
+        /// Path to the folder used for reading settings and storing the output. 
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'ExperimentPath' instead. These will be removed in a future update.")]
+        public string experimentPath { get { return ExperimentPath; } }
+
+        /// <summary>
+        /// Path within the experiment path for this particular particpant.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'ParticipantPath' instead. These will be removed in a future update.")]
+        public string ppPath { get { return ParticipantPath; } }
+
+        /// <summary>
+        /// Path within the particpant path for this particular session.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'FullPath' instead. These will be removed in a future update.")]
+        public string path { get { return FullPath; } }
+
+        /// <summary>
+        /// Name of the Session folder 
+        /// </summary>
+        /// <returns></returns>
+        [Obsolete("Use identical CamelCase property 'FolderName' instead. These will be removed in a future update.")]
+        public string folderName { get { return FolderName; } }
+
+        /// <summary>
+        /// List of file headers generated for all referenced tracked objects.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'TrackingHeaders' instead. These will be removed in a future update.")]
+        public List<string> trackingHeaders { get { return TrackingHeaders; } }
+
+        /// <summary>
+        /// Stores combined list of headers for the behavioural output.
+        /// </summary>
+        [Obsolete("Use identical CamelCase property 'Headers' instead. These will be removed in a future update.")]
+        public List<string> headers { get { return Headers; } }
 
         /// <summary>
         /// Dictionary of objects for datapoints collected via the UI, or otherwise.
@@ -229,6 +312,16 @@ namespace UXF
         /// Event raised before session finished, used for UXF functionality. Users should use the similar OnSessionEnd UnityEvent.
         /// </summary>
         public event EventHandler cleanUp;
+
+        /// <summary>
+        /// The headers that are always included in the trial_results output.
+        /// </summary>
+        static List<string> baseHeaders = new List<string> { "directory", "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
+
+        /// <summary>
+        /// Reference to the associated FileIOManager which deals with inputting and outputting files.
+        /// </summary>
+        private FileIOManager fileIOManager;
 
         /// <summary>
         /// Provide references to other components 
@@ -253,14 +346,14 @@ namespace UXF
         /// </summary>
         void InitFolder()
         {
-            if (!System.IO.Directory.Exists(experimentPath))
-                System.IO.Directory.CreateDirectory(experimentPath);
-            if (!System.IO.Directory.Exists(ppPath))
-                System.IO.Directory.CreateDirectory(ppPath);
-            if (System.IO.Directory.Exists(path))
+            if (!System.IO.Directory.Exists(ExperimentPath))
+                System.IO.Directory.CreateDirectory(ExperimentPath);
+            if (!System.IO.Directory.Exists(ParticipantPath))
+                System.IO.Directory.CreateDirectory(ParticipantPath);
+            if (System.IO.Directory.Exists(FullPath))
                 Debug.LogWarning("Warning: Session already exists! Continuing will overwrite");
             else
-                System.IO.Directory.CreateDirectory(path);
+                System.IO.Directory.CreateDirectory(FullPath);
         }
 
         /// <summary>
@@ -274,10 +367,10 @@ namespace UXF
 
             WriteFileInfo fileInfo = new WriteFileInfo(
                 WriteFileType.Tracker,
-                this.basePath,
+                BasePath,
                 experimentName,
                 ppid,
-                folderName,
+                FolderName,
                 fname
                 );
 
@@ -295,7 +388,7 @@ namespace UXF
         /// <param name="filePath"></param>
         public void CopyFileToSessionFolder(string filePath)
         {
-            string newPath = Path.Combine(path, Path.GetFileName(filePath));
+            string newPath = Path.Combine(FullPath, Path.GetFileName(filePath));
             fileIOManager.ManageInWorker(() => fileIOManager.CopyFile(filePath, newPath));
         }
 
@@ -314,10 +407,10 @@ namespace UXF
 
                 WriteFileInfo fileInfo = new WriteFileInfo(
                     WriteFileType.Dictionary,
-                    this.basePath,
+                    BasePath,
                     experimentName,
                     ppid,
-                    folderName,
+                    FolderName,
                     fileName
                 );
 
@@ -364,7 +457,7 @@ namespace UXF
             this.experimentName = experimentName;
             ppid = participantId;
             number = sessionNumber;
-            basePath = baseFolder;
+            BasePath = baseFolder;
 
             if (participantDetails == null)
                 participantDetails = new Dictionary<string, object>();
@@ -428,7 +521,7 @@ namespace UXF
             {
                 throw new NoSuchTrialException("There is no trial zero. If you are the start of the experiment please use nextTrial to get the first trial");
             }
-            return trials.ToList()[currentTrialNum - 1];
+            return Trials.ToList()[currentTrialNum - 1];
         }
 
         /// <summary>
@@ -437,19 +530,19 @@ namespace UXF
         /// <returns></returns>
         public Trial GetTrial(int trialNumber)
         {
-            return trials.ToList()[trialNumber - 1];
+            return Trials.ToList()[trialNumber - 1];
         }
 
         /// <summary>
         /// Get next Trial
         /// </summary>
         /// <returns></returns>
-        Trial NextTrial()
+        Trial GetNextTrial()
         {
             // non zero indexed
             try
             {
-                return trials.ToList()[currentTrialNum];
+                return Trials.ToList()[currentTrialNum];
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -462,7 +555,7 @@ namespace UXF
         /// </summary>
         public void EndCurrentTrial()
         {
-            currentTrial.End();
+            CurrentTrial.End();
         }
 
         /// <summary>
@@ -471,19 +564,19 @@ namespace UXF
         public void BeginNextTrial()
         {
             if (hasInitialised)
-                nextTrial.Begin();
+                NextTrial.Begin();
         }
 
         /// <summary>
         /// Get previous Trial.
         /// </summary>
         /// <returns></returns>
-        Trial PrevTrial()
+        Trial GetPrevTrial()
         {
             try
             {
                 // non zero indexed
-                return trials.ToList()[currentTrialNum - 2];
+                return Trials.ToList()[currentTrialNum - 2];
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -495,7 +588,7 @@ namespace UXF
         /// Get first Trial in this session.
         /// </summary>
         /// <returns></returns>
-        Trial FirstTrial()
+        Trial GetFirstTrial()
         {
             var firstBlock = blocks[0];
             return firstBlock.trials[0];
@@ -505,7 +598,7 @@ namespace UXF
         /// Get last Trial in this session.
         /// </summary>
         /// <returns></returns>
-        Trial LastTrial()
+        Trial GetLastTrial()
         {
             var lastBlock = blocks[blocks.Count - 1];
             return lastBlock.trials[lastBlock.trials.Count - 1];
@@ -537,8 +630,8 @@ namespace UXF
         {
             if (hasInitialised)
             {
-                if (inTrial)
-                    currentTrial.End();
+                if (InTrial)
+                    CurrentTrial.End();
                 SaveResults();
 
                 // raise cleanup event
@@ -559,19 +652,19 @@ namespace UXF
 
         void SaveResults()
         {
-            List<OrderedResultDict> results = trials.Select(t => t.result).ToList();
+            List<OrderedResultDict> results = Trials.Select(t => t.result).ToList();
             string fileName = "trial_results.csv";
 
             WriteFileInfo fileInfo = new WriteFileInfo(
                 WriteFileType.Trials,
-                this.basePath,
+                BasePath,
                 experimentName,
                 ppid,
-                folderName,
+                FolderName,
                 fileName
                 );
 
-            fileIOManager.ManageInWorker(() => fileIOManager.WriteTrials(results, headers.ToArray(), fileInfo));
+            fileIOManager.ManageInWorker(() => fileIOManager.WriteTrials(results, Headers.ToArray(), fileInfo));
         }
 
 

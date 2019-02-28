@@ -40,7 +40,7 @@ namespace UXFExamples
             // Take the delay time (seconds) for the next trial, wait for that time
             // If we move from the start block too early, StopCoroutine(runningSequence); will halt the execution of this coroutine
             // System.Convert: Safely convert to single (float)
-            float delayTime = System.Convert.ToSingle(session.nextTrial.settings["delay_time"]);
+            float delayTime = System.Convert.ToSingle(session.NextTrial.settings["delay_time"]);
 			yield return new WaitForSeconds(delayTime);
 
 			Go();
@@ -110,7 +110,7 @@ namespace UXFExamples
                     break;
 				case StartBlockState.Go:
 					// record the time we moved
-                    session.currentTrial.result["moved_time"] = Time.time;
+                    session.CurrentTrial.result["moved_time"] = Time.time;
 					break;
             }
         }

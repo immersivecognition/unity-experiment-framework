@@ -11,12 +11,20 @@ namespace UXFTools
     {
 		public Texture2D uxfIcon;
         public static bool forceShow = false;
+#if UNITY_2018_3_OR_NEWER
+        ApiCompatibilityLevel targetApiLevel = ApiCompatibilityLevel.NET_4_6;
+#else
         ApiCompatibilityLevel targetApiLevel = ApiCompatibilityLevel.NET_2_0;
-        static string settingsKey = "uxf_seen_wizard";
+#endif
+        static string settingsKey { get { return PlayerSettings.productName + ":uxf_seen_wizard"; } }
 
         static UXFWizard()
         {
+#if UNITY_2018_1_OR_NEWER
+            EditorApplication.projectChanged += OnProjectChanged;
+#else
             EditorApplication.projectWindowChanged += OnProjectChanged;
+#endif
         }
 
 
@@ -83,13 +91,14 @@ namespace UXFTools
 
             GUILayout.Label("Examples", EditorStyles.boldLabel);
 
-            GUILayout.Label("Check the /UXF/Examples folder", labelStyle);
+            GUILayout.Label("Check your Assets > UXF > Examples folder", labelStyle);
 
             EditorGUILayout.Separator();
 
             GUILayout.Label("Cite UXF", EditorStyles.boldLabel);
 
-            GUILayout.Label("Check back soon!", labelStyle);
+            if (GUILayout.Button("DOI Link"))
+                Application.OpenURL("https://doi.org/10.1101/459339");
 
             EditorGUILayout.Separator();
 
@@ -103,7 +112,7 @@ namespace UXFTools
             }
             else
             {
-                EditorGUILayout.HelpBox("API Compatibility Level should be set to .NET 2.0, expect errors on building", MessageType.Warning);
+                EditorGUILayout.HelpBox("API Compatibility Level should be set to .NET 2.0 (Older versions of Unity) or .NET 4.x (Unity 2018.3+), expect errors on building", MessageType.Warning);
                 if (GUILayout.Button("Fix"))
                 {
                     PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Standalone, targetApiLevel);

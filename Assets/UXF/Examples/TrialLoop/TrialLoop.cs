@@ -46,7 +46,7 @@ namespace UXFExamples
 
         IEnumerator Loop()
         {
-            foreach (Trial trial in session.trials)
+            foreach (Trial trial in session.Trials)
             {
                 trial.Begin();
                 PresentStimulus(trial);

@@ -185,9 +185,9 @@
             Custom column headers for tracked objects
             </summary>
         </member>
-        <member name="P:UXF.Tracker.pathHeader">
+        <member name="P:UXF.Tracker.filenameHeader">
             <summary>
-            The header used when saving the relative filename string within our behavioural data.
+            The header used when saving the filename string within our behavioural data.
             </summary>
         </member>
         <member name="P:UXF.Tracker.header">
@@ -426,9 +426,14 @@
             The Session represents a single "run" of an experiment, and contains all information about that run. 
             </summary>
         </member>
+        <member name="F:UXF.Session.endOnQuit">
+            <summary>
+            Enable to automatically safely end the session when the application is quitting.
+            </summary>
+        </member>
         <member name="F:UXF.Session.endOnDestroy">
             <summary>
-            Enable to automatically safely end the session when this object is destroyed (or the application stops running).
+            Enable to automatically safely end the session when this object is destroyed.
             </summary>
         </member>
         <member name="F:UXF.Session.blocks">
@@ -436,16 +441,16 @@
             List of blocks for this experiment
             </summary>
         </member>
+        <member name="F:UXF.Session.customHeaders">
+            <summary>
+            List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
+            </summary>
+        </member>
         <member name="F:UXF.Session.settingsToLog">
             <summary>
             List of settings you wish to log to the behavioural file for each trial.
             </summary>
             <returns></returns>
-        </member>
-        <member name="F:UXF.Session.customHeaders">
-            <summary>
-            List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
-            </summary>
         </member>
         <member name="F:UXF.Session.trackedObjects">
             <summary>
@@ -512,6 +517,82 @@
             Settings for the experiment. These are provided on initialisation of the session.
             </summary>
         </member>
+        <member name="P:UXF.Session.InTrial">
+            <summary>
+            Returns true if current trial is in progress
+            </summary>
+        </member>
+        <member name="P:UXF.Session.CurrentTrial">
+            <summary>
+            Returns the current trial object.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.NextTrial">
+            <summary>
+            Returns the next trial object (i.e. trial with trial number currentTrialNum + 1 ).
+            </summary>
+        </member>
+        <member name="P:UXF.Session.PrevTrial">
+            <summary>
+            Get the trial before the current trial.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.FirstTrial">
+            <summary>
+            Get the last trial in the last block of the session.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.LastTrial">
+            <summary>
+            Get the last trial in the last block of the session.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.CurrentBlock">
+            <summary>
+            Returns the current block object.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.Trials">
+            <summary>
+            Returns a list of trials for all blocks.  Modifying the order of this list will not affect trial order. Modify block.trials to change order within blocks.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.BasePath">
+            <summary>
+            The path in which the experiment data are stored.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.ExperimentPath">
+            <summary>
+            Path to the folder used for reading settings and storing the output. 
+            </summary>
+        </member>
+        <member name="P:UXF.Session.ParticipantPath">
+            <summary>
+            Path within the experiment path for this particular particpant.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.FullPath">
+            <summary>
+            Path within the particpant path for this particular session.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.FolderName">
+            <summary>
+            Name of the Session folder 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:UXF.Session.TrackingHeaders">
+            <summary>
+            List of file headers generated for all referenced tracked objects.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.Headers">
+            <summary>
+            Stores combined list of headers for the behavioural output.
+            </summary>
+        </member>
         <member name="P:UXF.Session.inTrial">
             <summary>
             Returns true if current trial is in progress
@@ -519,12 +600,12 @@
         </member>
         <member name="P:UXF.Session.currentTrial">
             <summary>
-            Alias of GetTrial()
+            Returns the current trial object.
             </summary>
         </member>
         <member name="P:UXF.Session.nextTrial">
             <summary>
-            Alias of NextTrial()
+            Returns the next trial object (i.e. trial with trial number currentTrialNum + 1 ).
             </summary>
         </member>
         <member name="P:UXF.Session.prevTrial">
@@ -544,30 +625,18 @@
         </member>
         <member name="P:UXF.Session.currentBlock">
             <summary>
-            Alias of GetBlock()
+            Returns the current block object.
             </summary>
         </member>
         <member name="P:UXF.Session.trials">
             <summary>
             Returns a list of trials for all blocks.  Modifying the order of this list will not affect trial order. Modify block.trials to change order within blocks.
-             
-            </summary>
-        </member>
-        <member name="F:UXF.Session.fileIOManager">
-            <summary>
-            Reference to the associated FileIOManager which deals with inputting and outputting files.
-            </summary>
-        </member>
-        <member name="F:UXF.Session.logger">
-            <summary>
-            Reference to the associated SessionLogger which automatically stores all Debug.Log calls
             </summary>
         </member>
         <member name="P:UXF.Session.basePath">
             <summary>
             The path in which the experiment data are stored.
             </summary>
-            <value></value>
         </member>
         <member name="P:UXF.Session.experimentPath">
             <summary>
@@ -605,12 +674,36 @@
             Dictionary of objects for datapoints collected via the UI, or otherwise.
             </summary>
         </member>
-        <member name="M:UXF.Session.AttachReferences(UXF.FileIOManager,UXF.SessionLogger)">
+        <member name="T:UXF.Session.EventHandler">
+            <summary>
+            An event handler for a C# event.
+            </summary>
+        </member>
+        <member name="E:UXF.Session.cleanUp">
+            <summary>
+            Event raised before session finished, used for UXF functionality. Users should use the similar OnSessionEnd UnityEvent.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.baseHeaders">
+            <summary>
+            The headers that are always included in the trial_results output.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.fileIOManager">
+            <summary>
+            Reference to the associated FileIOManager which deals with inputting and outputting files.
+            </summary>
+        </member>
+        <member name="M:UXF.Session.Awake">
+            <summary>
+            Provide references to other components 
+            </summary>
+        </member>
+        <member name="M:UXF.Session.AttachReferences(UXF.FileIOManager)">
             <summary>
             Provide references to other components 
             </summary>
             <param name="newFileIOManager"></param>
-            <param name="newSessionLogger"></param>
         </member>
         <member name="M:UXF.Session.InitFolder">
             <summary>
@@ -622,7 +715,7 @@
             Save tracking data for this trial
             </summary>
             <param name="tracker">The tracker to take data from to save</param>
-            <returns>Path to the saved file</returns>
+            <returns>Name of the saved file</returns>
         </member>
         <member name="M:UXF.Session.CopyFileToSessionFolder(System.String)">
             <summary>
@@ -683,7 +776,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:UXF.Session.NextTrial">
+        <member name="M:UXF.Session.GetNextTrial">
             <summary>
             Get next Trial
             </summary>
@@ -699,19 +792,19 @@
             Begins next trial. Useful to call from an inspector event
             </summary>
         </member>
-        <member name="M:UXF.Session.PrevTrial">
+        <member name="M:UXF.Session.GetPrevTrial">
             <summary>
             Get previous Trial.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:UXF.Session.FirstTrial">
+        <member name="M:UXF.Session.GetFirstTrial">
             <summary>
             Get first Trial in this session.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:UXF.Session.LastTrial">
+        <member name="M:UXF.Session.GetLastTrial">
             <summary>
             Get last Trial in this session.
             </summary>
@@ -753,11 +846,6 @@
             Exception thrown in cases where we try to access a trial that does not exist.
             </summary>
         </member>
-        <member name="T:UXF.SessionDebugger">
-            <summary>
-            Component which assists in debugging session structure.
-            </summary>
-        </member>
         <member name="T:UXF.SessionLogger">
             <summary>
             Component that handles collecting all Debug.Log calls
@@ -779,6 +867,37 @@
             <summary>
             Finalises the session logger, saving the data and detaching its logging method from handling Debug.Log messages  
             </summary>
+        </member>
+        <member name="T:UXF.ClickOutsidePanelEvent">
+            <summary>
+            A script that invokes a UnityEvent if you click outside of the attached UI rectTransform area
+            Useful for closing a panel when a mouse click is outside of the panel
+            </summary>
+        </member>
+        <member name="M:UXF.ClickOutsidePanelEvent.HideIfClickedOutside">
+            <summary>
+            Invokes an event if a mouse click was made outside the bounds of the UI the script is attached to
+            </summary>
+        </member>
+        <member name="M:UXF.ClickOutsidePanelEvent.CheckVisible">
+            <summary>
+            Check if the GameObject the script is attached to is visible in the scene
+            - If there is no parent canvas, the GameObject has to be active in the hierarchy
+            - If there is a parent canvas, the canvas has to be enabled and the GameObject active in the hierarchy
+            </summary>
+            <returns>true if the GameObject is visible in the scene</returns>
+        </member>
+        <member name="T:UXF.DraggableUI">
+            <summary>
+            A script that allows any GUI object to be draggable
+            </summary>
+        </member>
+        <member name="M:UXF.DraggableUI.CalculateNewTransformOffset(UnityEngine.Vector2)">
+            <summary>
+            Clamps a mouse delta from the OnDrag event to ensure the dragged UI stays within the screen
+            </summary>
+            <param name="mouseDelta">Mouse delta from the onDrag event</param>
+            <returns>Corrected delta offset to ensure UI doesn't go off screen</returns>
         </member>
         <member name="P:UXF.ExperimentStartupController.participantDataPoints">
             <summary>
@@ -836,6 +955,62 @@
             <param name="path1">Base path</param>
             <param name="paths">Array of subsequent paths</param>
             <returns></returns>
+        </member>
+        <member name="M:UXF.InfoBarController.Start">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="M:UXF.InfoBarController.OnValidate">
+            <summary>
+            Called when the script is loaded or a value is changed in the
+            inspector (Called in the editor only).
+            </summary>
+        </member>
+        <member name="T:UXF.InputFieldKeyboardReturnEvent">
+            <summary>
+            A script that can be added to an object with an input field, when enter is pressed while editing the input field a UnityEvent will be invoked
+            </summary>
+        </member>
+        <member name="T:UXF.KeypressEvent">
+            <summary>
+            Script to invoke a UnityEvent when a specified key is pressed
+            </summary>
+        </member>
+        <member name="T:UXF.NoteElementController">
+            <summary>
+            A script attached to a NoteElement
+            </summary>
+        </member>
+        <member name="T:UXF.NotesController">
+            <summary>
+            A script to control the NotesPanel
+            </summary>
+        </member>
+        <member name="M:UXF.NotesController.AddNewNote">
+            <summary>
+            Instantiates a new note prefab with the text currently in the new note input field
+            </summary>
+        </member>
+        <member name="M:UXF.NotesController.MoveScrollbarToBottom">
+            <summary>
+            Starts a coroutine that yields 1 frame to allow the canvas to update, and then moves the notes scroll rect to the latest element added
+            </summary>
+        </member>
+        <member name="M:UXF.NotesController.ToggleVisibility">
+            <summary>
+            Performs actions when the NotePanel is turned off and on
+            </summary>
+        </member>
+        <member name="M:UXF.NotesController.WriteNotes">
+            <summary>
+            Writes the session notes to a json file. File includes whether the session is marked as bad and any note added by the experimenter
+            </summary>
+        </member>
+        <member name="M:UXF.NotesController.ResetNotes">
+            <summary>
+            Reset the notes panel to default values
+            </summary>
         </member>
         <member name="M:CSVFile.CSV.ParseMultiLine(System.IO.StreamReader,System.Char,System.Char)">
             <summary>
