@@ -2,8 +2,6 @@
   <img src="media/banner-tp-small.png">
 </p>
 
-⚠️ NOTE: There may be issues with the newest versions of Unity (2018.3). If you are having issues try downloading 2018.1 from the [Unity Download Archive](https://unity3d.com/get-unity/download/archive) until the issues are resolved.
-
 # UXF - Unity Experiment Framework
 A set of components which simplify human behaviour experiments developed in the Unity engine. This is the development project, if you want to download the package, do not clone this repository, see "Get Started" below. 
 
@@ -30,7 +28,7 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 1. Import the latest ```UXF.unitypackage``` [release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) to your existing Unity project.
 
-2. In Unity, go to `Edit` -> `Player` -> `Other` and change API Compatibility Level to .NET 2.0. 
+2. The UXF Setup Wizard will launch (or via the top menu: UXF > UXF Wizard) - Use it to fix .NET compatibility issues. 
 
 3. Open an example scene.
 
