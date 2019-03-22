@@ -101,7 +101,7 @@ UXF classes will be useful in two main parts of your project:
 #### 1. Building up your experiment structure, including the trials, blocks and their associated settings.
 
 ```csharp
-class ExperimentBuilder : Monobehaviour
+class ExperimentBuilder : MonoBehaviour
 {
     // set this to reference your UXF Session in the inspector
     public UXF.Session session;
