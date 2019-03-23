@@ -14,12 +14,12 @@ namespace UXFExamples
 
         public void SetupTargets(Trial trial) // can be called from OnTrialBegin in the Session inspector
         {
-			TargetPosition correctTargetPosition = (TargetPosition) trial.settings["correct_target_position"];
+			TargetPosition correctTargetPosition = (TargetPosition) trial.settings.GetObject("correct_target_position");
 
             leftTarget.Setup(correctTargetPosition == TargetPosition.Left);
             rightTarget.Setup(correctTargetPosition == TargetPosition.Right);
 
-            bool inverted = (bool)trial.settings["inverted"];
+            bool inverted = trial.settings.GetBool("inverted");
 
             if (inverted)
 			{

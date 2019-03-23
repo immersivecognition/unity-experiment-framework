@@ -151,19 +151,115 @@
             </summary>
             <param name="parent"></param>
         </member>
+        <member name="M:UXF.Settings.GetBool(System.String)">
+            <summary>
+            Get a boolean setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetInt(System.String)">
+            <summary>
+            Get a integer setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetFloat(System.String)">
+            <summary>
+            Get a float setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetLong(System.String)">
+            <summary>
+            Get a long setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetDouble(System.String)">
+            <summary>
+            Get a double setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetString(System.String)">
+            <summary>
+            Get a string setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetDict(System.String)">
+            <summary>
+            Get a dictionary setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetObject(System.String)">
+            <summary>
+            Get a object setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetBoolList(System.String)">
+            <summary>
+            Get a boolean list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetIntList(System.String)">
+            <summary>
+            Get a integer list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetFloatList(System.String)">
+            <summary>
+            Get a float list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetLongList(System.String)">
+            <summary>
+            Get a long list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetDoubleList(System.String)">
+            <summary>
+            Get a double list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetStringList(System.String)">
+            <summary>
+            Get a string list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetDictList(System.String)">
+            <summary>
+            Get a dictionary list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetObjectList(System.String)">
+            <summary>
+            Get a object list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.SetValue(System.String,System.Object)">
+            <summary>
+            Set a setting value.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="value">The value of the setting.</param>
+        </member>
         <member name="P:UXF.Settings.Item(System.String)">
             <summary>
             Get a setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. If one is never found, it will return null.
             </summary>
             <param name="key"></param>
             <returns></returns>
-        </member>
-        <member name="M:UXF.Settings.Add(System.String,System.Object)">
-            <summary>
-            Add a new setting to the dictionary
-            </summary>
-            <param name="k">Key</param>
-            <param name="v">Value</param>
         </member>
         <member name="T:UXF.Tracker">
             <summary>

@@ -41,7 +41,7 @@ namespace UXFExamples
 				return;
 			}
 
-            bool inverted = (bool)nextTrial.settings["inverted"];
+            bool inverted = nextTrial.settings.GetBool("inverted");
             text.text = inverted ? invertedInstructions : normalInstructions;
 
 		}

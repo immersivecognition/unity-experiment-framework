@@ -19,7 +19,7 @@ namespace UXF
             rectTransform = GetComponent<RectTransform>();
             screenSize = new Vector2(Screen.width, Screen.height);
         }
-
+        
         public void OnDrag(PointerEventData eventData)
         {
             transform.position += CalculateNewTransformOffset(eventData.delta);

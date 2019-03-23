@@ -122,7 +122,7 @@ namespace UXF
             // log any settings we need to for this trial
             foreach (string s in session.settingsToLog)
             {
-                result[s] = settings[s];
+                result[s] = settings.GetObject(s);
             }
             session.onTrialEnd.Invoke(this);
         }

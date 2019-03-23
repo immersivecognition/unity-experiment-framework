@@ -10,7 +10,7 @@ namespace UXFExamples
     {
         public void Generate(Session session)
 		{
-			int numTrials = System.Convert.ToInt32(session.settings["trials_per_block"]);
+			int numTrials = session.settings.GetInt("trials_per_block");
 
 			// create two blocks
 			Block block1 = session.CreateBlock(numTrials);
@@ -24,7 +24,7 @@ namespace UXFExamples
             foreach (Trial trial in session.Trials)
 			{
                 TargetPosition pos = Random.value > 0.5 ? TargetPosition.Left : TargetPosition.Right;
-				trial.settings["correct_target_position"] = pos;
+				trial.settings.SetValue("correct_target_position", pos);
 			}
 
 			// set the block to be inverted ("go to the opposite target") or not, depending on the participant
@@ -44,13 +44,13 @@ namespace UXFExamples
 			
 			if (invertedBlockFirst)
 			{
-                block1.settings["inverted"] = true;
-                block2.settings["inverted"] = false;
+                block1.settings.SetValue("inverted", true);
+                block2.settings.SetValue("inverted", false);
 			}
 			else
 			{
-				block1.settings["inverted"] = false;
-                block2.settings["inverted"] = true;
+				block1.settings.SetValue("inverted", false);
+                block2.settings.SetValue("inverted", true);
 			}
 
 		}
@@ -61,7 +61,7 @@ namespace UXFExamples
 		/// <param name="block"></param>
 		void MakeCatchTrials(Block block)
 		{
-			int numCatchTrials = System.Convert.ToInt32(block.settings["catch_trials_per_block"]);
+			int numCatchTrials = block.settings.GetInt("catch_trials_per_block");
 			
 			if (numCatchTrials > block.trials.Count)
 			{
@@ -72,7 +72,8 @@ namespace UXFExamples
 			{
 				// double the existing delay time during catch trials
 				Trial trial = block.trials[i];
-                trial.settings["delay_time"] = 2 * System.Convert.ToSingle(trial.settings["delay_time"]);
+				float delayTime = 2 * trial.settings.GetFloat("delay_time");
+                trial.settings.SetValue("delay_time", delayTime); 
 			}
 
 			// shuffle the trial order, so the catch trials are in random positions

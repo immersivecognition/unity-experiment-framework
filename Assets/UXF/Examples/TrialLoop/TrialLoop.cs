@@ -22,19 +22,19 @@ namespace UXFExamples
             // This function can be called using the Session inspector OnSessionBegin() event, or otherwise
 
             // retrieve the n_practice_trials setting, which was loaded from our .json file
-            int numPracticeTrials = Convert.ToInt32(session.settings["n_practice_trials"]);
+            int numPracticeTrials = session.settings.GetInt("n_practice_trials");
             // create block 1
             Block practiceBlock = session.CreateBlock(numPracticeTrials);
-            practiceBlock.settings["practice"] = true;
+            practiceBlock.settings.SetValue("practice", true);
 
             // retrieve the n_main_trials setting, which was loaded from our .json file into our session settings
-            int numMainTrials = Convert.ToInt32(session.settings["n_main_trials"]);
+            int numMainTrials = session.settings.GetInt("n_main_trials");
             // create block 2
             Block mainBlock = session.CreateBlock(numMainTrials); // block 2
 
             // here we set a setting for the 2nd trial of the main block as an example.
-            mainBlock.GetRelativeTrial(2).settings["size"] = 10;
-            mainBlock.GetRelativeTrial(1).settings["color"] = Color.red;
+            mainBlock.GetRelativeTrial(2).settings.SetValue("size", 10);
+            mainBlock.GetRelativeTrial(1).settings.SetValue("color", Color.red);
         }
 
 
@@ -67,7 +67,7 @@ namespace UXFExamples
             // we can access our settings to (e.g.) modify our scene
             // for more information about retrieving settings see the documentation
 
-            float size = Convert.ToInt32(trial.settings["size"]);
+            float size = trial.settings.GetFloat("size");
             Debug.LogFormat("The 'size' for this trial is: {0}", size);
 
             // record custom values...

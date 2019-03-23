@@ -56,7 +56,7 @@ namespace UXFTools
             settingsDict = new Dictionary<string, object>();
             // log each session setting
             foreach (string key in session.settings.Keys)
-                settingsDict.Add(key, session.settings[key].ToString());
+                settingsDict.Add(key, session.settings.GetObject(key).ToString());
 
             List<Dictionary<string, object>> blockList = new List<Dictionary<string, object>>();
             foreach (var block in session.blocks)
@@ -64,7 +64,7 @@ namespace UXFTools
                 Dictionary<string, object> blockDict = new Dictionary<string, object>();
                 // log each block setting
                 foreach (string key in block.settings.Keys)
-                    blockDict.Add(key, block.settings[key].ToString());
+                    blockDict.Add(key, block.settings.GetObject(key).ToString());
 				
 				List<Dictionary<string, object>> trialList = new List<Dictionary<string, object>>();
                 // log each trial
@@ -73,7 +73,7 @@ namespace UXFTools
                     Dictionary<string, object> trialDict = new Dictionary<string, object>();
                     // log each trial setting
                     foreach (string key in trial.settings.Keys)
-                        trialDict.Add(key, trial.settings[key].ToString());
+                        trialDict.Add(key, trial.settings.GetObject(key).ToString());
 
                     // add trial to block
                     trialList.Add(trialDict);

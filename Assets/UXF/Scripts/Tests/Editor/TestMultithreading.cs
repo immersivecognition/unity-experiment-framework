@@ -58,7 +58,7 @@ namespace UXF.Tests
             for (int i = 0; i < 10000; i++)
             {
                 string key = i.ToString();
-                settings[key] = i;
+                settings.SetValue(key, i);
             }
 
             session.Begin(experimentName, ppid, "example_output", settings: settings);
@@ -67,7 +67,7 @@ namespace UXF.Tests
             for (int i = 0; i < 10000; i++)
             {
                 string key = "_" + i.ToString();
-                settings[key] = i;
+                settings.SetValue(key, i);
             }
 
             session.End();

@@ -57,7 +57,7 @@ namespace UXF{
             {
                 string fname = PlayerPrefs.GetString(settingsFileKey);
 				string settingsPath = Path.Combine(settingsFolder, fname);
-				if (File.Exists(settingsPath))
+				if (File.Exists(settingsPath) && ddController.optionNames.Contains(fname))
 				{
 	                ReadSettingsDict(fname);
 	            	experimentName = Path.GetFileNameWithoutExtension(fname);

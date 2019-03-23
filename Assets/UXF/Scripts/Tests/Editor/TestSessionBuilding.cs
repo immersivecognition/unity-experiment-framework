@@ -56,7 +56,7 @@ namespace UXF.Tests
 			for (int i = 0; i < 5; i++)
 			{
 				Block block = session.CreateBlock(10);
-				block.settings["order"] = i;
+				block.settings.SetValue("order", i);
 			}
 
 			var rng = new System.Random(0);
@@ -68,7 +68,7 @@ namespace UXF.Tests
 			{
 				var block = session.blocks[i];
 				var expected = expectedOrders[i];
-				Assert.AreEqual(block.settings["order"], expected);
+				Assert.AreEqual(block.settings.GetInt("order"), expected);
 			}
 
             // reset blocks
@@ -84,7 +84,7 @@ namespace UXF.Tests
 
             for (int i = 0; i < block.trials.Count; i++)
 			{
-                block.trials[i].settings["order"] = i;
+                block.trials[i].settings.SetValue("order", i);
 			}
 
             var rng = new System.Random(10);
@@ -95,7 +95,7 @@ namespace UXF.Tests
 			{
 				var trial = block.trials[i];
                 var expected = expectedOrders[i];
-				Assert.AreEqual(trial.settings["order"], expected);
+				Assert.AreEqual(trial.settings.GetInt("order"), expected);
 			}
 
             // reset blocks
