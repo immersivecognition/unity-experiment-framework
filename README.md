@@ -98,7 +98,9 @@ The settings is cascading, allowing setting independent variables at a `Session`
 
 A UI is available (but optional) allowing loading of participant data from file (or add new participant data). Variables that are collected are customisable and can be used in the experiment (e.g. a parameter for a participant's age could be used to change the difficulty of the experiment).
 
-![User interface](media/screenshot-1.png)
+<p align="center">
+  <img src="media/screenshot-1.png" width=300>
+</p>
 
 ### File IO
 
