@@ -12,7 +12,7 @@ A set of components which simplify human behaviour experiments developed in the 
   <img src="media/uxf-paper.PNG">
   </a>
   
-  Read the [open access paper](https://doi.org/10.3758/s13428-019-01242-0) in Behaviour Research Methods!
+  Read the [open access paper](https://doi.org/10.3758/s13428-019-01242-0) in Behavior Research Methods!
 </p>
 
 
