@@ -125,11 +125,10 @@ class ExperimentBuilder : MonoBehaviour
         var myBlock = session.CreateBlock(10);
 
         // Add a new setting to trial 1, here just as an example we will apply a setting of "color" "red" 
-        var firstTrial = myBlock.FirstTrial; //trial number is not 0 indexed
-        firstTrial.settings.SetValue("color", "red");
+        myBlock.FirstTrial.settings.SetValue("color", "red");
 
-        // Run first trial
-        session.nextTrial.Begin();
+        // Start the session!
+        session.FirstTrial.Begin();
     }
 
     ...
