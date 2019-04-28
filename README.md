@@ -82,6 +82,8 @@ settings.json            | Copy of the settings applied to the Session
 trial_results.csv        | Main results file (behavioural data)
 ```
 
+**Example Output** You can see an example of the data structure UXF outputs in the [example_output](example_output) folder of this repository.
+
 ### Events
 
 A `UnityEvent` is invoked on `Trial` begin and end, allowing you to easily trigger presentation of stimuli at trial start (for example).
@@ -174,7 +176,7 @@ More examples are contained in the package.
 
 ## Development
 
-This project is developed under Unity 2017.4.2f1 but should work on all recent versions of Unity.
+This project is developed under Unity 2017.4.2f1 but should work on all recent versions of Unity. Tested and working on Unity 2018.3.
 
 ## Documentation
 
