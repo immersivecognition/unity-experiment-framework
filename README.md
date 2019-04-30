@@ -34,7 +34,7 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 - [Related packages](#related-packages)
 
 ## Get started
-0. Read over this Readme and the [paper](https://doi.org/10.3758/s13428-019-01242-0) to understand UXF
+0. Read over this Readme and the [paper](https://doi.org/10.3758/s13428-019-01242-0) to understand UXF.
 
 1. Import the latest ```UXF.unitypackage``` [release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) to your existing Unity project.
 
