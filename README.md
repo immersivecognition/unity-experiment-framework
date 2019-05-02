@@ -31,6 +31,7 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 - [Example](#example)
 - [Development](#development)
 - [Documentation](#documentation)
+- [Feedback](#feedback)
 - [Related packages](#related-packages)
 
 ## Get started
@@ -182,7 +183,18 @@ This project is developed under Unity 2017.4.2f1 but should work on all recent v
 
 Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki)
 
+## Feedback
+
+<p align="center">
+  <img src="media/survey-ss.png">
+</p>
+
+Please fill out the anonymous [UXF feedback form](https://forms.gle/rrySNPNPvdMvtTM46)
+
+
 ## Related packages
 
 * [UXF Web Settings](https://github.com/jackbrookes/uxf-web-settings)
 * [UXF S3 Uploader](https://github.com/jackbrookes/uxf-s3-uploader)
+
+
