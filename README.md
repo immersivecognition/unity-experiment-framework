@@ -186,7 +186,9 @@ Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framewor
 ## Feedback
 
 <p align="center">
+  <a href ="https://forms.gle/rrySNPNPvdMvtTM46">
   <img src="media/survey-ss.png">
+  </a>
 </p>
 
 Please fill out the anonymous [UXF feedback form](https://forms.gle/rrySNPNPvdMvtTM46)
