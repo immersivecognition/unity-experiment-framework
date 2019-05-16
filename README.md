@@ -111,9 +111,12 @@ Files are read and written in a separate thread to avoid frame drops, which can 
 
 ## Example
 
-UXF classes will be useful in two main parts of your project: 
+UXF is built around the idea of separating the specifcation of your experiment (the "what") and the implementation of your experiment (the "how").
 
-#### 1. Building up your experiment structure, including the trials, blocks and their associated settings.
+1. Experiment specification: Building/describing your experiment structure, including the trials, blocks and their associated settings.
+2. Experiment implementation: Presenting stimuli according to independent variables, collecting independent variables
+
+#### 1. Experiment specification
 
 ```csharp
 class ExperimentBuilder : MonoBehaviour
@@ -140,7 +143,7 @@ class ExperimentBuilder : MonoBehaviour
 ```
 
 
-#### 2. Accessing trial settings when they are needed: 
+#### 2. Experiment implementation
 
 ```csharp
 class SceneManipulator : MonoBehaviour
