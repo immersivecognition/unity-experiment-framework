@@ -164,7 +164,7 @@ class SceneManipulator : MonoBehaviour
         ManipulateSceneColor(colorManipulation);
     }
 
-    // this could trigger on some user behaviour, collecting their score in a task
+    // this could trigger on some user behaviour (e.g. button response), collecting their score in a task
     public void RecordResultsAndEnd(int score)
     {
         // store their score
