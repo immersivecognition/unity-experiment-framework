@@ -176,7 +176,7 @@ class SceneManipulator : MonoBehaviour
 }
 ```
 
-More examples are contained in the package.
+More examples are contained in the package and on the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki).
 
 ## Development
 
