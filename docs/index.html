@@ -1,231 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="keywords" content="Unity, Experiment, Framework, UXF, human, experiments, psychology, CSV">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="author" content="Jack Brookes">
-    <title>UXF - Unity Experiment Framework</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/line-icons.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
-    <link rel="stylesheet" href="css/owl.theme.css">
-    <link rel="stylesheet" href="css/animate.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-    <link rel="stylesheet" href="css/nivo-lightbox.css">
-    <link rel="stylesheet" href="css/main.css">    
-    <link rel="stylesheet" href="css/responsive.css">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="keywords" content="Unity, Experiment, Framework, UXF, human, experiments, psychology, CSV">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="author" content="Jack Brookes">
+  <title>UXF - Unity Experiment Framework</title>
 
-    <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <link rel="manifest" href="favicon/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
-    <meta name="theme-color" content="#c66d9c">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/line-icons.css">
+  <link rel="stylesheet" href="css/owl.carousel.css">
+  <link rel="stylesheet" href="css/owl.theme.css">
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/magnific-popup.css">
+  <link rel="stylesheet" href="css/nivo-lightbox.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#c66d9c">
 
 
-  </head>
-  
-  <body>
+</head>
 
-    <!-- Header Section Start -->
-    <header id="home" class="hero-area-2">    
-      <div class="overlay"></div>
-      <nav class="navbar navbar-expand-md bg-inverse fixed-top scrolling-navbar">
-        <div class="container">
-          <a href="index.html" class="navbar-brand"><img src="img/logo.png" alt=""></a>  
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="lni-menu"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto w-100 justify-content-end">
-              <li class="nav-item">
-                <a class="nav-link page-scroll" href="#home">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link page-scroll" href="#app-features">Features</a>
-              </li>  
-            </ul>
-          </div>
-        </div>
-      </nav>  
-      <div class="container">      
-        <div class="row space-100">
-          <div class="col-lg-7 col-md-12 col-xs-12">
-            <div class="contents">
-              <h2 class="head-title">UXF</h2>
-              <p>The Unity Experiment Framework (UXF) is an open source package for the Unity3D game engine that can be used to assist the development of virtual reality human behaviour experiments. Developed by Jack Brookes, Immersive Cognition Group, University of Leeds. </p>
-              <div class="header-button">
-                <a href="https://github.com/immersivecognition/unity-experiment-framework" class="btn btn-border-filled">View on Github</a>
-                <a href="https://link.springer.com/article/10.3758%2Fs13428-019-01242-0" class="btn btn-border-filled">Read the paper</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-5 col-md-12 col-xs-12">
-            <div class="intro-img">
-              <img src="img/intro-mobile.png" alt="">
-            </div>            
-          </div>
-        </div> 
-      </div>             
-    </header>
-    <!-- Header Section End --> 
+<body>
 
-    <!-- features Section Start -->
-    <div id="app-features" class="section">
+  <!-- Header Section Start -->
+  <header id="home" class="hero-area-2">
+    <div class="overlay"></div>
+    <nav class="navbar navbar-expand-md bg-inverse fixed-top scrolling-navbar">
       <div class="container">
-        <div class="section-header">   
-          <p class="btn btn-subtitle wow fadeInDown" data-wow-delay="0.2s">features</p>       
+        <a href="index.html" class="navbar-brand"><img src="img/logo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="lni-menu"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto w-100 justify-content-end">
+            <li class="nav-item">
+              <a class="nav-link page-scroll" href="#home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link page-scroll" href="#app-features">Features</a>
+            </li>
+          </ul>
         </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-12 col-xs-12">
-            <div class="content-left text-right">
-              <div class="box-item left">
-                <span class="icon">
-                  <i class="lni-bar-chart"></i>
-                </span>
-                <div class="text">
-                  <h4>Data collection</h4>
-                  <p>Automates the process of collecting the variables you define within your task, and stores them simple CSV files.</p>
-                </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row space-100">
+        <div class="col-lg-7 col-md-12 col-xs-12">
+          <div class="contents">
+            <h2 class="head-title">UXF</h2>
+            <p>The Unity Experiment Framework (UXF) is an open source package for the Unity3D game engine that can be
+              used to assist the development of virtual reality human behaviour experiments. Developed by Jack Brookes,
+              Immersive Cognition Group, University of Leeds. </p>
+            <div class="header-button">
+              <a href="https://github.com/immersivecognition/unity-experiment-framework"
+                class="btn btn-border-filled">View on Github</a>
+              <a href="https://link.springer.com/article/10.3758%2Fs13428-019-01242-0"
+                class="btn btn-border-filled">Read the paper</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-12 col-xs-12">
+          <div class="intro-img">
+            <img src="img/intro-mobile.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Header Section End -->
+
+  <!-- features Section Start -->
+  <div id="app-features" class="section">
+    <div class="container">
+      <div class="section-header">
+        <p class="btn btn-subtitle wow fadeInDown" data-wow-delay="0.2s">features</p>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-12 col-xs-12">
+          <div class="content-left text-right">
+            <div class="box-item left">
+              <span class="icon">
+                <i class="lni-bar-chart"></i>
+              </span>
+              <div class="text">
+                <h4>Data collection</h4>
+                <p>Automates the process of collecting the variables you define within your task, and stores them simple
+                  CSV files.</p>
               </div>
-              <div class="box-item left">
-                <span class="icon">
-                  <i class="lni-pulse"></i>
-                </span>
-                <div class="text">
-                  <h4>Continuous measures</h4>
-                  <p>Time-series data such as the position and rotation of an object can be easily acquired and split into one file per trial.</p>
-                </div>
+            </div>
+            <div class="box-item left">
+              <span class="icon">
+                <i class="lni-pulse"></i>
+              </span>
+              <div class="text">
+                <h4>Continuous measures</h4>
+                <p>Time-series data such as the position and rotation of an object can be easily acquired and split into
+                  one file per trial.</p>
               </div>
-              <div class="box-item left">
-                <span class="icon">
-                  <i class="lni-control-panel"></i>
-                </span>
-                <div class="text">
-                  <h4>Settings system</h4>
-                  <p>Allows you to programmatically define independent variables for your session, blocks and trials.</p>
-                </div>
+            </div>
+            <div class="box-item left">
+              <span class="icon">
+                <i class="lni-control-panel"></i>
+              </span>
+              <div class="text">
+                <h4>Settings system</h4>
+                <p>Allows you to programmatically define independent variables for your session, blocks and trials.</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-12 col-xs-12">
-            <div class="show-box">
-              <img src="img/features/app.png" alt="">
-            </div>
+        </div>
+        <div class="col-lg-4 col-md-12 col-xs-12">
+          <div class="show-box">
+            <img src="img/features/app.png" alt="">
           </div>
-          <div class="col-lg-4 col-md-12 col-xs-12">
-            <div class="content-right text-left">
-              <div class="box-item right">
-                <span class="icon">
-                  <i class="lni-laptop"></i>
-                </span>
-                <div class="text">
-                  <h4>User Interface</h4>
-                  <p>Includes a pre-built UI for allowing the researcher to view and enter information about the session.</p>
-                </div>
+        </div>
+        <div class="col-lg-4 col-md-12 col-xs-12">
+          <div class="content-right text-left">
+            <div class="box-item right">
+              <span class="icon">
+                <i class="lni-laptop"></i>
+              </span>
+              <div class="text">
+                <h4>User Interface</h4>
+                <p>Includes a pre-built UI for allowing the researcher to view and enter information about the session.
+                </p>
               </div>
-              <div class="box-item right">
-                <span class="icon">
-                  <i class="lni-angle-double-right"></i>
-                </span>
-                <div class="text">
-                  <h4>Multithreaded</h4>
-                  <p>All file IO tasks are performed concurrently in a separate thread to avoid any drops in framerate.</p>
-                </div>
+            </div>
+            <div class="box-item right">
+              <span class="icon">
+                <i class="lni-angle-double-right"></i>
+              </span>
+              <div class="text">
+                <h4>Multithreaded</h4>
+                <p>All file IO tasks are performed concurrently in a separate thread to avoid any drops in framerate.
+                </p>
               </div>
-              <div class="box-item right">
-                <span class="icon">
-                  <i class="lni-star"></i>
-                </span>
-                <div class="text">
-                  <h4>Built for VR</h4>
-                  <p>UXF works with any Unity project but is designed specifically for virtual reality human behaviour experiments.</p>
-                </div>
+            </div>
+            <div class="box-item right">
+              <span class="icon">
+                <i class="lni-star"></i>
+              </span>
+              <div class="text">
+                <h4>Built for VR</h4>
+                <p>UXF works with any Unity project but is designed specifically for virtual reality human behaviour
+                  experiments.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- features Section End -->
+  </div>
+  <!-- features Section End -->
 
-   
+  <!-- features Section Start -->
+  <div id="services" class="section">
+    <div class="container">
+      <div class="text-center">
+        <h3>Developed at</h3>
+        <ul class="logos">
+          <li>
+            <a href="http://leeds.ac.uk/">
+              <img src="img/features/uol.png" />
+            </a>
+          </li>
+          <li>
+            <a href="http://immersivecognition.github.io/">
+              <img src="img/features/icon.png" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- features Section End -->
 
-    <!-- Footer Section Start -->
-    <footer>
-      <!-- Footer Area Start -->
-      <section class="footer-Content">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-mb-12">
-              <h3 class="block-title">Credit</h3>
+  <!-- Footer Section Start -->
+  <footer>
+    <!-- Footer Area Start -->
+    <section class="footer-Content">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-mb-12">
+            <h3 class="block-title">Credit</h3>
+            <ul class="menu">
+              <li><a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by
+                  Rawpixel.com - Freepik.com</a></li>
+              <li><a href="https://graygrids.com/item/proton-free-saas-startup-landing-page-webapp-template/">Proton
+                  Lite theme by UIDeck</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-mb-12">
+            <div class="widget">
+              <h3 class="block-title">Links</h3>
               <ul class="menu">
-                <li><a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by Rawpixel.com - Freepik.com</a></li>
-                <li><a href="https://graygrids.com/item/proton-free-saas-startup-landing-page-webapp-template/">Proton Lite theme by UIDeck</a></li>
+                <li><a href="https://github.com/immersivecognition/unity-experiment-framework">Github</a></li>
+                <li><a href="https://link.springer.com/article/10.3758%2Fs13428-019-01242-0">Paper</a></li>
               </ul>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-mb-12">
-              <div class="widget">
-                <h3 class="block-title">Links</h3>
-                <ul class="menu">
-                  <li><a href="https://github.com/immersivecognition/unity-experiment-framework">Github</a></li>
-                  <li><a href="https://link.springer.com/article/10.3758%2Fs13428-019-01242-0">Paper</a></li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>
+      </div>
       <!-- Copyright End -->
-      </section>
-      <!-- Footer area End -->
-      
-    </footer>
-    <!-- Footer Section End --> 
+    </section>
+    <!-- Footer area End -->
 
-    <!-- Go To Top Link -->
-    <a href="#" class="back-to-top">
-      <i class="lni-chevron-up"></i>
-    </a> 
+  </footer>
+  <!-- Footer Section End -->
 
-    <!-- Preloader -->
-    <div id="preloader">
-      <div class="loader" id="loader-1"></div>
-    </div>
-    <!-- End Preloader -->
+  <!-- Go To Top Link -->
+  <a href="#" class="back-to-top">
+    <i class="lni-chevron-up"></i>
+  </a>
 
-    <!-- jQuery first, then Tether, then Bootstrap JS. -->
-    <script src="js/jquery-min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/owl.carousel.js"></script> 
-    <script src="js/jquery.mixitup.js"></script>       
-    <script src="js/jquery.nav.js"></script>    
-    <script src="js/scrolling-nav.js"></script>    
-    <script src="js/jquery.easing.min.js"></script>     
-    <script src="js/wow.js"></script>   
-    <script src="js/jquery.counterup.min.js"></script>     
-    <script src="js/nivo-lightbox.js"></script>     
-    <script src="js/jquery.magnific-popup.min.js"></script>     
-    <script src="js/waypoints.min.js"></script>      
-    <script src="js/form-validator.min.js"></script>
-    <script src="js/contact-form-script.js"></script>   
-    <script src="js/main.js"></script>
-    
-  </body>
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="loader" id="loader-1"></div>
+  </div>
+  <!-- End Preloader -->
+
+  <!-- jQuery first, then Tether, then Bootstrap JS. -->
+  <script src="js/jquery-min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.js"></script>
+  <script src="js/jquery.mixitup.js"></script>
+  <script src="js/jquery.nav.js"></script>
+  <script src="js/scrolling-nav.js"></script>
+  <script src="js/jquery.easing.min.js"></script>
+  <script src="js/wow.js"></script>
+  <script src="js/jquery.counterup.min.js"></script>
+  <script src="js/nivo-lightbox.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/waypoints.min.js"></script>
+  <script src="js/form-validator.min.js"></script>
+  <script src="js/contact-form-script.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+
 </html>
