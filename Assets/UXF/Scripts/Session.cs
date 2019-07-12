@@ -30,6 +30,12 @@ namespace UXF
         public bool endOnDestroy = true;
 
         /// <summary>
+        /// Enable to automatically end the session when the final trial has ended.
+        /// </summary>
+        [Tooltip("Enable to automatically end the session when the final trial has ended.")]
+        public bool endAfterLastTrial = true;
+
+        /// <summary>
         /// List of blocks for this experiment
         /// </summary>
         [HideInInspector]
@@ -640,13 +646,14 @@ namespace UXF
                 // end FileIOManager - forces immediate writing of all files
                 fileIOManager.End();
                 
+                onSessionEnd.Invoke(this);
+
                 currentTrialNum = 0;
                 currentBlockNum = 0;
                 blocks = new List<Block>();
                 _hasInitialised = false;
 
                 Debug.Log("Ended session.");
-                onSessionEnd.Invoke(this);
             }
         }
 

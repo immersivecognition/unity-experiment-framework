@@ -67,6 +67,15 @@ namespace UXF
             list.Shuffle(rng);
         }
 
+        /// <summary>
+        /// Swaps the order of the elements at indeces `indexA` and `indexB` within `list`
+        /// </summary>
+        public static void Swap<T>(IList<T> list, int indexA, int indexB)
+        {
+            T tmp = list[indexA];
+            list[indexA] = list[indexB];
+            list[indexB] = tmp;
+        }
 
         /// <summary>
         /// Combine many path parts into a single path.
