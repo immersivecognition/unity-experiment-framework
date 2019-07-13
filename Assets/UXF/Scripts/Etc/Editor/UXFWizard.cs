@@ -98,7 +98,7 @@ namespace UXFTools
             GUILayout.Label("Cite UXF", EditorStyles.boldLabel);
 
             if (GUILayout.Button("DOI Link"))
-                Application.OpenURL("https://doi.org/10.1101/459339");
+                Application.OpenURL("https://doi.org/10.3758/s13428-019-01242-0");
 
             EditorGUILayout.Separator();
 

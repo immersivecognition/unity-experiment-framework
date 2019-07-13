@@ -102,6 +102,33 @@ namespace UXF.Tests
             session.blocks = new List<Block>();
 
         }
+
+		[Test]
+
+		public void SwapTrials()
+		{
+			Block block = session.CreateBlock(5);
+
+            for (int i = 0; i < block.trials.Count; i++)
+			{
+                block.trials[i].settings.SetValue("order", i);
+			}
+
+			int[] expectedOrders = new int[] { 0, 3, 2, 1, 4 };
+
+			block.trials.Swap(1, 3);
+
+			for (int i = 0; i < block.trials.Count; i++)
+			{
+				var trial = block.trials[i];
+                var expected = expectedOrders[i];
+				Assert.AreEqual(trial.settings.GetInt("order"), expected);
+			}
+
+			// reset blocks
+            session.blocks = new List<Block>();
+
+		}
 		
 	}
 
