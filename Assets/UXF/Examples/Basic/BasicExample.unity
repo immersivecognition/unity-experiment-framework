@@ -296,7 +296,7 @@ Prefab:
     - target: {fileID: 224546371281550106, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000014781952
+      value: 0.00002867449
       objectReference: {fileID: 0}
     - target: {fileID: 114345737082279174, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 2}
@@ -693,6 +693,16 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224487761690423894, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000011436641
+      objectReference: {fileID: 0}
+    - target: {fileID: 224550780365075244, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a3b6392f04558844bd340e68ced1ff9, type: 2}
   m_IsPrefabParent: 0
@@ -1049,8 +1059,8 @@ MonoBehaviour:
     the next one should begin.\n\nUpdate - this is the default Unity MonoBehaviour
     function that runs each frame. Here we just check if it is time for us to end
     the trial and start the next one. \n\nNotice, in the inspector of our Session
-    component (attached to the ExperimentWithUI GameObject), several Events have been
-    created which call functions from our BasicExampleScript component."
+    component (attached to the [UXF_Rig] GameObject), several Events have been created
+    which call functions from our BasicExampleScript component."
 --- !u!222 &1335906556
 CanvasRenderer:
   m_ObjectHideFlags: 0

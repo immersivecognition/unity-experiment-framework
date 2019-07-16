@@ -33,7 +33,7 @@ namespace UXF
         /// Enable to automatically end the session when the final trial has ended.
         /// </summary>
         [Tooltip("Enable to automatically end the session when the final trial has ended.")]
-        public bool endAfterLastTrial = true;
+        public bool endAfterLastTrial = false;
 
         /// <summary>
         /// List of blocks for this experiment
@@ -336,6 +336,8 @@ namespace UXF
         {
             // get components attached to this gameobject and store their references 
             AttachReferences(GetComponent<FileIOManager>());
+            
+            if (endAfterLastTrial) onTrialEnd.AddListener(EndIfLastTrial);
         }
 
         /// <summary>
@@ -569,8 +571,29 @@ namespace UXF
         /// </summary>
         public void BeginNextTrial()
         {
-            if (hasInitialised)
-                NextTrial.Begin();
+            NextTrial.Begin();
+        }
+
+        /// <summary>
+        /// Begins next trial (if one exists). Useful to call from an inspector event
+        /// </summary>
+        public void BeginNextTrialSafe()
+        {            
+            if (CurrentTrial != LastTrial)
+            {
+                BeginNextTrial();
+            }
+        }
+
+        /// <summary>
+        /// Ends the session if the supplied trial is the last trial.
+        /// </summary>
+        public void EndIfLastTrial(Trial trial)
+        {
+            if (trial == LastTrial)
+            {
+                End();
+            }
         }
 
         /// <summary>

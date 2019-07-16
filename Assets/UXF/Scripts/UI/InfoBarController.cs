@@ -17,7 +17,7 @@ namespace UXF
         /// <summary>
 		/// Awake is called when the script instance is being loaded.
 		/// </summary>
-		void Start()
+		void Awake()
         {
             session.onSessionBegin.AddListener(SessionBegin);
             session.onTrialBegin.AddListener(TrialBegin);

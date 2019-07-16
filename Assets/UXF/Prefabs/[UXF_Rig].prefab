@@ -6440,8 +6440,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   endOnQuit: 1
   endOnDestroy: 1
-  settingsToLog: []
+  endAfterLastTrial: 0
   customHeaders: []
+  settingsToLog: []
   trackedObjects: []
   onSessionBegin:
     m_PersistentCalls:
