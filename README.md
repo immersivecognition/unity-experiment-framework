@@ -108,7 +108,7 @@ Files are read and written in a separate thread to avoid frame drops, which can 
 
 ## Example
 
-UXF is built around the idea of separating the specifcation of your experiment (the "what") and the implementation of your experiment (the "how").
+UXF is built around the idea of separating the specification of your experiment (the "what") and the implementation of your experiment (the "how").
 
 1. Experiment specification: Building/describing your experiment structure, including the trials, blocks and their associated settings.
 2. Experiment implementation: Presenting stimuli according to independent variables, collecting dependent variables.
