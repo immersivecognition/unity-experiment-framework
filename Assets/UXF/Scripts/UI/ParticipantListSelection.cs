@@ -209,9 +209,20 @@ namespace UXF
             // if we have new participant selected, we need to create it in the pplist
             if (participantSelector.IsNewSelected())
             {
-                // add new participant to list
-                row = ppList.NewRow();
-                ppList.Rows.Add(row);
+                // if new participant is given an id that exists in pplist, throw error
+                DataRow searchResultRow = ppList.AsEnumerable().SingleOrDefault(r => r.Field<string>("ppid") == ppid);
+                if (searchResultRow != null)
+                {
+                    form.ppidElement.controller.DisplayFault();
+                    throw new Exception("Participant ID already exists! Enter a new ID or select the existing participant from the dropdown.");
+                }
+                // else new id has been entered
+                else
+                {
+                    // add new participant to list
+                    row = ppList.NewRow();
+                    ppList.Rows.Add(row);
+                }
             }
             // else we update the row with any changes we made in the form
             else 
