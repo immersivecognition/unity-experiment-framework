@@ -129,6 +129,35 @@ namespace UXF.Tests
             session.blocks = new List<Block>();
 
 		}
+
+		[Test]
+		public void InvalidTrialAccess()
+		{
+			Block block = session.CreateBlock();
+
+			Assert.Throws<NoSuchTrialException>(
+				delegate { Trial t = session.FirstTrial; }
+			);
+
+			Assert.Throws<NoSuchTrialException>(
+				delegate { Trial t = session.LastTrial; }
+			);
+
+			// reset blocks
+            session.blocks = new List<Block>();
+		}
+
+		[Test]
+		public void InvalidBlockAccess()
+		{
+			Assert.Throws<NoSuchTrialException>(
+				delegate { Trial t = session.FirstTrial; }
+			);
+
+			Assert.Throws<NoSuchTrialException>(
+				delegate { Trial t = session.LastTrial; }
+			);
+		}
 		
 	}
 
