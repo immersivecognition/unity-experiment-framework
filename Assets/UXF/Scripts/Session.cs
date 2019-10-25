@@ -620,7 +620,14 @@ namespace UXF
         Trial GetFirstTrial()
         {
             var firstBlock = blocks[0];
-            return firstBlock.trials[0];
+            try
+            {
+                return firstBlock.trials[0];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw new NoSuchTrialException("There is no first trial. No trials exist in the first block.");
+            }
         }
 
         /// <summary>
@@ -630,7 +637,14 @@ namespace UXF
         Trial GetLastTrial()
         {
             var lastBlock = blocks[blocks.Count - 1];
-            return lastBlock.trials[lastBlock.trials.Count - 1];
+            try
+            {
+                return lastBlock.trials[lastBlock.trials.Count - 1];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw new NoSuchTrialException("There is no last trial. No trials exist in the last block.");
+            }
         }
 
         /// <summary>
