@@ -141,8 +141,21 @@ namespace UXF
 
             Debug.Log(string.Format("Loaded: {0}", ppListPath));
 
-            List<string> participants = ppList.AsEnumerable().Select(x => x[0].ToString()).ToList();
-            participantSelector.SetParticipants(participants);
+            IEnumerable<string> participants = ppList
+                .AsEnumerable()
+                .Select(x => x[0].ToString());
+
+            IEnumerable<string> duplicatedParticipants = participants.GroupBy(x => x)
+              .Where(g => g.Count() > 1)
+              .Select(y => y.Key);
+                
+            foreach (string ppid in duplicatedParticipants)
+            {
+                string s = string.Format("Participant '{0}' is listed multiple times in the participant list. Only the first listing will be used.", ppid);
+                Debug.LogWarning(s);
+            }
+
+            participantSelector.SetParticipants(participants.Distinct().ToList());
             participantSelector.SelectNewList();
 
             PlayerPrefs.SetString(ppListLocKey, ppListPath);
@@ -166,7 +179,7 @@ namespace UXF
 
         public void UpdateFormByPPID(string ppid)
         {
-            DataRow row = ppList.AsEnumerable().Single(r => r.Field<string>("ppid") == ppid);
+            DataRow row = ppList.AsEnumerable().First(r => r.Field<string>("ppid") == ppid);
 
             foreach (var dataPoint in startup.participantDataPoints)
             {
@@ -210,7 +223,7 @@ namespace UXF
             if (participantSelector.IsNewSelected())
             {
                 // if new participant is given an id that exists in pplist, throw error
-                DataRow searchResultRow = ppList.AsEnumerable().SingleOrDefault(r => r.Field<string>("ppid") == ppid);
+                DataRow searchResultRow = ppList.AsEnumerable().FirstOrDefault(r => r.Field<string>("ppid") == ppid);
                 if (searchResultRow != null)
                 {
                     form.ppidElement.controller.DisplayFault();
