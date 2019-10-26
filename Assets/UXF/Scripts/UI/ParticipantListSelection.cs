@@ -214,7 +214,7 @@ namespace UXF
             // check if not empty
             if (ppid.Replace(" ", string.Empty) == string.Empty)
             {
-                form.ppidElement.controller.DisplayFault();
+                form.ppidElement.controller.DisplayFault("Invalid participant name!");
                 throw new Exception("Invalid participant name!");
             }
 
@@ -226,7 +226,7 @@ namespace UXF
                 DataRow searchResultRow = ppList.AsEnumerable().FirstOrDefault(r => r.Field<string>("ppid") == ppid);
                 if (searchResultRow != null)
                 {
-                    form.ppidElement.controller.DisplayFault();
+                    form.ppidElement.controller.DisplayFault("Participant ID already exists!");
                     throw new Exception("Participant ID already exists! Enter a new ID or select the existing participant from the dropdown.");
                 }
                 // else new id has been entered
