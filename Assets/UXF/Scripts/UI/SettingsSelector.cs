@@ -17,6 +17,8 @@ namespace UXF{
 		[HideInInspector]
 		public string experimentName;
 
+		public StringEvent onSelect;
+
 		string settingsFileKey = "SettingsFile";
 
 		void Start ()
@@ -86,6 +88,10 @@ namespace UXF{
 			string settingsPath = Path.Combine(settingsFolder, fname);
 			PlayerPrefs.SetString(settingsFileKey, fname);
             session.ReadSettingsFile(settingsPath, new System.Action<Dictionary<string, object>>((dict) => HandleSettingsDict(dict)));
+
+			StreamReader reader = new StreamReader(settingsPath); 
+			onSelect.Invoke(reader.ReadToEnd());
+			reader.Close();
         }
 
 		void HandleSettingsDict(Dictionary<string, object> dict)
@@ -96,6 +102,12 @@ namespace UXF{
 		public Settings GetSettings()
 		{
 			return new Settings(settingsDict);
+		}
+
+		public void OpenSettingsFolder()
+		{
+			string winPath = settingsFolder.Replace("/", "\\");
+			System.Diagnostics.Process.Start("explorer.exe", "/root," + winPath);
 		}
 
 	}
