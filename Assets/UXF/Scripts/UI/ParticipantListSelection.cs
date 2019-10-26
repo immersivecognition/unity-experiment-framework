@@ -247,7 +247,7 @@ namespace UXF
 
             // update row in table
             foreach (var keyValuePair in completedForm)
-                row[keyValuePair.Key] = keyValuePair.Value;     
+                UpdateDatapoint(row, keyValuePair.Key, keyValuePair.Value);    
 
             // write pplist
             CommitCSV();
@@ -255,10 +255,8 @@ namespace UXF
 
         }
 
-        public void UpdateDatapoint(string ppid, string datapointName, object value)
-        {
-            DataRow row = ppList.AsEnumerable().Single(r => r.Field<string>("ppid") == ppid);
-            
+        public void UpdateDatapoint(DataRow row, string datapointName, object value)
+        {           
             try
             {
                 row[datapointName] = value;
