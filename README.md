@@ -193,18 +193,11 @@ This project is developed under Unity 2017.4.2f1 but should work on all recent v
 
 ## Documentation
 
-Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki)
+Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki) for full documentation.
 
-## Feedback
+## Tutorial: Building an experiment with UXF
 
-<p align="center">
-  <a href ="https://forms.gle/rrySNPNPvdMvtTM46">
-  <img src="media/survey-ss.png">
-  </a>
-</p>
-
-Please fill out the anonymous [UXF feedback form](https://forms.gle/rrySNPNPvdMvtTM46)
-
+A full tutorial for buiulding an experiment with UXF is available [here](https://github.com/immersivecognition/uxf-tutorial).
 
 ## Related packages
 
