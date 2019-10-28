@@ -197,7 +197,7 @@ Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framewor
 
 ## Tutorial: Building an experiment with UXF
 
-A full tutorial for building an experiment with UXF is available [here](https://github.com/immersivecognition/uxf-tutorial).
+A full tutorial for building an experiment with UXF is available [here](https://immersivecognition.github.io/uxf-tutorial/).
 
 ## Related packages
 
