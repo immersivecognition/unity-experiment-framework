@@ -16,6 +16,7 @@ A set of components which simplify human behaviour experiments developed in the 
 If you have developed a project using UXF please [let me know](http://twitter.com/jackbrookes)! 
 
 **Contents**
+- [Built with UXF](#built-with-uxf)
 - [Get started](#get-started)
 - [Features](#features)
   - [Programming style](#programming-style)
@@ -30,6 +31,17 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 - [Documentation](#documentation)
 - [Feedback](#feedback)
 - [Related packages](#related-packages)
+
+## Built with UXF
+
+
+<p align="center">
+  <a href="https://immersivecognition.github.io/projects/virtual-reality-experiments/" target="_blank">
+  <img src="media/built-with-uxf.jpg">
+  </a>
+  
+  Click the banner above to see some of our experiments that have been built with UXF.
+</p>
 
 ## Get started
 0. Read over this Readme and the [paper](https://doi.org/10.3758/s13428-019-01242-0) to understand UXF.
