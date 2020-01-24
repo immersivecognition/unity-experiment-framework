@@ -16,6 +16,7 @@ A set of components which simplify human behaviour experiments developed in the 
 If you have developed a project using UXF please [let me know](http://twitter.com/jackbrookes)! 
 
 **Contents**
+- [Built with UXF](#built-with-uxf)
 - [Get started](#get-started)
 - [Features](#features)
   - [Programming style](#programming-style)
@@ -28,8 +29,19 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 - [Example](#example)
 - [Development](#development)
 - [Documentation](#documentation)
-- [Feedback](#feedback)
+- [Tutorial: Building an experiment with UXF](#tutorial-building-an-experiment-with-uxf)
 - [Related packages](#related-packages)
+
+## Built with UXF
+
+
+<p align="center">
+  <a href="https://immersivecognition.github.io/projects/virtual-reality-experiments/" target="_blank">
+  <img src="media/built-with-uxf.jpg">
+  </a>
+  
+  Click the banner above to see some of our experiments that have been built with UXF.
+</p>
 
 ## Get started
 0. Read over this Readme and the [paper](https://doi.org/10.3758/s13428-019-01242-0) to understand UXF.
@@ -181,18 +193,11 @@ This project is developed under Unity 2017.4.2f1 but should work on all recent v
 
 ## Documentation
 
-Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki)
+Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki) for full documentation.
 
-## Feedback
+## Tutorial: Building an experiment with UXF
 
-<p align="center">
-  <a href ="https://forms.gle/rrySNPNPvdMvtTM46">
-  <img src="media/survey-ss.png">
-  </a>
-</p>
-
-Please fill out the anonymous [UXF feedback form](https://forms.gle/rrySNPNPvdMvtTM46)
-
+A full tutorial for building an experiment with UXF is available [here](https://immersivecognition.github.io/uxf-tutorial/).
 
 ## Related packages
 

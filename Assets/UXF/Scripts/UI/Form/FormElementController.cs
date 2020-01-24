@@ -85,6 +85,12 @@ namespace UXF
             Invoke("ResetTitle", 5);
         }
 
+        public void DisplayFault(string message)
+        {
+            title.text = string.Format("{0} <b><color=red>(!) Error: {1}</color></b>", originalTitle, message);
+            Invoke("ResetTitle", 8);
+        }
+
         public void ResetTitle()
         {
             title.text = originalTitle;
