@@ -133,7 +133,7 @@ namespace UXF.Tests
 		[Test]
 		public void InvalidTrialAccess()
 		{
-			Block block = session.CreateBlock();
+			session.CreateBlock();
 
 			Assert.Throws<NoSuchTrialException>(
 				delegate { Trial t = session.FirstTrial; }
@@ -157,6 +157,19 @@ namespace UXF.Tests
 			Assert.Throws<NoSuchTrialException>(
 				delegate { Trial t = session.LastTrial; }
 			);
+		}
+
+		[Test]
+		public void FirstLast()
+		{
+			Block block1 = session.CreateBlock(10);
+			Block block2 = session.CreateBlock(10);
+
+			Assert.AreEqual(block1.trials[0], session.FirstTrial);
+			Assert.AreEqual(block2.trials[9], session.LastTrial);
+
+			// reset blocks
+            session.blocks = new List<Block>();
 		}
 		
 	}

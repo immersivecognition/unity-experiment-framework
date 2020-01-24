@@ -158,7 +158,7 @@ namespace UXF
         public Trial PrevTrial { get { return GetPrevTrial(); } }
 
         /// <summary>
-        /// Get the last trial in the last block of the session.
+        /// Get the first trial in the first block of the session.
         /// </summary>
         public Trial FirstTrial { get { return GetFirstTrial(); } }
 
@@ -648,7 +648,7 @@ namespace UXF
             Block lastBlock;
             try
             {
-                lastBlock = blocks[0];
+                lastBlock = blocks[blocks.Count - 1];
             }
             catch (ArgumentOutOfRangeException)
             {
