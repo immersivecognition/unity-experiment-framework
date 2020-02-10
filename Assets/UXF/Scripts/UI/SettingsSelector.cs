@@ -87,11 +87,8 @@ namespace UXF{
         {
 			string settingsPath = Path.Combine(settingsFolder, fname);
 			PlayerPrefs.SetString(settingsFileKey, fname);
-            session.ReadSettingsFile(settingsPath, new System.Action<Dictionary<string, object>>((dict) => HandleSettingsDict(dict)));
-
-			StreamReader reader = new StreamReader(settingsPath); 
-			onSelect.Invoke(reader.ReadToEnd());
-			reader.Close();
+            session.ReadSettingsFile(settingsPath, HandleSettingsDict);
+			session.ReadFileString(settingsPath, onSelect.Invoke);
         }
 
 		void HandleSettingsDict(Dictionary<string, object> dict)

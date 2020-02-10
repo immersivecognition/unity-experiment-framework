@@ -18,13 +18,14 @@ namespace UXF
         /// <summary>
         /// Description of the type of measurement this tracker will perform.
         /// </summary>
-        [ReadOnly]
+        [HideInInspector]
+        [Tooltip("Description of the type of measurement this tracker will perform.")]
         public string measurementDescriptor;
 
         /// <summary>
         /// Custom column headers for tracked objects
         /// </summary>
-        [ReadOnly]
+        [HideInInspector]
         [Tooltip("Custom column headers for each measurement.")]
         public string[] customHeader = new string[] { };
    
@@ -40,8 +41,6 @@ namespace UXF
             }
         }
 
-        [SerializeField]
-        [ReadOnly]
         private bool recording;
 
         List<string[]> data = new List<string[]>();

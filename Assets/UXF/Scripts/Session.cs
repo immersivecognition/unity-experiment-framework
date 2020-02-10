@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections.Specialized;
 using System.Data;
 using UnityEngine.Events;
+using SubjectNerd.Utilities;
 
 namespace UXF
 {
@@ -17,6 +18,7 @@ namespace UXF
     [RequireComponent(typeof(FileIOManager))]
     public class Session : MonoBehaviour
     {
+        [Header(":: Behaviour")]
         /// <summary>
         /// Enable to automatically safely end the session when the application is quitting.
         /// </summary>
@@ -41,31 +43,34 @@ namespace UXF
         [HideInInspector]
         public List<Block> blocks = new List<Block>();
 
+        [Header(":: Data logging")]
         /// <summary>
         /// List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
         /// </summary>
         [Tooltip("List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.")]
+        [Reorderable]
         public List<string> customHeaders = new List<string>();
 
         /// <summary>
         /// List of settings you wish to log to the behavioural file for each trial.
         /// </summary>
         /// <returns></returns>
-        [Header("Data logging")]
         [Tooltip("List of settings you wish to log to the behavioural data output for each trial.")]
+        [Reorderable]
         public List<string> settingsToLog = new List<string>();
 
         /// <summary>
         /// List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().
         /// </summary>
         [Tooltip("List of tracked objects. Add a tracker to a GameObject in your scene and set it here to track position and rotation of the object on each Update().")]
+        [Reorderable]
         public List<Tracker> trackedObjects = new List<Tracker>();
 
         /// <summary>
         /// Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument
         /// </summary>
         /// <returns></returns>
-        [Header("Events")]
+        [Header(":: Events")]
         [Tooltip("Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument")]
         public SessionEvent onSessionBegin = new SessionEvent();
 
@@ -90,7 +95,7 @@ namespace UXF
         [Tooltip("Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event")]
         public SessionEvent onSessionEnd = new SessionEvent();
 
-        [Header("Session information")]
+        [Header(":: Current information")]
 
         [ReadOnly]
         [SerializeField]
@@ -731,13 +736,23 @@ namespace UXF
 
 
         /// <summary>
-        /// Reads json settings file as Dictionary then calls actioon with Dictionary as parameter
+        /// Reads json settings file as Dictionary then calls action with Dictionary as parameter
         /// </summary>
         /// <param name="path">Location of .json file to read</param>
         /// <param name="action">Action to call when completed</param>
         public void ReadSettingsFile(string path, System.Action<Dictionary<string, object>> action)
         {
             fileIOManager.ManageInWorker(() => fileIOManager.ReadJSON(path, action));
+        }
+
+        /// <summary>
+        /// Reads json file as string then calls action with string as parameter
+        /// </summary>
+        /// <param name="path">Location of .json file to read</param>
+        /// <param name="action">Action to call when completed</param>
+        public void ReadFileString(string path, System.Action<string> action)
+        {
+            fileIOManager.ManageInWorker(() => fileIOManager.ReadFileString(path, action));
         }
 
         void OnApplicationQuit()

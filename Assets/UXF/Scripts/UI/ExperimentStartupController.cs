@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using SubjectNerd.Utilities;
 
 namespace UXF
 {
@@ -14,12 +15,12 @@ namespace UXF
         [Tooltip("When enabled, the experiment will instantly start using the 'quick_start' as the participant id, 1 as the session, and the save folder and settings path provided")]
         public bool quickStartMode;
 
+        [Header("Quick start will be turned off in a built application.")]
         [Tooltip("Save data location in quick start (i.e. directory where the participant list is located). Relative to project path.")]
         [ConditionalHide("quickStartMode", true)]
         public string saveDataLocation = "example_output";
 
         [Tooltip("Name of the settings file to be used in quick start (as located in StreamingAssets folder)")]
-
         [ConditionalHide("quickStartMode", true)]
         public string experimentSettingsName = "example_experiment_1.json";
 
@@ -27,6 +28,7 @@ namespace UXF
 
         [Tooltip("List of datapoints you want to collect per participant. These will be generated for the GUI and added as new columns in the participant list. Participant ID is added automatically.")]
         [SerializeField]
+        [Reorderable]
         private List<FormElementEntry> _participantDataPoints = new List<FormElementEntry>();
         /// <summary>
         /// List of datapoints you want to collect per participant. These will be generated for the GUI and added as new columns in the participant list. Participant ID is added automatically.
@@ -57,8 +59,7 @@ namespace UXF
 
         void Start()
         {
-
-            if (quickStartMode)
+            if (quickStartMode && !Application.isEditor) // no quick start outside the unity editor
             {
                 QuickStart();
             }

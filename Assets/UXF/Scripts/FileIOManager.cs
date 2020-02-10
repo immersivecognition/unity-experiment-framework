@@ -26,7 +26,7 @@ namespace UXF
         /// Event(s) to trigger when we write a file. Not performed in amin thread so cannot include most Unity actions.
         /// </summary>
         /// <returns></returns>
-        [Tooltip("Event(s) to trigger when we write a file. Not performed in amin thread so cannot include most Unity actions.")]
+        [Tooltip("Event(s) to trigger when we write a file. Can be used to move/upload files after saving. Event not performed in main thread so cannot include most Unity actions.")]
         public WriteFileEvent onWriteFile = new WriteFileEvent();
 
         /// <summary>
@@ -162,6 +162,31 @@ namespace UXF
             }
 
             System.Action action = new System.Action(() => callback.Invoke(dict));
+            executeOnMainThreadQueue.Enqueue(action);
+        }
+
+        /// <summary>
+        /// Reads a file from a path then calls a given action with the whole file string as the first argument 
+        /// </summary>
+        /// <param name="fpath"></param>
+        /// <param name="callback"></param>
+        public void ReadFileString(string fpath, System.Action<string> callback)
+        {
+            string data;
+            try
+            {
+                StreamReader reader = new StreamReader(fpath); 
+			    data = reader.ReadToEnd();
+                reader.Close();
+            }
+            catch (FileNotFoundException)
+            {
+                string message = string.Format("File not found in {0}!", fpath);
+                Debug.LogWarning(message);
+                return;
+            }
+
+            System.Action action = new System.Action(() => callback.Invoke(data));
             executeOnMainThreadQueue.Enqueue(action);
         }
 
