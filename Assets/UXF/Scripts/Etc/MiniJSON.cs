@@ -470,7 +470,7 @@ namespace MiniJSON
             {
                 var instance = new Serializer();
 
-                int level = 1;
+                int level = 0;
                 instance.SerializeValue(obj, ref level);
 
                 return instance.builder.ToString();
@@ -517,13 +517,13 @@ namespace MiniJSON
                 level++;
                 bool first = true;
 
-                builder.Append("{\n" + Spaces(level));
+                builder.Append("{\r\n" + Spaces(level));
 
                 foreach (object e in obj.Keys)
                 {
                     if (!first)
                     {
-                        builder.Append(",\n" + Spaces(level));
+                        builder.Append(",\r\n" + Spaces(level));
                     }
 
                     SerializeString(e.ToString());
@@ -535,13 +535,13 @@ namespace MiniJSON
                 }
 
                 level--;
-                builder.Append("\n" + Spaces(level) + "}");
+                builder.Append("\r\n" + Spaces(level) + "}");
             }
 
             void SerializeArray(IList anArray, ref int level)
             {
                 level++;
-                builder.Append("[\n" + Spaces(level));
+                builder.Append("[\r\n" + Spaces(level));
 
                 bool first = true;
 
@@ -549,7 +549,7 @@ namespace MiniJSON
                 {
                     if (!first)
                     {
-                        builder.Append(",\n" + Spaces(level));
+                        builder.Append(",\r\n" + Spaces(level));
                     }
 
                     SerializeValue(obj, ref level);
@@ -559,7 +559,7 @@ namespace MiniJSON
 
 
                 level--;
-                builder.Append("\n" + Spaces(level) + "]");
+                builder.Append("\r\n" + Spaces(level) + "]");
 
             }
 
