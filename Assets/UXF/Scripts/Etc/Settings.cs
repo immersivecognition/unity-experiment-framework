@@ -194,7 +194,7 @@ namespace UXF
                 {
                     return parentSettings.Get(key);
                 }
-                throw new KeyNotFoundException(string.Format("The key \"{0}\" was not found in the settings heirarchy. Use UXF Debugger to check your settings are being applied correctly.", key));
+                throw new KeyNotFoundException(string.Format("The key \"{0}\" was not found in the settings heirarchy. Use UXF Session Debugger (UXF menu at top of unity editor) to check your settings are being applied correctly.", key));
             }
         }
 
