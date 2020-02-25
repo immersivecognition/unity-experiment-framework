@@ -51,7 +51,7 @@ namespace UXF
         /// <summary>
         /// Dictionary of results in a order.
         /// </summary>
-        public OrderedResultDict result;
+        public ResultsDictionary result;
 
         /// <summary>
         /// Manually create a trial. When doing this you need to add this trial to a block with block.trials.Add(trial)
@@ -82,9 +82,7 @@ namespace UXF
 
             status = TrialStatus.InProgress;
             startTime = Time.time;
-            result = new OrderedResultDict();
-            foreach (string h in session.Headers)
-                result.Add(h, string.Empty);
+            result = new ResultsDictionary(session.Headers, session.adHocHeaderAdd);
 
             result["directory"] = Extensions.CombinePaths(session.experimentName, session.ppid, session.FolderName).Replace('\\', '/');
             result["experiment"] = session.experimentName;

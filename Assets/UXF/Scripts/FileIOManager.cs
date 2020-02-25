@@ -205,23 +205,34 @@ namespace UXF
         /// <summary>
         /// Writes trial data (List of OrderedResultsDict) to file at fpath
         /// </summary>
-        /// <param name="dataDict"></param>
-        /// <param name="headers"></param>
+        /// <param name="dictList"></param>
         /// <param name="fpath"></param>
-        public void WriteTrials(List<OrderedResultDict> dataDict, string[] headers, WriteFileInfo writeFileInfo)
+        public void WriteTrials(List<ResultsDictionary> dictList, WriteFileInfo writeFileInfo)
         {
-            string[] csvRows = new string[dataDict.Count + 1];
-            csvRows[0] = string.Join(",", headers.ToArray());
-            object[] row = new object[headers.Length];
+            // generate list of all headers possible
+            // hashset keeps unique set of keys
+            HashSet<string> headers = new HashSet<string>();
+            foreach (ResultsDictionary dict in dictList)
+                foreach (string key in dict.Keys)
+                    headers.Add(key);
 
-            for (int i = 1; i <= dataDict.Count; i++)
+            // final output: array of rows (comma-separated strings)
+            string[] csvRows = new string[dictList.Count + 1];
+
+            // first row: headers
+            csvRows[0] = string.Join(",", headers.ToArray());
+            
+            for (int i = 0; i < dictList.Count; i++)
             {
-                OrderedResultDict dict = dataDict[i - 1];
-                if (dict != null)
-                {
-                    dict.Values.CopyTo(row, 0);
-                    csvRows[i] = string.Join(",", row.Select(v => System.Convert.ToString(v)).ToArray());
-                }
+                ResultsDictionary dict = dictList[i];
+
+                // add all observations to the row, in correct order.
+                // check if null, if so assign to empty string (?? operator)
+                var row = headers
+                    .Select(header => (dict[header] ?? string.Empty).ToString());
+
+                // join to string & store in output
+                csvRows[i + 1] = string.Join(",", row.ToArray());               
             }
 
             File.WriteAllLines(writeFileInfo.FullPath, csvRows);

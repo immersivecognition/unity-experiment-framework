@@ -18,8 +18,7 @@ namespace UXF.Tests
         FileIOManager fileIOManager;
         SessionLogger sessionLogger;
 
-        [SetUp]
-        public void SetUp()
+        void Start(bool adHoc)
         {
             gameObject = new GameObject();
             fileIOManager = gameObject.AddComponent<FileIOManager>();
@@ -29,6 +28,8 @@ namespace UXF.Tests
             session.AttachReferences(
                 fileIOManager
             );
+
+            session.adHocHeaderAdd = adHoc;
 
             sessionLogger.AttachReferences(
                 fileIOManager,
@@ -41,7 +42,7 @@ namespace UXF.Tests
             fileIOManager.Begin();
 
             string experimentName = "unit_test";
-            string ppid = "test_trials";
+            string ppid = "test_trials" + (adHoc ? "_adhoc" : "");
             session.Begin(experimentName, ppid, "example_output");
             session.customHeaders.Add("observation");
             session.customHeaders.Add("null_observation");
@@ -51,8 +52,7 @@ namespace UXF.Tests
             session.CreateBlock(3);
         }
 
-        [TearDown]
-        public void TearDown()
+        void Finish()
         {
             session.End();
             fileIOManager.End();
@@ -62,6 +62,7 @@ namespace UXF.Tests
         [Test]
         public void RunTrials()
         {   
+            Start(false);
             int i = 0;
             foreach (var trial in session.Trials)
             {
@@ -84,6 +85,41 @@ namespace UXF.Tests
             {
                 Assert.AreEqual(trial.result["observation"], ++i);
             }
+            Finish();
+            
+            // read the file to check headers
+            string firstLine = File.ReadAllLines(Path.Combine(session.FullPath, "trial_results.csv"))[0];
+            Assert.AreEqual("directory,experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation", firstLine);           
+        }
+
+        [Test]
+        public void RunTrialsAdHocResultsAdd()
+        {   
+            Start(true);
+            int i = 0;
+            foreach (var trial in session.Trials)
+            {
+                trial.Begin();
+                trial.result["observation"] = ++i;
+                trial.result["null_observation"] = null;
+                trial.result["not_customheader_observation"] = "something";
+
+                Assert.AreSame(trial, session.CurrentTrial);
+                Assert.AreEqual(trial.number, session.currentTrialNum);
+
+                trial.End();
+            }
+
+            i = 0;
+            foreach (var trial in session.Trials)
+            {
+                Assert.AreEqual(trial.result["observation"], ++i);
+            }
+            Finish();
+
+            // read the file to check headers
+            string firstLine = File.ReadAllLines(Path.Combine(session.FullPath, "trial_results.csv"))[0];
+            Assert.AreEqual("directory,experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation,not_customheader_observation", firstLine);           
         }
 
 	}

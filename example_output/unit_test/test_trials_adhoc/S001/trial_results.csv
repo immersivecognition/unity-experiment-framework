@@ -1,0 +1,6 @@
+directory,experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation,not_customheader_observation
+unit_test/test_trials_adhoc/S001,unit_test,test_trials_adhoc,1,1,1,1,1.010086,1.010086,1,,something
+unit_test/test_trials_adhoc/S001,unit_test,test_trials_adhoc,1,2,1,2,1.010086,1.010086,2,,something
+unit_test/test_trials_adhoc/S001,unit_test,test_trials_adhoc,1,3,2,1,1.010086,1.010086,3,,something
+unit_test/test_trials_adhoc/S001,unit_test,test_trials_adhoc,1,4,2,2,1.010086,1.010086,4,,something
+unit_test/test_trials_adhoc/S001,unit_test,test_trials_adhoc,1,5,2,3,1.010086,1.010086,5,,something
