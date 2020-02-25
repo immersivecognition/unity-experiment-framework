@@ -213,13 +213,9 @@ namespace UXF
             // hashset keeps unique set of keys
             HashSet<string> headers = new HashSet<string>();
             foreach (ResultsDictionary dict in dictList)
-            {
                 if (dict != null)
-                {
                     foreach (string key in dict.Keys)
                         headers.Add(key);
-                }
-            }
 
             // final output: array of rows (comma-separated strings)
             string[] csvRows = new string[dictList.Count + 1];
@@ -230,6 +226,7 @@ namespace UXF
             for (int i = 0; i < dictList.Count; i++)
             {
                 ResultsDictionary dict = dictList[i];
+                if (dict == null) continue; // empty trial, try next loop iteration
 
                 // add all observations to the row, in correct order.
                 // check if null, if so assign to empty string (?? operator)
