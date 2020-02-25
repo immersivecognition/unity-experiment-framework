@@ -213,8 +213,13 @@ namespace UXF
             // hashset keeps unique set of keys
             HashSet<string> headers = new HashSet<string>();
             foreach (ResultsDictionary dict in dictList)
-                foreach (string key in dict.Keys)
-                    headers.Add(key);
+            {
+                if (dict != null)
+                {
+                    foreach (string key in dict.Keys)
+                        headers.Add(key);
+                }
+            }
 
             // final output: array of rows (comma-separated strings)
             string[] csvRows = new string[dictList.Count + 1];
