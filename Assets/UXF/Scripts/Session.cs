@@ -16,7 +16,7 @@ namespace UXF
     /// </summary>
     [ExecuteInEditMode]
     [RequireComponent(typeof(FileIOManager))]
-    public class Session : MonoBehaviour
+    public class Session : MonoBehaviour, ISettingsContainer
     {
         [Header(":: Behaviour")]
         /// <summary>
@@ -147,7 +147,7 @@ namespace UXF
         /// <summary>
         /// Settings for the experiment. These are provided on initialisation of the session.
         /// </summary>
-        public Settings settings;
+        public Settings settings { get; private set; }
 
         /// <summary>
         /// Returns true if current trial is in progress

@@ -16,7 +16,7 @@ namespace UXF
         /// </summary>
         public static Settings empty { get { return new Settings(new Dictionary<string, object>()); } }
 
-        Settings parentSettings;
+        ISettingsContainer parentSettingsContainer;
         /// <summary>
         /// The underlying dictionary
         /// </summary>
@@ -45,14 +45,25 @@ namespace UXF
             }
         }
 
+        /// <summary>
+        /// Add all the keys and values from `dict` to the settings.
+        /// </summary>
+        /// <param name="dict">Dictionary to add.</param>
+        public void UpdateWithDict(Dictionary<string, object> dict)
+        {
+            // add all keys to new dictionary
+            dict
+                .ToList()
+                .ForEach(x => baseDict[x.Key] = x.Value);
+        }
 
         /// <summary>
         /// Sets the parent setting object, which is accessed when a setting is not found in the dictionary.
         /// </summary>
         /// <param name="parent"></param>
-        public void SetParent(Settings parent)
+        public void SetParent(ISettingsContainer parent)
         {
-            parentSettings = parent;
+            parentSettingsContainer = parent;
         }
         
         /// <summary>
@@ -190,11 +201,18 @@ namespace UXF
             }
             catch (KeyNotFoundException)
             {
-                if (parentSettings != null)
+                if (parentSettingsContainer != null && parentSettingsContainer.settings != null)
                 {
-                    return parentSettings.Get(key);
+                    return parentSettingsContainer.settings.Get(key);
                 }
-                throw new KeyNotFoundException(string.Format("The key \"{0}\" was not found in the settings heirarchy. Use UXF Session Debugger (UXF menu at top of unity editor) to check your settings are being applied correctly.", key));
+                throw new KeyNotFoundException(
+                    string.Format(
+                        "The key \"{0}\" was not found in the settings heirarchy. "
+                         + "Use UXF Session Debugger (UXF menu at top of unity editor) "
+                         + "to check your settings are being applied correctly.",
+                         key
+                    )
+                );
             }
         }
 

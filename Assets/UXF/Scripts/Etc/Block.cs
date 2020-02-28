@@ -8,7 +8,7 @@ namespace UXF
     /// <summary>
     /// A set of trials, often used to group a number of consecutive Trial objects that share something in common.
     /// </summary>
-    public class Block
+    public class Block : ISettingsContainer
     {
         /// <summary>
         /// List of trials associated with this block
@@ -33,7 +33,7 @@ namespace UXF
         /// <summary>
         /// Block settings. These will be overridden by trial settings if set.
         /// </summary>
-        public Settings settings = Settings.empty;
+        public Settings settings { get; private set; }
 
         /// <summary>
         /// The session associated with this block
@@ -48,9 +48,10 @@ namespace UXF
         /// <param name="session"></param>
         public Block(uint numberOfTrials, Session session)
         {
+            settings = Settings.empty;
             this.session = session;
             this.session.blocks.Add(this);
-            settings.SetParent(this.session.settings);
+            settings.SetParent(session);
             for (int i = 0; i < numberOfTrials; i++)
             {
                 var t = new Trial(this);

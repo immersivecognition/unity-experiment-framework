@@ -97,19 +97,25 @@ namespace UXF.Tests
 		[Test]
 		public void CascadeSettings()
 		{
+			GameObject go = new GameObject();
+			Session s = go.AddComponent<Session>();
+			Block b = s.CreateBlock();
+			Trial t = b.CreateTrial();
+			
 			Dictionary<string, object> dict = MiniJSON.Json.Deserialize(jsonString) as Dictionary<string, object>;
-			Settings settings = new Settings(dict);
+			b.settings.UpdateWithDict(dict);
 
-			Settings subSettings = Settings.empty;
-			subSettings.SetParent(settings);
+			t.settings.SetValue("key1", "test");
+			t.settings.SetValue("key2", 100);
 
-			subSettings.SetValue("key1", "test");
-			subSettings.SetValue("key2", 100);
+			Assert.AreEqual(t.settings.GetString("string"), "The quick brown fox \"jumps\" over the lazy dog ");
+			Assert.AreEqual(t.settings.GetString("key1"), "test");
+			Assert.AreEqual(t.settings.GetInt("key2"), 100);
+			Assert.Throws<KeyNotFoundException>(() => b.settings.GetObject("key1"));
 
-			Assert.AreEqual(subSettings.GetString("string"), "The quick brown fox \"jumps\" over the lazy dog ");
-			Assert.AreEqual(subSettings.GetString("key1"), "test");
-			Assert.AreEqual(subSettings.GetInt("key2"), 100);
-			Assert.Throws<KeyNotFoundException>(() => settings.GetObject("key3"));
+			Assert.Throws<KeyNotFoundException>(() => t.settings.GetObject("key3"));
+			Assert.Throws<KeyNotFoundException>(() => b.settings.GetObject("key3"));
+			Assert.IsNull(s.settings);
 		}
 
 	}

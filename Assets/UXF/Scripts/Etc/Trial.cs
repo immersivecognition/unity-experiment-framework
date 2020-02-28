@@ -13,7 +13,7 @@ namespace UXF
     /// The base unit of experiments. A Trial is usually a singular attempt at a task by a participant after/during the presentation of a stimulus.
     /// </summary>
     [Serializable]
-    public class Trial
+    public class Trial : ISettingsContainer
     {
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace UXF
         /// <summary>
         /// Trial settings. These will override block settings if set.
         /// </summary>
-        public Settings settings = Settings.empty;
+        public Settings settings { get; private set; }
 
         /// <summary>
         /// Dictionary of results in a order.
@@ -58,6 +58,7 @@ namespace UXF
         /// </summary>
         internal Trial(Block trialBlock)
         {
+            settings = Settings.empty;
             SetReferences(trialBlock);
         }
 
@@ -69,7 +70,7 @@ namespace UXF
         {
             block = trialBlock;
             session = block.session;
-            settings.SetParent(block.settings);
+            settings.SetParent(block);
         }
 
         /// <summary>
