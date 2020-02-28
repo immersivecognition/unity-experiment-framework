@@ -128,7 +128,7 @@ UXF is built around the idea of separating the specification of your experiment 
 #### 1. Experiment specification
 
 ```csharp
-class ExperimentBuilder : MonoBehaviour
+public class ExperimentBuilder : MonoBehaviour
 {
     // set this to reference your UXF Session in the inspector
     public UXF.Session session;
@@ -155,7 +155,7 @@ class ExperimentBuilder : MonoBehaviour
 #### 2. Experiment implementation
 
 ```csharp
-class SceneManipulator : MonoBehaviour
+public class SceneManipulator : MonoBehaviour
 {
 
     // set this to reference your UXF Session in the inspector
