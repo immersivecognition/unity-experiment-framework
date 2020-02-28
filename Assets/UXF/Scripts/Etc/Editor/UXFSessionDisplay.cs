@@ -181,7 +181,15 @@ namespace UXFTools
                 if (k.StartsWith("_____")) continue;
 
 				GUILayout.BeginHorizontal();
-                string v = Truncate(pair.Value.ToString(), 100);
+                string v;
+                if (pair.Value == null)
+                {
+                    v = "null";
+                }
+                else
+                {
+                    v = Truncate(pair.Value.ToString(), 100);
+                }
                 EditorGUILayout.LabelField(string.Format("[\"{0}\"]: {1}", k, v));
                 GUILayout.EndHorizontal();
             }
