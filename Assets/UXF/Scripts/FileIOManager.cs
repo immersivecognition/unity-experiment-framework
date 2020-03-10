@@ -231,7 +231,15 @@ namespace UXF
                 // add all observations to the row, in correct order.
                 // check if null, if so assign to empty string (?? operator)
                 var row = headers
-                    .Select(header => (dict[header] ?? string.Empty).ToString());
+                    .Select(header => 
+                        {
+                            object val;
+                            try { val = dict[header]; }
+                            catch (KeyNotFoundException) { val = string.Empty; }
+                            
+                            return val.ToString();
+                        }
+                    );
 
                 // join to string & store in output
                 csvRows[i + 1] = string.Join(",", row.ToArray());               

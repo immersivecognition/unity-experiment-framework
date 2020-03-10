@@ -122,6 +122,18 @@ namespace UXF.Tests
             Assert.AreEqual("directory,experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation,not_customheader_observation", firstLine);           
         }
 
+        [Test]
+        public void RunTrialsAdHocResultsAddEarlyExit()
+        {   
+            Start(true);
+            session.blocks[0].trials[0].Begin();
+            session.blocks[0].trials[0].result["not_customheader_observation"] = "something";
+            session.blocks[0].trials[0].End();
+            
+            session.blocks[0].trials[1].Begin();
+            Finish(); // check we dont throw an error
+        }
+
 	}
 
 }
