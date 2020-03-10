@@ -236,7 +236,7 @@ namespace UXF
                             object val;
                             try { val = dict[header]; }
                             catch (KeyNotFoundException) { val = string.Empty; }
-                            
+                            if (val == null) val = string.Empty;
                             return val.ToString();
                         }
                     );
