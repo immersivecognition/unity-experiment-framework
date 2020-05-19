@@ -116,65 +116,121 @@ namespace UXF
 
         /// <summary>
         /// Get a boolean list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+        /// If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
         /// </summary>
         /// <param name="key">The key (name) of the setting.</param>
         public List<bool> GetBoolList(string key)
         {
-            return GetObjectList(key).Select(v => Convert.ToBoolean(v)).ToList();
+            try
+            {
+                return GetObjectList(key).Select(v => Convert.ToBoolean(v)).ToList();
+            }
+            catch (InvalidCastException)
+            {
+                return (List<bool>) Get(key);
+            }
         }
 
         /// <summary>
         /// Get a integer list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+        /// If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
         /// </summary>
         /// <param name="key">The key (name) of the setting.</param>
         public List<int> GetIntList(string key)
         {
-            return GetObjectList(key).Select(v => Convert.ToInt32(v)).ToList();
+            try
+            {
+                return GetObjectList(key).Select(v => Convert.ToInt32(v)).ToList();
+            }
+            catch (InvalidCastException)
+            {
+                return (List<int>) Get(key);
+            }
         }
 
         /// <summary>
         /// Get a float list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+        /// If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
         /// </summary>
         /// <param name="key">The key (name) of the setting.</param>
         public List<float> GetFloatList(string key)
         {
-            return GetObjectList(key).Select(v => Convert.ToSingle(v)).ToList();
+            try
+            {
+                return GetObjectList(key).Select(v => Convert.ToSingle(v)).ToList();
+            }
+            catch (InvalidCastException)
+            {
+                return (List<float>) Get(key);
+            }
         }
 
         /// <summary>
         /// Get a long list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+        /// If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
         /// </summary>
         /// <param name="key">The key (name) of the setting.</param>
         public List<long> GetLongList(string key)
         {
-            return GetObjectList(key).Select(v => Convert.ToInt64(v)).ToList();
+            try
+            {
+                return GetObjectList(key).Select(v => Convert.ToInt64(v)).ToList();
+            }
+            catch (InvalidCastException)
+            {
+                return (List<long>) Get(key);
+            }
         }
 
         /// <summary>
         /// Get a double list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+        /// If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
         /// </summary>
         /// <param name="key">The key (name) of the setting.</param>
         public List<double> GetDoubleList(string key)
         {
-            return GetObjectList(key).Select(v => Convert.ToDouble(v)).ToList();
+            try
+            {
+                return GetObjectList(key).Select(v => Convert.ToDouble(v)).ToList();
+            }
+            catch (InvalidCastException)
+            {
+                return (List<double>) Get(key);
+            }
         }
 
         /// <summary>
         /// Get a string list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+        /// If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
         /// </summary>
         /// <param name="key">The key (name) of the setting.</param>
         public List<string> GetStringList(string key)
         {
-            return GetObjectList(key).Select(v => Convert.ToString(v)).ToList();
+            try
+            {
+                return GetObjectList(key).Select(v => Convert.ToString(v)).ToList();
+            }
+            catch (InvalidCastException)
+            {
+                return (List<string>) Get(key);
+            }
         }
 
         /// <summary>
-        /// Get a dictionary list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+        /// Get a Dictionary<string, object> list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+        /// If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
         /// </summary>
         /// <param name="key">The key (name) of the setting.</param>
         public List<Dictionary<string, object>> GetDictList(string key)
         {
-            return GetObjectList(key).Select(v => (Dictionary<string, object>) v).ToList();
+            try
+            {
+                return GetObjectList(key).Select(v => (Dictionary<string, object>) v).ToList();
+            }
+            catch (InvalidCastException)
+            {
+                return (List<Dictionary<string, object>>) Get(key);
+            }
         }
 
         /// <summary>

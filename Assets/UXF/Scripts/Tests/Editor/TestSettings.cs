@@ -54,7 +54,7 @@ namespace UXF.Tests
 			var deserializedList = new List<double>() { 1.44, 2, 3 };
 			var deserializedIntList = new List<double>() { 1, 2, 3 };
 			var deserializedDoubleList = new List<double>() { 1.44, 2.44, 3.44 };
-			var deserializedFloatList = new List<double>() { 1.44f, 2.44f, 3.44f };
+			var deserializedFloatList = new List<float>() { 1.44f, 2.44f, 3.44f };
 			var deserializedObject = new Dictionary<string, object>()
 			{
 				{ "key1", "value1" },
@@ -92,6 +92,31 @@ namespace UXF.Tests
 			Assert.AreEqual(settings.GetString("key1"), "test");
 			Assert.AreEqual(settings.GetInt("key2"), 100);
 			Assert.Throws<KeyNotFoundException>(() => settings.GetObject("key3"));
+		}
+
+		[Test]
+		public void CastListSettings()
+		{
+			var createdObjectList = new List<object>() { null, 1, "hello" };
+			var createdIntList = new List<int>() { 1, 2, 3 };
+			var createdDoubleList = new List<double>() { 1.44, 2.44, 3.44 };
+			var createdFloatList = new List<float>() { 1.44f, 2.44f, 3.44f };
+			var createdBoolList = new List<bool>() { false, true, false };
+
+			Settings settings = new Settings(new Dictionary<string, object>()
+			{
+				{ "object_list", createdObjectList }, 
+				{ "int_list", createdIntList }, 
+				{ "double_list", createdDoubleList }, 
+				{ "float_list", createdFloatList },
+				{ "bool_list", createdBoolList }
+			});
+
+			Assert.AreEqual(settings.GetObjectList("object_list"), createdObjectList);
+			Assert.AreEqual(settings.GetIntList("int_list"), createdIntList);
+			Assert.AreEqual(settings.GetDoubleList("double_list"), createdDoubleList);
+			Assert.AreEqual(settings.GetFloatList("float_list"), createdFloatList);
+			Assert.AreEqual(settings.GetBoolList("bool_list"), createdBoolList);
 		}
 
 		[Test]
