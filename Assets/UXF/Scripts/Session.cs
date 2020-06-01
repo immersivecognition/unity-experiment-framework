@@ -539,7 +539,7 @@ namespace UXF
         {
             if (currentTrialNum == 0)
             {
-                throw new NoSuchTrialException("There is no trial zero. If you are the start of the experiment please use nextTrial to get the first trial");
+                throw new NoSuchTrialException("There is no trial zero. If you are the start of the experiment please use NextTrial to get the first trial");
             }
             return Trials.ToList()[currentTrialNum - 1];
         }
