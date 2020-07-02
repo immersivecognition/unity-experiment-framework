@@ -139,7 +139,7 @@ public class ExperimentBuilder : MonoBehaviour
         // Creating a block of 10 trials
         var myBlock = session.CreateBlock(10);
 
-        // Add a new setting to trial 1, here just as an example we will apply a setting of "color" "red" 
+        // Add a new setting to trial 1, here just as an example we will apply a setting of "color" to "red" 
         myBlock.FirstTrial.settings.SetValue("color", "red");
 
         // Start the session!
@@ -167,9 +167,10 @@ public class SceneManipulator : MonoBehaviour
     public void ShowStimulus(UXF.Trial trial)
     {
         // pull out the color we applied for this trial
+        // output would be "red"
         string colorManipulation = trial.settings.GetString("color");
 
-        // example of using the new setting to manipulate our scene
+        // example of using the new setting to manipulate our scene using a custom method
         ManipulateSceneColor(colorManipulation);
     }
 
