@@ -108,6 +108,52 @@ namespace UXF.Tests
 
         }
 
+        [Test]	
+        public void AdHocTrackerAdd()
+        {
+			Random.InitState(2); // reproducible
+
+            session.adHocHeaderAdd = true;
+
+			foreach (var trial in session.Trials)
+			{
+
+				trial.Begin();
+
+                // on each trial, add another gameobject to be tracked
+                GameObject newGameObject = new GameObject();
+                PositionRotationTracker prt = newGameObject.AddComponent<PositionRotationTracker>();
+                prt.objectName = string.Format("adhoc_obj_trial_{0}", trial.number);
+                
+                session.trackedObjects.Add(prt);
+
+				// record 100 times in each trial
+				for (int i = 0; i < 100; i++)
+				{
+                    foreach (Tracker trackedObject in session.trackedObjects)
+                    {
+                        trackedObject.transform.position = new Vector3
+                        (
+                            Random.value, Random.value, Random.value
+                        );
+
+                        trackedObject.transform.eulerAngles = new Vector3
+                        (
+                            Random.value, Random.value, Random.value
+                        );
+                    
+						trackedObject.GetComponent<PositionRotationTracker>().RecordRow();
+					}
+				}
+
+				trial.End();
+
+                session.trackedObjects.Remove(prt);
+                
+			}
+
+        }
+
 	}
 
 }
