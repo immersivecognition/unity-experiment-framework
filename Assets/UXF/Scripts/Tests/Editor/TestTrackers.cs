@@ -18,7 +18,7 @@ namespace UXF.Tests
         SessionLogger sessionLogger;
 		List<GameObject> tracked = new List<GameObject>();
 
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             gameObject = new GameObject();
@@ -60,7 +60,7 @@ namespace UXF.Tests
 			session.CreateBlock(10);
         }
 
-        [TearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             session.End();
@@ -149,7 +149,8 @@ namespace UXF.Tests
 				trial.End();
 
                 session.trackedObjects.Remove(prt);
-                
+                GameObject.DestroyImmediate(newGameObject);
+
 			}
 
         }
