@@ -126,12 +126,42 @@ namespace UXF.Tests
         public void RunTrialsAdHocResultsAddEarlyExit()
         {   
             Start(true);
-            session.blocks[0].trials[0].Begin();
-            session.blocks[0].trials[0].result["not_customheader_observation"] = "something";
-            session.blocks[0].trials[0].End();
+            session.GetBlock(1).GetRelativeTrial(1).Begin();
+            session.GetBlock(1).GetRelativeTrial(1).result["not_customheader_observation"] = "something";
+            session.GetBlock(1).GetRelativeTrial(1).End();
             
-            session.blocks[0].trials[1].Begin();
+            session.GetBlock(1).trials[1].Begin();
             Finish(); // check we dont throw an error
+        }
+
+        [Test]
+        public void WriteCommas()
+        {
+            Start(false);
+            session.GetBlock(1).GetRelativeTrial(1).Begin();
+            session.GetBlock(1).GetRelativeTrial(1).result["observation"] = "hello, hello"; // comma
+            session.GetBlock(1).GetRelativeTrial(1).End();
+            
+            session.GetBlock(1).GetRelativeTrial(2).Begin();
+            session.GetBlock(1).GetRelativeTrial(2).result["observation"] = Vector3.one; // Vector3.ToString() output contains commas
+            session.GetBlock(1).GetRelativeTrial(2).End();
+
+            int numHeaders = session.Headers.Count;
+            string sessionPath = session.FullPath;
+
+            Finish();
+
+            // read the file back in, check number of columns equals number of headers
+            string[] lines = File.ReadAllLines(Path.Combine(sessionPath, "trial_results.csv"));
+
+            // num headers is equal
+            Assert.AreEqual(numHeaders, lines[0].Split(',').GetLength(0));
+
+            // trial 1 columns should equal header length
+            Assert.AreEqual(numHeaders, lines[1].Split(',').GetLength(0));
+
+            // trial 2 columns should equal header length
+            Assert.AreEqual(numHeaders, lines[2].Split(',').GetLength(0));
         }
 
 	}

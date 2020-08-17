@@ -229,7 +229,7 @@ namespace UXF
                 if (dict == null) continue; // empty trial, try next loop iteration
 
                 // add all observations to the row, in correct order.
-                // check if null, if so assign to empty string (?? operator)
+                // check if null, if so assign to empty string
                 var row = headers
                     .Select(header => 
                         {
@@ -237,7 +237,19 @@ namespace UXF
                             try { val = dict[header]; }
                             catch (KeyNotFoundException) { val = string.Empty; }
                             if (val == null) val = string.Empty;
-                            return val.ToString();
+                            string stringValue =  val.ToString();
+
+                            // check for commas
+                            // commas not allowed in CSV format, as they are parsed as new rows
+                            if (stringValue.Contains(','))
+                            {
+                                Debug.LogWarningFormat(
+                                    "Replacing comma characters (',') in value '{0}' (result[\"{1}\"] in trial {2}) with '_' character. Reason: Comma characters not allowed in values in CSV file.",
+                                    stringValue, header, i
+                                    );
+                                stringValue = stringValue.Replace(',', '_');
+                            }
+                            return stringValue;
                         }
                     );
 
