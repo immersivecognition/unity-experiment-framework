@@ -956,8 +956,6 @@ public class EasyEventEditorDrawer : PropertyDrawer
         
         GUI.Label(headerRect, headerTitle);
         
-        if (cachedSettings.showInvokeField)
-            DrawInvokeField(headerRect, headerStartOffset);
     }
 
     Rect[] GetElementRects(Rect rect)
