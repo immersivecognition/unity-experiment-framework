@@ -46,11 +46,11 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 ## Get started
 0. Read over this Readme and the [paper](https://doi.org/10.3758/s13428-019-01242-0) to understand UXF.
 
-1. Import the latest ```UXF.unitypackage``` [release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) to your existing Unity project.
+1. Import the latest ```UXF.unitypackage``` [release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) to your existing Unity project. (Drag the file into your project.)
 
-2. The UXF Setup Wizard will launch (or via the top menu: UXF > UXF Wizard) - Use it to fix .NET compatibility issues. 
+2. The UXF Setup Wizard will launch (or via the top menu: UXF > UXF Wizard) - Use it to fix any .NET compatibility issues. 
 
-3. Open an example scene.
+3. Open an example scene. (UXF -> Examples -> Advanced -> AdvancedExample)
 
 4. Press play, and use the UI to create a new participant list in an appropriate directory.
 
