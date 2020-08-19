@@ -43,6 +43,17 @@ namespace UXF
         [Tooltip("If enabled, results that are not listed in Custom Headers can be added at any time. If disabled, adding results that are not listed in Custom Headers will throw an error.")]
         public bool adHocHeaderAdd = false;
 
+        /// <summary>
+        /// If enabled, you do not need to reference this session component in a public field, you can simply call "Session.instance".
+        /// </summary>
+        [Tooltip("If enabled, you do not need to reference this session component in a public field, you can simply call \"Session.instance\".")]
+        public bool setAsMainInstance = true;
+
+        /// <summary>
+        /// If enabled, this GameObject will not be destroyed when you load a new scene.
+        /// </summary>
+        [Tooltip("If enabled, this GameObject will not be destroyed when you load a new scene.")]
+        public bool dontDestroyOnLoadNewScene = false;
 
         /// <summary>
         /// List of blocks for this experiment
@@ -332,6 +343,11 @@ namespace UXF
         public event EventHandler cleanUp;
 
         /// <summary>
+        /// A reference to the main session instance that is currently active.
+        /// </summary>
+        public static Session instance;
+
+        /// <summary>
         /// The headers that are always included in the trial_results output.
         /// </summary>
         static List<string> baseHeaders = new List<string> { "directory", "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
@@ -346,6 +362,9 @@ namespace UXF
         /// </summary>
         void Awake()
         {
+            if (setAsMainInstance) instance = this;
+            if (dontDestroyOnLoadNewScene) DontDestroyOnLoad(gameObject);
+            
             // get components attached to this gameobject and store their references 
             AttachReferences(GetComponent<FileIOManager>());
             
