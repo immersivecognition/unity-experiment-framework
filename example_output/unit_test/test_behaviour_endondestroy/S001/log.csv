@@ -1,0 +1,2 @@
+timestamp,log_type,message
+1.818397,Warning,Warning: Session already exists! Continuing will overwrite

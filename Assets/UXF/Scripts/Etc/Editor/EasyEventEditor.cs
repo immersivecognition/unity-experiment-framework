@@ -951,9 +951,7 @@ public class EasyEventEditorDrawer : PropertyDrawer
     void DrawHeaderCallback(Rect headerRect)
     {
         // We need to know where to position the invoke field based on the length of the title in the UI
-        GUIContent headerTitle = new GUIContent(string.IsNullOrEmpty(currentLabelText) ? "Event" : currentLabelText + " " + GetEventParamsStr(dummyEvent));
-        float headerStartOffset = EditorStyles.label.CalcSize(headerTitle).x;
-        
+        GUIContent headerTitle = new GUIContent(string.IsNullOrEmpty(currentLabelText) ? "Event" : currentLabelText + " " + GetEventParamsStr(dummyEvent));       
         GUI.Label(headerRect, headerTitle);
         
     }

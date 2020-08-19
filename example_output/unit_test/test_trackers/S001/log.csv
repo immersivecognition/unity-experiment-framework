@@ -1,2 +1,2 @@
 timestamp,log_type,message
-0.8582648,Log,Joining FileIOManagerThread
+3.8302,Warning,Warning: Session already exists! Continuing will overwrite

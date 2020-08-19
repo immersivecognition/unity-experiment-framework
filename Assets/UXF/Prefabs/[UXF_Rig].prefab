@@ -4752,8 +4752,8 @@ MonoBehaviour:
   saveDataLocation: example_output
   experimentSettingsName: basic_example_1.json
   _participantDataPoints: []
-  maxNumSessions: 10
-  settingsSearchPattern: basic*.json
+  maxNumSessions: 100
+  settingsSearchPattern: '*.json'
   newParticipantName: <i><color=grey>+ New participant</color></i>
   settingsSelector: {fileID: 114836492079796570}
   ppListSelect: {fileID: 114600504560500452}
@@ -8888,7 +8888,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: -180, y: -10}
   m_SizeDelta: {x: 360, y: 555}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224130118367839794

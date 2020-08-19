@@ -363,7 +363,7 @@ namespace UXF
         void Awake()
         {
             if (setAsMainInstance) instance = this;
-            if (dontDestroyOnLoadNewScene) DontDestroyOnLoad(gameObject);
+            if (dontDestroyOnLoadNewScene && Application.isPlaying) DontDestroyOnLoad(gameObject);
             
             // get components attached to this gameobject and store their references 
             AttachReferences(GetComponent<FileIOManager>());

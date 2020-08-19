@@ -5,6 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
+  - enabled: 1
+    path: Assets/UXF/Examples/3_MultiScene/OtherScenes/ShootingExample.unity
+    guid: 1d5a4e0513b6be0428267c45d923520b
+  - enabled: 1
+    path: Assets/UXF/Examples/3_MultiScene/OtherScenes/ReactionExample.unity
+    guid: 7a79c722962e7d74eb856ff31b309b87
+  - enabled: 1
+    path: Assets/UXF/Examples/3_MultiScene/OtherScenes/CatchingExample.unity
     guid: 00000000000000000000000000000000

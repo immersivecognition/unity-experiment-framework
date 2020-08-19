@@ -1,0 +1,6 @@
+directory,experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time
+unit_test/test_behaviour_endafterlasttrial/S001,unit_test,test_behaviour_endafterlasttrial,1,1,1,1,1.7748,1.7748
+unit_test/test_behaviour_endafterlasttrial/S001,unit_test,test_behaviour_endafterlasttrial,1,2,1,2,1.7748,1.7748
+unit_test/test_behaviour_endafterlasttrial/S001,unit_test,test_behaviour_endafterlasttrial,1,3,2,1,1.7748,1.7748
+unit_test/test_behaviour_endafterlasttrial/S001,unit_test,test_behaviour_endafterlasttrial,1,4,2,2,1.7748,1.7748
+unit_test/test_behaviour_endafterlasttrial/S001,unit_test,test_behaviour_endafterlasttrial,1,5,2,3,1.7748,1.7748
