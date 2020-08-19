@@ -6,7 +6,7 @@ using UXF;
 namespace UXFExamples
 {
 
-    public class ExperimentGenerator : MonoBehaviour
+    public class Example_ExperimentGenerator : MonoBehaviour
     {
         public void Generate(Session session)
 		{

@@ -7,7 +7,7 @@ using UXF;
 namespace UXFExamples
 {
 
-	public class InstructionsController : MonoBehaviour
+	public class Example_InstructionsController : MonoBehaviour
 	{
 		
 		[TextArea]

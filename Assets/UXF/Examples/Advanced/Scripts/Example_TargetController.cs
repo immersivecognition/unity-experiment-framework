@@ -6,20 +6,20 @@ using UXF;
 namespace UXFExamples
 {
 
-    public class TargetController : MonoBehaviour
+    public class Example_TargetController : MonoBehaviour
     {
 
         Color normalColor;
         public Color highlightedColor = Color.yellow;
 
         SpriteRenderer spriteRenderer;
-        TargetManager manager;
+        Example_TargetManager manager;
 
 		public bool? isCorrect = null;
 
         void Awake()
         {
-			manager = GetComponentInParent<TargetManager>();
+			manager = GetComponentInParent<Example_TargetManager>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             normalColor = spriteRenderer.color;
             ResetToNormal();

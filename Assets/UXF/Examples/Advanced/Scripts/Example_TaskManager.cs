@@ -6,7 +6,7 @@ using UXF;
 namespace UXFExamples
 {
 
-    public class TaskManager : MonoBehaviour
+    public class Example_TaskManager : MonoBehaviour
     {
 
         void Start()

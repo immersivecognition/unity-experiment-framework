@@ -5,10 +5,10 @@ using UXF;
 
 namespace UXFExamples
 {
-	public class TargetManager : MonoBehaviour {
+	public class Example_TargetManager : MonoBehaviour {
 
-		public TargetController leftTarget;
-		public TargetController rightTarget;
+		public Example_TargetController leftTarget;
+		public Example_TargetController rightTarget;
 
 		public Session session;
 
@@ -36,7 +36,7 @@ namespace UXFExamples
  
         }
 
-		public void TargetHit(TargetController target)
+		public void TargetHit(Example_TargetController target)
 		{
 			Trial currentTrial = session.CurrentTrial;
 			currentTrial.result["correct"] = target.isCorrect;

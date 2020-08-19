@@ -9,7 +9,7 @@ namespace UXFExamples
 	/// <summary>
 	/// Controls the start block gameobject
 	/// </summary>
-    public class StartBlockController : MonoBehaviour
+    public class Example_StartBlockController : MonoBehaviour
     {
 
 		public Color mainColor = Color.red;

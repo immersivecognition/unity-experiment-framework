@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UXFExamples
 {
-    public class CursorFollower : MonoBehaviour
+    public class Example_CursorFollower : MonoBehaviour
     {
 
         public Camera cam;
