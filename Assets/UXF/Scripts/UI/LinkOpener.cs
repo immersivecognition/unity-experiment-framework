@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UXF
+namespace UXF.UI
 {
     public class LinkOpener : MonoBehaviour
     {

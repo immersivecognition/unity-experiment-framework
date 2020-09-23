@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace UXF 
+namespace UXF.UI
 {
 	/// <summary>
 	/// A script that invokes a UnityEvent if you click outside of the attached UI rectTransform area

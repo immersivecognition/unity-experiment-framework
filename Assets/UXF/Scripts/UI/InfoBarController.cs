@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-namespace UXF
+namespace UXF.UI
 {
 
     public class InfoBarController : MonoBehaviour

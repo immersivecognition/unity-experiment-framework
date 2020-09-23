@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System.IO;
 using SubjectNerd.Utilities;
 
-namespace UXF
+namespace UXF.UI
 {
     public class ExperimentStartupController : MonoBehaviour
     {
@@ -46,10 +46,9 @@ namespace UXF
 
         [Header("Instance references")]
         public SettingsSelector settingsSelector;
-        public ParticipantListSelection ppListSelect;
+        public DirectorySelector dirSelect;
         public FillableFormController ppInfoForm;
         public DropDownController sessionNumDropdown;
-        
         public PopupController popupController;
 
         public GameObject startupPanel;
@@ -74,7 +73,7 @@ namespace UXF
                 }
                 sessionNumDropdown.SetItems(sessionList);
 
-                ppListSelect.Init();
+                dirSelect.Init();
             }
 
         }
@@ -131,16 +130,16 @@ namespace UXF
         /// </summary>
         public void StartExperiment()
         {
-            string ppid = ppListSelect.Finish();
             int sessionNum = int.Parse(sessionNumDropdown.GetContents().ToString());
-            var infoDict = ppListSelect.GenerateDict();
+            var infoDict = ppInfoForm.GetCompletedForm();
             var settings = settingsSelector.GetSettings();
+            string ppid = (string) infoDict["ppid"];
 
             Action finish = new Action(() =>
                 {
                     session.Begin(settingsSelector.experimentName,
                                                     ppid,
-                                                    ppListSelect.currentFolder,
+                                                    dirSelect.currentDirectory,
                                                     sessionNum,
                                                     infoDict,
                                                     settings);
@@ -148,7 +147,7 @@ namespace UXF
                 }
             );
 
-            bool exists = Session.CheckSessionExists(settingsSelector.experimentName, ppid, ppListSelect.currentFolder, sessionNum);
+            bool exists = Session.CheckSessionExists(settingsSelector.experimentName, ppid, dirSelect.currentDirectory, sessionNum);
 
             if (exists)
             {

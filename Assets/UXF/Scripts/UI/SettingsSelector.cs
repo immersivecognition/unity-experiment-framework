@@ -4,7 +4,8 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-namespace UXF{
+namespace UXF.UI
+{
 	public class SettingsSelector : MonoBehaviour {
 
 		public DropDownController ddController;

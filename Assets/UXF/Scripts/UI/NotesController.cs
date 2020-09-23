@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UXF 
+namespace UXF.UI
 {
 	/// <summary>
 	/// A script to control the NotesPanel

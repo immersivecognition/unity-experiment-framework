@@ -4,16 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UXF
+namespace UXF.UI
 {
     public class ParticipantSelector : MonoBehaviour
     {
         public ExperimentStartupController startup;
         public FillableFormController form;
         public DropDownController participantDropdown;
-        public ParticipantListSelection ppListSelect;
+        public DirectorySelector ppListSelect;
 
-        public List<string> ppList;
 
         void Awake()
         {
@@ -22,14 +21,8 @@ namespace UXF
 
         public void SetParticipants(List<string> participants)
         {
-            ppList = participants;
-            ppList.Insert(0, startup.newParticipantName);
-            participantDropdown.SetItems(ppList);
-        }
-
-        public void SelectNewList()
-        {
-            participantDropdown.Clear();
+            participants.Insert(0, startup.newParticipantName);
+            participantDropdown.SetItems(participants);
         }
 
 
@@ -41,15 +34,16 @@ namespace UXF
                 TextFormController ppidText = (TextFormController) form.ppidElement.controller;
                 ppidText.SetToTimeNow();
             }
-            else
-            {
-                ppListSelect.UpdateFormByPPID((string) participantDropdown.GetContents());
-            }
         }
 
         public bool IsNewSelected()
         {
             return participantDropdown.dropdown.value == 0;
+        }
+
+        public string GetItem()
+        {
+            return form.ppidElement.controller.GetContents().ToString();
         }
     }
 }

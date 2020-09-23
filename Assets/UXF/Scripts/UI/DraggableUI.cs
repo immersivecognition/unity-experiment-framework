@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace UXF 
+namespace UXF.UI
 {
     /// <summary>
     /// A script that allows any GUI object to be draggable

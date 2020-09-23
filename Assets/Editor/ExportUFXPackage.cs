@@ -12,7 +12,6 @@ public class ExportUFXPackage : MonoBehaviour
     {
         string[] assets = new string[]
         {
-            "Assets/Plugins",
             "Assets/StreamingAssets",
             "Assets/UXF"
         };

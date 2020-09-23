@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UXF
+namespace UXF.UI
 {
 	/// <summary>
 	/// A script attached to a NoteElement

@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using UnityEngine;
 
@@ -15,7 +15,8 @@ namespace UXF
 	{	
 		private Session session;
 		private FileIOManager fileIOManager;
-		private DataTable table;
+		private string[] header = new string[]{ "timestamp", "log_type", "message"};
+		private List<Dictionary<string, string>> table;
 
 		void Awake()
 		{
@@ -42,28 +43,21 @@ namespace UXF
 		/// </summary>
 		public void Initialise()
 		{
-			table = new DataTable();
-			table.Columns.Add(
-				new DataColumn("timestamp", typeof(float))
-			);
-            table.Columns.Add(
-                new DataColumn("log_type", typeof(string))
-            );
-            table.Columns.Add(
-                new DataColumn("message", typeof(string))
-            );
-
+			table = new List<Dictionary<string, string>>();
             Application.logMessageReceived += HandleLog;
 			session.cleanUp += Finalise; // finalise logger when cleaning up the session
 		}		
 
 		void HandleLog(string logString, string stackTrace, LogType type)
 		{
-			DataRow row = table.NewRow();
-			row["timestamp"] = Time.time;
-			row["log_type"] = type.ToString();
-			row["message"] = logString.Replace(",", string.Empty);
-			table.Rows.Add(row);
+			table.Add(
+				new Dictionary<string, string>()
+				{
+					{ "timestamp", Time.time.ToString() },
+					{ "log_type", type.ToString() },
+					{ "message" , logString.Replace(",", string.Empty) }
+				}
+			);
 		}
 
         /// <summary>
@@ -80,7 +74,21 @@ namespace UXF
                 "log.csv"
                 );
 
-			fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(table, fileInfo));
+			string[] lines = new string[table.Count + 1];
+			lines[0] = string.Join(",", header);
+			
+			int i = 1;
+			foreach (var line in table)
+			{
+				lines[i++] = string.Join(",", 
+					header
+						.Select((h) => line[h])
+						.ToArray()
+				);
+			}
+
+			fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(lines, fileInfo));
+
             Application.logMessageReceived -= HandleLog;
 			session.cleanUp -= Finalise;
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-namespace UXF
+namespace UXF.UI
 {
     /// <summary>
     /// A script that can be added to an object with an input field, when enter is pressed while editing the input field a UnityEvent will be invoked

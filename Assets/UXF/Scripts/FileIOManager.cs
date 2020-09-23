@@ -6,7 +6,6 @@ using System.IO;
 using System.Threading;
 using System.Linq;
 using System.Collections.Specialized;
-using System.Data;
 
 
 namespace UXF
@@ -278,37 +277,29 @@ namespace UXF
             executeOnMainThreadQueue.Enqueue(() => onWriteFile.Invoke(writeFileInfo));
         }
 
-        /// <summary>
-        /// Read a CSV file from path, then runs an action that takes a DataTable as an argument. This code assumes the file is on disk, and the first row of the file has the names of the columns on it. Returns null if not found
-        /// </summary>
-        /// <param name="fpath"></param>
-        /// <param name="callback"></param>
-        public void ReadCSV(string fpath, System.Action<DataTable> callback)
-        {
-            DataTable data = null;
-            try
-            {
-                data = CSVFile.CSV.LoadDataTable(fpath);
-            }
-            catch (FileNotFoundException)
-            {
-                Debug.LogErrorFormat("Cannot find file {0}", fpath);
-            }
-
-            System.Action action = new System.Action(() => callback.Invoke(data));
-            executeOnMainThreadQueue.Enqueue(action);
-        }
 
         /// <summary>
-        /// Writes a DataTable to file to a path.
+        /// Creates a new file, writes one or more strings to the file, and then closes the file.
         /// </summary>
+        /// <param name="header">Row of headers</param>
         /// <param name="data"></param>
         /// <param name="fpath"></param>
-        public void WriteCSV(DataTable data, WriteFileInfo writeFileInfo)
+        public void WriteAllLines(string[] lines, WriteFileInfo writeFileInfo)
         {
-            var writer = new CSVFile.CSVWriter(writeFileInfo.FullPath);
-            writer.Write(data, true);
-            writer.Dispose();
+            File.WriteAllLines(writeFileInfo.FullPath, lines);
+            executeOnMainThreadQueue.Enqueue(() => onWriteFile.Invoke(writeFileInfo));
+        }
+
+        /// <summary> 
+        /// Creates a new file, write the contents to the file, and then closes the file. If the target file already exists, it is overwritten.
+
+        /// </summary>
+        /// <param name="header">Row of headers</param>
+        /// <param name="data"></param>
+        /// <param name="fpath"></param>
+        public void WriteAllText(string text, WriteFileInfo writeFileInfo)
+        {
+            File.WriteAllText(writeFileInfo.FullPath, text);
             executeOnMainThreadQueue.Enqueue(() => onWriteFile.Invoke(writeFileInfo));
         }
 

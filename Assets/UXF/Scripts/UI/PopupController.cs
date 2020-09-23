@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UXF{
+namespace UXF.UI
+{
 	public class PopupController : MonoBehaviour {
 
 		public Text popupTitle;
