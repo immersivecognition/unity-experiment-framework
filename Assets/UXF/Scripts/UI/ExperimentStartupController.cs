@@ -10,20 +10,6 @@ namespace UXF.UI
 {
     public class ExperimentStartupController : MonoBehaviour
     {
-
-        [Header("Quick start")]
-        [Tooltip("When enabled, the experiment will instantly start using the 'quick_start' as the participant id, 1 as the session, and the save folder and settings path provided")]
-        public bool quickStartMode;
-
-        [Header("Quick start will be turned off in a built application.")]
-        [Tooltip("Save data location in quick start (i.e. directory where the participant list is located). Relative to project path.")]
-        [ConditionalHide("quickStartMode", true)]
-        public string saveDataLocation = "example_output";
-
-        [Tooltip("Name of the settings file to be used in quick start (as located in StreamingAssets folder)")]
-        [ConditionalHide("quickStartMode", true)]
-        public string experimentSettingsName = "example_experiment_1.json";
-
         [Header("User interface")]
 
         [Tooltip("List of datapoints you want to collect per participant. These will be generated for the GUI and added as new columns in the participant list. Participant ID is added automatically.")]
@@ -58,57 +44,16 @@ namespace UXF.UI
 
         void Start()
         {
-            if (quickStartMode && !Application.isEditor) // no quick start outside the unity editor
+            ppInfoForm.Generate(participantDataPoints, true);
+
+            List<string> sessionList = new List<string>();
+            for (int i = 1; i <= maxNumSessions; i++)
             {
-                QuickStart();
+                sessionList.Add(i.ToString());
             }
-            else
-            {
-                ppInfoForm.Generate(participantDataPoints, true);
+            sessionNumDropdown.SetItems(sessionList);
 
-                List<string> sessionList = new List<string>();
-                for (int i = 1; i <= maxNumSessions; i++)
-                {
-                    sessionList.Add(i.ToString());
-                }
-                sessionNumDropdown.SetItems(sessionList);
-
-                dirSelect.Init();
-            }
-
-        }
-
-        public void QuickStart()
-        {
-
-            string experimentName = Path.GetFileNameWithoutExtension(experimentSettingsName);
-
-            string path = Path.IsPathRooted(saveDataLocation) ? saveDataLocation : Path.Combine(Directory.GetCurrentDirectory(), saveDataLocation);
-
-            if (!Directory.Exists(path))
-            {
-                Debug.LogErrorFormat("Quick start failed: Cannot find path {0}", path);
-                return;
-            }
-
-            Action<Dictionary<string, object>> finish = new Action<Dictionary<string, object>>((dict) =>
-            {
-                session.Begin(
-                    experimentName,
-                    "quick_start",
-                    path,
-                    1,
-                    null,
-                    new Settings(dict)
-                );
-                startupPanel.SetActive(false);
-            });
-
-            session.ReadSettingsFile(
-                Path.Combine(settingsSelector.settingsFolder, experimentSettingsName),
-                finish
-            );
-            
+            dirSelect.Init();
         }
 
         public static void SetSelectableAndChildrenInteractable(GameObject stepGameObject, bool state)
@@ -122,8 +67,6 @@ namespace UXF.UI
                 selectable.interactable = state;
             }
         }
-
-
 
         /// <summary>
         /// Called upon press of the start button in the UI. Creates the experiment session
