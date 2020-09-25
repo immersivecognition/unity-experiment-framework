@@ -62,8 +62,7 @@ namespace UXF.Tests
 			var rng = new System.Random(0);
 
 			session.blocks.Shuffle(rng);
-
-			int[] expectedOrders = new int[]{ 3, 0, 2, 1, 4 };
+			int[] expectedOrders = new int[]{ 0, 1, 2, 4, 3 };
             for (int i = 0; i < 5; i++)
 			{
 				var block = session.blocks[i];
@@ -88,7 +87,7 @@ namespace UXF.Tests
 			}
 
             var rng = new System.Random(10);
-            int[] expectedOrders = new int[] { 9, 7, 2, 8, 0, 5, 1, 4, 6, 3 };
+            int[] expectedOrders = new int[] { 2, 0, 3, 5, 1, 7, 4, 8, 6, 9 };
 
             block.trials.Shuffle(rng);
             for (int i = 0; i < block.trials.Count; i++)

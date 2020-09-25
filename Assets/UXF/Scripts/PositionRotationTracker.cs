@@ -33,7 +33,7 @@ namespace UXF
         /// Returns current position and rotation values
         /// </summary>
         /// <returns></returns>
-        protected override string[] GetCurrentValues()
+        protected override UXFDataRow GetCurrentValues()
         {
             // get position and rotation
             Vector3 p = gameObject.transform.position;
@@ -42,14 +42,14 @@ namespace UXF
             string format = "0.####";
 
             // return position, rotation (x, y, z) as an array
-            var values =  new string[]
+            var values = new UXFDataRow()
             {
-                p.x.ToString(format),
-                p.y.ToString(format),
-                p.z.ToString(format),
-                r.x.ToString(format),
-                r.y.ToString(format),
-                r.z.ToString(format)
+                ("pos_x", p.x.ToString(format)),
+                ("pos_y", p.y.ToString(format)),
+                ("pos_z", p.z.ToString(format)),
+                ("rot_x", r.x.ToString(format)),
+                ("rot_y", r.y.ToString(format)),
+                ("rot_z", r.z.ToString(format))
             };
 
             return values;

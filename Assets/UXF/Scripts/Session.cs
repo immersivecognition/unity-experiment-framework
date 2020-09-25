@@ -412,9 +412,9 @@ namespace UXF
                 fname
                 );
 
-            List<string[]> dataCopy = tracker.GetDataCopy();
+            string[] dataCopy = tracker.data.GetCSVLines();
 
-            fileIOManager.ManageInWorker(() => fileIOManager.WriteCSV(tracker.header, dataCopy, fileInfo));
+            fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(dataCopy, fileInfo));
 
             // return name of the file so it can be stored in behavioural data
             return fileInfo.FileName;
@@ -516,9 +516,23 @@ namespace UXF
             onSessionBegin.Invoke(this);
 
             // copy participant details to session folder
-            WriteDictToSessionFolder(
-                new Dictionary<string, object>(participantDetails), // makes a copy
-                "participant_details");
+            WriteFileInfo fileInfo = new WriteFileInfo(
+                WriteFileType.CSV,
+                BasePath,
+                experimentName,
+                ppid,
+                FolderName,
+                "participant_details.csv"
+                );
+
+            UXFDataTable ppDetailsTable = new UXFDataTable(participantDetails.Keys.ToArray());
+            var row = new UXFDataRow();
+            foreach (var kvp in participantDetails) row.Add((kvp.Key, kvp.Value));
+            ppDetailsTable.AddCompleteRow(row);
+            var ppDetailsLines = ppDetailsTable.GetCSVLines();
+
+			fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(ppDetailsLines, fileInfo));
+
 
             // copy Settings to session folder
             WriteDictToSessionFolder(

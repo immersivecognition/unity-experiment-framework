@@ -16,7 +16,7 @@ namespace UXF
 		private Session session;
 		private FileIOManager fileIOManager;
 		private string[] header = new string[]{ "timestamp", "log_type", "message"};
-		private List<Dictionary<string, string>> table;
+		private UXFDataTable table;
 
 		void Awake()
 		{
@@ -43,21 +43,21 @@ namespace UXF
 		/// </summary>
 		public void Initialise()
 		{
-			table = new List<Dictionary<string, string>>();
+			table = new UXFDataTable("timestamp", "log_type", "message");
             Application.logMessageReceived += HandleLog;
 			session.cleanUp += Finalise; // finalise logger when cleaning up the session
 		}		
 
 		void HandleLog(string logString, string stackTrace, LogType type)
 		{
-			table.Add(
-				new Dictionary<string, string>()
-				{
-					{ "timestamp", Time.time.ToString() },
-					{ "log_type", type.ToString() },
-					{ "message" , logString.Replace(",", string.Empty) }
-				}
-			);
+			var row = new UXFDataRow();
+
+			row.Add(("timestamp",  Time.time.ToString()));
+			row.Add(("log_type",  type.ToString()));
+			row.Add(("message",  logString.Replace(",", string.Empty)));
+
+			table.AddCompleteRow(row);
+
 		}
 
         /// <summary>
@@ -74,18 +74,7 @@ namespace UXF
                 "log.csv"
                 );
 
-			string[] lines = new string[table.Count + 1];
-			lines[0] = string.Join(",", header);
-			
-			int i = 1;
-			foreach (var line in table)
-			{
-				lines[i++] = string.Join(",", 
-					header
-						.Select((h) => line[h])
-						.ToArray()
-				);
-			}
+			string[] lines = table.GetCSVLines();
 
 			fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(lines, fileInfo));
 

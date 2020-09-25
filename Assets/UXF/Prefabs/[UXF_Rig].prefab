@@ -3949,7 +3949,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _participantDataPoints: []
   maxNumSessions: 100
-  settingsSearchPattern: multiscene*.json
+  settingsSearchPattern: '*.json'
   newParticipantName: <i><color=grey>+ New participant</color></i>
   settingsSelector: {fileID: 114836492079796570}
   dirSelect: {fileID: 114793156055520752}

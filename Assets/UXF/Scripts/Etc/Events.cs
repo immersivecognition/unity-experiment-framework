@@ -53,7 +53,7 @@ namespace UXF
 
     public enum WriteFileType
     {
-        Test, Trials, Tracker, Dictionary, ParticipantList, Log
+        Test, Trials, Tracker, Dictionary, Log, CSV
     }
 
 }
