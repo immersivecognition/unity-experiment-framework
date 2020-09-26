@@ -52,12 +52,27 @@ namespace UXF
 		{
 			var row = new UXFDataRow();
 
-			row.Add(("timestamp",  Time.time.ToString()));
-			row.Add(("log_type",  type.ToString()));
-			row.Add(("message",  logString.Replace(",", string.Empty)));
+			row.Add(("timestamp", Time.time.ToString()));
+			row.Add(("log_type", type.ToString()));
+			row.Add(("message", logString.Replace(",", string.Empty)));
 
 			table.AddCompleteRow(row);
+		}
 
+		/// <summary>
+		/// Manually log a message to the log file.
+		/// </summary>
+		/// <param name="logType">The type of the log. This can be any string you choose.</param>
+		/// <param name="message">The content you wish to log, expressed as a string.</param>
+		public void WriteLog(string logType, string value)
+		{
+			var row = new UXFDataRow();
+
+			row.Add(("timestamp", Time.time.ToString()));
+			row.Add(("log_type", logType));
+			row.Add(("message", value.Replace(",", string.Empty)));
+
+			table.AddCompleteRow(row);
 		}
 
         /// <summary>

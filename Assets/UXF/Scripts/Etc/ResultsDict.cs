@@ -54,6 +54,11 @@ namespace UXF
             }
         }
 
+        public bool ContainsKey(string key)
+        {
+            return baseDict.ContainsKey(key);
+        }
+
     }
 
 }

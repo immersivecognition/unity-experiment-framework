@@ -28,13 +28,7 @@ namespace UXF.Tests
 
             // read the file to check data
             string[] lines = File.ReadAllLines(Path.Combine(session.FullPath, "trial_results.csv"));
-            Assert.AreEqual(6, lines.Length);
-
-            // filter blank lines, should only be 1 header + 2 trials
-            Assert.AreEqual(
-                3,
-                lines.Where((line) => !string.IsNullOrEmpty(line)).Count()
-            );
+            Assert.AreEqual(3, lines.Length);
         }
 
         [Test]

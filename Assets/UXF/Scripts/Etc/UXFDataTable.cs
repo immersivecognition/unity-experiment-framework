@@ -12,6 +12,15 @@ namespace UXF
         public string[] Headers { get { return dict.Keys.ToArray(); } }
         private Dictionary<string, List<object>> dict;
 
+        public UXFDataTable(int capacity, params string[] columnNames)
+        {
+            dict = new Dictionary<string, List<object>>();
+            foreach (string colName in columnNames)
+            {
+                dict.Add(colName, new List<object>(capacity));
+            }
+        }
+
         public UXFDataTable(params string[] columnNames)
         {
             dict = new Dictionary<string, List<object>>();
@@ -63,6 +72,11 @@ namespace UXF
             }
 
             return lines;
+        }
+
+        public Dictionary<string, List<object>> GetDataCopy()
+        {
+            return dict;
         }
     }
 

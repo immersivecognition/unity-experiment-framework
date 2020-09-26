@@ -17,7 +17,6 @@ namespace UXF
     [RequireComponent(typeof(FileIOManager))]
     public class Session : MonoBehaviour, ISettingsContainer
     {
-        [Header(":: Behaviour")]
         /// <summary>
         /// Enable to automatically safely end the session when the application is quitting.
         /// </summary>
@@ -60,7 +59,18 @@ namespace UXF
         [HideInInspector]
         public List<Block> blocks = new List<Block>();
 
-        [Header(":: Data logging")]
+        /// <summary>
+        /// Enable to save a copy of the session.settings dictionary to the session folder as a `.json` file. This is written just as the session begins.
+        /// </summary>
+        [Tooltip("Enable to save a copy of the session.settings dictionary to the session folder as a .json file. This is written just as the session begins.")]
+        public bool copySessionSettings = true;
+
+        /// <summary>
+        /// Enable to save a copy of the session.participantDetails dictionary to the session folder as a `.csv` file. This is written just as the session begins.
+        /// </summary>
+        [Tooltip("Enable to save a copy of the session.participantDetails dictionary to the session folder as a .csv file. This is written just as the session begins.")]
+        public bool copyParticipantDetails = true;
+
         /// <summary>
         /// List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
         /// </summary>
@@ -87,7 +97,6 @@ namespace UXF
         /// Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument
         /// </summary>
         /// <returns></returns>
-        [Header(":: Events")]
         [Tooltip("Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument")]
         public SessionEvent onSessionBegin = new SessionEvent();
 
@@ -112,9 +121,7 @@ namespace UXF
         [Tooltip("Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event")]
         public SessionEvent onSessionEnd = new SessionEvent();
 
-        [Header(":: Current information")]
 
-        [ReadOnly]
         [SerializeField]
         private bool _hasInitialised = false;
 
@@ -127,31 +134,26 @@ namespace UXF
         /// <summary>
         /// Name of the experiment. Data is saved in a folder with this name.
         /// </summary>
-        [ReadOnly]
         public string experimentName;
 
         /// <summary>
         /// Unique string for this participant (participant ID)
         /// </summary>
-        [ReadOnly]
         public string ppid;
 
         /// <summary>
         /// Current session number for this participant
         /// </summary>
-        [ReadOnly]
         public int number;
 
         /// <summary>
-        /// Currently active trial number.
+        /// Currently active trial number. Be careful of modifying this.
         /// </summary>
-        [ReadOnly]
         public int currentTrialNum = 0;
 
         /// <summary>
         /// Currently active block number.
         /// </summary>
-        [ReadOnly]
         public int currentBlockNum = 0;
 
         /// <summary>
@@ -207,7 +209,7 @@ namespace UXF
         /// <summary>
         /// Path to the folder used for reading settings and storing the output. 
         /// </summary>
-        public string ExperimentPath { get { return Path.Combine(BasePath, experimentName); } }
+        public string ExperimentPath { get { return Path.Combine(Path.GetFullPath(BasePath), experimentName); } }
 
         /// <summary>
         /// Path within the experiment path for this particular particpant.
@@ -234,97 +236,6 @@ namespace UXF
         /// Stores combined list of headers for the behavioural output.
         /// </summary>
         public List<string> Headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).Concat(TrackingHeaders).ToList(); } }
-
-        /// <summary>
-        /// Returns true if current trial is in progress
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'InTrial' instead. These will be removed in a future update.")]
-        public bool inTrial { get { return InTrial; } }
-
-        /// <summary>
-        /// Returns the current trial object.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'CurrentTrial' instead. These will be removed in a future update.")]
-        public Trial currentTrial { get { return CurrentTrial; } }
-
-        /// <summary>
-        /// Returns the next trial object (i.e. trial with trial number currentTrialNum + 1 ).
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'NextTrial' instead. These will be removed in a future update.")]
-        public Trial nextTrial { get { return NextTrial; } }
-
-        /// <summary>
-        /// Get the trial before the current trial.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'PrevTrial' instead. These will be removed in a future update.")]
-        public Trial prevTrial { get { return PrevTrial; } }
-
-        /// <summary>
-        /// Get the last trial in the last block of the session.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'FirstTrial' instead. These will be removed in a future update.")]
-        public Trial firstTrial { get { return FirstTrial; } }
-
-        /// <summary>
-        /// Get the last trial in the last block of the session.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'LastTrial' instead. These will be removed in a future update.")]
-        public Trial lastTrial { get { return LastTrial; } }
-
-        /// <summary>
-        /// Returns the current block object.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'CurrentBlock' instead. These will be removed in a future update.")]
-        public Block currentBlock { get { return CurrentBlock; } }
-
-        /// <summary>
-        /// Returns a list of trials for all blocks.  Modifying the order of this list will not affect trial order. Modify block.trials to change order within blocks.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'Trials' instead. These will be removed in a future update.")]
-        public IEnumerable<Trial> trials { get { return Trials; } }
-        
-        /// <summary>
-        /// The path in which the experiment data are stored.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'BasePath' instead. These will be removed in a future update.")]
-        public string basePath { get {return BasePath; } private set { BasePath = value; } }
-
-        /// <summary>
-        /// Path to the folder used for reading settings and storing the output. 
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'ExperimentPath' instead. These will be removed in a future update.")]
-        public string experimentPath { get { return ExperimentPath; } }
-
-        /// <summary>
-        /// Path within the experiment path for this particular particpant.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'ParticipantPath' instead. These will be removed in a future update.")]
-        public string ppPath { get { return ParticipantPath; } }
-
-        /// <summary>
-        /// Path within the particpant path for this particular session.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'FullPath' instead. These will be removed in a future update.")]
-        public string path { get { return FullPath; } }
-
-        /// <summary>
-        /// Name of the Session folder 
-        /// </summary>
-        /// <returns></returns>
-        [Obsolete("Use identical CamelCase property 'FolderName' instead. These will be removed in a future update.")]
-        public string folderName { get { return FolderName; } }
-
-        /// <summary>
-        /// List of file headers generated for all referenced tracked objects.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'TrackingHeaders' instead. These will be removed in a future update.")]
-        public List<string> trackingHeaders { get { return TrackingHeaders; } }
-
-        /// <summary>
-        /// Stores combined list of headers for the behavioural output.
-        /// </summary>
-        [Obsolete("Use identical CamelCase property 'Headers' instead. These will be removed in a future update.")]
-        public List<string> headers { get { return Headers; } }
 
         /// <summary>
         /// Dictionary of objects for datapoints collected via the UI, or otherwise.
@@ -515,29 +426,36 @@ namespace UXF
             // raise the session events
             onSessionBegin.Invoke(this);
 
-            // copy participant details to session folder
-            WriteFileInfo fileInfo = new WriteFileInfo(
-                WriteFileType.CSV,
-                BasePath,
-                experimentName,
-                ppid,
-                FolderName,
-                "participant_details.csv"
-                );
+            if (copySessionSettings)
+            {
+                // copy Settings to session folder
+                WriteDictToSessionFolder(
+                    new Dictionary<string, object>(settings.baseDict), // makes a copy
+                    "settings");
+            }
 
-            UXFDataTable ppDetailsTable = new UXFDataTable(participantDetails.Keys.ToArray());
-            var row = new UXFDataRow();
-            foreach (var kvp in participantDetails) row.Add((kvp.Key, kvp.Value));
-            ppDetailsTable.AddCompleteRow(row);
-            var ppDetailsLines = ppDetailsTable.GetCSVLines();
+            if (copyParticipantDetails)
+            {
+                // copy participant details to session folder
+                WriteFileInfo fileInfo = new WriteFileInfo(
+                    WriteFileType.CSV,
+                    BasePath,
+                    experimentName,
+                    ppid,
+                    FolderName,
+                    "participant_details.csv"
+                    );
 
-			fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(ppDetailsLines, fileInfo));
+                UXFDataTable ppDetailsTable = new UXFDataTable(participantDetails.Keys.ToArray());
+                var row = new UXFDataRow();
+                foreach (var kvp in participantDetails) row.Add((kvp.Key, kvp.Value));
+                ppDetailsTable.AddCompleteRow(row);
+                var ppDetailsLines = ppDetailsTable.GetCSVLines();
+
+                fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(ppDetailsLines, fileInfo));
+            }
 
 
-            // copy Settings to session folder
-            WriteDictToSessionFolder(
-                new Dictionary<string, object>(settings.baseDict), // makes a copy
-                "settings");
         }
 
         /// <summary>
@@ -758,7 +676,6 @@ namespace UXF
 
         void SaveResults()
         {
-            List<ResultsDictionary> results = Trials.Select(t => t.result).ToList();
             string fileName = "trial_results.csv";
             WriteFileInfo fileInfo = new WriteFileInfo(
                 WriteFileType.Trials,
@@ -769,7 +686,38 @@ namespace UXF
                 fileName
                 );
 
-            fileIOManager.ManageInWorker(() => fileIOManager.WriteTrials(results, fileInfo));
+            // generate list of all headers possible
+            // hashset keeps unique set of keys
+            HashSet<string> resultsHeaders = new HashSet<string>();
+            foreach (Trial t in Trials)
+                if (t.result != null)
+                    foreach (string key in t.result.Keys)
+                        resultsHeaders.Add(key);
+
+            UXFDataTable table = new UXFDataTable(Trials.Count(), resultsHeaders.ToArray());
+            foreach (Trial t in Trials)
+            {
+                if (t.result != null)
+                {
+                    UXFDataRow row = new UXFDataRow();
+                    foreach (string h in resultsHeaders)
+                    {
+                        if (t.result.ContainsKey(h))
+                        {
+                            row.Add(( h, t.result[h].ToString().Replace(",", "_") ));
+                        }
+                        else
+                        {
+                            row.Add(( h, string.Empty ));
+                        }
+                    }
+                    table.AddCompleteRow(row);
+                }
+            }
+
+            string[] lines = table.GetCSVLines();
+
+            fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(lines, fileInfo));
         }
 
 

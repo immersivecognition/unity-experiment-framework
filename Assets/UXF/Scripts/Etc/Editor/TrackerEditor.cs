@@ -1,40 +1,44 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(UXF.Tracker), true)]
-[CanEditMultipleObjects]
-public class TrackerEditor : Editor
+namespace UXF.EditorUtils
 {
-    SerializedProperty customHeader, measurementDescriptor;
-    
-    void OnEnable()
+    [CustomEditor(typeof(UXF.Tracker), true)]
+    [CanEditMultipleObjects]
+    public class TrackerEditor : Editor
     {
-        customHeader = serializedObject.FindProperty("customHeader");
-        measurementDescriptor = serializedObject.FindProperty("measurementDescriptor");
-    }
-
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-        EditorGUILayout.Space();
-
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(customHeader);
-        EditorGUI.indentLevel += 1;
-
-        foreach (SerializedProperty element in customHeader)
-        {
-            GUI.enabled = false;
-            EditorGUILayout.TextField(element.stringValue);
-            GUI.enabled = true;
-        }
-        EditorGUI.indentLevel -= 1;
+        SerializedProperty customHeader, measurementDescriptor;
         
-        EditorGUILayout.Space();
-        GUI.enabled = false;
-        EditorGUILayout.PropertyField(measurementDescriptor);
-        GUI.enabled = true;
+        void OnEnable()
+        {
+            customHeader = serializedObject.FindProperty("customHeader");
+            measurementDescriptor = serializedObject.FindProperty("measurementDescriptor");
+        }
 
-        serializedObject.ApplyModifiedProperties();
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            DrawDefaultInspector();
+            EditorGUILayout.Space();
+
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(customHeader);
+            EditorGUI.indentLevel += 1;
+
+            foreach (SerializedProperty element in customHeader)
+            {
+                GUI.enabled = false;
+                EditorGUILayout.TextField(element.stringValue);
+                GUI.enabled = true;
+            }
+            EditorGUI.indentLevel -= 1;
+            
+            EditorGUILayout.Space();
+            GUI.enabled = false;
+            EditorGUILayout.PropertyField(measurementDescriptor);
+            GUI.enabled = true;
+
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }
