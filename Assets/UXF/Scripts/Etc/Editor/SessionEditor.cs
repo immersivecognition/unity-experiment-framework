@@ -51,15 +51,20 @@ namespace UXF.EditorUtils
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
+            EditorGUILayout.BeginVertical("Box");
             switch (tabSelection)
             {
                 case 0:
+                    EditorGUI.indentLevel++;
                     DrawPropertiesFromUpTo("endOnQuit", "copySessionSettings");
+                    EditorGUI.indentLevel--;
                     break;
                 case 1:
-                    EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying);                
+                    EditorGUI.indentLevel++;
+                    EditorGUI.BeginDisabledGroup(session.hasInitialised);                
                     DrawPropertiesFromUpTo("copySessionSettings", "onSessionBegin");
                     EditorGUI.EndDisabledGroup();
+                    EditorGUI.indentLevel--;
                     break;
                 case 2:
                     DrawPropertiesFromUpTo("onSessionBegin", "_hasInitialised");
@@ -68,6 +73,7 @@ namespace UXF.EditorUtils
                     DrawMonitorTab();
                     break;
             }
+            EditorGUILayout.EndVertical();
 
             serializedObject.ApplyModifiedProperties();          
         }
@@ -78,13 +84,19 @@ namespace UXF.EditorUtils
             if (EditorApplication.isPlaying && session.hasInitialised)
             {
 
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
                 GUILayout.Label("Currently running session!");
-                EditorGUILayout.LabelField("Experiment name", session.experimentName);
-                EditorGUILayout.LabelField("PPID", session.ppid);
-                EditorGUILayout.LabelField("Session number", session.FolderName);
+                GUILayout.FlexibleSpace();
+                EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Separator();
 
-                GUILayout.Label("Full path");
+                EditorGUILayout.LabelField("Experiment name:", session.experimentName);
+                EditorGUILayout.LabelField("PPID:", session.ppid);
+                EditorGUILayout.LabelField("Session number:", session.FolderName);
+                EditorGUILayout.Separator();
+
+                GUILayout.Label("Full path:");
                 EditorGUI.BeginDisabledGroup(true);
                 EditorGUILayout.TextArea(session.FullPath);
                 EditorGUI.EndDisabledGroup();
