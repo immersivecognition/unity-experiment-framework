@@ -72,17 +72,17 @@ namespace UXF
         public bool copyParticipantDetails = true;
 
         /// <summary>
-        /// List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
+        /// List of dependent variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
         /// </summary>
-        [Tooltip("List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.")]
+        [Tooltip("List of dependent variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.")]
         [Reorderable]
         public List<string> customHeaders = new List<string>();
 
         /// <summary>
-        /// List of settings you wish to log to the behavioural file for each trial.
+        /// List of settings (independent variables) you wish to log to the behavioural file for each trial.
         /// </summary>
         /// <returns></returns>
-        [Tooltip("List of settings you wish to log to the behavioural data output for each trial.")]
+        [Tooltip("List of settings (independent variables) you wish to log to the behavioural data output for each trial.")]
         [Reorderable]
         public List<string> settingsToLog = new List<string>();
 
