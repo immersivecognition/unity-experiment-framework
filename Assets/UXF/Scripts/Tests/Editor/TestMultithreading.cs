@@ -30,6 +30,8 @@ namespace UXF.Tests
                 session
             );
 
+            fileIOManager.storageLocation = "example_output";
+
             session.dataHandlers = new DataHandler[]{ fileIOManager };
 
             sessionLogger.Initialise();
@@ -57,7 +59,7 @@ namespace UXF.Tests
                 settings.SetValue(key, i);
             }
 
-            session.Begin(experimentName, ppid, "example_output", settings: settings);
+            session.Begin(experimentName, ppid, settings: settings);
             
             // add lots more during potential writing
             for (int i = 0; i < 10000; i++)

@@ -15,19 +15,9 @@ namespace UXF
     /// </summary>
     public class FileIOManager : DataHandler
     {
-        [Tooltip("Should the data be stored in the session folder (session.BasePath) or some other folder?")]
-        public DataSaveLocation dataSaveLocation = DataSaveLocation.SessionFolder;
-
-        [Tooltip("Location of the folder is dataSaveLocation is set to Other.")]
-        [BasteRainGames.HideIfEnumValue("dataSaveLocation", BasteRainGames.HideIf.NotEqual, (int) DataSaveLocation.Other)]
-        public string otherLocation = "~";
 
         [Tooltip("Enable to sort session files into folders. The trial_results CSV is never put into a folder.")]
         public bool sortDataIntoFolders = true;
-
-        public string SavePath { get {
-            return dataSaveLocation == DataSaveLocation.SessionFolder ? session.BasePath : otherLocation;
-        }}
 
         public new static bool requiresLocalDirectory = true;
 
@@ -146,7 +136,7 @@ namespace UXF
         {
             string[] lines = table.GetCSVLines();
             
-            string directory = Path.Combine(SavePath, experiment, ppid, SessionNumToName(sessionNum));
+            string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             CreateDirectoryIfNotExists(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
@@ -161,7 +151,7 @@ namespace UXF
         {
             string text = MiniJSON.Json.Serialize(serializableObject);
 
-            string directory = Path.Combine(SavePath, experiment, ppid, SessionNumToName(sessionNum));
+            string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             CreateDirectoryIfNotExists(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
@@ -176,7 +166,7 @@ namespace UXF
         {
             string text = MiniJSON.Json.Serialize(serializableObject);
 
-            string directory = Path.Combine(SavePath, experiment, ppid, SessionNumToName(sessionNum));
+            string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             CreateDirectoryIfNotExists(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
@@ -189,7 +179,7 @@ namespace UXF
 
         public override string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.SessionInfo)
         {
-            string directory = Path.Combine(SavePath, experiment, ppid, SessionNumToName(sessionNum));
+            string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             CreateDirectoryIfNotExists(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
@@ -202,7 +192,7 @@ namespace UXF
 
         public override string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.SessionInfo)
         {
-            string directory = Path.Combine(SavePath, experiment, ppid, SessionNumToName(sessionNum));
+            string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             CreateDirectoryIfNotExists(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));  
@@ -211,6 +201,12 @@ namespace UXF
 
             ManageInWorker(() => { File.WriteAllBytes(savePath, bytes); });
             return savePath;
+        }
+
+
+        public string GetSessionPath(string experiment, string ppid, int sessionNum)
+        {
+            return Path.Combine(storageLocation, experiment, ppid, SessionNumToName(sessionNum));
         }
 
         public static void CreateDirectoryIfNotExists(string path)

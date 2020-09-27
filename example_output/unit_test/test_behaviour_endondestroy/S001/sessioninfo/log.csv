@@ -1,0 +1,4 @@
+timestamp,log_type,message
+2.747739,Log,Queuing save of file: example_output\unit_test\test_behaviour_endondestroy\S001\sessioninfo\settings.csv
+2.747739,Log,Queuing save of file: example_output\unit_test\test_behaviour_endondestroy\S001\sessioninfo\participant_details.csv
+2.747739,Log,Queuing save of file: example_output\unit_test\test_behaviour_endondestroy\S001\trial_results.csv

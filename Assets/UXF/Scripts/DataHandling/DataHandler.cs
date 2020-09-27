@@ -8,7 +8,10 @@ namespace UXF
 
     public abstract class DataHandler : MonoBehaviour
     {
-
+        /// <summary>
+        /// Text representing the storage location for the data.
+        /// </summary>
+        public string storageLocation;
         public Session session { get; private set; }
 
         /// <summary>

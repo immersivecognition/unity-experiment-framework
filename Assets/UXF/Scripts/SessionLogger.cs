@@ -76,15 +76,6 @@ namespace UXF
         /// </summary>
         public void Finalise()
 		{
-            WriteFileInfo fileInfo = new WriteFileInfo(
-                WriteFileType.Log,
-                session.BasePath,
-                session.experimentName,
-                session.ppid,
-                session.FolderName,
-                "log.csv"
-                );
-
 			session.SaveDataTable(table, "log", dataType: DataType.SessionInfo);
 
             Application.logMessageReceived -= HandleLog;

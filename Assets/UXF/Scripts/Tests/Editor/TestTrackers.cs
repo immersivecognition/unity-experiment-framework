@@ -33,12 +33,13 @@ namespace UXF.Tests
             session.dataHandlers = new DataHandler[]{ fileIOManager };
 
             sessionLogger.Initialise();
-
+            
+            fileIOManager.storageLocation = "example_output";
             fileIOManager.verboseDebug = true;
 
             string experimentName = "unit_test";
             string ppid = "test_trackers";
-            session.Begin(experimentName, ppid, "example_output");
+            session.Begin(experimentName, ppid);
 
 
             for (int i = 0; i < 5; i++)

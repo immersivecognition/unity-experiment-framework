@@ -82,7 +82,6 @@ namespace UXF.UI
                 {
                     session.Begin(settingsSelector.experimentName,
                                                     ppid,
-                                                    dirSelect.currentDirectory,
                                                     sessionNum,
                                                     infoDict,
                                                     settings);

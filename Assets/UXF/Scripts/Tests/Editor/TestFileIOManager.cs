@@ -25,8 +25,7 @@ namespace UXF.Tests
         {
 			var gameObject = new GameObject();
 			fileIOManager = gameObject.AddComponent<FileIOManager>();
-            fileIOManager.dataSaveLocation = DataSaveLocation.Other;
-            fileIOManager.otherLocation = "example_output";
+            fileIOManager.storageLocation = "example_output";
 			fileIOManager.verboseDebug = true;
         }
 

@@ -10,12 +10,13 @@ namespace UXF.EditorUtils
         Session session;
         
         int tabSelection = 0;
-        string[] tabTexts = new string[]{ "Behaviour", "Data logging", "Events", "Monitor" };
+        string[] tabTexts = new string[]{ "Behaviour", "Data collection", "Data storage", "Events" };
+
 
         protected override void InitInspector()
         {
             base.InitInspector();
-		
+
             // Always call DrawInspector function
             alwaysDrawInspector = true;
             session = (Session) target;
@@ -71,13 +72,18 @@ namespace UXF.EditorUtils
                     EditorGUI.indentLevel--;
                     break;
                 case 2:
-                    DrawPropertiesFromUpTo("onSessionBegin", "_hasInitialised");
+                    EditorGUILayout.HelpBox("The Data Handlers below define how your data will be stored.", MessageType.Info);
+                    EditorGUI.indentLevel++;
+                    DrawPropertiesFrom("dataHandlers");
+                    EditorGUI.indentLevel--;
                     break;
                 case 3:
-                    DrawMonitorTab();
+                    DrawPropertiesFromUpTo("onSessionBegin", "_hasInitialised");                    
                     break;
             }
             EditorGUILayout.EndVertical();
+
+            DrawMonitorTab();
 
             serializedObject.ApplyModifiedProperties();          
         }
@@ -97,14 +103,14 @@ namespace UXF.EditorUtils
 
                 EditorGUILayout.LabelField("Experiment name:", session.experimentName);
                 EditorGUILayout.LabelField("PPID:", session.ppid);
-                EditorGUILayout.LabelField("Session number:", session.FolderName);
+                EditorGUILayout.LabelField("Session number:", session.number.ToString());
                 EditorGUILayout.Separator();
 
-                GUILayout.Label("Full path:");
-                EditorGUI.BeginDisabledGroup(true);
-                EditorGUILayout.TextArea(session.FullPath);
-                EditorGUI.EndDisabledGroup();
-                EditorGUILayout.Separator();
+                // GUILayout.Label("Full path:");
+                // EditorGUI.BeginDisabledGroup(true);
+                // EditorGUILayout.TextArea(session.FullPath);
+                // EditorGUI.EndDisabledGroup();
+                // EditorGUILayout.Separator();
 
                 int currentBlockNum = serializedObject.FindProperty("currentBlockNum").intValue;
                 int maxBlockNum = session.blocks[session.blocks.Count - 1].number;

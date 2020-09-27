@@ -1,0 +1,4 @@
+timestamp,log_type,message
+3.431799,Log,Queuing save of file: example_output\unit_test\test_trials\S001\sessioninfo\settings.csv
+3.431799,Log,Queuing save of file: example_output\unit_test\test_trials\S001\sessioninfo\participant_details.csv
+3.431799,Log,Queuing save of file: example_output\unit_test\test_trials\S001\trial_results.csv

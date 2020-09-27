@@ -85,7 +85,6 @@ namespace UXF
             startTime = Time.time;
             result = new ResultsDictionary(session.Headers, true);
 
-            result["directory"] = Extensions.CombinePaths(session.experimentName, session.ppid, session.FolderName).Replace('\\', '/');
             result["experiment"] = session.experimentName;
             result["ppid"] = session.ppid;
             result["session_num"] = session.number;
@@ -136,7 +135,7 @@ namespace UXF
             foreach(var dataHandler in session.dataHandlers)
             {
                 string location = dataHandler.HandleDataTable(table, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
-                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+                result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
 
@@ -152,7 +151,7 @@ namespace UXF
             foreach(var dataHandler in session.dataHandlers)
             {
                 string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
-                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+                result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
 
@@ -168,7 +167,7 @@ namespace UXF
             foreach(var dataHandler in session.dataHandlers)
             {
                 string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
-                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+                result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
 
@@ -184,7 +183,7 @@ namespace UXF
             foreach(var dataHandler in session.dataHandlers)
             {
                 string location = dataHandler.HandleText(text, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
-                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+                result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
 
@@ -200,7 +199,7 @@ namespace UXF
             foreach(var dataHandler in session.dataHandlers)
             {
                 string location = dataHandler.HandleBytes(bytes, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
-                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+                result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
 

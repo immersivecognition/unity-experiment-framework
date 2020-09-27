@@ -28,7 +28,7 @@ namespace UXFExamples
 				(Dictionary<string, object>) MiniJSON.Json.Deserialize(jsonString)
 			);		
 
-            session.Begin(experimentName, ppid, "example_output", settings: sessionSettings);
+            session.Begin(experimentName, ppid, settings: sessionSettings);
 
             // herein everything is the same
         }

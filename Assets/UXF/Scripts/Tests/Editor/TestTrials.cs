@@ -36,10 +36,10 @@ namespace UXF.Tests
             );
 
             sessionLogger.Initialise();
-
+            fileIOManager.storageLocation = "example_output";
             fileIOManager.verboseDebug = true;
 
-            session.Begin(experimentName, ppid, "example_output");
+            session.Begin(experimentName, ppid);
             session.customHeaders.Add("observation");
             session.customHeaders.Add("null_observation");
 
@@ -78,12 +78,12 @@ namespace UXF.Tests
             {
                 Assert.AreEqual(trial.result["observation"], ++i);
             }
-            string sessionPath = fileIOManager.SavePath;
+            string sessionPath = fileIOManager.GetSessionPath(experimentName, ppid, sessionNum);
             Finish();
 
             // read the file to check headers
-            string firstLine = File.ReadAllLines(Path.Combine(sessionPath, experimentName, ppid, FileIOManager.SessionNumToName(sessionNum), "trial_results.csv"))[0];
-            Assert.AreEqual("directory,experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation,not_customheader_observation", firstLine);           
+            string firstLine = File.ReadAllLines(Path.Combine(sessionPath, "trial_results.csv"))[0];
+            Assert.AreEqual("experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation,not_customheader_observation", firstLine);           
         }
 
         [Test]
@@ -112,11 +112,11 @@ namespace UXF.Tests
 
             int numHeaders = session.Headers.Count;
 
-            string sessionPath = fileIOManager.SavePath;
+            string sessionPath = fileIOManager.GetSessionPath(experimentName, ppid, sessionNum);
             Finish();
 
             // read the file back in, check number of columns equals number of headers
-            string[] lines = File.ReadAllLines(Path.Combine(sessionPath, experimentName, ppid, FileIOManager.SessionNumToName(sessionNum), "trial_results.csv"));
+            string[] lines = File.ReadAllLines(Path.Combine(sessionPath, "trial_results.csv"));
 
             // num headers is equal
             Assert.AreEqual(numHeaders, lines[0].Split(',').GetLength(0));

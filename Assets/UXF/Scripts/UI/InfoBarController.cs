@@ -36,7 +36,7 @@ namespace UXF.UI
 
         void ResetToNormal()
         {
-            folder.text = "experiment/ppid/S000";
+            folder.text = "experiment > ppid > 0";
             trialStatus.text = "Awaiting session start";
             trialNum.text = FormatProgress("Trial", 0, 0);
 			blockNum.text = FormatProgress("Block", 0, 0);
@@ -45,7 +45,7 @@ namespace UXF.UI
         void SessionBegin(Session session)
         {
             trialStatus.text = "Awaiting trial start";
-            folder.text = session.experimentName + "\\" + session.ppid + "\\" + session.FolderName;
+            folder.text = session.experimentName + " > " + session.ppid + " > " + session.number.ToString();
         }
 
         void TrialBegin(Trial trial)

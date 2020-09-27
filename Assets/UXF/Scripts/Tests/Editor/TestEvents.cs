@@ -42,6 +42,7 @@ namespace UXF.Tests
             sessionLogger.AttachReferences(
                 session
             );
+            fileIOManager.storageLocation = "example_output";
 
             session.onSessionEnd.AddListener(UseSession);
 
@@ -51,7 +52,7 @@ namespace UXF.Tests
 
             string experimentName = "unit_test";
             string ppid = "test_trials";
-            session.Begin(experimentName, ppid, "example_output");
+            session.Begin(experimentName, ppid);
             session.customHeaders.Add("observation");
 
 			// generate trials

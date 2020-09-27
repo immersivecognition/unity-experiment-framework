@@ -211,17 +211,6 @@ namespace UXF
         public string ParticipantPath { get { return Path.Combine(ExperimentPath, ppid); } }
 
         /// <summary>
-        /// Path within the particpant path for this particular session.
-        /// </summary>
-        public string FullPath { get { return Path.Combine(ParticipantPath, FolderName); } }
-
-        /// <summary>
-        /// Name of the Session folder 
-        /// </summary>
-        /// <returns></returns>
-        public string FolderName { get { return SessionNumToName(number); } }
-
-        /// <summary>
         /// Stores combined list of headers for the behavioural output.
         /// </summary>
         public List<string> Headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).ToList(); } }
@@ -249,7 +238,7 @@ namespace UXF
         /// <summary>
         /// The headers that are always included in the trial_results output.
         /// </summary>
-        static List<string> baseHeaders = new List<string> { "directory", "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
+        static List<string> baseHeaders = new List<string> { "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
 
         /// <summary>
         /// Reference to the associated DataHandlers which handles saving data to the cloud, etc.
@@ -293,17 +282,11 @@ namespace UXF
         /// <param name="sessionNumber">A number for the session (optional: default 1)</param>
         /// <param name="participantDetails">Dictionary of information about the participant to be used within the experiment (optional: default null)</param>
         /// <param name="settings">A Settings instance (optional: default empty settings)</param>
-        public void Begin(string experimentName, string participantId, string baseFolder, int sessionNumber = 1, Dictionary<string, object> participantDetails = null, Settings settings = null)
+        public void Begin(string experimentName, string participantId, int sessionNumber = 1, Dictionary<string, object> participantDetails = null, Settings settings = null)
         {
-            baseFolder = Path.IsPathRooted(baseFolder) ? baseFolder : Path.Combine(Directory.GetCurrentDirectory(), baseFolder);
-
-            if (!Directory.Exists(baseFolder))
-                throw new DirectoryNotFoundException(string.Format("Initialising session failed, cannot find {0}", baseFolder));
-
             this.experimentName = experimentName;
             ppid = participantId;
             number = sessionNumber;
-            BasePath = baseFolder;
 
             if (participantDetails == null)
                 participantDetails = new Dictionary<string, object>();
