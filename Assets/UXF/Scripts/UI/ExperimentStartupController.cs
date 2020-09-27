@@ -90,7 +90,7 @@ namespace UXF.UI
                 }
             );
 
-            bool exists = Session.CheckSessionExists(settingsSelector.experimentName, ppid, dirSelect.currentDirectory, sessionNum);
+            bool exists = session.CheckSessionExists(dirSelect.currentDirectory, settingsSelector.experimentName, ppid, sessionNum);
 
             if (exists)
             {

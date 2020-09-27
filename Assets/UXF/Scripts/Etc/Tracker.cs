@@ -28,14 +28,14 @@ namespace UXF
         public string[] customHeader = new string[] { };
    
         /// <summary>
-        /// The header used when saving the filename string within our behavioural data.
+        /// A name used when saving the data from this tracker.
         /// </summary>
-        public string filenameHeader
+        public string dataName
         {
             get
             {
                 Debug.AssertFormat(measurementDescriptor.Length > 0, "No measurement descriptor has been specified for this Tracker!");
-                return string.Join("_", new string[]{ objectName, measurementDescriptor, "filename" });
+                return string.Join("_", new string[]{ objectName, measurementDescriptor });
             }
         }
 
@@ -68,7 +68,7 @@ namespace UXF
         // called by unity just before rendering the frame
         void LateUpdate()
         {
-            RecordRow();
+            if (recording) RecordRow();
         }
 
         /// <summary>
@@ -76,12 +76,9 @@ namespace UXF
         /// </summary>
         public void RecordRow()
         {
-            if (recording)
-            {
-                UXFDataRow newRow = GetCurrentValues();
-                newRow.Add(("time", Time.time));
-                data.AddCompleteRow(newRow);
-            }
+            UXFDataRow newRow = GetCurrentValues();
+            newRow.Add(("time", Time.time));
+            data.AddCompleteRow(newRow);
         }
 
 

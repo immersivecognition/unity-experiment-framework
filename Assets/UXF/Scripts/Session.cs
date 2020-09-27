@@ -15,7 +15,7 @@ namespace UXF
     /// </summary>
     [ExecuteInEditMode]
     [RequireComponent(typeof(FileIOManager))]
-    public class Session : MonoBehaviour, ISettingsContainer
+    public class Session : MonoBehaviour, ISettingsContainer, IDataAssociatable
     {
         /// <summary>
         /// Enable to automatically safely end the session when the application is quitting.
@@ -35,12 +35,6 @@ namespace UXF
         [Tooltip("Enable to automatically end the session when the final trial has ended.")]
         public bool endAfterLastTrial = false;
         
-        /// <summary>
-        /// If enabled, results that are not listed in Custom Headers can be added at any time. If disabled, adding results that are not listed in Custom Headers will throw an error.
-        /// </summary>
-        [Tooltip("If enabled, results that are not listed in Custom Headers can be added at any time. If disabled, adding results that are not listed in Custom Headers will throw an error.")]
-        public bool adHocHeaderAdd = false;
-
         /// <summary>
         /// If enabled, you do not need to reference this session component in a public field, you can simply call "Session.instance".
         /// </summary>
@@ -228,14 +222,9 @@ namespace UXF
         public string FolderName { get { return SessionNumToName(number); } }
 
         /// <summary>
-        /// List of file headers generated for all referenced tracked objects.
-        /// </summary>
-        public List<string> TrackingHeaders { get { return trackedObjects.Select(t => t.filenameHeader).ToList(); } }
-
-        /// <summary>
         /// Stores combined list of headers for the behavioural output.
         /// </summary>
-        public List<string> Headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).Concat(TrackingHeaders).ToList(); } }
+        public List<string> Headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).ToList(); } }
 
         /// <summary>
         /// Dictionary of objects for datapoints collected via the UI, or otherwise.
@@ -263,9 +252,10 @@ namespace UXF
         static List<string> baseHeaders = new List<string> { "directory", "experiment", "ppid", "session_num", "trial_num", "block_num", "trial_num_in_block", "start_time", "end_time" };
 
         /// <summary>
-        /// Reference to the associated FileIOManager which deals with inputting and outputting files.
+        /// Reference to the associated DataHandlers which handles saving data to the cloud, etc.
         /// </summary>
-        private FileIOManager fileIOManager;
+        [Reorderable]
+        public DataHandler[] dataHandlers = new DataHandler[]{};
 
         /// <summary>
         /// Provide references to other components 
@@ -273,117 +263,24 @@ namespace UXF
         void Awake()
         {
             if (setAsMainInstance) instance = this;
-            if (dontDestroyOnLoadNewScene && Application.isPlaying) DontDestroyOnLoad(gameObject);
-            
-            // get components attached to this gameobject and store their references 
-            AttachReferences(GetComponent<FileIOManager>());
-            
+            if (dontDestroyOnLoadNewScene && Application.isPlaying) DontDestroyOnLoad(gameObject);            
             if (endAfterLastTrial) onTrialEnd.AddListener(EndIfLastTrial);
         }
 
         /// <summary>
-        /// Provide references to other components 
-        /// </summary>
-        /// <param name="newFileIOManager"></param>
-        public void AttachReferences(FileIOManager newFileIOManager = null)
-        {
-            if (newFileIOManager != null) fileIOManager = newFileIOManager;
-        }
-
-        /// <summary>
-        /// Folder error checks (creates folders, has set save folder, etc)     
-        /// </summary>
-        void InitFolder()
-        {
-            if (!System.IO.Directory.Exists(ExperimentPath))
-                System.IO.Directory.CreateDirectory(ExperimentPath);
-            if (!System.IO.Directory.Exists(ParticipantPath))
-                System.IO.Directory.CreateDirectory(ParticipantPath);
-            if (System.IO.Directory.Exists(FullPath))
-                Debug.LogWarning("Warning: Session already exists! Continuing will overwrite");
-            else
-                System.IO.Directory.CreateDirectory(FullPath);
-        }
-
-        /// <summary>
-        /// Save tracking data for this trial
-        /// </summary>
-        /// <param name="tracker">The tracker to take data from to save</param>
-        /// <returns>Name of the saved file</returns>
-        public string SaveTrackerData(Tracker tracker)
-        {
-            string fname = string.Format("{0}_{1}_T{2:000}.csv", tracker.objectName, tracker.measurementDescriptor, currentTrialNum);
-
-            WriteFileInfo fileInfo = new WriteFileInfo(
-                WriteFileType.Tracker,
-                BasePath,
-                experimentName,
-                ppid,
-                FolderName,
-                fname
-                );
-
-            string[] dataCopy = tracker.data.GetCSVLines();
-
-            fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(dataCopy, fileInfo));
-
-            // return name of the file so it can be stored in behavioural data
-            return fileInfo.FileName;
-        }
-
-        /// <summary>
-        /// Copies a file to the folder for this session
-        /// </summary>
-        /// <param name="filePath"></param>
-        public void CopyFileToSessionFolder(string filePath)
-        {
-            string newPath = Path.Combine(FullPath, Path.GetFileName(filePath));
-            fileIOManager.ManageInWorker(() => fileIOManager.CopyFile(filePath, newPath));
-        }
-
-        /// <summary>
-        /// Write a dictionary object to a JSON file in the session folder (in a new FileIOManager thread)
-        /// </summary>
-        /// <param name="dict">Dictionary object to write</param>
-
-        /// <param name="objectName">Name of the object (is used for file name)</param>
-        public void WriteDictToSessionFolder(Dictionary<string, object> dict, string objectName)
-        {
-
-            if (hasInitialised)
-            {
-                string fileName = string.Format("{0}.json", objectName);
-
-                WriteFileInfo fileInfo = new WriteFileInfo(
-                    WriteFileType.Dictionary,
-                    BasePath,
-                    experimentName,
-                    ppid,
-                    FolderName,
-                    fileName
-                );
-
-                fileIOManager.ManageInWorker(() => fileIOManager.WriteJson(dict, fileInfo));
-            }
-            else
-            {
-                throw new System.InvalidOperationException("Can't write dictionary before session has initalised!");
-            }
-        }
-
-
-        /// <summary>
-        /// Checks if a session folder already exists for this participant
+        /// Checks if there is a risk of overwriting data for this participant and session number
         /// </summary>
         /// <param name="experimentName"></param>
         /// <param name="participantId"></param>
         /// <param name="baseFolder"></param>
         /// <param name="sessionNumber"></param>
         /// <returns></returns>
-        public static bool CheckSessionExists(string experimentName, string participantId, string baseFolder, int sessionNumber)
+        public bool CheckSessionExists(string rootPath, string experimentName, string participantId, int sessionNumber)
         {
-            string potentialPath = Extensions.CombinePaths(baseFolder, experimentName, participantId, SessionNumToName(sessionNumber));
-            return System.IO.Directory.Exists(potentialPath);
+            bool overwriteRisk = false;
+            foreach (var dataHandler in dataHandlers) overwriteRisk = overwriteRisk || dataHandler.CheckIfRiskOfOverwrite(experimentName, participantId, sessionNumber, rootPath: rootPath);
+
+            return overwriteRisk;
         }
 
 
@@ -416,11 +313,12 @@ namespace UXF
                 settings = Settings.empty;
             this.settings = settings;
 
-            // setup folders
-            InitFolder();
-
-            // Initialise FileIOManager
-            if (!fileIOManager.IsActive) fileIOManager.Begin();
+            // Initialise DataHandlers
+            foreach (var dataHandler in dataHandlers)
+            {
+                dataHandler.Initialise(this);
+                dataHandler.SetUp();
+            }
             _hasInitialised = true;
 
             // raise the session events
@@ -429,22 +327,13 @@ namespace UXF
             if (copySessionSettings)
             {
                 // copy Settings to session folder
-                WriteDictToSessionFolder(
-                    new Dictionary<string, object>(settings.baseDict), // makes a copy
-                    "settings");
+                SaveJSONSerializableObject(new Dictionary<string, object>(settings.baseDict), "settings", dataType: DataType.SessionInfo);
             }
 
             if (copyParticipantDetails)
             {
                 // copy participant details to session folder
-                WriteFileInfo fileInfo = new WriteFileInfo(
-                    WriteFileType.CSV,
-                    BasePath,
-                    experimentName,
-                    ppid,
-                    FolderName,
-                    "participant_details.csv"
-                    );
+                // we convert to a DataTable because we know the dictionary will be "flat" (one value per key)
 
                 UXFDataTable ppDetailsTable = new UXFDataTable(participantDetails.Keys.ToArray());
                 var row = new UXFDataRow();
@@ -452,7 +341,7 @@ namespace UXF
                 ppDetailsTable.AddCompleteRow(row);
                 var ppDetailsLines = ppDetailsTable.GetCSVLines();
 
-                fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(ppDetailsLines, fileInfo));
+                SaveDataTable(ppDetailsTable, "participant_details", dataType: DataType.SessionInfo);
             }
 
 
@@ -647,6 +536,76 @@ namespace UXF
 
 
         /// <summary>
+        /// Saves a DataTable to the storage locations(s).
+        /// </summary>
+        /// <param name="table">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving.</param>
+        /// <param name="dataType"></param>
+        public void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.Other)
+        {
+            foreach(var dataHandler in dataHandlers)
+            {
+                string location = dataHandler.HandleDataTable(table, experimentName, ppid, number, dataName, dataType: dataType);
+            }
+        }
+
+        /// <summary>
+        /// Saves a JSON Serializable Object to the storage locations(s).
+        /// </summary>
+        /// <param name="serializableObject">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving.</param>
+        /// <param name="dataType"></param>
+        public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.Other)
+        {
+            foreach(var dataHandler in dataHandlers)
+            {
+                string location = dataHandler.HandleJSONSerializableObject(serializableObject, experimentName, ppid, number, dataName, dataType: dataType);
+            }
+        }
+
+        /// <summary>
+        /// Saves a JSON Serializable Object to the storage locations(s).
+        /// </summary>
+        /// <param name="serializableObject">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving.</param>
+        /// <param name="dataType"></param>
+        public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.Other)
+        {
+            foreach(var dataHandler in dataHandlers)
+            {
+                string location = dataHandler.HandleJSONSerializableObject(serializableObject, experimentName, ppid, number, dataName, dataType: dataType);
+            }
+        }
+
+        /// <summary>
+        /// Saves a string of text to the storage locations(s).
+        /// </summary>
+        /// <param name="text">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving.</param>
+        /// <param name="dataType"></param>
+        public void SaveText(string text, string dataName, DataType dataType = DataType.Other)
+        {
+            foreach(var dataHandler in dataHandlers)
+            {
+                string location = dataHandler.HandleText(text, experimentName, ppid, number, dataName, dataType: dataType);
+            }
+        }
+
+        /// <summary>
+        /// Saves an array of bytes to the storage locations(s).
+        /// </summary>
+        /// <param name="bytes">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving.</param>
+        /// <param name="dataType"></param>
+        public void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.Other)
+        {
+            foreach(var dataHandler in dataHandlers)
+            {
+                string location = dataHandler.HandleBytes(bytes, experimentName, ppid, number, dataName, dataType: dataType);
+            }
+        }
+
+        /// <summary>
         /// Ends the experiment session.
         /// </summary>
         public void End()
@@ -660,8 +619,8 @@ namespace UXF
                 // raise cleanup event
                 if (cleanUp != null) cleanUp();
 
-                // end FileIOManager - forces immediate writing of all files
-                fileIOManager.End();
+                // end DataHandler - forces completion of tasks
+                foreach (var dataHandler in dataHandlers) dataHandler.CleanUp();
                 
                 onSessionEnd.Invoke(this);
 
@@ -676,16 +635,6 @@ namespace UXF
 
         void SaveResults()
         {
-            string fileName = "trial_results.csv";
-            WriteFileInfo fileInfo = new WriteFileInfo(
-                WriteFileType.Trials,
-                BasePath,
-                experimentName,
-                ppid,
-                FolderName,
-                fileName
-                );
-
             // generate list of all headers possible
             // hashset keeps unique set of keys
             HashSet<string> resultsHeaders = new HashSet<string>();
@@ -702,7 +651,7 @@ namespace UXF
                     UXFDataRow row = new UXFDataRow();
                     foreach (string h in resultsHeaders)
                     {
-                        if (t.result.ContainsKey(h))
+                        if (t.result.ContainsKey(h) && t.result[h] != null)
                         {
                             row.Add(( h, t.result[h].ToString().Replace(",", "_") ));
                         }
@@ -715,30 +664,7 @@ namespace UXF
                 }
             }
 
-            string[] lines = table.GetCSVLines();
-
-            fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(lines, fileInfo));
-        }
-
-
-        /// <summary>
-        /// Reads json settings file as Dictionary then calls action with Dictionary as parameter
-        /// </summary>
-        /// <param name="path">Location of .json file to read</param>
-        /// <param name="action">Action to call when completed</param>
-        public void ReadSettingsFile(string path, System.Action<Dictionary<string, object>> action)
-        {
-            fileIOManager.ManageInWorker(() => fileIOManager.ReadJSON(path, action));
-        }
-
-        /// <summary>
-        /// Reads json file as string then calls action with string as parameter
-        /// </summary>
-        /// <param name="path">Location of .json file to read</param>
-        /// <param name="action">Action to call when completed</param>
-        public void ReadFileString(string path, System.Action<string> action)
-        {
-            fileIOManager.ManageInWorker(() => fileIOManager.ReadFileString(path, action));
+            SaveDataTable(table, "trial_results", dataType: DataType.TrialResults);            
         }
 
         void OnApplicationQuit()
@@ -757,6 +683,7 @@ namespace UXF
             }
         }
 
+        [Obsolete("Move to fileiomanager")]
         /// <summary>
         /// Convert a session number to a session name
         /// </summary>

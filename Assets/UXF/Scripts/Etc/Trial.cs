@@ -13,7 +13,7 @@ namespace UXF
     /// The base unit of experiments. A Trial is usually a singular attempt at a task by a participant after/during the presentation of a stimulus.
     /// </summary>
     [Serializable]
-    public class Trial : ISettingsContainer
+    public class Trial : ISettingsContainer, IDataAssociatable
     {
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace UXF
 
             status = TrialStatus.InProgress;
             startTime = Time.time;
-            result = new ResultsDictionary(session.Headers, session.adHocHeaderAdd);
+            result = new ResultsDictionary(session.Headers, true);
 
             result["directory"] = Extensions.CombinePaths(session.experimentName, session.ppid, session.FolderName).Replace('\\', '/');
             result["experiment"] = session.experimentName;
@@ -113,9 +113,7 @@ namespace UXF
             // log tracked objects
             foreach (Tracker tracker in session.trackedObjects)
             {
-                tracker.StopRecording();
-                string dataName = session.SaveTrackerData(tracker);
-                result[tracker.filenameHeader] = dataName;
+                SaveDataTable(tracker.data, tracker.dataName, dataType: DataType.Trackers);
             }
 
             // log any settings we need to for this trial
@@ -125,6 +123,87 @@ namespace UXF
             }
             session.onTrialEnd.Invoke(this);
         }
+
+        /// <summary>
+        /// Saves a DataTable to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+        /// </summary>
+        /// <param name="table">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+        /// <param name="dataType"></param>
+        public void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.SessionInfo)
+        {
+            int i = 0;
+            foreach(var dataHandler in session.dataHandlers)
+            {
+                string location = dataHandler.HandleDataTable(table, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+            }
+        }
+
+        /// <summary>
+        /// Saves a JSON Serializable Object to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+        /// </summary>
+        /// <param name="serializableObject">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+        /// <param name="dataType"></param>
+        public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo)
+        {
+            int i = 0;
+            foreach(var dataHandler in session.dataHandlers)
+            {
+                string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+            }
+        }
+
+        /// <summary>
+        /// Saves a JSON Serializable Object to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+        /// </summary>
+        /// <param name="serializableObject">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+        /// <param name="dataType"></param>
+        public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo)
+        {
+            int i = 0;
+            foreach(var dataHandler in session.dataHandlers)
+            {
+                string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+            }
+        }
+
+        /// <summary>
+        /// Saves a string of text to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+        /// </summary>
+        /// <param name="text">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+        /// <param name="dataType"></param>
+        public void SaveText(string text, string dataName, DataType dataType = DataType.SessionInfo)
+        {
+            int i = 0;
+            foreach(var dataHandler in session.dataHandlers)
+            {
+                string location = dataHandler.HandleText(text, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+            }
+        }
+
+        /// <summary>
+        /// Saves an array of bytes to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+        /// </summary>
+        /// <param name="bytes">The data to be saved.</param>
+        /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+        /// <param name="dataType"></param>
+        public void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.SessionInfo)
+        {
+            int i = 0;
+            foreach(var dataHandler in session.dataHandlers)
+            {
+                string location = dataHandler.HandleBytes(bytes, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+                settings.SetValue(string.Format("{0}_location_{1}", dataName, i++), location);
+            }
+        }
+
 
     }
 

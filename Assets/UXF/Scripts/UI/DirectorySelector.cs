@@ -71,8 +71,6 @@ namespace UXF.UI
                     })
                 .ToList();
             
-            Debug.Log(participants);
-
             ExperimentStartupController.SetSelectableAndChildrenInteractable(startButton.gameObject, true);
             ExperimentStartupController.SetSelectableAndChildrenInteractable(openFolder.gameObject, true);
         }

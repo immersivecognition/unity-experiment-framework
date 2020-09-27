@@ -26,24 +26,20 @@ namespace UXF.Tests
             sessionLogger = gameObject.AddComponent<SessionLogger>();
             session = gameObject.AddComponent<Session>();
 
-            session.AttachReferences(
-                fileIOManager
-            );
-
             sessionLogger.AttachReferences(
-                fileIOManager,
                 session
             );
 
+            session.dataHandlers = new DataHandler[]{ fileIOManager };
+
             sessionLogger.Initialise();
 
-            fileIOManager.debug = true;
+            fileIOManager.verboseDebug = true;
         }
 
         [TearDown]
         public void TearDown()
         {
-            fileIOManager.End();
             GameObject.DestroyImmediate(gameObject);
         }
 

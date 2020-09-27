@@ -14,14 +14,12 @@ namespace UXF
 	public class SessionLogger : MonoBehaviour
 	{	
 		private Session session;
-		private FileIOManager fileIOManager;
 		private string[] header = new string[]{ "timestamp", "log_type", "message"};
 		private UXFDataTable table;
 
 		void Awake()
 		{
 			AttachReferences(
-				newFileIOManager: GetComponent<FileIOManager>(),
 				newSession: GetComponent<Session>()
 			);
 			Initialise();
@@ -30,11 +28,9 @@ namespace UXF
         /// <summary>
         /// Provide references to other components 
         /// </summary>
-        /// <param name="newFileIOManager"></param>
         /// <param name="newSession"></param>
-        public void AttachReferences(FileIOManager newFileIOManager = null, Session newSession = null)
+        public void AttachReferences(Session newSession = null)
         {
-            if (newFileIOManager != null) fileIOManager = newFileIOManager;
             if (newSession != null) session = newSession;
         }
 
@@ -89,9 +85,7 @@ namespace UXF
                 "log.csv"
                 );
 
-			string[] lines = table.GetCSVLines();
-
-			fileIOManager.ManageInWorker(() => fileIOManager.WriteAllLines(lines, fileInfo));
+			session.SaveDataTable(table, "log", dataType: DataType.SessionInfo);
 
             Application.logMessageReceived -= HandleLog;
 			session.cleanUp -= Finalise;

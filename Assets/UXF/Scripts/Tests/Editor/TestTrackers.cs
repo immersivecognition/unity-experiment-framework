@@ -26,19 +26,15 @@ namespace UXF.Tests
             sessionLogger = gameObject.AddComponent<SessionLogger>();
             session = gameObject.AddComponent<Session>();
 
-            session.AttachReferences(
-                fileIOManager
-            );
-
             sessionLogger.AttachReferences(
-                fileIOManager,
                 session
             );
 
+            session.dataHandlers = new DataHandler[]{ fileIOManager };
+
             sessionLogger.Initialise();
 
-            fileIOManager.debug = true;
-            fileIOManager.Begin();
+            fileIOManager.verboseDebug = true;
 
             string experimentName = "unit_test";
             string ppid = "test_trackers";
@@ -64,7 +60,7 @@ namespace UXF.Tests
         public void TearDown()
         {
             session.End();
-            fileIOManager.End();
+
             GameObject.DestroyImmediate(gameObject);
 
 			foreach (GameObject trackedObject in tracked)
@@ -113,8 +109,6 @@ namespace UXF.Tests
         {
 			Random.InitState(2); // reproducible
 
-            session.adHocHeaderAdd = true;
-
 			foreach (var trial in session.Trials)
 			{
 
@@ -126,6 +120,7 @@ namespace UXF.Tests
                 prt.objectName = string.Format("adhoc_obj_trial_{0}", trial.number);
                 
                 session.trackedObjects.Add(prt);
+                prt.StartRecording();
 
 				// record 100 times in each trial
 				for (int i = 0; i < 100; i++)

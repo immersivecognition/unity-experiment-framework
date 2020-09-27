@@ -10,6 +10,10 @@ namespace UXF
     {
 
         public Session session { get; private set; }
+
+        /// <summary>
+        /// True if this DataHandler requires a local directory.
+        /// </summary>
         public static bool requiresLocalDirectory;
 
         public void Initialise(Session session)
@@ -17,16 +21,29 @@ namespace UXF
             this.session = session;
         }
 
-        public abstract void HandleDataTable(UXFDataTable table, string experiment, string ppid, string sessionName, string dataName, DataType dataType = DataType.General);
-        public abstract void HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, string sessionName, string dataName, DataType dataType = DataType.General);
-        public abstract void HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, string sessionName, string dataName, DataType dataType = DataType.General);
-        public abstract void HandleText(string text, string experiment, string ppid, string sessionName, string dataName, DataType dataType = DataType.General);
-        public abstract void HandleBytes(byte[] bytes, string experiment, string ppid, string sessionName, string dataName, DataType dataType = DataType.General);
+        public abstract bool CheckIfRiskOfOverwrite(string experiment, string ppid, int sessionNum, string rootPath = ""); 
+        public abstract void SetUp();
+        public abstract string HandleDataTable(UXFDataTable table, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
+        public abstract string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
+        public abstract string HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
+        public abstract string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
+        public abstract string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
+        public abstract void CleanUp();
     }
 
     public enum DataType
     {
-        General, TrialResults, Tracker, Log, ParticipantDetails, Settings
+        SessionInfo, TrialResults, Trackers, Other
     }
+
+    public interface IDataAssociatable
+    {
+        void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.SessionInfo);
+        void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo);
+        void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo);
+        void SaveText(string text, string dataName, DataType dataType = DataType.SessionInfo);
+        void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.SessionInfo);
+    }
+
 
 }

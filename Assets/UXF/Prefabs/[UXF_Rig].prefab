@@ -10111,7 +10111,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4522850482104986}
   - component: {fileID: 114916036141644208}
-  - component: {fileID: 114324480150258046}
   - component: {fileID: 114155219626309100}
   m_Layer: 0
   m_Name: '[UXF_Rig]'
@@ -10132,6 +10131,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224447703359101094}
+  - {fileID: 154650329923601451}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10150,9 +10150,10 @@ MonoBehaviour:
   endOnQuit: 1
   endOnDestroy: 1
   endAfterLastTrial: 0
-  adHocHeaderAdd: 0
   setAsMainInstance: 1
   dontDestroyOnLoadNewScene: 1
+  copySessionSettings: 1
+  copyParticipantDetails: 1
   customHeaders: []
   settingsToLog: []
   trackedObjects: []
@@ -10161,32 +10162,10 @@ MonoBehaviour:
       m_Calls: []
   onTrialBegin:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetupTrial
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onTrialEnd:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: CleanupTrial
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onSessionEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -10196,22 +10175,7 @@ MonoBehaviour:
   number: 0
   currentTrialNum: 0
   currentBlockNum: 0
---- !u!114 &114324480150258046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1970900254558334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62bd92b5564a1d343b07363d3453a980, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debug: 0
-  onWriteFile:
-    m_PersistentCalls:
-      m_Calls: []
+  dataHandlers: []
 --- !u!114 &114155219626309100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10362,3 +10326,50 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Block ??/??
+--- !u!1 &5633884788226251483
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 154650329923601451}
+  - component: {fileID: 7584534998233498772}
+  m_Layer: 0
+  m_Name: '[UXF_DataHandling]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &154650329923601451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5633884788226251483}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4522850482104986}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7584534998233498772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5633884788226251483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ed9d5458c0c024a83c89ba1b6552ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataSaveLocation: 0
+  otherLocation: ~
+  sortDataIntoFolders: 1
+  verboseDebug: 0

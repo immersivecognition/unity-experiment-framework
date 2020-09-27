@@ -56,7 +56,11 @@ namespace UXF.EditorUtils
             {
                 case 0:
                     EditorGUI.indentLevel++;
-                    DrawPropertiesFromUpTo("endOnQuit", "copySessionSettings");
+                    DrawPropertiesFromUpTo("endOnQuit", "setAsMainInstance");
+                    EditorGUI.BeginDisabledGroup(true);
+                    EditorGUILayout.Toggle(new GUIContent("Ad Hoc Header Add", "Now permanantly enabled. Results that are not listed in Custom Headers can be added at any time. If disabled, adding results that are not listed in Custom Headers will throw an error."), false);
+                    EditorGUI.EndDisabledGroup();
+                    DrawPropertiesFromUpTo("setAsMainInstance", "copySessionSettings");
                     EditorGUI.indentLevel--;
                     break;
                 case 1:

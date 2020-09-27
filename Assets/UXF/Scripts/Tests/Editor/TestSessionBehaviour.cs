@@ -74,19 +74,15 @@ namespace UXF.Tests
             SessionLogger sessionLogger = gameObject.AddComponent<SessionLogger>();
             Session session = gameObject.AddComponent<Session>();
 
-            session.AttachReferences(
-                fileIOManager
-            );
-
             sessionLogger.AttachReferences(
-                fileIOManager,
                 session
             );
 
+            session.dataHandlers = new DataHandler[]{ fileIOManager };
+
             sessionLogger.Initialise();
 
-            fileIOManager.debug = true;
-            fileIOManager.Begin();
+            fileIOManager.verboseDebug = true;
 
             string experimentName = "unit_test";
             string ppid = "test_behaviour_" + ppidExtra;

@@ -42,7 +42,16 @@ namespace UXF
                 &&
                 (newRow.Count == dict.Keys.Count);
 
-            if (!sameKeys) throw new InvalidOperationException("The row does not contain values for the same columns as the columns in the table!");
+            if (!sameKeys)
+            { 
+                throw new InvalidOperationException(
+                    string.Format(
+                        "The row does not contain values for the same columns as the columns in the table!\nTable: {0}\nRow: {1}",
+                        string.Join(", ", Headers),
+                        string.Join(", ", newRow.Headers)
+                        )
+                );
+            }
 
             foreach (var item in newRow)
             {
@@ -76,7 +85,12 @@ namespace UXF
 
         public Dictionary<string, List<object>> GetDataCopy()
         {
-            return dict;
+            Dictionary<string, List<object>> dictCopy = new Dictionary<string, List<object>>();
+            foreach (var kvp in dict)
+            {
+                dictCopy.Add(kvp.Key, new List<object>(kvp.Value));
+            }
+            return dictCopy;
         }
     }
 
@@ -84,6 +98,9 @@ namespace UXF
     /// Represents a single row of data. That is, a series of named columns, each column representing a single value.
     /// The row hold a list of named Tuples (columnName and value). To add values, create a new UXFDataRow then add Tuples with the Add method.
     /// </summary>
-    public class UXFDataRow : List<(string columnName, object value)> { }
+    public class UXFDataRow : List<(string columnName, object value)>
+    {
+        public IEnumerable<string> Headers { get { return this.Select(kvp => kvp.columnName); } }
+    }
 
 }

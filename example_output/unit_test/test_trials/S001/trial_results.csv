@@ -1,6 +1,0 @@
-directory,experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation
-unit_test/test_trials/S001,unit_test,test_trials,1,1,1,1,4.593624,4.593624,hello_ hello,
-unit_test/test_trials/S001,unit_test,test_trials,1,2,1,2,4.593624,4.593624,(1.0_ 1.0_ 1.0),
-
-
-

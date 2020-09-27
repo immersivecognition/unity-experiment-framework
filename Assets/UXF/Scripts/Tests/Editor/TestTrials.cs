@@ -18,31 +18,27 @@ namespace UXF.Tests
         FileIOManager fileIOManager;
         SessionLogger sessionLogger;
 
-        void Start(bool adHoc)
+        string experimentName = "unit_test";
+        string ppid = "test_trials";
+        int sessionNum = 1;
+
+        void Start()
         {
             gameObject = new GameObject();
             fileIOManager = gameObject.AddComponent<FileIOManager>();
             sessionLogger = gameObject.AddComponent<SessionLogger>();
             session = gameObject.AddComponent<Session>();
 
-            session.AttachReferences(
-                fileIOManager
-            );
-
-            session.adHocHeaderAdd = adHoc;
+            session.dataHandlers = new DataHandler[]{ fileIOManager };
 
             sessionLogger.AttachReferences(
-                fileIOManager,
                 session
             );
 
             sessionLogger.Initialise();
 
-            fileIOManager.debug = true;
-            fileIOManager.Begin();
+            fileIOManager.verboseDebug = true;
 
-            string experimentName = "unit_test";
-            string ppid = "test_trials" + (adHoc ? "_adhoc" : "");
             session.Begin(experimentName, ppid, "example_output");
             session.customHeaders.Add("observation");
             session.customHeaders.Add("null_observation");
@@ -55,47 +51,14 @@ namespace UXF.Tests
         void Finish()
         {
             session.End();
-            fileIOManager.End();
             GameObject.DestroyImmediate(gameObject);
         }
 
-        [Test]
-        public void RunTrials()
-        {   
-            Start(false);
-            int i = 0;
-            foreach (var trial in session.Trials)
-            {
-                trial.Begin();
-                trial.result["observation"] = ++i;
-                trial.result["null_observation"] = null;
-
-                Assert.Throws<KeyNotFoundException>(
-                    delegate { trial.result["not_customheader_observation"] = "something"; }
-                );
-
-                Assert.AreSame(trial, session.CurrentTrial);
-                Assert.AreEqual(trial.number, session.currentTrialNum);
-
-                trial.End();
-            }
-
-            i = 0;
-            foreach (var trial in session.Trials)
-            {
-                Assert.AreEqual(trial.result["observation"], ++i);
-            }
-            Finish();
-            
-            // read the file to check headers
-            string firstLine = File.ReadAllLines(Path.Combine(session.FullPath, "trial_results.csv"))[0];
-            Assert.AreEqual("directory,experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation", firstLine);           
-        }
 
         [Test]
         public void RunTrialsAdHocResultsAdd()
         {   
-            Start(true);
+            Start();
             int i = 0;
             foreach (var trial in session.Trials)
             {
@@ -115,17 +78,18 @@ namespace UXF.Tests
             {
                 Assert.AreEqual(trial.result["observation"], ++i);
             }
+            string sessionPath = fileIOManager.SavePath;
             Finish();
 
             // read the file to check headers
-            string firstLine = File.ReadAllLines(Path.Combine(session.FullPath, "trial_results.csv"))[0];
+            string firstLine = File.ReadAllLines(Path.Combine(sessionPath, experimentName, ppid, FileIOManager.SessionNumToName(sessionNum), "trial_results.csv"))[0];
             Assert.AreEqual("directory,experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,observation,null_observation,not_customheader_observation", firstLine);           
         }
 
         [Test]
         public void RunTrialsAdHocResultsAddEarlyExit()
         {   
-            Start(true);
+            Start();
             session.GetBlock(1).GetRelativeTrial(1).Begin();
             session.GetBlock(1).GetRelativeTrial(1).result["not_customheader_observation"] = "something";
             session.GetBlock(1).GetRelativeTrial(1).End();
@@ -137,7 +101,7 @@ namespace UXF.Tests
         [Test]
         public void WriteCommas()
         {
-            Start(false);
+            Start();
             session.GetBlock(1).GetRelativeTrial(1).Begin();
             session.GetBlock(1).GetRelativeTrial(1).result["observation"] = "hello, hello"; // comma
             session.GetBlock(1).GetRelativeTrial(1).End();
@@ -147,12 +111,12 @@ namespace UXF.Tests
             session.GetBlock(1).GetRelativeTrial(2).End();
 
             int numHeaders = session.Headers.Count;
-            string sessionPath = session.FullPath;
 
+            string sessionPath = fileIOManager.SavePath;
             Finish();
 
             // read the file back in, check number of columns equals number of headers
-            string[] lines = File.ReadAllLines(Path.Combine(sessionPath, "trial_results.csv"));
+            string[] lines = File.ReadAllLines(Path.Combine(sessionPath, experimentName, ppid, FileIOManager.SessionNumToName(sessionNum), "trial_results.csv"));
 
             // num headers is equal
             Assert.AreEqual(numHeaders, lines[0].Split(',').GetLength(0));

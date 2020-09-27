@@ -39,12 +39,7 @@ namespace UXF.Tests
             sessionLogger = gameObject.AddComponent<SessionLogger>();
             session = gameObject.AddComponent<Session>();
 
-            session.AttachReferences(
-                fileIOManager
-            );
-
             sessionLogger.AttachReferences(
-                fileIOManager,
                 session
             );
 
@@ -52,8 +47,7 @@ namespace UXF.Tests
 
             sessionLogger.Initialise();
 
-            fileIOManager.debug = true;
-            fileIOManager.Begin();
+            fileIOManager.verboseDebug = true;
 
             string experimentName = "unit_test";
             string ppid = "test_trials";
@@ -73,15 +67,12 @@ namespace UXF.Tests
             }
 
             session.End();
-
-
-
-
         }
 
 
         void UseSession(UXF.Session session)
         {
+            
             int i = 0;
             foreach (var trial in session.Trials)
             {

@@ -90,8 +90,7 @@ namespace UXF.UI
 			}
 
 			sessionNotes.Add(notesKey, notesValue);
-
-			session.WriteDictToSessionFolder(sessionNotes, "notes");
+			session.SaveJSONSerializableObject(sessionNotes, "notes");
 		}
 
 		/// <summary>

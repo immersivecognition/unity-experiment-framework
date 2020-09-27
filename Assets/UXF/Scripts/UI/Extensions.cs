@@ -96,6 +96,11 @@ namespace UXF
             return paths.Aggregate(path1, (acc, p) => Path.Combine(acc, p));
         }
 
+        public static string ToLower(this DataType dataType)
+        {
+            return dataType.ToString().ToLower();
+        }
+
     }
 
     [System.Serializable]

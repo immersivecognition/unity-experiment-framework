@@ -17,11 +17,7 @@ namespace UXF.Tests
 		public void SetUp()
 		{
 			gameObject = new GameObject();
-			session = gameObject.AddComponent<Session>();
-			session.AttachReferences(
-				newFileIOManager: gameObject.AddComponent<FileIOManager>()
-			);
-			
+			session = gameObject.AddComponent<Session>();			
 		}
 
 		[TearDown]

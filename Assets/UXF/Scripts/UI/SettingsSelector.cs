@@ -88,14 +88,12 @@ namespace UXF.UI
         {
 			string settingsPath = Path.Combine(settingsFolder, fname);
 			PlayerPrefs.SetString(settingsFileKey, fname);
-            session.ReadSettingsFile(settingsPath, HandleSettingsDict);
-			session.ReadFileString(settingsPath, onSelect.Invoke);
-        }
 
-		void HandleSettingsDict(Dictionary<string, object> dict)
-		{
-			settingsDict = dict;
-		}
+			string text = File.ReadAllText(settingsPath);
+			settingsDict = (Dictionary<string, object>) MiniJSON.Json.Deserialize(text);
+
+			onSelect.Invoke(text);
+        }
 
 		public Settings GetSettings()
 		{
