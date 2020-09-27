@@ -247,6 +247,11 @@ namespace UXF
         public DataHandler[] dataHandlers = new DataHandler[]{};
 
         /// <summary>
+        /// Get the currently selected dataHandlers for this session.
+        /// </summary>
+        public IEnumerable<DataHandler> ActiveDataHandlers { get { return dataHandlers.Where(d => d != null && d.active); }}
+         
+        /// <summary>
         /// Provide references to other components 
         /// </summary>
         void Awake()
@@ -267,7 +272,7 @@ namespace UXF
         public bool CheckSessionExists(string rootPath, string experimentName, string participantId, int sessionNumber)
         {
             bool overwriteRisk = false;
-            foreach (var dataHandler in dataHandlers) overwriteRisk = overwriteRisk || dataHandler.CheckIfRiskOfOverwrite(experimentName, participantId, sessionNumber, rootPath: rootPath);
+            foreach (var dataHandler in ActiveDataHandlers) overwriteRisk = overwriteRisk || dataHandler.CheckIfRiskOfOverwrite(experimentName, participantId, sessionNumber, rootPath: rootPath);
 
             return overwriteRisk;
         }
@@ -297,7 +302,7 @@ namespace UXF
             this.settings = settings;
 
             // Initialise DataHandlers
-            foreach (var dataHandler in dataHandlers)
+            foreach (var dataHandler in ActiveDataHandlers)
             {
                 dataHandler.Initialise(this);
                 dataHandler.SetUp();
@@ -526,7 +531,7 @@ namespace UXF
         /// <param name="dataType"></param>
         public void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.Other)
         {
-            foreach(var dataHandler in dataHandlers)
+            foreach(var dataHandler in ActiveDataHandlers)
             {
                 string location = dataHandler.HandleDataTable(table, experimentName, ppid, number, dataName, dataType: dataType);
             }
@@ -540,7 +545,7 @@ namespace UXF
         /// <param name="dataType"></param>
         public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.Other)
         {
-            foreach(var dataHandler in dataHandlers)
+            foreach(var dataHandler in ActiveDataHandlers)
             {
                 string location = dataHandler.HandleJSONSerializableObject(serializableObject, experimentName, ppid, number, dataName, dataType: dataType);
             }
@@ -554,7 +559,7 @@ namespace UXF
         /// <param name="dataType"></param>
         public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.Other)
         {
-            foreach(var dataHandler in dataHandlers)
+            foreach(var dataHandler in ActiveDataHandlers)
             {
                 string location = dataHandler.HandleJSONSerializableObject(serializableObject, experimentName, ppid, number, dataName, dataType: dataType);
             }
@@ -568,7 +573,7 @@ namespace UXF
         /// <param name="dataType"></param>
         public void SaveText(string text, string dataName, DataType dataType = DataType.Other)
         {
-            foreach(var dataHandler in dataHandlers)
+            foreach(var dataHandler in ActiveDataHandlers)
             {
                 string location = dataHandler.HandleText(text, experimentName, ppid, number, dataName, dataType: dataType);
             }
@@ -582,7 +587,7 @@ namespace UXF
         /// <param name="dataType"></param>
         public void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.Other)
         {
-            foreach(var dataHandler in dataHandlers)
+            foreach(var dataHandler in ActiveDataHandlers)
             {
                 string location = dataHandler.HandleBytes(bytes, experimentName, ppid, number, dataName, dataType: dataType);
             }
@@ -603,7 +608,7 @@ namespace UXF
                 if (cleanUp != null) cleanUp();
 
                 // end DataHandler - forces completion of tasks
-                foreach (var dataHandler in dataHandlers) dataHandler.CleanUp();
+                foreach (var dataHandler in ActiveDataHandlers) dataHandler.CleanUp();
                 
                 onSessionEnd.Invoke(this);
 

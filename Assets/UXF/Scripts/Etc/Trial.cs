@@ -132,7 +132,7 @@ namespace UXF
         public void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.SessionInfo)
         {
             int i = 0;
-            foreach(var dataHandler in session.dataHandlers)
+            foreach(var dataHandler in session.ActiveDataHandlers)
             {
                 string location = dataHandler.HandleDataTable(table, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
@@ -148,7 +148,7 @@ namespace UXF
         public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo)
         {
             int i = 0;
-            foreach(var dataHandler in session.dataHandlers)
+            foreach(var dataHandler in session.ActiveDataHandlers)
             {
                 string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
@@ -164,7 +164,7 @@ namespace UXF
         public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo)
         {
             int i = 0;
-            foreach(var dataHandler in session.dataHandlers)
+            foreach(var dataHandler in session.ActiveDataHandlers)
             {
                 string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
@@ -180,7 +180,7 @@ namespace UXF
         public void SaveText(string text, string dataName, DataType dataType = DataType.SessionInfo)
         {
             int i = 0;
-            foreach(var dataHandler in session.dataHandlers)
+            foreach(var dataHandler in session.ActiveDataHandlers)
             {
                 string location = dataHandler.HandleText(text, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
@@ -196,7 +196,7 @@ namespace UXF
         public void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.SessionInfo)
         {
             int i = 0;
-            foreach(var dataHandler in session.dataHandlers)
+            foreach(var dataHandler in session.ActiveDataHandlers)
             {
                 string location = dataHandler.HandleBytes(bytes, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");

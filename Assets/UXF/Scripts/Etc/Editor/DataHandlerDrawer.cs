@@ -18,14 +18,17 @@ namespace UXF.EditorUtils
 
             Rect activeBox = position;
             activeBox.width = 25;
+            activeBox.y += 1;
 
             Rect btnBox = position;
             btnBox.width = 78;
-            btnBox.x = position.x + position.width - 78;
+            btnBox.x = position.x + position.width - 78;            
 
             Rect fieldBox = position;
             fieldBox.width = position.width - (78 + 20 + 5);
             fieldBox.x = position.x + 20;
+            fieldBox.y += 1;
+            fieldBox.height -= 2;
 
 
             DataHandler dh = ((DataHandler)property.objectReferenceValue);
@@ -56,6 +59,11 @@ namespace UXF.EditorUtils
             EditorGUI.EndDisabledGroup();
 
             EditorGUI.EndProperty();
+        }
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            return 18;
         }
     }
 }

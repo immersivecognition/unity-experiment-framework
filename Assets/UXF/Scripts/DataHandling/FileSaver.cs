@@ -235,7 +235,7 @@ namespace UXF
 
     public enum DataSaveLocation
     {
-        SessionFolder, Other
+        Fixed, GetFromUI
     }
 
 }

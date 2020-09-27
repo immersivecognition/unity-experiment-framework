@@ -72,7 +72,7 @@ namespace UXF.EditorUtils
                     EditorGUI.indentLevel--;
                     break;
                 case 2:
-                    EditorGUILayout.HelpBox("The Data Handlers below define how your data will be stored.", MessageType.Info);
+                    EditorGUILayout.HelpBox("The Data Handlers below define how your data will be stored. You may need to enable/disable different handlers depending on your build target (Windows, Web, Quest)", MessageType.Info);
                     EditorGUI.indentLevel++;
                     DrawPropertiesFrom("dataHandlers");
                     EditorGUI.indentLevel--;
@@ -82,8 +82,10 @@ namespace UXF.EditorUtils
                     break;
             }
             EditorGUILayout.EndVertical();
-
+            EditorGUILayout.Separator();
             DrawMonitorTab();
+            GUILayout.Button("Create a GitHub issue");
+            GUILayout.Button("Get help on the Wiki");
 
             serializedObject.ApplyModifiedProperties();          
         }

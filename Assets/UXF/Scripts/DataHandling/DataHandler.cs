@@ -13,7 +13,7 @@ namespace UXF
         /// <summary>
         /// Text representing the storage location for the data.
         /// </summary>
-        public string storageLocation { get; set; }
+        public string storageLocation { get; set; } = @"C:\Users\jackb\Desktop\psycdata";
         public Session session { get; private set; }
 
         /// <summary>
