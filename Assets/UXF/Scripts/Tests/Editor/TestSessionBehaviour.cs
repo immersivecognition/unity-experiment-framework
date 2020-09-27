@@ -17,13 +17,13 @@ namespace UXF.Tests
         [Test]
         public void TestEndOnDestroy()
         {
-            (Session session, FileIOManager fileIOManager) = CreateSession("endondestroy");
+            (Session session, FileSaver fileSaver) = CreateSession("endondestroy");
             session.endOnDestroy = true;
             session.blocks[0].trials[0].Begin();
             session.blocks[0].trials[0].End();
             session.blocks[0].trials[1].Begin();
 
-            string path = fileIOManager.GetSessionPath(session.experimentName, session.ppid, session.number);
+            string path = fileSaver.GetSessionPath(session.experimentName, session.ppid, session.number);
             GameObject.DestroyImmediate(session.gameObject);
 
             // read the file to check data
@@ -34,13 +34,13 @@ namespace UXF.Tests
         [Test]
         public void TestDontEndOnDestroy()
         {
-            (Session session, FileIOManager fileIOManager) = CreateSession("dontendondestroy");
+            (Session session, FileSaver fileSaver) = CreateSession("dontendondestroy");
             session.endOnDestroy = false;
             session.blocks[0].trials[0].Begin();
             session.blocks[0].trials[0].End();
             session.blocks[0].trials[1].Begin();
 
-            string path = fileIOManager.GetSessionPath(session.experimentName, session.ppid, session.number);
+            string path = fileSaver.GetSessionPath(session.experimentName, session.ppid, session.number);
             GameObject.DestroyImmediate(session.gameObject);
 
             // check csv file didnt get written
@@ -50,7 +50,7 @@ namespace UXF.Tests
         [Test]
         public void TestEndAfterLastTrial()
         {
-            (Session session, FileIOManager fileIOManager) = CreateSession("endafterlasttrial");
+            (Session session, FileSaver fileSaver) = CreateSession("endafterlasttrial");
             session.endAfterLastTrial = true;
             session.onTrialEnd.AddListener(session.EndIfLastTrial);
 
@@ -59,7 +59,7 @@ namespace UXF.Tests
                 trial.Begin();
                 trial.End();
             }
-            string path = fileIOManager.GetSessionPath(session.experimentName, session.ppid, session.number);
+            string path = fileSaver.GetSessionPath(session.experimentName, session.ppid, session.number);
             Assert.False(session.hasInitialised);
 
             // read the file to check data
@@ -67,23 +67,23 @@ namespace UXF.Tests
             Assert.AreEqual(6, lines.Length);
         }
 
-        Tuple<Session, FileIOManager> CreateSession(string ppidExtra)
+        Tuple<Session, FileSaver> CreateSession(string ppidExtra)
         {
             GameObject gameObject = new GameObject();
-            FileIOManager fileIOManager = gameObject.AddComponent<FileIOManager>();
+            FileSaver fileSaver = gameObject.AddComponent<FileSaver>();
             SessionLogger sessionLogger = gameObject.AddComponent<SessionLogger>();
             Session session = gameObject.AddComponent<Session>();
-            fileIOManager.storageLocation = "example_output";
+            fileSaver.storageLocation = "example_output";
 
             sessionLogger.AttachReferences(
                 session
             );
 
-            session.dataHandlers = new DataHandler[]{ fileIOManager };
+            session.dataHandlers = new DataHandler[]{ fileSaver };
 
             sessionLogger.Initialise();
 
-            fileIOManager.verboseDebug = true;
+            fileSaver.verboseDebug = true;
 
             string experimentName = "unit_test";
             string ppid = "test_behaviour_" + ppidExtra;
@@ -93,7 +93,7 @@ namespace UXF.Tests
 			session.CreateBlock(2);
             session.CreateBlock(3);
 
-            return new Tuple<Session, FileIOManager>(session, fileIOManager);
+            return new Tuple<Session, FileSaver>(session, fileSaver);
         }
 
 	}

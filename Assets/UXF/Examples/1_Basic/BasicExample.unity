@@ -276,6 +276,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
+      propertyPath: dataHandlers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
       propertyPath: trackedObjects.Array.data[0]
       value: 
       objectReference: {fileID: 1294342340}
@@ -429,6 +434,11 @@ PrefabInstance:
       propertyPath: dataHandlers.Array.data[0]
       value: 
       objectReference: {fileID: 776833610}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
+      propertyPath: dataHandlers.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 224025734146448884, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -1104,7 +1114,7 @@ GameObject:
   - component: {fileID: 776833609}
   - component: {fileID: 776833610}
   m_Layer: 0
-  m_Name: File IO
+  m_Name: File Saver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1133,10 +1143,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 776833608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35ed9d5458c0c024a83c89ba1b6552ac, type: 3}
+  m_Script: {fileID: 11500000, guid: c998d809839214b438495bbe6d805bd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  storageLocation: 
+  active: 1
   sortDataIntoFolders: 1
   verboseDebug: 0
 --- !u!1 &984028289

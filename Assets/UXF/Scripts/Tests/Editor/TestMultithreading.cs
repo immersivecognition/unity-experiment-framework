@@ -15,14 +15,14 @@ namespace UXF.Tests
 
         GameObject gameObject;
         Session session;
-        FileIOManager fileIOManager;
+        FileSaver fileSaver;
         SessionLogger sessionLogger;
 
         [SetUp]
         public void SetUp()
         {
             gameObject = new GameObject();
-            fileIOManager = gameObject.AddComponent<FileIOManager>();
+            fileSaver = gameObject.AddComponent<FileSaver>();
             sessionLogger = gameObject.AddComponent<SessionLogger>();
             session = gameObject.AddComponent<Session>();
 
@@ -30,13 +30,13 @@ namespace UXF.Tests
                 session
             );
 
-            fileIOManager.storageLocation = "example_output";
+            fileSaver.storageLocation = "example_output";
 
-            session.dataHandlers = new DataHandler[]{ fileIOManager };
+            session.dataHandlers = new DataHandler[]{ fileSaver };
 
             sessionLogger.Initialise();
 
-            fileIOManager.verboseDebug = true;
+            fileSaver.verboseDebug = true;
         }
 
         [TearDown]

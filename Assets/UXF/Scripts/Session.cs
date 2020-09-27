@@ -14,7 +14,7 @@ namespace UXF
     /// The Session represents a single "run" of an experiment, and contains all information about that run. 
     /// </summary>
     [ExecuteInEditMode]
-    [RequireComponent(typeof(FileIOManager))]
+    [RequireComponent(typeof(FileSaver))]
     public class Session : MonoBehaviour, ISettingsContainer, IDataAssociatable
     {
         /// <summary>
@@ -664,17 +664,6 @@ namespace UXF
             {
                 End();
             }
-        }
-
-        [Obsolete("Move to fileiomanager")]
-        /// <summary>
-        /// Convert a session number to a session name
-        /// </summary>
-        /// <param name="num"></param>
-        /// <returns></returns>
-        public static string SessionNumToName(int num)
-        {
-            return string.Format("S{0:000}", num);
         }
 
     }

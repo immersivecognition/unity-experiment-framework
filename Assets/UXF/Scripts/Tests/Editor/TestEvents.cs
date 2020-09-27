@@ -15,7 +15,7 @@ namespace UXF.Tests
 
         GameObject gameObject;
         Session session;
-        FileIOManager fileIOManager;
+        FileSaver fileSaver;
         SessionLogger sessionLogger;
 
         [SetUp]
@@ -35,20 +35,20 @@ namespace UXF.Tests
         {   
 
             gameObject = new GameObject();
-            fileIOManager = gameObject.AddComponent<FileIOManager>();
+            fileSaver = gameObject.AddComponent<FileSaver>();
             sessionLogger = gameObject.AddComponent<SessionLogger>();
             session = gameObject.AddComponent<Session>();
 
             sessionLogger.AttachReferences(
                 session
             );
-            fileIOManager.storageLocation = "example_output";
+            fileSaver.storageLocation = "example_output";
 
             session.onSessionEnd.AddListener(UseSession);
 
             sessionLogger.Initialise();
 
-            fileIOManager.verboseDebug = true;
+            fileSaver.verboseDebug = true;
 
             string experimentName = "unit_test";
             string ppid = "test_trials";

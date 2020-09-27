@@ -14,7 +14,7 @@ namespace UXF.Tests
 
         GameObject gameObject;
         Session session;
-        FileIOManager fileIOManager;
+        FileSaver fileSaver;
         SessionLogger sessionLogger;
 		List<GameObject> tracked = new List<GameObject>();
 
@@ -22,7 +22,7 @@ namespace UXF.Tests
         public void SetUp()
         {
             gameObject = new GameObject();
-            fileIOManager = gameObject.AddComponent<FileIOManager>();
+            fileSaver = gameObject.AddComponent<FileSaver>();
             sessionLogger = gameObject.AddComponent<SessionLogger>();
             session = gameObject.AddComponent<Session>();
 
@@ -30,12 +30,12 @@ namespace UXF.Tests
                 session
             );
 
-            session.dataHandlers = new DataHandler[]{ fileIOManager };
+            session.dataHandlers = new DataHandler[]{ fileSaver };
 
             sessionLogger.Initialise();
             
-            fileIOManager.storageLocation = "example_output";
-            fileIOManager.verboseDebug = true;
+            fileSaver.storageLocation = "example_output";
+            fileSaver.verboseDebug = true;
 
             string experimentName = "unit_test";
             string ppid = "test_trackers";

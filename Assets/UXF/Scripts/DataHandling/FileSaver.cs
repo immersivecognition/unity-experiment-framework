@@ -13,7 +13,7 @@ namespace UXF
     /// <summary>
     /// Component which manages File I/O in a seperate thread to avoid hitches.
     /// </summary>
-    public class FileIOManager : DataHandler
+    public class FileSaver : DataHandler
     {
 
         [Tooltip("Enable to sort session files into folders. The trial_results CSV is never put into a folder.")]

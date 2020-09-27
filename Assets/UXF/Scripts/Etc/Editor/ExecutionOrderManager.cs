@@ -6,13 +6,13 @@ public class ExecutionOrderManager : Editor
     static ExecutionOrderManager()
     {
         // Get the name of the script we want to change it's execution order
-        string fileIOManager = typeof(UXF.FileIOManager).Name;
+        string fileSaver = typeof(UXF.FileSaver).Name;
 
         // Iterate through all scripts (Might be a better way to do this?)
         foreach (MonoScript monoScript in MonoImporter.GetAllRuntimeMonoScripts())
         {
             // If found our script
-            if (monoScript.name == fileIOManager)
+            if (monoScript.name == fileSaver)
             {
                 // And it's not at the execution time we want already
                 // (Without this we will get stuck in an infinite loop)

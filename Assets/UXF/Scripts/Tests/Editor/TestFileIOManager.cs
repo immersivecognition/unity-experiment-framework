@@ -10,37 +10,35 @@ using System.IO;
 namespace UXF.Tests
 {
 
-    public class TestFileIOManager
+    public class TestFileSaver
     {
 
-        string experiment = "fileiomanager_test";
+        string experiment = "fileSaver_test";
         string ppid = "test_ppid";
         int sessionNum = 1;
-		FileIOManager fileIOManager;
-
-        List<WriteFileInfo> writtenFiles;
+		FileSaver fileSaver;
 
         [SetUp]
         public void SetUp()
         {
 			var gameObject = new GameObject();
-			fileIOManager = gameObject.AddComponent<FileIOManager>();
-            fileIOManager.storageLocation = "example_output";
-			fileIOManager.verboseDebug = true;
+			fileSaver = gameObject.AddComponent<FileSaver>();
+            fileSaver.storageLocation = "example_output";
+			fileSaver.verboseDebug = true;
         }
 
 
 		[TearDown]
 		public void TearDown()
 		{			
-			GameObject.DestroyImmediate(fileIOManager.gameObject);
+			GameObject.DestroyImmediate(fileSaver.gameObject);
 		}
 
 
         [Test]
         public void WriteManyFiles()
         {
-            fileIOManager.SetUp();
+            fileSaver.SetUp();
 
             // generate a large dictionary
 			var dict = new Dictionary<string, object>();
@@ -58,11 +56,11 @@ namespace UXF.Tests
 			{
 				string fileName = string.Format("{0:000}", i);
 				Debug.LogFormat("Queueing {0}", fileName);
-            	string fpath = fileIOManager.HandleJSONSerializableObject(dict, experiment, ppid, sessionNum, fileName, dataType: DataType.Other);
+            	string fpath = fileSaver.HandleJSONSerializableObject(dict, experiment, ppid, sessionNum, fileName, dataType: DataType.Other);
                 fpaths[i] = fpath;
 			}
 
-            fileIOManager.CleanUp();
+            fileSaver.CleanUp();
 
 			// cleanup files
             foreach (var fpath in fpaths)
@@ -75,18 +73,18 @@ namespace UXF.Tests
         [Test]
         public void EarlyExit()
         {
-            fileIOManager.SetUp();
-            fileIOManager.CleanUp();
+            fileSaver.SetUp();
+            fileSaver.CleanUp();
 			
 			Assert.Throws<System.InvalidOperationException>(
 				() => {
-                    fileIOManager.ManageInWorker(() => Debug.Log("Code enqueued after FileIOManager ended"));
+                    fileSaver.ManageInWorker(() => Debug.Log("Code enqueued after FileSaver ended"));
 				}
 			);
 
-            fileIOManager.SetUp();
-            fileIOManager.ManageInWorker(() => Debug.Log("Code enqueued after FileIOManager re-opened"));
-            fileIOManager.CleanUp();
+            fileSaver.SetUp();
+            fileSaver.ManageInWorker(() => Debug.Log("Code enqueued after FileSaver re-opened"));
+            fileSaver.CleanUp();
 
         }
 

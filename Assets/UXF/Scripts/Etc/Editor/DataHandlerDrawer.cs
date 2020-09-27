@@ -13,17 +13,40 @@ namespace UXF.EditorUtils
             // Using BeginProperty / EndProperty on the parent property means that
             // prefab override logic works on the entire property.
             EditorGUI.BeginProperty(position, label, property);
+            
+            EditorGUIUtility.labelWidth = 95f; 
 
-            Rect fieldBox = position;
-            fieldBox.width = position.width*0.75f - 5;
+            Rect activeBox = position;
+            activeBox.width = 25;
 
             Rect btnBox = position;
-            btnBox.width *= 0.25f;
-            btnBox.x += position.width*0.75f;
+            btnBox.width = 78;
+            btnBox.x = position.x + position.width - 78;
+
+            Rect fieldBox = position;
+            fieldBox.width = position.width - (78 + 20 + 5);
+            fieldBox.x = position.x + 20;
+
 
             DataHandler dh = ((DataHandler)property.objectReferenceValue);
-            string name = dh == null ? "(Null)" : dh.name;
-            EditorGUI.PropertyField(fieldBox, property, new GUIContent(name, "A reference to the data handler instance."));
+            string name;
+            if (dh == null)
+            {
+                EditorGUI.BeginDisabledGroup(true);
+                EditorGUI.Toggle(activeBox, GUIContent.none, false);
+                EditorGUI.EndDisabledGroup();
+                name = " ";
+            }
+            else
+            {
+                var obj = new SerializedObject(property.objectReferenceValue);
+                var prop = obj.FindProperty("active");
+                if (EditorGUI.PropertyField(activeBox, prop, GUIContent.none)) Debug.Log("df");
+                obj.ApplyModifiedProperties();
+                name = dh.name;
+            }
+
+            EditorGUI.PropertyField(fieldBox, property, new GUIContent(name, "A reference to a data handler instance."));
             
             EditorGUI.BeginDisabledGroup(dh == null);
             if (GUI.Button(btnBox, "Configure"))

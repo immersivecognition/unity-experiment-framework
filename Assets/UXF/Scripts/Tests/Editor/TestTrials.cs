@@ -12,10 +12,9 @@ namespace UXF.Tests
 
 	public class TestTrials
 	{
-
         GameObject gameObject;
         Session session;
-        FileIOManager fileIOManager;
+        FileSaver fileSaver;
         SessionLogger sessionLogger;
 
         string experimentName = "unit_test";
@@ -25,19 +24,19 @@ namespace UXF.Tests
         void Start()
         {
             gameObject = new GameObject();
-            fileIOManager = gameObject.AddComponent<FileIOManager>();
+            fileSaver = gameObject.AddComponent<FileSaver>();
             sessionLogger = gameObject.AddComponent<SessionLogger>();
             session = gameObject.AddComponent<Session>();
 
-            session.dataHandlers = new DataHandler[]{ fileIOManager };
+            session.dataHandlers = new DataHandler[]{ fileSaver };
 
             sessionLogger.AttachReferences(
                 session
             );
 
             sessionLogger.Initialise();
-            fileIOManager.storageLocation = "example_output";
-            fileIOManager.verboseDebug = true;
+            fileSaver.storageLocation = "example_output";
+            fileSaver.verboseDebug = true;
 
             session.Begin(experimentName, ppid);
             session.customHeaders.Add("observation");
@@ -78,7 +77,7 @@ namespace UXF.Tests
             {
                 Assert.AreEqual(trial.result["observation"], ++i);
             }
-            string sessionPath = fileIOManager.GetSessionPath(experimentName, ppid, sessionNum);
+            string sessionPath = fileSaver.GetSessionPath(experimentName, ppid, sessionNum);
             Finish();
 
             // read the file to check headers
@@ -112,7 +111,7 @@ namespace UXF.Tests
 
             int numHeaders = session.Headers.Count;
 
-            string sessionPath = fileIOManager.GetSessionPath(experimentName, ppid, sessionNum);
+            string sessionPath = fileSaver.GetSessionPath(experimentName, ppid, sessionNum);
             Finish();
 
             // read the file back in, check number of columns equals number of headers
