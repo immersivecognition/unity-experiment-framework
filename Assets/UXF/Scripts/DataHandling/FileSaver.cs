@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using System;
 using System.IO;
 using System.Threading;
 using System.Linq;
-using System.Collections.Specialized;
 
 
 namespace UXF
@@ -15,11 +14,9 @@ namespace UXF
     /// </summary>
     public class FileSaver : DataHandler
     {
-
+        [Space]
         [Tooltip("Enable to sort session files into folders. The trial_results CSV is never put into a folder.")]
         public bool sortDataIntoFolders = true;
-
-        public new static bool requiresLocalDirectory = true;
 
         /// <summary>
         /// Enable to print debug messages to the console.
@@ -47,6 +44,7 @@ namespace UXF
         public override void SetUp()
         {
             quitting = false;
+            Directory.CreateDirectory(storageLocation);
 
             if (!IsActive)
             {
@@ -138,7 +136,7 @@ namespace UXF
             
             string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
-            CreateDirectoryIfNotExists(directory);
+            Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
             
              if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
@@ -153,7 +151,7 @@ namespace UXF
 
             string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
-            CreateDirectoryIfNotExists(directory);
+            Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
             
              if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
@@ -168,7 +166,7 @@ namespace UXF
 
             string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
-            CreateDirectoryIfNotExists(directory);
+            Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
             
              if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
@@ -181,7 +179,7 @@ namespace UXF
         {
             string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
-            CreateDirectoryIfNotExists(directory);
+            Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
             
              if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
@@ -194,7 +192,7 @@ namespace UXF
         {
             string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
-            CreateDirectoryIfNotExists(directory);
+            Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));  
 
              if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
@@ -206,14 +204,16 @@ namespace UXF
 
         public string GetSessionPath(string experiment, string ppid, int sessionNum)
         {
-            return Path.Combine(storageLocation, experiment, ppid, SessionNumToName(sessionNum));
+            string storageLocationSafe = storageLocation;
+            if (!System.IO.Directory.Exists(storageLocation))
+            {
+                storageLocationSafe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "UXF_Data");
+                Directory.CreateDirectory(storageLocationSafe);
+                Debug.LogErrorFormat("Selected storage location ({0}) does not exist! Defaulting to {1}.", storageLocation, storageLocationSafe);
+            }
+            return Path.Combine(storageLocationSafe, experiment, ppid, SessionNumToName(sessionNum));
         }
 
-        public static void CreateDirectoryIfNotExists(string path)
-        {
-            if (!System.IO.Directory.Exists(path))
-                System.IO.Directory.CreateDirectory(path);
-        }
 
         public static string SessionNumToName(int num)
         {

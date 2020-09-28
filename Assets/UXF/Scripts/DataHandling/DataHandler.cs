@@ -13,13 +13,8 @@ namespace UXF
         /// <summary>
         /// Text representing the storage location for the data.
         /// </summary>
-        public string storageLocation { get; set; } = @"C:\Users\jackb\Desktop\psycdata";
+        public string storageLocation { get; set; }
         public Session session { get; private set; }
-
-        /// <summary>
-        /// True if this DataHandler requires a local directory.
-        /// </summary>
-        public static bool requiresLocalDirectory;
 
         public void Initialise(Session session)
         {

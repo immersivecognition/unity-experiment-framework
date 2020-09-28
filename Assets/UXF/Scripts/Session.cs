@@ -57,13 +57,13 @@ namespace UXF
         /// Enable to save a copy of the session.settings dictionary to the session folder as a `.json` file. This is written just as the session begins.
         /// </summary>
         [Tooltip("Enable to save a copy of the session.settings dictionary to the session folder as a .json file. This is written just as the session begins.")]
-        public bool copySessionSettings = true;
+        public bool storeSessionSettings = true;
 
         /// <summary>
         /// Enable to save a copy of the session.participantDetails dictionary to the session folder as a `.csv` file. This is written just as the session begins.
         /// </summary>
         [Tooltip("Enable to save a copy of the session.participantDetails dictionary to the session folder as a .csv file. This is written just as the session begins.")]
-        public bool copyParticipantDetails = true;
+        public bool storeParticipantDetails = true;
 
         /// <summary>
         /// List of dependent variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
@@ -312,13 +312,13 @@ namespace UXF
             // raise the session events
             onSessionBegin.Invoke(this);
 
-            if (copySessionSettings)
+            if (storeSessionSettings)
             {
                 // copy Settings to session folder
                 SaveJSONSerializableObject(new Dictionary<string, object>(settings.baseDict), "settings", dataType: DataType.SessionInfo);
             }
 
-            if (copyParticipantDetails)
+            if (storeParticipantDetails)
             {
                 // copy participant details to session folder
                 // we convert to a DataTable because we know the dictionary will be "flat" (one value per key)

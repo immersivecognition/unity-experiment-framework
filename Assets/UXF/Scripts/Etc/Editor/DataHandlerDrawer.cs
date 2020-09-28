@@ -54,7 +54,7 @@ namespace UXF.EditorUtils
             EditorGUI.BeginDisabledGroup(dh == null);
             if (GUI.Button(btnBox, "Configure"))
             {
-                
+                Selection.activeGameObject = dh.gameObject;
             }
             EditorGUI.EndDisabledGroup();
 

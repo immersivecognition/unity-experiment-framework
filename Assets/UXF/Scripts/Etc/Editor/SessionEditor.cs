@@ -9,8 +9,8 @@ namespace UXF.EditorUtils
     {
         Session session;
         
-        int tabSelection = 0;
-        string[] tabTexts = new string[]{ "Behaviour", "Data collection", "Data storage", "Events" };
+        static int tabSelection;
+        string[] tabTexts = new string[]{ "Behaviour", "Data collection", "Data handling", "Events" };
 
 
         protected override void InitInspector()
@@ -52,40 +52,50 @@ namespace UXF.EditorUtils
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
-            EditorGUILayout.BeginVertical("Box");
+
+
+            Rect rectBox = EditorGUILayout.BeginVertical("Box");
+            float lw = EditorGUIUtility.labelWidth;
+
             switch (tabSelection)
             {
                 case 0:
+                    EditorGUIUtility.labelWidth = rectBox.width - 36f;
                     EditorGUI.indentLevel++;
                     DrawPropertiesFromUpTo("endOnQuit", "setAsMainInstance");
                     EditorGUI.BeginDisabledGroup(true);
                     EditorGUILayout.Toggle(new GUIContent("Ad Hoc Header Add", "Now permanantly enabled. Results that are not listed in Custom Headers can be added at any time. If disabled, adding results that are not listed in Custom Headers will throw an error."), false);
                     EditorGUI.EndDisabledGroup();
-                    DrawPropertiesFromUpTo("setAsMainInstance", "copySessionSettings");
+                    DrawPropertiesFromUpTo("setAsMainInstance", "storeSessionSettings");
                     EditorGUI.indentLevel--;
+                    EditorGUIUtility.labelWidth = lw;
                     break;
                 case 1:
+                    EditorGUIUtility.labelWidth = rectBox.width - 36f;
                     EditorGUI.indentLevel++;
                     EditorGUI.BeginDisabledGroup(session.hasInitialised);                
-                    DrawPropertiesFromUpTo("copySessionSettings", "onSessionBegin");
+                    DrawPropertiesFromUpTo("storeSessionSettings", "customHeaders");
+                    EditorGUIUtility.labelWidth = lw;
+                    DrawPropertiesFromUpTo("customHeaders", "onSessionBegin");
                     EditorGUI.EndDisabledGroup();
                     EditorGUI.indentLevel--;
                     break;
                 case 2:
-                    EditorGUILayout.HelpBox("The Data Handlers below define how your data will be stored. You may need to enable/disable different handlers depending on your build target (Windows, Web, Quest)", MessageType.Info);
+                    EditorGUILayout.HelpBox("The Data Handlers below define how your data will be stored. You may need to enable/disable different handlers depending on your build target (Windows, Web, Quest).", MessageType.Info);
                     EditorGUI.indentLevel++;
                     DrawPropertiesFrom("dataHandlers");
                     EditorGUI.indentLevel--;
                     break;
                 case 3:
+                    EditorGUILayout.HelpBox("These evnts are raised when the session/trial begins/ends. Use them to manipulate the scene to create your experiment manipulation.", MessageType.Info);
                     DrawPropertiesFromUpTo("onSessionBegin", "_hasInitialised");                    
                     break;
             }
             EditorGUILayout.EndVertical();
             EditorGUILayout.Separator();
             DrawMonitorTab();
-            GUILayout.Button("Create a GitHub issue");
-            GUILayout.Button("Get help on the Wiki");
+            //GUILayout.Button("Create a GitHub issue");
+            //GUILayout.Button("Get help on the Wiki");
 
             serializedObject.ApplyModifiedProperties();          
         }
