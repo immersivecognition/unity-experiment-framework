@@ -15,6 +15,15 @@ namespace UXF
     public class FileSaver : DataHandler
     {
         [Space]
+
+        [Tooltip("Should the location the data is stored in be: Acquired via the UI, or, a fixed path?")]
+        public DataSaveLocation dataSaveLocation;
+
+        [Tooltip("If fixed path is selected, where should the data be stored?")]
+        [BasteRainGames.HideIfEnumValue("dataSaveLocation", BasteRainGames.HideIf.Equal, (int) DataSaveLocation.AcquireFromUI)]
+        public string fixedSaveLocation = "~";
+
+
         [Tooltip("Enable to sort session files into folders. The trial_results CSV is never put into a folder.")]
         public bool sortDataIntoFolders = true;
 
@@ -32,6 +41,8 @@ namespace UXF
 
         public bool IsActive { get { return parallelThread != null && parallelThread.IsAlive; } }
 
+        public override bool RequiresDataPathUIElement { get { return dataSaveLocation == DataSaveLocation.AcquireFromUI; } }
+
         BlockingQueue<System.Action> bq = new BlockingQueue<System.Action>();
         Thread parallelThread;
 
@@ -44,7 +55,7 @@ namespace UXF
         public override void SetUp()
         {
             quitting = false;
-            Directory.CreateDirectory(storageLocation);
+            Directory.CreateDirectory(base.storageLocation);
 
             if (!IsActive)
             {
@@ -204,12 +215,12 @@ namespace UXF
 
         public string GetSessionPath(string experiment, string ppid, int sessionNum)
         {
-            string storageLocationSafe = storageLocation;
-            if (!System.IO.Directory.Exists(storageLocation))
+            string storageLocationSafe = base.storageLocation;
+            if (!System.IO.Directory.Exists(base.storageLocation))
             {
                 storageLocationSafe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "UXF_Data");
                 Directory.CreateDirectory(storageLocationSafe);
-                Debug.LogErrorFormat("Selected storage location ({0}) does not exist! Defaulting to {1}.", storageLocation, storageLocationSafe);
+                Debug.LogErrorFormat("Selected storage location ({0}) does not exist! Defaulting to {1}.", base.storageLocation, storageLocationSafe);
             }
             return Path.Combine(storageLocationSafe, experiment, ppid, SessionNumToName(sessionNum));
         }
@@ -235,7 +246,7 @@ namespace UXF
 
     public enum DataSaveLocation
     {
-        Fixed, GetFromUI
+        AcquireFromUI, Fixed
     }
 
 }

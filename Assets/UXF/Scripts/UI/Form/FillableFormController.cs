@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace UXF
+namespace UXF.UI
 {
     public class FillableFormController : MonoBehaviour
     {
@@ -124,28 +124,5 @@ namespace UXF
         }
     }
 
-    [System.Serializable]
-    public class FormElementEntry
-    {
-        public string displayName;
-        public string internalName;
-        public FormDataType dataType;
-        public List<string> dropDownValues = new List<string>() { "Option 1", "Option 2" };
 
-        public FormElementController controller { get; set; }
-
-
-        public void Initialise(FormElementController formElementController)
-        {
-            controller = formElementController;
-            controller.Setup(displayName, dataType, this);
-        }
-
-    }
-
-
-    public enum FormDataType
-    {
-        String, Float, Int, Bool, DropDown
-    }
 }

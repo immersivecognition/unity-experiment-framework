@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-namespace UXF
+namespace UXF.UI
 {
     public class TextFormController : FormElementController
     {
@@ -65,6 +65,5 @@ namespace UXF
             }
             placeholder.text = pText;
         }
-
     }
 }

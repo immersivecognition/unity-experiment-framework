@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-namespace UXF
+namespace UXF.UI
 {
     public class DropDownController : FormElementController
     {
@@ -18,7 +18,7 @@ namespace UXF
         protected override void Setup()
         {
             dropdown.ClearOptions();
-            dropdown.AddOptions(entry.dropDownValues);
+            dropdown.AddOptions(entry.dropDownOptions);
         }
 
         public override object GetContents()

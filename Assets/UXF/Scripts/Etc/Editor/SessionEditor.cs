@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEditorInternal;
 
 namespace UXF.EditorUtils
 {
@@ -67,8 +68,21 @@ namespace UXF.EditorUtils
                     EditorGUILayout.Toggle(new GUIContent("Ad Hoc Header Add", "Now permanantly enabled. Results that are not listed in Custom Headers can be added at any time. If disabled, adding results that are not listed in Custom Headers will throw an error."), false);
                     EditorGUI.EndDisabledGroup();
                     DrawPropertiesFromUpTo("setAsMainInstance", "storeSessionSettings");
-                    EditorGUI.indentLevel--;
                     EditorGUIUtility.labelWidth = lw;
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Space(16);
+                    GUILayout.Label("User Interface");
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button("Configure"))
+                    {
+                        Object ui = session.GetComponentInChildren<UI.UIController>();
+                        Selection.activeObject = ui;
+                        InternalEditorUtility.SetIsInspectorExpanded(ui, true);
+                    }
+                    GUILayout.Space(14);
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUI.indentLevel--;
+                    GUILayout.Space(3);
                     break;
                 case 1:
                     EditorGUIUtility.labelWidth = rectBox.width - 36f;
@@ -81,7 +95,10 @@ namespace UXF.EditorUtils
                     EditorGUI.indentLevel--;
                     break;
                 case 2:
-                    EditorGUILayout.HelpBox("The Data Handlers below define how your data will be stored. You may need to enable/disable different handlers depending on your build target (Windows, Web, Quest).", MessageType.Info);
+                    EditorGUILayout.HelpBox(
+                        "The Data Handlers below define how your data will be stored."
+                        + "You can select which Data Handlers will be used."
+                        + "You may need to activate/deactivate different handlers depending on your build target (Windows, Web, Quest).", MessageType.Info);
                     EditorGUI.indentLevel++;
                     DrawPropertiesFrom("dataHandlers");
                     EditorGUI.indentLevel--;

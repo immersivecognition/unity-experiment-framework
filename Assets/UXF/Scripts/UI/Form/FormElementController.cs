@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-namespace UXF
+namespace UXF.UI
 {
-    public class FormElementController : MonoBehaviour
+    public abstract class FormElementController : MonoBehaviour
     {
 
         public RectTransform rectTransform;
@@ -13,8 +13,6 @@ namespace UXF
         [HideInInspector]
         public FormDataType dataType;
         protected string originalTitle;
-
-        public float height { get { return rectTransform.rect.height; } }
 
         [HideInInspector]
         public FormElementEntry entry;
@@ -40,27 +38,16 @@ namespace UXF
             Setup();
         }
 
-        virtual protected void Setup()
-        {
+        virtual protected void Setup() { }
 
-        }
+        abstract public void Clear();
 
-        virtual public void Clear()
-        {
-            
-        }
+        abstract public object GetContents();
 
-        virtual public object GetContents()
-        {
-            return null;
-        }
 
-        virtual public void SetContents(object newContents)
-        {
-            
-        }
+        abstract public void SetContents(object newContents);
 
-        public virtual object GetDefault()
+        virtual public object GetDefault()
         {
             switch (dataType)
             {
@@ -95,6 +82,36 @@ namespace UXF
         {
             title.text = originalTitle;
         }
+    }
+
+    [System.Serializable]
+    public class FormElementEntry
+    {
+        [Tooltip("The name displayed in the UI.")]
+        public string displayName = "Enter your age";
+
+        [Tooltip("The name used to access the value internally from the session.participantDetails dictionary.")]
+        public string internalName = "Age";
+
+        [Tooltip("The type of data you want this form element to collect.")]
+        public FormDataType dataType = FormDataType.Int;
+        public List<string> dropDownOptions = new List<string>() { "Option 1", "Option 2" };
+
+        public FormElementController controller { get; set; }
+
+
+        public void Initialise(FormElementController formElementController)
+        {
+            controller = formElementController;
+            controller.Setup(displayName, dataType, this);
+        }
 
     }
+
+
+    public enum FormDataType
+    {
+        String, Float, Int, Bool, DropDown
+    }
+    
 }

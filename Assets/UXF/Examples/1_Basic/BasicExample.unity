@@ -358,6 +358,11 @@ PrefabInstance:
       propertyPath: onSessionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 203569540471596912, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
+      propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 270650949448428292, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -1256,6 +1261,26 @@ PrefabInstance:
     - target: {fileID: 6761608446862745897, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
       propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7269502480066065359, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
+      propertyPath: _participantDataPoints.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7269502480066065359, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
+      propertyPath: _participantDataPoints.Array.data[2].displayName
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7269502480066065359, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
+      propertyPath: _participantDataPoints.Array.data[3].displayName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7269502480066065359, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
+      propertyPath: _participantDataPoints.Array.data[3].dataType
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7507307701479842563, guid: 0a3b6392f04558844bd340e68ced1ff9,

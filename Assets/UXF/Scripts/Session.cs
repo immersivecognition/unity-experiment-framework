@@ -249,7 +249,7 @@ namespace UXF
         /// <summary>
         /// Get the currently selected dataHandlers for this session.
         /// </summary>
-        public IEnumerable<DataHandler> ActiveDataHandlers { get { return dataHandlers.Where(d => d != null && d.active); }}
+        public IEnumerable<DataHandler> ActiveDataHandlers { get { return dataHandlers.Where(d => d != null && d.active).Distinct(); }}
          
         /// <summary>
         /// Provide references to other components 
