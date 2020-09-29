@@ -16823,7 +16823,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -20, y: 0}
+  m_AnchoredPosition: {x: -15, y: 0}
   m_SizeDelta: {x: 160, y: -20}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &3288547377662086933
@@ -19528,8 +19528,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You can use this space to create some instructions for the researcher or
-    the participant.
+  m_Text: You could use this space to display some instructions to the researcher
+    or the participant.
 --- !u!1 &4944905231755974147
 GameObject:
   m_ObjectHideFlags: 0
@@ -22567,7 +22567,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &6619200163358706458
 GameObject:
   m_ObjectHideFlags: 0
@@ -24533,7 +24533,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: aa68c802ab1f37947958cd5ff239cccd, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -24545,8 +24545,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: I understand the instructions and agree for my data to be collected and
-    used for research purposes.
+  m_Text: Please tick if you understand the instructions and agree for your data to
+    be collected and used for research purposes.<color=red>*</color>
 --- !u!1 &7610194481919489199
 GameObject:
   m_ObjectHideFlags: 0
