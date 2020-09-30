@@ -204,7 +204,7 @@ namespace UXF
             string directory = GetSessionPath(experiment, ppid, sessionNum);
             if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             Directory.CreateDirectory(directory);
-            string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));  
+            string savePath = Path.Combine(directory, string.Format("{0}.txt", dataName));  
 
              if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
 

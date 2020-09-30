@@ -11,18 +11,17 @@ namespace UXF.UI
     /// </summary>
     public class DraggableUI : MonoBehaviour, IDragHandler
     {
-        private RectTransform rectTransform;
+        public RectTransform visibleRect;
         private Vector2 screenSize;
 
         void Start()
         {
-            rectTransform = GetComponent<RectTransform>();
             screenSize = new Vector2(Screen.width, Screen.height);
         }
         
         public void OnDrag(PointerEventData eventData)
         {
-            transform.position += CalculateNewTransformOffset(eventData.delta);
+            visibleRect.transform.position += CalculateNewTransformOffset(eventData.delta);
         }
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace UXF.UI
         {
             // returns an array of corners, from bottom left clockwise.
             Vector3[] corners = new Vector3[4];
-            rectTransform.GetWorldCorners(corners);
+            visibleRect.GetWorldCorners(corners);
 
             float rectLeft = corners[0].x;
             float rectBottom = corners[0].y;

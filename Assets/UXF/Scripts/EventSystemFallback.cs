@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 namespace UXF
@@ -27,7 +28,7 @@ namespace UXF
 
         void CreateEventSystem()
         {
-            if (GameObject.Find("EventSystem") == null)
+            if (FindObjectOfType<EventSystem>() == null)
             {
                 var newEventSystem = Instantiate(eventSystemPrefab);
                 newEventSystem.name = "EventSystem";

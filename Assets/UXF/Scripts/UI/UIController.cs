@@ -10,9 +10,11 @@ namespace UXF.UI
 {
     public class UIController : MonoBehaviour
     {
-        
-        private Session session;
+        public StartupMode startupMode = StartupMode.BuiltInUI;
+        public SessionSettingsMode settingsMode = SessionSettingsMode.SelectWithUI;
+        public string aaa;
 
+        private Session session;
 
 
         /// <summary>
@@ -28,8 +30,13 @@ namespace UXF.UI
     }
 
 
-    public enum UIMode
+    public enum StartupMode
     {
+        BuiltInUI, Automatic, Manual 
+    }
 
+    public enum SessionSettingsMode
+    {
+        SelectWithUI, DownloadFromURL, None 
     }
 }
