@@ -21,8 +21,6 @@ namespace UXF.EditorUtils
             // Always call DrawInspector function
             alwaysDrawInspector = true;
             session = (Session) target;
-
-            EditorApplication.playModeStateChanged += PlayModeStateChanged;
         }
 
         Object obj;
@@ -65,7 +63,7 @@ namespace UXF.EditorUtils
                     EditorGUI.indentLevel++;
                     DrawPropertiesFromUpTo("endOnQuit", "setAsMainInstance");
                     EditorGUI.BeginDisabledGroup(true);
-                    EditorGUILayout.Toggle(new GUIContent("Ad Hoc Header Add", "Now permanantly enabled. Results that are not listed in Custom Headers can be added at any time. If disabled, adding results that are not listed in Custom Headers will throw an error."), false);
+                    EditorGUILayout.Toggle(new GUIContent("Ad Hoc Header Add", "Now permanently enabled. Results that are not listed in Custom Headers can be added at any time. If disabled, adding results that are not listed in Custom Headers will throw an error."), false);
                     EditorGUI.EndDisabledGroup();
                     DrawPropertiesFromUpTo("setAsMainInstance", "storeSessionSettings");
                     EditorGUIUtility.labelWidth = lw;
@@ -104,7 +102,7 @@ namespace UXF.EditorUtils
                     EditorGUI.indentLevel--;
                     break;
                 case 3:
-                    EditorGUILayout.HelpBox("These evnts are raised when the session/trial begins/ends. Use them to manipulate the scene to create your experiment manipulation.", MessageType.Info);
+                    EditorGUILayout.HelpBox("These events are raised when the session/trial begins/ends. Use them to manipulate the scene to create your experiment manipulation.", MessageType.Info);
                     DrawPropertiesFromUpTo("onSessionBegin", "_hasInitialised");                    
                     break;
             }
@@ -167,14 +165,6 @@ namespace UXF.EditorUtils
                 EditorGUILayout.HelpBox("You can monitor the progress of the Session here.\nWaiting for Session to begin...", MessageType.Info);
             }
 
-        }
-
-        private void PlayModeStateChanged(PlayModeStateChange state)
-        {
-            if (state == PlayModeStateChange.EnteredPlayMode)
-            {
-                tabSelection = 3;
-            }
         }
 
     }

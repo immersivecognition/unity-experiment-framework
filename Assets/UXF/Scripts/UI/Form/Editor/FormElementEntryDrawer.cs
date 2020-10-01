@@ -20,7 +20,7 @@ namespace UXF.EditorUtils
             SerializedProperty displayNameProp = property.FindPropertyRelative("displayName");
             SerializedProperty internalNameProp = property.FindPropertyRelative("internalName");
             SerializedProperty dataTypeProp = property.FindPropertyRelative("dataType");
-            SerializedProperty dropDownValuesProp = property.FindPropertyRelative("dropDownValues");
+            SerializedProperty dropDownValuesProp = property.FindPropertyRelative("dropDownOptions");
 
             position.height = EditorGUI.GetPropertyHeight(displayNameProp);
             EditorGUI.PropertyField(position, displayNameProp);
@@ -46,11 +46,11 @@ namespace UXF.EditorUtils
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-                        
+            float extra = 4f;
             SerializedProperty displayNameProp = property.FindPropertyRelative("displayName");
             SerializedProperty internalNameProp = property.FindPropertyRelative("internalName");
             SerializedProperty dataTypeProp = property.FindPropertyRelative("dataType");
-            SerializedProperty dropDownValuesProp = property.FindPropertyRelative("dropDownValues");
+            SerializedProperty dropDownValuesProp = property.FindPropertyRelative("dropDownOptions");
             FormDataType dataType = (FormDataType) dataTypeProp.intValue;
             
             if (dataType == FormDataType.DropDown)
@@ -58,13 +58,15 @@ namespace UXF.EditorUtils
                 return EditorGUI.GetPropertyHeight(displayNameProp)
                     + EditorGUI.GetPropertyHeight(internalNameProp)
                     + EditorGUI.GetPropertyHeight(dataTypeProp)
-                    + EditorGUI.GetPropertyHeight(dropDownValuesProp);
+                    + EditorGUI.GetPropertyHeight(dropDownValuesProp)
+                    + extra;
             } 
             else
             {
                 return EditorGUI.GetPropertyHeight(displayNameProp)
                     + EditorGUI.GetPropertyHeight(internalNameProp)
-                    + EditorGUI.GetPropertyHeight(dataTypeProp);
+                    + EditorGUI.GetPropertyHeight(dataTypeProp)
+                    + extra;
             }
         }
     }
