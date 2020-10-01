@@ -23,7 +23,7 @@ namespace UXF.UI
         [Tooltip("TODO")]
         public string jsonURL = "https://gist.githubusercontent.com/jackbrookes/0f9770fcfe3d448e0f7a1973c2ac7419/raw/f2d234c92c77a817f9fc6390fcfcb39814c33d3c/example_settings.json";
 
-        [Tooltip("TODO")]
+        [Tooltip("Should the Participant ID element be shown in the UI? If now, a unique generated ID will be used.")]
         public bool showPPIDElement = true;
 
         [SubjectNerd.Utilities.Reorderable]
