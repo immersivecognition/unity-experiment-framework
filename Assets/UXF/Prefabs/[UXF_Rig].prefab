@@ -22909,10 +22909,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startupMode: 0
-  settingsMode: 1
+  settingsMode: 0
   settingsSearchPattern: '*.json'
   jsonURL: https://gist.githubusercontent.com/jackbrookes/0f9770fcfe3d448e0f7a1973c2ac7419/raw/f2d234c92c77a817f9fc6390fcfcb39814c33d3c/example_settings.json
-  showPPIDElement: 1
+  ppidMode: 0
   participantDataPoints: []
   termsAndConditions: Please tick if you understand the instructions and agree for
     your data to be collected and used for research purposes.<color=red>*</color>

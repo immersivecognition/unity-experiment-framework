@@ -51,8 +51,6 @@ namespace UXF.EditorUtils
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
-
-
             Rect rectBox = EditorGUILayout.BeginVertical("Box");
             float lw = EditorGUIUtility.labelWidth;
 

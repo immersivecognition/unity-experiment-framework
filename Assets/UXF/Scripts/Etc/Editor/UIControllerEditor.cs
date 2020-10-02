@@ -26,7 +26,13 @@ namespace UXF.EditorUtils
         {
             { SessionSettingsMode.SelectWithUI, "TODO" },
             { SessionSettingsMode.DownloadFromURL, "TODO" },
-            { SessionSettingsMode.None, "TODO" }
+            { SessionSettingsMode.Empty, "TODO" }
+        };
+
+        static Dictionary<PPIDMode, string> ppidModeDescriptionMapping = new Dictionary<PPIDMode, string>()
+        {
+            { PPIDMode.EnterWithUI, "TODO" },
+            { PPIDMode.GenerateUnique, "TODO" }
         };
 
         protected override void InitInspector()
@@ -73,20 +79,40 @@ namespace UXF.EditorUtils
             switch (tabSelection)
             {
                 case 0:
-                    string reasonText;
-                    if (!uiController.SettingsAreCompatible(out reasonText))
+
+                    string ppidReasonText;
+                    if (!uiController.PPIDModeIsInvalid(out ppidReasonText))
                     {
-                        string errorText = "Incompatibility Error: " + reasonText;
+                        string errorText = "Incompatibility Error: " + ppidReasonText;
+                        EditorGUILayout.HelpBox(errorText, UnityEditor.MessageType.Error);
+                        EditorGUILayout.Separator();
+                    }
+
+                    string settingsReasonText;
+                    if (!uiController.SettingsModeIsCompatible(out settingsReasonText))
+                    {
+                        string errorText = "Incompatibility Error: " + settingsReasonText;
                         EditorGUILayout.HelpBox(errorText, UnityEditor.MessageType.Error);
                         EditorGUILayout.Separator();
                     }
 
                     this.DrawProperty("startupMode");
-                    EditorGUILayout.HelpBox(uiController.startupMode.ToString() + ": " + startupModeDescriptionMapping[uiController.startupMode], UnityEditor.MessageType.Info);
+                    EditorGUILayout.HelpBox("Startup Mode " + uiController.startupMode.ToString() + ": " + startupModeDescriptionMapping[uiController.startupMode], UnityEditor.MessageType.Info);
+                    EditorGUILayout.Separator();
+
+                    EditorGUI.BeginDisabledGroup(uiController.startupMode == StartupMode.Manual);
+                    if (uiController.startupMode == StartupMode.Manual)
+                    {
+                        EditorGUILayout.HelpBox("Manual is selected as the Startup Setting - the options below have no effect.", UnityEditor.MessageType.Info);
+                        EditorGUILayout.Separator();
+                    }
+
+                    this.DrawProperty("ppidMode");
+                    EditorGUILayout.HelpBox("PPID Mode " + uiController.ppidMode.ToString() + ": " + ppidModeDescriptionMapping[uiController.ppidMode], UnityEditor.MessageType.Info);
                     EditorGUILayout.Separator();
 
                     this.DrawProperty("settingsMode");
-                    EditorGUILayout.HelpBox(uiController.settingsMode.ToString() + ": " + settingsModeDescriptionMapping[uiController.settingsMode], UnityEditor.MessageType.Info);
+                    EditorGUILayout.HelpBox("Settings Mode " + uiController.settingsMode.ToString() + ": " + settingsModeDescriptionMapping[uiController.settingsMode], UnityEditor.MessageType.Info);
                     switch (uiController.settingsMode)
                     {
                         case SessionSettingsMode.SelectWithUI:
@@ -96,28 +122,31 @@ namespace UXF.EditorUtils
                             if (MiddleButton("Test URL")) throw new NotImplementedException("TODO");
                             this.DrawProperty("jsonURL");
                             break;
-                        case SessionSettingsMode.None:
+                        case SessionSettingsMode.Empty:
                             break;
                     }
+
+                    EditorGUI.EndDisabledGroup();
+
                     EditorGUILayout.Separator();
                     break;
                 case 1:
+                    string datapointsReasonText;
                     EditorGUILayout.HelpBox(
                         "Below you can enter a series of datapoints to be collected about a participant" +
                         "- such as their age, gender, or even things that could affect the task such as " +
                         "the preferred hand of the participant. Press the Generate button to update the UI " +
                         "to reflect your items.", UnityEditor.MessageType.Info);
-                    bool valid = uiController.DatapointsAreValid(out reasonText);
+                    bool valid = uiController.DatapointsAreValid(out datapointsReasonText);
                     if (!valid)
                     {
-                        string errorText = "Participant Datapoints Error: " + reasonText;
+                        string errorText = "Participant Datapoints Error: " + datapointsReasonText;
                         EditorGUILayout.HelpBox(errorText, UnityEditor.MessageType.Error);
                         EditorGUILayout.Separator();
                     }
                     if (MiddleButton("Generate", enabled: valid)) throw new NotImplementedException("TODO");
                     EditorGUILayout.Separator();
                     EditorGUI.indentLevel++;
-                    this.DrawProperty("showPPIDElement");
                     DrawPropertiesFromUpTo("participantDataPoints", "termsAndConditions");
                     EditorGUI.indentLevel--;
                     break;
@@ -125,7 +154,8 @@ namespace UXF.EditorUtils
                     EditorGUILayout.HelpBox(
                         "You can edit the content that displays in the right side of the UI. This can " +
                         "be used for instructions to the participant or researcher on how the study should " +
-                        "be performed. You can add any UI elements such as text, images, or even buttons to  " +
+                        "be performed, and what types of data will be collected. " + 
+                        "You can add any UI elements such as text, images, or even buttons to  " +
                         "the Instructions Panel Content GameObject. You can select it with the button below.", UnityEditor.MessageType.Info);
                     if (MiddleButton("Select Content GameObject"))
                     {
@@ -151,7 +181,7 @@ namespace UXF.EditorUtils
 
         public void DrawUIDisabledMessage()
         {
-            EditorGUILayout.HelpBox("The Built-in UI is not selected as the Startup Setting - these options have no effect.", UnityEditor.MessageType.Warning);
+            EditorGUILayout.HelpBox("The Built-in UI is not selected as the Startup Setting - the options below have no effect.", UnityEditor.MessageType.Warning);
             EditorGUILayout.Separator();
         }
 

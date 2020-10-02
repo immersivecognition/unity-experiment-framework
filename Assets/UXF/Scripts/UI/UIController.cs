@@ -18,18 +18,20 @@ namespace UXF.UI
         public SessionSettingsMode settingsMode = SessionSettingsMode.SelectWithUI;
 
         [Tooltip("TODO")]
+        [TextArea]
         public string settingsSearchPattern = "*.json";
 
         [Tooltip("TODO")]
         public string jsonURL = "https://gist.githubusercontent.com/jackbrookes/0f9770fcfe3d448e0f7a1973c2ac7419/raw/f2d234c92c77a817f9fc6390fcfcb39814c33d3c/example_settings.json";
 
-        [Tooltip("Should the Participant ID element be shown in the UI? If now, a unique generated ID will be used.")]
-        public bool showPPIDElement = true;
+        [Tooltip("How should the Participant ID be collected?")]
+        public PPIDMode ppidMode = PPIDMode.EnterWithUI;
 
         [SubjectNerd.Utilities.Reorderable]
         public List<FormElementEntry> participantDataPoints = new List<FormElementEntry>();
 
         [Tooltip("The text shown next to the terms and conditions checkbox.")]
+        [TextArea]
         public string termsAndConditions = "Please tick if you understand the instructions and agree for your data to be collected and used for research purposes.<color=red>*</color>";
 
         [Tooltip("Should the terms and conditions checkbox be pre-ticked?")]
@@ -54,13 +56,25 @@ namespace UXF.UI
             tsAndCsToggle.isOn = tsAndCsInitialState;
         }
 
-
-        public bool SettingsAreCompatible(out string reasonText)
+        public bool PPIDModeIsInvalid(out string reasonText)
         {
             reasonText = string.Empty;
-            if (startupMode != StartupMode.BuiltInUI && settingsMode == SessionSettingsMode.SelectWithUI)
+            if (startupMode == StartupMode.Automatic && ppidMode == PPIDMode.EnterWithUI)
             {
-                reasonText = "If startup mode is not set to the Built-in UI, you cannot use session settings mode: Select With UI.";
+                reasonText = "If startup mode is Automatic, you cannot use PPID (Participant ID) mode: Select With UI.";
+                return false;
+            }
+
+            return true;
+        }
+
+
+        public bool SettingsModeIsCompatible(out string reasonText)
+        {
+            reasonText = string.Empty;
+            if (startupMode == StartupMode.Automatic && settingsMode == SessionSettingsMode.SelectWithUI)
+            {
+                reasonText = "If startup mode is set to Automatic, you cannot use session settings mode: Select With UI.";
                 return false;
             }
 
@@ -117,6 +131,11 @@ namespace UXF.UI
 
     public enum SessionSettingsMode
     {
-        SelectWithUI, DownloadFromURL, None 
+        SelectWithUI, DownloadFromURL, Empty 
+    }
+
+    public enum PPIDMode
+    {
+        EnterWithUI, GenerateUnique
     }
 }
