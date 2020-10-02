@@ -38,9 +38,15 @@ namespace UXF.UI
         public bool tsAndCsInitialState = false;
         
 # region HIDDEN_VARIABLES
-        public GameObject instructionsContentGameObject;
+        public Transform instructionsContentTransform;
+        public Transform sidebarContentTransform;
+        public DropDownController settingsElement;
+        public TextFormController ppidElement;
         public Text tsAndCsText;
         public Toggle tsAndCsToggle;
+        public TextFormController textPrefab;
+        public DropDownController dropDownPrefab;
+        public CheckBoxController checkBoxPrefab;
         private Session session;
 # endregion
 
@@ -55,6 +61,42 @@ namespace UXF.UI
             tsAndCsText.text = termsAndConditions;
             tsAndCsToggle.isOn = tsAndCsInitialState;
         }
+
+
+        public void GenerateSidebar()
+        {
+            Transform[] children = sidebarContentTransform
+                .Cast<Transform>()
+                .Select(c => c.transform) 
+                .ToArray();
+                
+            foreach (Transform child in children)
+            {
+                if (ReferenceEquals(settingsElement.transform, child)) continue;
+                else if (ReferenceEquals(ppidElement.transform, child)) continue;
+                else DestroyImmediate(child.gameObject);
+            }
+
+            foreach (FormElementEntry formElementEntry in participantDataPoints)
+            {
+                FormElementController newElement = null;
+                switch (formElementEntry.dataType)
+                {
+                    case FormDataType.String:
+                    case FormDataType.Int:
+                    case FormDataType.Float:
+                        newElement = Instantiate(textPrefab, sidebarContentTransform);
+                        break;
+                    case FormDataType.Bool:
+                        newElement = Instantiate(checkBoxPrefab, sidebarContentTransform);
+                        break;
+                    case FormDataType.DropDown:
+                        newElement = Instantiate(dropDownPrefab, sidebarContentTransform);
+                        break;
+                }                
+            }
+        }
+
 
         public bool PPIDModeIsInvalid(out string reasonText)
         {
@@ -115,8 +157,6 @@ namespace UXF.UI
                     + "').";
                 return false;
             }
-
-
 
             return true;
         }

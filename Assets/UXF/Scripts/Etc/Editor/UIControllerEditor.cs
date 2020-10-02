@@ -144,7 +144,7 @@ namespace UXF.EditorUtils
                         EditorGUILayout.HelpBox(errorText, UnityEditor.MessageType.Error);
                         EditorGUILayout.Separator();
                     }
-                    if (MiddleButton("Generate", enabled: valid)) throw new NotImplementedException("TODO");
+                    if (MiddleButton("Generate", enabled: valid)) uiController.GenerateSidebar();
                     EditorGUILayout.Separator();
                     EditorGUI.indentLevel++;
                     DrawPropertiesFromUpTo("participantDataPoints", "termsAndConditions");
@@ -159,10 +159,10 @@ namespace UXF.EditorUtils
                         "the Instructions Panel Content GameObject. You can select it with the button below.", UnityEditor.MessageType.Info);
                     if (MiddleButton("Select Content GameObject"))
                     {
-                        if (uiController.instructionsContentGameObject.transform.childCount > 0)
-                            Selection.activeObject = uiController.instructionsContentGameObject.transform.GetChild(0);
+                        if (uiController.instructionsContentTransform.childCount > 0)
+                            Selection.activeObject = uiController.instructionsContentTransform.GetChild(0);
                         else
-                            Selection.activeObject = uiController.instructionsContentGameObject;
+                            Selection.activeObject = uiController.instructionsContentTransform;
                     }
                     EditorGUILayout.HelpBox(
                         "You can also change the 'terms & conditions' style message that must be ticked " +
