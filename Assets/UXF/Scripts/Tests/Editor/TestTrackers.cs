@@ -34,7 +34,7 @@ namespace UXF.Tests
 
             sessionLogger.Initialise();
             
-            fileSaver.storageLocation = "example_output";
+            fileSaver.storagePath = "example_output";
             fileSaver.verboseDebug = true;
 
             string experimentName = "unit_test";

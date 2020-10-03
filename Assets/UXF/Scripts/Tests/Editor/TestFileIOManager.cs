@@ -23,7 +23,7 @@ namespace UXF.Tests
         {
 			var gameObject = new GameObject();
 			fileSaver = gameObject.AddComponent<FileSaver>();
-            fileSaver.storageLocation = "example_output";
+            fileSaver.storagePath = "example_output";
 			fileSaver.verboseDebug = true;
         }
 

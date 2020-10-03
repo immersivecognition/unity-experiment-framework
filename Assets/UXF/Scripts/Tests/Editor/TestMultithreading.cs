@@ -30,7 +30,7 @@ namespace UXF.Tests
                 session
             );
 
-            fileSaver.storageLocation = "example_output";
+            fileSaver.storagePath = "example_output";
 
             session.dataHandlers = new DataHandler[]{ fileSaver };
 

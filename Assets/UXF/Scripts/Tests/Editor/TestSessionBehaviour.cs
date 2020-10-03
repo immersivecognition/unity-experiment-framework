@@ -73,7 +73,7 @@ namespace UXF.Tests
             FileSaver fileSaver = gameObject.AddComponent<FileSaver>();
             SessionLogger sessionLogger = gameObject.AddComponent<SessionLogger>();
             Session session = gameObject.AddComponent<Session>();
-            fileSaver.storageLocation = "example_output";
+            fileSaver.storagePath = "example_output";
 
             sessionLogger.AttachReferences(
                 session

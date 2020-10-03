@@ -42,7 +42,7 @@ namespace UXF.Tests
             sessionLogger.AttachReferences(
                 session
             );
-            fileSaver.storageLocation = "example_output";
+            fileSaver.storagePath = "example_output";
 
             session.onSessionEnd.AddListener(UseSession);
 

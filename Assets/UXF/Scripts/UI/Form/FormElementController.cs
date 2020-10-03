@@ -97,14 +97,7 @@ namespace UXF.UI
         public FormDataType dataType = FormDataType.Int;
         public List<string> dropDownOptions = new List<string>() { "Option 1", "Option 2" };
 
-        public FormElementController controller { get; set; }
-
-
-        public void Initialise(FormElementController formElementController)
-        {
-            controller = formElementController;
-            controller.Setup(displayName, dataType, this);
-        }
+        public FormElement element { get; set; }
 
     }
 

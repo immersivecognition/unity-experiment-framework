@@ -24,24 +24,27 @@ namespace UXF.EditorUtils
         };
         static Dictionary<SessionSettingsMode, string> settingsModeDescriptionMapping = new Dictionary<SessionSettingsMode, string>()
         {
-            { SessionSettingsMode.SelectWithUI, "TODO" },
+            { SessionSettingsMode.AcquireFromUI, "TODO" },
             { SessionSettingsMode.DownloadFromURL, "TODO" },
             { SessionSettingsMode.Empty, "TODO" }
         };
 
         static Dictionary<PPIDMode, string> ppidModeDescriptionMapping = new Dictionary<PPIDMode, string>()
         {
-            { PPIDMode.EnterWithUI, "TODO" },
+            { PPIDMode.AcquireFromUI, "TODO" },
             { PPIDMode.GenerateUnique, "TODO" }
         };
 
         protected override void InitInspector()
         {
             base.InitInspector();
-
+              
             // Always call DrawInspector function
             alwaysDrawInspector = true;
             uiController = (UIController)target;
+
+            // we can interrupt the play button press if something isnt right
+            EditorApplication.playModeStateChanged += HaltPlayIfUIIsInvalid;
         }
 
         protected override void DrawInspector()
@@ -80,8 +83,9 @@ namespace UXF.EditorUtils
             {
                 case 0:
 
+
                     string ppidReasonText;
-                    if (!uiController.PPIDModeIsInvalid(out ppidReasonText))
+                    if (!uiController.PPIDModeIsValid(out ppidReasonText))
                     {
                         string errorText = "Incompatibility Error: " + ppidReasonText;
                         EditorGUILayout.HelpBox(errorText, UnityEditor.MessageType.Error);
@@ -89,15 +93,24 @@ namespace UXF.EditorUtils
                     }
 
                     string settingsReasonText;
-                    if (!uiController.SettingsModeIsCompatible(out settingsReasonText))
+                    if (!uiController.SettingsModeIsValid(out settingsReasonText))
                     {
                         string errorText = "Incompatibility Error: " + settingsReasonText;
                         EditorGUILayout.HelpBox(errorText, UnityEditor.MessageType.Error);
                         EditorGUILayout.Separator();
                     }
 
+                    string localPathStateReasonText;
+                    if (!uiController.LocalPathStateIsValid(out localPathStateReasonText))
+                    {
+                        string errorText = "Incompatibility Error: " + localPathStateReasonText;
+                        EditorGUILayout.HelpBox(errorText, UnityEditor.MessageType.Error);
+                        EditorGUILayout.Separator();
+                    }
+
                     this.DrawProperty("startupMode");
                     EditorGUILayout.HelpBox("Startup Mode " + uiController.startupMode.ToString() + ": " + startupModeDescriptionMapping[uiController.startupMode], UnityEditor.MessageType.Info);
+                    if (uiController.startupMode == StartupMode.Automatic || uiController.settingsMode != SessionSettingsMode.AcquireFromUI) this.DrawProperty("experimentName");
                     EditorGUILayout.Separator();
 
                     EditorGUI.BeginDisabledGroup(uiController.startupMode == StartupMode.Manual);
@@ -109,13 +122,14 @@ namespace UXF.EditorUtils
 
                     this.DrawProperty("ppidMode");
                     EditorGUILayout.HelpBox("PPID Mode " + uiController.ppidMode.ToString() + ": " + ppidModeDescriptionMapping[uiController.ppidMode], UnityEditor.MessageType.Info);
+                    if (uiController.ppidMode == PPIDMode.GenerateUnique) this.DrawProperty("uuidWordList");
                     EditorGUILayout.Separator();
 
                     this.DrawProperty("settingsMode");
                     EditorGUILayout.HelpBox("Settings Mode " + uiController.settingsMode.ToString() + ": " + settingsModeDescriptionMapping[uiController.settingsMode], UnityEditor.MessageType.Info);
                     switch (uiController.settingsMode)
                     {
-                        case SessionSettingsMode.SelectWithUI:
+                        case SessionSettingsMode.AcquireFromUI:
                             this.DrawProperty("settingsSearchPattern");
                             break;
                         case SessionSettingsMode.DownloadFromURL:
@@ -195,6 +209,44 @@ namespace UXF.EditorUtils
             EditorGUILayout.EndHorizontal();
             EditorGUI.EndDisabledGroup();
             return pressed;
+        }
+
+
+        public void HaltPlayIfUIIsInvalid(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.ExitingEditMode)
+            {
+                string ppidReasonText;
+                if (!uiController.PPIDModeIsValid(out ppidReasonText))
+                {
+                    EditorApplication.isPlaying = false;
+                    string errorText = "Incompatibility Error: " + ppidReasonText;
+                    Debug.LogError(errorText);
+                }
+
+                string settingsReasonText;
+                if (!uiController.SettingsModeIsValid(out settingsReasonText))
+                {
+                    EditorApplication.isPlaying = false;
+                    string errorText = "Incompatibility Error: " + settingsReasonText;
+                    Debug.LogError(errorText);
+                }
+
+                string datapointsReasonText;
+                if (!uiController.DatapointsAreValid(out datapointsReasonText))
+                {
+                    EditorApplication.isPlaying = false;
+                    string errorText = "Incompatibility Error: " + datapointsReasonText;
+                    Debug.LogError(errorText);
+                }
+
+                string localPathStateReasonText;
+                if (!uiController.LocalPathStateIsValid(out localPathStateReasonText))
+                {
+                    string errorText = "Incompatibility Error: " + localPathStateReasonText;
+                    Debug.LogError(errorText);
+                }
+            }
         }
 
     }

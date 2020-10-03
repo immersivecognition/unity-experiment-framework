@@ -10,13 +10,7 @@ namespace UXF
     {
         public bool active = true;
 
-        /// <summary>
-        /// Text representing the storage location for the data.
-        /// </summary>
-        public virtual string storageLocation { get; set; }
         public Session session { get; private set; }
-
-        public virtual bool RequiresDataPathUIElement { get { return false; } }
 
         public void Initialise(Session session)
         {

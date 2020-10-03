@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System;
 using System.IO;
 using System.Threading;
@@ -12,17 +13,8 @@ namespace UXF
     /// <summary>
     /// Component which manages File I/O in a seperate thread to avoid hitches.
     /// </summary>
-    public class FileSaver : DataHandler
+    public class FileSaver : LocalFileDataHander
     {
-        [Space]
-
-        [Tooltip("Should the location the data is stored in be: Acquired via the UI, or, a fixed path?")]
-        public DataSaveLocation dataSaveLocation;
-
-        [Tooltip("If fixed path is selected, where should the data be stored?")]
-        [BasteRainGames.HideIfEnumValue("dataSaveLocation", BasteRainGames.HideIf.Equal, (int) DataSaveLocation.AcquireFromUI)]
-        public string fixedSaveLocation = "~";
-
 
         [Tooltip("Enable to sort session files into folders. The trial_results CSV is never put into a folder.")]
         public bool sortDataIntoFolders = true;
@@ -41,7 +33,6 @@ namespace UXF
 
         public bool IsActive { get { return parallelThread != null && parallelThread.IsAlive; } }
 
-        public override bool RequiresDataPathUIElement { get { return dataSaveLocation == DataSaveLocation.AcquireFromUI; } }
 
         BlockingQueue<System.Action> bq = new BlockingQueue<System.Action>();
         Thread parallelThread;
@@ -55,7 +46,7 @@ namespace UXF
         public override void SetUp()
         {
             quitting = false;
-            Directory.CreateDirectory(base.storageLocation);
+            Directory.CreateDirectory(base.storagePath);
 
             if (!IsActive)
             {
@@ -215,12 +206,12 @@ namespace UXF
 
         public string GetSessionPath(string experiment, string ppid, int sessionNum)
         {
-            string storageLocationSafe = base.storageLocation;
-            if (!System.IO.Directory.Exists(base.storageLocation))
+            string storageLocationSafe = base.storagePath;
+            if (!System.IO.Directory.Exists(base.storagePath))
             {
                 storageLocationSafe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "UXF_Data");
                 Directory.CreateDirectory(storageLocationSafe);
-                Debug.LogErrorFormat("Selected storage location ({0}) does not exist! Defaulting to {1}.", base.storageLocation, storageLocationSafe);
+                Debug.LogErrorFormat("Selected storage location ({0}) does not exist! Defaulting to {1}.", base.storagePath, storageLocationSafe);
             }
             return Path.Combine(storageLocationSafe, experiment, ppid, SessionNumToName(sessionNum));
         }
@@ -242,6 +233,33 @@ namespace UXF
             bq.Enqueue(doNothing); // ensures bq breaks from foreach loop
             parallelThread.Join();
         }
+    }
+
+
+    public abstract class LocalFileDataHander : DataHandler
+    {
+        [Space, Tooltip("Should the location the data is stored in be: Acquired via the UI, or, a fixed path?")]
+        public DataSaveLocation dataSaveLocation;
+
+        /// <summary>
+        /// Local path where the data should be stored.
+        /// </summary>
+        [Tooltip("If fixed path is selected, where should the data be stored? You could set this value by writing a script that writes to this field in Awake()."), SerializeField]
+        [BasteRainGames.HideIfEnumValue("dataSaveLocation", BasteRainGames.HideIf.Equal, (int) DataSaveLocation.AcquireFromUI)]
+        public string storagePath = "~";
+
+        [HideInInspector]
+        public UnityEvent onValidateEvent = new UnityEvent();
+
+        /// <summary>
+        /// Called when the script is loaded or a value is changed in the
+        /// inspector (Called in the editor only).
+        /// </summary>
+        void OnValidate()
+        {
+            onValidateEvent.Invoke();
+        }
+
     }
 
     public enum DataSaveLocation
