@@ -39,4 +39,27 @@ namespace UXF.UI
 
     }
 
+    [System.Serializable]
+    public class FormElementEntry
+    {
+        [Tooltip("The name displayed in the UI.")]
+        public string displayName = "Enter your age";
+
+        [Tooltip("The name used to access the value internally from the session.participantDetails dictionary.")]
+        public string internalName = "Age";
+
+        [Tooltip("The type of data you want this form element to collect.")]
+        public FormDataType dataType = FormDataType.Int;
+        public List<string> dropDownOptions = new List<string>() { "Option 1", "Option 2" };
+
+        public FormElement element { get; set; }
+
+    }
+
+
+    public enum FormDataType
+    {
+        String, Float, Int, Bool, DropDown
+    }
+
 }

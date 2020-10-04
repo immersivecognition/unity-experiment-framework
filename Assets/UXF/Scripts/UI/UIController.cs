@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.IO;
 using SubjectNerd.Utilities;
@@ -19,7 +20,7 @@ namespace UXF.UI
         public string experimentName = "my_experiment";
 
         [Tooltip("TODO")]
-        public SessionSettingsMode settingsMode = SessionSettingsMode.AcquireFromUI;
+        public SettingsMode settingsMode = SettingsMode.AcquireFromUI;
 
         [Tooltip("TODO")]
         public string settingsSearchPattern = "*.json";
@@ -45,16 +46,19 @@ namespace UXF.UI
 
         public bool RequiresFilePathElement
         {
-            get {
+            get
+            {
+                if (session == null) return false;
                 return session.ActiveDataHandlers
                     .Where((dh) => dh is LocalFileDataHander)
                     .Any(dh => ((LocalFileDataHander)dh).dataSaveLocation == DataSaveLocation.AcquireFromUI);
             }
         }
-        
+
         public IEnumerable<LocalFileDataHander> ActiveLocalFileDataHanders
         {
-            get {
+            get
+            {
                 if (session == null)
                 {
                     return new List<LocalFileDataHander>();
@@ -68,7 +72,7 @@ namespace UXF.UI
             }
         }
 
-# region HIDDEN_VARIABLES
+        #region HIDDEN_VARIABLES
         public Transform instructionsContentTransform;
         public Transform sidebarContentTransform;
         public FormElement settingsElement;
@@ -79,8 +83,13 @@ namespace UXF.UI
         public FormElement dropDownPrefab;
         public FormElement checkBoxPrefab;
         private Session session;
+        private Canvas canvas;
         private string[] words;
-# endregion
+        private string jsonText;
+        private Coroutine uiStartRoutine;
+        private Coroutine autoStartRoutine;
+
+        #endregion
 
         /// <summary>
         /// Called when the script is loaded or a value is changed in the
@@ -89,12 +98,33 @@ namespace UXF.UI
         void OnValidate()
         {
             if (session == null) session = GetComponentInParent<Session>();
+            if (canvas == null) canvas = GetComponent<Canvas>();
+            UnityEditor.EditorApplication.delayCall += LateValidate;
+        }
+
+        // https://forum.unity.com/threads/sendmessage-cannot-be-called-during-awake-checkconsistency-or-onvalidate-can-we-suppress.537265/
+        void LateValidate()
+        {
+            if (this == null) return;
             if (tsAndCsToggle != null)
             {
                 tsAndCsToggle.title.text = termsAndConditions;
                 tsAndCsToggle.SetContents(tsAndCsInitialState);
             }
+            UpdateExperimentProfileElementState();
+            UpdatePPIDElementState();
+            UpdateUIState();
             foreach (var dh in ActiveLocalFileDataHanders) dh.onValidateEvent.AddListener(UpdateLocalFileElementState);
+        }
+
+        void UpdateUIState()
+        {
+            if (settingsElement != null) canvas.enabled = (startupMode == StartupMode.BuiltInUI);
+        }
+
+        void UpdateExperimentProfileElementState()
+        {
+            if (settingsElement != null) settingsElement.gameObject.SetActive(settingsMode == SettingsMode.AcquireFromUI);
         }
 
         void UpdateLocalFileElementState()
@@ -102,6 +132,10 @@ namespace UXF.UI
             if (localFilePathElement != null) localFilePathElement.gameObject.SetActive(RequiresFilePathElement);
         }
 
+        void UpdatePPIDElementState()
+        {
+            if (ppidElement != null) ppidElement.gameObject.SetActive(ppidMode == PPIDMode.AcquireFromUI);
+        }
 
         /// <summary>
         /// Awake is called when the script instance is being loaded.
@@ -110,7 +144,6 @@ namespace UXF.UI
         {
             // read word list
             if (uuidWordList) words = uuidWordList.text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-
             GenerateSidebar();
         }
 
@@ -121,46 +154,99 @@ namespace UXF.UI
         /// </summary>
         void Start()
         {
+            UpdateExperimentProfileElementState();
             UpdateLocalFileElementState();
+            UpdatePPIDElementState();
+            UpdateUIState();
             if (startupMode == StartupMode.Automatic) AutoBeginSession();
         }
 
 
         public void AutoBeginSession()
         {
+            if (autoStartRoutine == null) autoStartRoutine = StartCoroutine(AutoBeginSessionSequence());
+        }
+
+        IEnumerator AutoBeginSessionSequence()
+        {
+            Settings newSettings = Settings.empty;
+            yield return GetJsonUrl();
+            if (jsonText == string.Empty)
+            {
+                Debug.LogErrorFormat("Error downloading data from URL: {0}. Using blank settings instead.", jsonURL);
+            }
+            try
+            {
+                newSettings = new Settings((Dictionary<string, object>) MiniJSON.Json.Deserialize(jsonText));
+            }
+            catch (InvalidCastException)
+            {
+                Debug.LogErrorFormat("Text downloaded from {0} is cannot be parsed, empty settings used instead. Check the data is valid json ({1})", jsonURL, jsonText);
+            }
+
+            autoStartRoutine = null;
+
             session.Begin(
-                experimentName, 
-                GenerateUniquePPID()
+                experimentName,
+                GenerateUniquePPID(),
+                settings: newSettings
             );
         }
 
-
         public void TryBeginSessionFromUI()
         {
-            // TERMS AND CONDITIONS
-            bool acceptedTsAndCs = (bool) tsAndCsToggle.GetContents();
-            if (!acceptedTsAndCs)
-            {
-                tsAndCsToggle.DisplayFault();
-                return;
-            }
+            if (uiStartRoutine == null) uiStartRoutine = StartCoroutine(TryBeginSessionFromUISequence());
+        }
+
+        IEnumerator TryBeginSessionFromUISequence()
+        {
+            bool error = false;
 
             // EXPERIMENT NAME
             string newExperimentName;
             switch (settingsMode)
             {
-                case SessionSettingsMode.AcquireFromUI:
+                case SettingsMode.AcquireFromUI:
                     newExperimentName = settingsElement
                         .GetContents()
                         .ToString()
                         .Replace(".json", "");
                     break;
-                case SessionSettingsMode.DownloadFromURL:
-                case SessionSettingsMode.Empty:
+                case SettingsMode.DownloadFromURL:
+                case SettingsMode.Empty:
                     newExperimentName = experimentName;
                     break;
                 default:
                     throw new Exception();
+            }
+
+            // DATA PATH
+            if (RequiresFilePathElement)
+            {
+                if (!localFilePathElement.gameObject.activeSelf)
+                {
+                    Debug.LogError("Cannot start session - need Local Data Directory element, but it is not active.");
+                    yield break;
+                }
+
+                string localFilePath = (string)localFilePathElement.GetContents();
+                if (localFilePath.Trim() == string.Empty)
+                {
+                    localFilePathElement.DisplayFault();
+                    Debug.LogError("Local data directory is empty");
+                    error = true;
+                }
+                else if (!Directory.Exists(localFilePath))
+                {
+                    localFilePathElement.DisplayFault();
+                    Debug.LogErrorFormat("Cannot start session - local data directory {0} does not exist.", localFilePath);
+                    error = true;
+                }
+
+                foreach (var dh in ActiveLocalFileDataHanders)
+                {
+                    dh.storagePath = localFilePath;
+                }
             }
 
             // PPID
@@ -172,7 +258,11 @@ namespace UXF.UI
                         .GetContents()
                         .ToString()
                         .Trim();
-                    if (newPpid == string.Empty) ppidElement.DisplayFault();
+                    if (newPpid == string.Empty)
+                    {
+                        ppidElement.DisplayFault();
+                        error = true;
+                    }
                     break;
                 case PPIDMode.GenerateUnique:
                     newPpid = GenerateUniquePPID();
@@ -180,7 +270,7 @@ namespace UXF.UI
                 default:
                     throw new Exception();
             }
-            
+
 
             // SESSION NUM
             int sessionNum = 1; // TODO get session num here
@@ -194,16 +284,25 @@ namespace UXF.UI
                 sidebarValid = sidebarValid && v.valid;
                 if (!v.valid && v.entry.element != null) v.entry.element.DisplayFault();
             }
-            if (!sidebarValid) return;
+            if (!sidebarValid) error = true;
+
+            // TERMS AND CONDITIONS
+            bool acceptedTsAndCs = (bool)tsAndCsToggle.GetContents();
+            if (!acceptedTsAndCs)
+            {
+                tsAndCsToggle.DisplayFault();
+                error = true;
+            }
+
 
             // SETTINGS
             Settings newSettings = null;
             switch (settingsMode)
             {
-                case SessionSettingsMode.AcquireFromUI:
+                case SettingsMode.AcquireFromUI:
                     string settingsPath = Path.Combine(Application.streamingAssetsPath, settingsElement.GetContents().ToString());
                     string settingsText;
-                    try 
+                    try
                     {
                         settingsText = File.ReadAllText(settingsPath);
                     }
@@ -211,44 +310,50 @@ namespace UXF.UI
                     {
                         Debug.LogException(e);
                         settingsElement.DisplayFault();
-                        return;
+                        error = true;
+                        break;
                     }
-                    Dictionary<string, object> deserializedJson = (Dictionary<string, object>) MiniJSON.Json.Deserialize(settingsText);
+                    Dictionary<string, object> deserializedJson = (Dictionary<string, object>)MiniJSON.Json.Deserialize(settingsText);
                     if (deserializedJson == null)
                     {
                         Debug.LogErrorFormat("Cannot deserialize json file: {0}.", settingsPath);
                         settingsElement.DisplayFault();
-                        return;
+                        error = true;
                     }
                     else
                     {
                         newSettings = new Settings(deserializedJson);
                     }
                     break;
-                case SessionSettingsMode.DownloadFromURL:
-                    return;
-                case SessionSettingsMode.Empty:
+                case SettingsMode.DownloadFromURL:
+                    yield return GetJsonUrl();
+                    if (jsonText == string.Empty)
+                    {
+                        error = true;
+                        Debug.LogErrorFormat("Error downloading data from URL: {0}. Using blank settings instead.", jsonURL);
+                        newSettings = Settings.empty;
+                    }
+                    try
+                    {
+                        newSettings = new Settings((Dictionary<string, object>) MiniJSON.Json.Deserialize(jsonText));
+                    }
+                    catch (InvalidCastException)
+                    {
+                        error = true;
+                        Debug.LogErrorFormat("Text downloaded from {0} is cannot be parsed, empty settings used instead. Check the data is valid json ({1})", jsonURL, jsonText);
+                        newSettings = Settings.empty;
+                    }
+                    break;
+                case SettingsMode.Empty:
                     newSettings = Settings.empty;
                     break;
                 default:
                     throw new Exception();
             }
 
-            // DATA PATH
-            if (RequiresFilePathElement)
-            {
-                if (!localFilePathElement.gameObject.activeSelf)
-                {
-                    Debug.LogError("Cannot start session - need Local File Path element, but it is not active.");
-                    return;
-                }
-
-                string localFilePath = (string) localFilePathElement.GetContents();
-                foreach (var dh in ActiveLocalFileDataHanders)
-                {
-                    dh.storagePath = localFilePath;
-                }
-            }            
+            uiStartRoutine = null;
+            if (error) yield break;
+            gameObject.SetActive(false);
 
             // BEGIN!
             session.Begin(
@@ -258,6 +363,8 @@ namespace UXF.UI
                 newParticipantDetails,
                 newSettings
             );
+
+
         }
 
         public string GenerateUniquePPID()
@@ -265,16 +372,16 @@ namespace UXF.UI
             string prefix = string.Empty;
             if (words != null) prefix = words[UnityEngine.Random.Range(0, words.Length - 1)] + "-";
             string ppid = Guid.NewGuid().ToString();
-            return Extensions.GetSafeFilename(ppid);            
+            return Extensions.GetSafeFilename(prefix + ppid);
         }
 
         public void GenerateSidebar()
         {
             Transform[] children = sidebarContentTransform
                 .Cast<Transform>()
-                .Select(c => c.transform) 
+                .Select(c => c.transform)
                 .ToArray();
-                
+
             foreach (Transform child in children)
             {
                 if (ReferenceEquals(settingsElement.transform, child)) continue;
@@ -283,24 +390,28 @@ namespace UXF.UI
                 else DestroyImmediate(child.gameObject);
             }
 
-            foreach (FormElementEntry entrey in participantDataPoints)
+            foreach (FormElementEntry entry in participantDataPoints)
             {
                 FormElement newElement = null;
-                switch (entrey.dataType)
+                switch (entry.dataType)
                 {
                     case FormDataType.String:
                     case FormDataType.Int:
                     case FormDataType.Float:
                         newElement = Instantiate(textPrefab, sidebarContentTransform);
+                        newElement.title.text = entry.displayName;
                         break;
                     case FormDataType.Bool:
                         newElement = Instantiate(checkBoxPrefab, sidebarContentTransform);
+                        newElement.title.text = entry.displayName;
                         break;
                     case FormDataType.DropDown:
                         newElement = Instantiate(dropDownPrefab, sidebarContentTransform);
+                        newElement.title.text = entry.displayName;
+                        newElement.SetContents(entry.dropDownOptions);
                         break;
                 }
-                entrey.element = newElement;
+                entry.element = newElement;
             }
         }
 
@@ -386,7 +497,7 @@ namespace UXF.UI
         public bool SettingsModeIsValid(out string reasonText)
         {
             reasonText = string.Empty;
-            if (startupMode == StartupMode.Automatic && settingsMode == SessionSettingsMode.AcquireFromUI)
+            if (startupMode == StartupMode.Automatic && settingsMode == SettingsMode.AcquireFromUI)
             {
                 reasonText = "If startup mode is set to Automatic, you cannot use session settings mode: Acquire With UI.";
                 return false;
@@ -444,17 +555,30 @@ namespace UXF.UI
             return true;
         }
 
+        IEnumerator GetJsonUrl()
+        {
+            UnityWebRequest www = UnityWebRequest.Get(jsonURL);
+            www.timeout = 5;
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.LogError(www.error);
+                yield break;
+            }
+            jsonText = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
+        }
     }
 
 
     public enum StartupMode
     {
-        BuiltInUI, Automatic, Manual 
+        BuiltInUI, Automatic, Manual
     }
 
-    public enum SessionSettingsMode
+    public enum SettingsMode
     {
-        AcquireFromUI, DownloadFromURL, Empty 
+        AcquireFromUI, DownloadFromURL, Empty
     }
 
     public enum PPIDMode

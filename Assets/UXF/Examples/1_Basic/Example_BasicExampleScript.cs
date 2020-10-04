@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -15,6 +14,8 @@ namespace UXFExamples
     public class Example_BasicExampleScript : MonoBehaviour
     {
 
+        public GameObject spaceShuttle;
+        public Example_Engine spaceShuttleEngine;
 
         /// <summary>
         /// generates the trials and blocks for the session
@@ -30,8 +31,7 @@ namespace UXFExamples
             // 
             //  {
             //
-            //  "n_practice_trials": 5,
-            //  "n_main_trials": 10,
+            //  "n_trials": 10,
             //  "size": 1        
             //
             //  }        
@@ -42,21 +42,21 @@ namespace UXFExamples
 
             // create our blocks & trials
 
-            // retrieve the n_practice_trials setting, which was loaded from our .json file
-            int numPracticeTrials = session.settings.GetInt("n_practice_trials");
-            // create block 1
-            Block practiceBlock = session.CreateBlock(numPracticeTrials);
-            practiceBlock.settings.SetValue("practice", true);
-
-            // retrieve the n_main_trials setting, which was loaded from our .json file into our session settings
-            int numMainTrials = session.settings.GetInt("n_main_trials");
-            // create block 2
+            // retrieve the n_trials setting, which was loaded from our .json file into our session settings
+            int numMainTrials = session.settings.GetInt("n_trials");
+            // create the block
             Block mainBlock = session.CreateBlock(numMainTrials); // block 2
 
             // here we set a setting for the 2nd trial of the main block as an example.
-            mainBlock.GetRelativeTrial(2).settings.SetValue("size", 10);
-            mainBlock.GetRelativeTrial(1).settings.SetValue("color", Color.red);
+            // all other trials will have whatever value is set in the session settings (basic_example_*.json file)
+            mainBlock.GetRelativeTrial(2).settings.SetValue("size", 1.5f);
+            mainBlock.lastTrial.settings.SetValue("size", 6f);
 
+            // lets set every trial to have a random thrust between two values
+            foreach (var trial in mainBlock.trials)
+            {
+                trial.settings.SetValue("thrust", Random.Range(0.5f, 2f));
+            }
         }
 
         /// <summary>
@@ -67,41 +67,54 @@ namespace UXFExamples
         {
             // we can call this function via the event "On Trial Begin", which is called when the trial starts
             // here we can imagine presentation of some stimulus
-
-            Debug.Log("Running trial!");
+            Debug.LogFormat("Running trial {0}", trial.number);
 
             // we can access our settings to (e.g.) modify our scene
             // for more information about retrieving settings see the documentation
+            float thrust = trial.settings.GetFloat("thrust");
+            
+            // and set the engine's thrust.
+            spaceShuttleEngine.thrust = trial.settings.GetFloat("thrust");
+            Debug.LogFormat("The 'thrust' for this trial is: {0}", thrust);
 
-            float size = trial.settings.GetFloat("size");
-            Debug.LogFormat("The 'size' for this trial is: {0}", size);
-
-            // record custom values...
-            string observation = UnityEngine.Random.value.ToString();
-            Debug.Log(string.Format("We observed: {0}", observation));
-            trial.result["some_variable"] = observation;
-
-            // end trial and prepare next trial in 1 second
-            Invoke("EndAndPrepare", 1);
+            // end trial and prepare next trial in 5 seconds
+            Invoke("EndAndPrepare", 5);
         }
 
 
         void EndAndPrepare()
         {
+            // reset the shuttle's position and thrust
+            spaceShuttle.transform.localPosition = Vector3.zero;
+            spaceShuttleEngine.thrust = 0f;
+
+            // record the altitude of the space shuttle
+            float altitude = spaceShuttle.transform.position.y;
+            Debug.LogFormat("The space shuttle got an altitude of {0}!", altitude);
+
+            // adding data to the .result of a trial will automatically log it to the trial results (by default a CSV)
+            Session.instance.CurrentTrial.result["altitude"] = altitude;
+
+            // end the trial
             Debug.Log("Ending trial");
             Session.instance.CurrentTrial.End();
 
+            // if last trial, end session.
             if (Session.instance.CurrentTrial == Session.instance.LastTrial)
             {
                 Session.instance.End();
             }
             else
             {
-                Session.instance.BeginNextTrial();
+                // begin next after 2 second delay
+                Invoke("BeginNext", 2);
             }
-
         }
 
+        void BeginNext()
+        {
+            Session.instance.BeginNextTrial();
+        }
     }
 }
 

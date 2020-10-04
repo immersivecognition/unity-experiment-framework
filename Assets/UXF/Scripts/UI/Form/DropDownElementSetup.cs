@@ -15,13 +15,18 @@ namespace UXF.UI
         public Dropdown content;
 
         /// <summary>
-        /// Start is called on the frame when a script is enabled just before
-        /// any of the Update methods is called the first time.
+        /// Awake is called when the script instance is being loaded.
         /// </summary>
-        void Start()
+        void Awake()
         {
             Func<object> get = () => { return content.options[content.value].text; };
-            Action<object> set = (value) => { UpdateOptions((IEnumerable<string>) value); };
+            Action<object> set = (value) => {
+                if (value is IEnumerable<string> valueList)
+                    UpdateOptions(valueList);
+                else if (value is Tuple<int, IEnumerable<string>> selectedAndValueList)
+                    UpdateOptions(selectedAndValueList.Item1, selectedAndValueList.Item2);
+                else throw new InvalidCastException();
+            };
 
             GetComponent<FormElement>().Initialise(get, set);
         }
@@ -30,6 +35,15 @@ namespace UXF.UI
         {
             content.options = new List<Dropdown.OptionData>();
             content.AddOptions(options.ToList());
+            content.RefreshShownValue();
+        }
+
+        public void UpdateOptions(int selectedIdx, IEnumerable<string> options)
+        {
+            content.options = new List<Dropdown.OptionData>();
+            content.AddOptions(options.ToList());
+            content.value = selectedIdx;
+            content.RefreshShownValue();
         }
 
     } 

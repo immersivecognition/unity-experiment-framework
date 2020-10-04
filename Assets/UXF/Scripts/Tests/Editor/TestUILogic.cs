@@ -44,13 +44,13 @@ namespace UXF.Tests
             uiController.ppidMode = PPIDMode.GenerateUnique;
             Assert.IsTrue(uiController.PPIDModeIsValid(out reason));
 
-            uiController.settingsMode = SessionSettingsMode.AcquireFromUI;
+            uiController.settingsMode = SettingsMode.AcquireFromUI;
             Assert.IsTrue(uiController.SettingsModeIsValid(out reason));
 
-            uiController.settingsMode = SessionSettingsMode.DownloadFromURL;
+            uiController.settingsMode = SettingsMode.DownloadFromURL;
             Assert.IsTrue(uiController.SettingsModeIsValid(out reason));
 
-            uiController.settingsMode = SessionSettingsMode.Empty;
+            uiController.settingsMode = SettingsMode.Empty;
             Assert.IsTrue(uiController.SettingsModeIsValid(out reason));
 
 
@@ -63,13 +63,13 @@ namespace UXF.Tests
             uiController.ppidMode = PPIDMode.GenerateUnique;
             Assert.IsTrue(uiController.PPIDModeIsValid(out reason));
 
-            uiController.settingsMode = SessionSettingsMode.AcquireFromUI;
+            uiController.settingsMode = SettingsMode.AcquireFromUI;
             Assert.IsFalse(uiController.SettingsModeIsValid(out reason));
 
-            uiController.settingsMode = SessionSettingsMode.DownloadFromURL;
+            uiController.settingsMode = SettingsMode.DownloadFromURL;
             Assert.IsTrue(uiController.SettingsModeIsValid(out reason));
 
-            uiController.settingsMode = SessionSettingsMode.Empty;
+            uiController.settingsMode = SettingsMode.Empty;
             Assert.IsTrue(uiController.SettingsModeIsValid(out reason));
 
 
@@ -82,13 +82,13 @@ namespace UXF.Tests
             uiController.ppidMode = PPIDMode.GenerateUnique;
             Assert.IsTrue(uiController.PPIDModeIsValid(out reason));
 
-            uiController.settingsMode = SessionSettingsMode.AcquireFromUI;
+            uiController.settingsMode = SettingsMode.AcquireFromUI;
             Assert.IsTrue(uiController.SettingsModeIsValid(out reason));
 
-            uiController.settingsMode = SessionSettingsMode.DownloadFromURL;
+            uiController.settingsMode = SettingsMode.DownloadFromURL;
             Assert.IsTrue(uiController.SettingsModeIsValid(out reason));
 
-            uiController.settingsMode = SessionSettingsMode.Empty;
+            uiController.settingsMode = SettingsMode.Empty;
             Assert.IsTrue(uiController.SettingsModeIsValid(out reason));
 
 

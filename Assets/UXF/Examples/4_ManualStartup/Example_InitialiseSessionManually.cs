@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UXFExamples
 {
 
-    public class InitialiseSessionWithoutUI : MonoBehaviour
+    public class Example_InitialiseSessionManually : MonoBehaviour
     {
 
         public UXF.Session session;
@@ -20,7 +20,8 @@ namespace UXFExamples
         void Start()
         {
             // here we can programatically obtain experiment name, ppid, etc
-            string experimentName = "example_without_ui";
+            // we could acquire this information some other way, such as your own UI.
+            string experimentName = "example_manual";
             string ppid = "example_ppid";
 
 			// here we make a settings object from a JSON string - this could, for example, be pulled from a web API.

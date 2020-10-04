@@ -22,11 +22,11 @@ namespace UXF.EditorUtils
             { StartupMode.Automatic, "There will be no user interface displayed, and the session will start immediately and automatically, with an optional settings .json file (stored in the StreamingAssets path)." },
             { StartupMode.Manual, "The session will not start automatically - you must start it manually with code. You can start a session by calling the session.Begin() method, supplying the session information." }
         };
-        static Dictionary<SessionSettingsMode, string> settingsModeDescriptionMapping = new Dictionary<SessionSettingsMode, string>()
+        static Dictionary<SettingsMode, string> settingsModeDescriptionMapping = new Dictionary<SettingsMode, string>()
         {
-            { SessionSettingsMode.AcquireFromUI, "TODO" },
-            { SessionSettingsMode.DownloadFromURL, "TODO" },
-            { SessionSettingsMode.Empty, "TODO" }
+            { SettingsMode.AcquireFromUI, "TODO" },
+            { SettingsMode.DownloadFromURL, "TODO" },
+            { SettingsMode.Empty, "TODO" }
         };
 
         static Dictionary<PPIDMode, string> ppidModeDescriptionMapping = new Dictionary<PPIDMode, string>()
@@ -110,7 +110,7 @@ namespace UXF.EditorUtils
 
                     this.DrawProperty("startupMode");
                     EditorGUILayout.HelpBox("Startup Mode " + uiController.startupMode.ToString() + ": " + startupModeDescriptionMapping[uiController.startupMode], UnityEditor.MessageType.Info);
-                    if (uiController.startupMode == StartupMode.Automatic || uiController.settingsMode != SessionSettingsMode.AcquireFromUI) this.DrawProperty("experimentName");
+                    if (uiController.startupMode == StartupMode.Automatic || uiController.settingsMode != SettingsMode.AcquireFromUI) this.DrawProperty("experimentName");
                     EditorGUILayout.Separator();
 
                     EditorGUI.BeginDisabledGroup(uiController.startupMode == StartupMode.Manual);
@@ -129,14 +129,13 @@ namespace UXF.EditorUtils
                     EditorGUILayout.HelpBox("Settings Mode " + uiController.settingsMode.ToString() + ": " + settingsModeDescriptionMapping[uiController.settingsMode], UnityEditor.MessageType.Info);
                     switch (uiController.settingsMode)
                     {
-                        case SessionSettingsMode.AcquireFromUI:
+                        case SettingsMode.AcquireFromUI:
                             this.DrawProperty("settingsSearchPattern");
                             break;
-                        case SessionSettingsMode.DownloadFromURL:
-                            if (MiddleButton("Test URL")) throw new NotImplementedException("TODO");
+                        case SettingsMode.DownloadFromURL:
                             this.DrawProperty("jsonURL");
                             break;
-                        case SessionSettingsMode.Empty:
+                        case SettingsMode.Empty:
                             break;
                     }
 

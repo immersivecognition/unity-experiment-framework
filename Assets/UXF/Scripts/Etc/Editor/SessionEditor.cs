@@ -67,7 +67,7 @@ namespace UXF.EditorUtils
                     EditorGUIUtility.labelWidth = lw;
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(16);
-                    GUILayout.Label("User Interface");
+                    GUILayout.Label("User Interface & Startup");
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("Configure"))
                     {

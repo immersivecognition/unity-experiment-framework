@@ -13,16 +13,15 @@ namespace UXF.UI
 
         public Toggle content;
 
+
         /// <summary>
-        /// Start is called on the frame when a script is enabled just before
-        /// any of the Update methods is called the first time.
+        /// Awake is called when the script instance is being loaded.
         /// </summary>
-        void Start()
+        void Awake()
         {
             Func<object> get = () => { return content.isOn; };
             Action<object> set = (value) => { content.isOn = (bool) value; };
             GetComponent<FormElement>().Initialise(get, set);
         }
-
     } 
 }

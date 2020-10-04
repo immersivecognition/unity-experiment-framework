@@ -7,22 +7,26 @@ using UnityEngine.UI;
 
 namespace UXF.UI
 {
-    [ExecuteAlways]
-    public class TextElementSetup : MonoBehaviour
+    public class PPIDRandomGenerator : MonoBehaviour
     {
+        public InputField inputField;
 
-        public InputField content;
+        UIController uiController;
 
         /// <summary>
         /// Awake is called when the script instance is being loaded.
         /// </summary>
         void Awake()
         {
-            Func<object> get = () => { return content.text; };
-            Action<object> set = (value) => { content.text = (string) value; };
-
-            GetComponent<FormElement>().Initialise(get, set);
+            uiController = GetComponentInParent<UIController>();
         }
 
-    } 
+
+        public void EnterRandom()
+        {
+            inputField.text = uiController.GenerateUniquePPID();
+        }
+
+    }
+
 }
