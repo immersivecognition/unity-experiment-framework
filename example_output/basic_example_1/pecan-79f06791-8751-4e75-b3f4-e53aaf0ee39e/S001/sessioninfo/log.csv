@@ -1,0 +1,11 @@
+timestamp,log_type,message
+16.12969,Log,Running trial 1
+16.12969,Log,The 'thrust' for this trial is: 1.918447
+21.13591,Log,The space shuttle got an altitude of 2!
+21.13591,Log,Ending trial
+23.12411,Log,Running trial 2
+23.12411,Log,The 'thrust' for this trial is: 1.103053
+28.12842,Log,The space shuttle got an altitude of 2!
+28.12842,Log,Ending trial
+30.13335,Log,Running trial 3
+30.13335,Log,The 'thrust' for this trial is: 0.9364277

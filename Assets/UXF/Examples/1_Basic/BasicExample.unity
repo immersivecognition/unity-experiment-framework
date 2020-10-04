@@ -9287,17 +9287,18 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "In this example, a script BasicExampleScript has been written and attached
-    to the MyExample GameObject.\n\nIt contains 3 methods:\n\nGenerateExperiment -
-    after the Session has been initialised, we generate the blocks and trials we want
-    in our experiment with any associated settings.\n\nPresentStimulus - when a trial
-    begins, this mimics some stimulus presentation behaviour (in this case logging
-    text to the console). We also then set a timer for when the trial should end and
-    the next one should begin.\n\nUpdate - this is the default Unity MonoBehaviour
-    function that runs each frame. Here we just check if it is time for us to end
-    the trial and start the next one. \n\nNotice, in the inspector of our Session
-    component (attached to the [UXF_Rig] GameObject), several Events have been created
-    which call functions from our BasicExampleScript component."
+  m_Text: "In this example, a pace shuttle will fly upwards, depending on an independant
+    variable called thrust. We want to measure the altitude of flight. This is a non-interactive
+    experiment, just for demonstration purposes. \nA script Example_BasicExampleScript
+    has been written and attached to the MyExampleExperiment GameObject, which controls
+    the experiment.\n\nIt contains several methods:\n\nGenerateExperiment - after
+    the Session has been initialised, we generate the blocks and trials we want in
+    our experiment with any associated settings.\n\nPresentStimulus - when a trial
+    begins, we can setup the scene using the settings from our trials (i.e. thrust).
+    We also then use Invoke to end the trial after a fixed time.\n\nNotice, in the
+    inspector of our Session component (attached to the [UXF_Rig] GameObject), in
+    the Events tab, several Events have been created which call functions from ourExample_BasicExampleScript
+    component."
 --- !u!222 &1335906556
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -1,0 +1,41 @@
+timestamp,log_type,message
+7.323537,Log,Running trial 1
+7.323537,Log,The 'thrust' for this trial is: 0.6519734
+12.33049,Log,The space shuttle got an altitude of 5.275034!
+12.33049,Log,Ending trial
+14.33582,Log,Running trial 2
+14.33582,Log,The 'thrust' for this trial is: 1.55982
+19.32296,Log,The space shuttle got an altitude of 9.779029!
+19.32296,Log,Ending trial
+21.32841,Log,Running trial 3
+21.32841,Log,The 'thrust' for this trial is: 1.70831
+26.33214,Log,The space shuttle got an altitude of 10.54792!
+26.33214,Log,Ending trial
+28.32051,Log,Running trial 4
+28.32051,Log,The 'thrust' for this trial is: 1.00294
+33.32465,Log,The space shuttle got an altitude of 7.018851!
+33.32465,Log,Ending trial
+35.32959,Log,Running trial 5
+35.32959,Log,The 'thrust' for this trial is: 1.724325
+40.33425,Log,The space shuttle got an altitude of 10.62966!
+40.33425,Log,Ending trial
+42.32199,Log,Running trial 6
+42.32199,Log,The 'thrust' for this trial is: 1.105075
+47.32689,Log,The space shuttle got an altitude of 7.530792!
+47.32689,Log,Ending trial
+49.33183,Log,Running trial 7
+49.33183,Log,The 'thrust' for this trial is: 0.7706299
+54.33543,Log,The space shuttle got an altitude of 5.855925!
+54.33543,Log,Ending trial
+56.32363,Log,Running trial 8
+56.32363,Log,The 'thrust' for this trial is: 0.5705822
+61.32783,Log,The space shuttle got an altitude of 4.85531!
+61.32783,Log,Ending trial
+63.33342,Log,Running trial 9
+63.33342,Log,The 'thrust' for this trial is: 0.9920511
+68.32023,Log,The space shuttle got an altitude of 6.947166!
+68.32023,Log,Ending trial
+70.32543,Log,Running trial 10
+70.32543,Log,The 'thrust' for this trial is: 1.582997
+75.32957,Log,The space shuttle got an altitude of 9.921541!
+75.32957,Log,Ending trial

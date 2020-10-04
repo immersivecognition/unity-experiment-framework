@@ -84,10 +84,6 @@ namespace UXFExamples
 
         void EndAndPrepare()
         {
-            // reset the shuttle's position and thrust
-            spaceShuttle.transform.localPosition = Vector3.zero;
-            spaceShuttleEngine.thrust = 0f;
-
             // record the altitude of the space shuttle
             float altitude = spaceShuttle.transform.position.y;
             Debug.LogFormat("The space shuttle got an altitude of {0}!", altitude);
@@ -98,6 +94,10 @@ namespace UXFExamples
             // end the trial
             Debug.Log("Ending trial");
             Session.instance.CurrentTrial.End();
+
+            // reset the shuttle's position and thrust
+            spaceShuttle.transform.localPosition = Vector3.zero;
+            spaceShuttleEngine.thrust = 0f;
 
             // if last trial, end session.
             if (Session.instance.CurrentTrial == Session.instance.LastTrial)
