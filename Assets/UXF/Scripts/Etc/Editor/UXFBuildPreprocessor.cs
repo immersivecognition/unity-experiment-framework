@@ -11,7 +11,7 @@ namespace UXF.EditorUtils
         public int callbackOrder { get { return 0; } }
         public void OnPreprocessBuild(BuildReport report)
         {
-            Debug.LogFormat("UXF is pre-processing your build for platform ('{0}') to make sure settings are compatible with the build... ", report.summary.platform);
+            Debug.LogFormat("UXF is pre-processing your build for platform '{0}' to make sure settings are compatible with the build... ", report.summary.platform);
         }
     }
 }

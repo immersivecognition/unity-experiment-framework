@@ -99,7 +99,9 @@ namespace UXF.UI
         {
             if (session == null) session = GetComponentInParent<Session>();
             if (canvas == null) canvas = GetComponent<Canvas>();
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.delayCall += LateValidate;
+#endif
         }
 
         // https://forum.unity.com/threads/sendmessage-cannot-be-called-during-awake-checkconsistency-or-onvalidate-can-we-suppress.537265/
@@ -142,6 +144,8 @@ namespace UXF.UI
         /// </summary>
         void Awake()
         {
+            if (session == null) session = GetComponentInParent<Session>();
+            if (canvas == null) canvas = GetComponent<Canvas>();
             // read word list
             if (uuidWordList) words = uuidWordList.text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             GenerateSidebar();
