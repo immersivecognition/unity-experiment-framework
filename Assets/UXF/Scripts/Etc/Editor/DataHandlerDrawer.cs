@@ -14,7 +14,7 @@ namespace UXF.EditorUtils
             // prefab override logic works on the entire property.
             EditorGUI.BeginProperty(position, label, property);
             
-            EditorGUIUtility.labelWidth = 95f; 
+            EditorGUIUtility.labelWidth = 135f; 
 
             Rect activeBox = position;
             activeBox.width = 25;

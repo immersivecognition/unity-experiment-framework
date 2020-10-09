@@ -142,6 +142,8 @@ namespace UXF.EditorUtils
                     EditorGUI.EndDisabledGroup();
 
                     EditorGUILayout.Separator();
+
+                    if (MiddleButton("Force UI Refresh")) uiController.LateValidate();
                     break;
                 case 1:
                     string datapointsReasonText;

@@ -105,9 +105,8 @@ namespace UXF.UI
         }
 
         // https://forum.unity.com/threads/sendmessage-cannot-be-called-during-awake-checkconsistency-or-onvalidate-can-we-suppress.537265/
-        void LateValidate()
+        public void LateValidate()
         {
-            if (this == null) return;
             if (tsAndCsToggle != null)
             {
                 tsAndCsToggle.title.text = termsAndConditions;
@@ -116,6 +115,7 @@ namespace UXF.UI
             UpdateExperimentProfileElementState();
             UpdatePPIDElementState();
             UpdateUIState();
+            UpdateLocalFileElementState();
             foreach (var dh in ActiveLocalFileDataHanders) dh.onValidateEvent.AddListener(UpdateLocalFileElementState);
         }
 

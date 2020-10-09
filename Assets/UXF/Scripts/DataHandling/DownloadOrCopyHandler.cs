@@ -6,17 +6,16 @@ using UnityEngine.Events;
 using System;
 using System.Linq;
 
-
-namespace UXF
+namespace UXF.UI
 {
 
-    public class CopyPasteDisplayer : DataHandler
+    public class DownloadOrCopyHandler : DataHandler
     {
-        public GameObject gameObjectToDisplay;
-        public InputField textDisplay;
+        public GameObject displayUI;
+        public Transform contentParent;
+        public WebFileElement webFileElementPrefab;
         public bool trialResultsOnly = true;
 
-        private string accummulatedText = "";
 
         public override bool CheckIfRiskOfOverwrite(string experiment, string ppid, int sessionNum, string rootPath = "")
         {
@@ -25,7 +24,10 @@ namespace UXF
 
         public override void SetUp()
         {
-            accummulatedText = "";
+            foreach (Transform child in contentParent)
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         public override string HandleDataTable(UXFDataTable table, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other)
@@ -33,10 +35,10 @@ namespace UXF
             if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
 
             string[] lines = table.GetCSVLines();
-            string fname = string.Format("# {0}.csv\n\r", dataName);
-            accummulatedText += fname;
-            accummulatedText += string.Join("\n\r", lines);
-            accummulatedText += "\n\r";
+            string fname = string.Format("{0}.csv", dataName);
+            string content = string.Join("\n", lines);
+            // if trial results, push to top of list for convenience
+            CreateNewItem(content, fname, pushToTop: dataType == DataType.TrialResults); 
 
             return fname;
         }
@@ -46,10 +48,8 @@ namespace UXF
             if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
 
             string text = MiniJSON.Json.Serialize(serializableObject);
-            string fname = string.Format("# {0}.json\n\r", dataName);
-            accummulatedText += fname;
-            accummulatedText += text;
-            accummulatedText += "\n\r";
+            string fname = string.Format("{0}.json", dataName);
+            CreateNewItem(text, fname);
 
             return fname;
         }
@@ -58,10 +58,8 @@ namespace UXF
         {
             if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
             string text = MiniJSON.Json.Serialize(serializableObject);
-            string fname = string.Format("# {0}.json\n\r", dataName);
-            accummulatedText += fname;
-            accummulatedText += text;
-            accummulatedText += "\n\r";
+            string fname = string.Format("{0}.json", dataName);
+            CreateNewItem(text, fname);
 
             return fname;
         }
@@ -69,10 +67,8 @@ namespace UXF
         public override string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other)
         {
             if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
-            string fname = string.Format("# {0}.txt\n\r", dataName);
-            accummulatedText += fname;
-            accummulatedText += text;
-            accummulatedText += "\n\r";
+            string fname = string.Format("{0}.txt", dataName);
+            CreateNewItem(text, fname);
 
             return fname;
         }
@@ -80,20 +76,24 @@ namespace UXF
         public override string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other)
         {
             if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
-            string fname = string.Format("# {0}.txt\n\r", dataName);
-            accummulatedText += fname;
-            accummulatedText += System.Text.Encoding.UTF8.GetString(bytes);
-            accummulatedText += "\n\r";
+            string fname = string.Format("{0}.txt", dataName);
+            string content = System.Text.Encoding.UTF8.GetString(bytes);
+            CreateNewItem(content, fname);
 
             return fname;
         }
 
         public override void CleanUp()
         {
-            gameObjectToDisplay.SetActive(true);
-            textDisplay.text = accummulatedText;
-            textDisplay.Select();
-            GUIUtility.systemCopyBuffer = accummulatedText;
+            displayUI.SetActive(true);
+        }
+
+        void CreateNewItem(string content, string filename, bool pushToTop = false)
+        {
+            WebFileElement newElement = Instantiate(webFileElementPrefab, contentParent);
+            if (pushToTop) newElement.transform.SetAsFirstSibling();
+
+            newElement.Setup(content, filename);
         }
         
     }
