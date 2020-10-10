@@ -55,7 +55,7 @@ namespace UXF.UI
             }
         }
 
-        public IEnumerable<LocalFileDataHander> ActiveLocalFileDataHanders
+        public IEnumerable<LocalFileDataHander> ActiveLocalFileDataHandlers
         {
             get
             {
@@ -101,6 +101,10 @@ namespace UXF.UI
             if (canvas == null) canvas = GetComponent<Canvas>();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.delayCall += LateValidate;
+            foreach (var dh in ActiveLocalFileDataHandlers)
+            {
+                dh.onValidateEvent.AddListener(() => UnityEditor.EditorApplication.delayCall += UpdateLocalFileElementState);
+            }
 #endif
         }
 
@@ -116,7 +120,6 @@ namespace UXF.UI
             UpdatePPIDElementState();
             UpdateUIState();
             UpdateLocalFileElementState();
-            foreach (var dh in ActiveLocalFileDataHanders) dh.onValidateEvent.AddListener(UpdateLocalFileElementState);
         }
 
         void UpdateUIState()
@@ -247,7 +250,7 @@ namespace UXF.UI
                     error = true;
                 }
 
-                foreach (var dh in ActiveLocalFileDataHanders)
+                foreach (var dh in ActiveLocalFileDataHandlers)
                 {
                     dh.storagePath = localFilePath;
                 }

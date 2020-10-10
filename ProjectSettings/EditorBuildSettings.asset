@@ -5,16 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/UXF/Examples/3_MultiScene_FootballAndRT/MultiSceneExample.unity
-    guid: 3be5d1fba9e25ed44a6db3ad56bf20ec
-  - enabled: 0
-    path: Assets/UXF/Examples/3_MultiScene_FootballAndRT/OtherScenes/ShootingExample.unity
-    guid: 1d5a4e0513b6be0428267c45d923520b
-  - enabled: 0
-    path: Assets/UXF/Examples/3_MultiScene_FootballAndRT/OtherScenes/ReactionExample.unity
-    guid: 7a79c722962e7d74eb856ff31b309b87
   - enabled: 1
-    path: Assets/UXF/Examples/1a_SpaceShuttle/BasicExample.unity
-    guid: 192babd20ceaeed459fe3693623af344
+    path: Assets/UXF/Examples/4_CorsiBlock/CorsiBlockExample.unity
+    guid: d79ca1b5241496f4fba7622d23d6fa08
   m_configObjects: {}
