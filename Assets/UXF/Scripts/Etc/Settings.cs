@@ -46,6 +46,15 @@ namespace UXF
         }
 
         /// <summary>
+        /// Creates new empty Settings instance
+        /// </summary>
+        /// <param name="dict"></param>
+        public Settings()
+        {
+            baseDict = new Dictionary<string, object>();
+        }
+
+        /// <summary>
         /// Add all the keys and values from `dict` to the settings.
         /// </summary>
         /// <param name="dict">Dictionary to add.</param>

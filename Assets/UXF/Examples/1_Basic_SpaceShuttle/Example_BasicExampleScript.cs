@@ -44,7 +44,7 @@ namespace UXFExamples
 
             // retrieve the n_trials setting, which was loaded from our .json file into our session settings
             // if we dont supply a settings profile (e.g. when running in a web browser, or Oculus Quest) it will revert to valueIfNotFound (10)
-            int numMainTrials = session.settings.GetInt("n_trials", valueIfNotFound: 2);
+            int numMainTrials = session.settings.GetInt("n_trials", valueIfNotFound: 10);
             // create the block
             Block mainBlock = session.CreateBlock(numMainTrials); // block 2
 
