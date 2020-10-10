@@ -35,7 +35,7 @@ namespace UXF.EditorUtils
                 if (localHandlers.Count() > 0 && !localFileDataHandlerCompatiblePlatforms.Contains(report.summary.platform))
                 {
                     CancelBuild(string.Format(
-                        "Cannot build scene {0} for platform '{1}'.\nReason: The Data Handler{2} '{3}' require{4} local file access, which is not compatible with {0}. " +
+                        "Cannot build scene {0} for platform '{1}'.\nReason: The Data Handler{2} '{3}' require{4} local file access, which is not compatible with {1}. " +
                         "You can deselect Data Handler{2} '{3}' with the check box in the Data Handling tab of the UXF Session Component." + 
                         "Perhaps try one of the other data handlers that are compatible with this build target.",
                         scene.name,
@@ -44,6 +44,18 @@ namespace UXF.EditorUtils
                         string.Join(", ", localHandlers.Select(ldh => ldh.name)),
                         localHandlers.Count() == 1 ? "s" : ""
                         ));
+                }
+
+
+                if (ui.settingsMode == UI.SettingsMode.AcquireFromUI && !localFileDataHandlerCompatiblePlatforms.Contains(report.summary.platform))
+                {
+                    CancelBuild(string.Format(
+                        "Cannot build scene {0} for platform '{1}'.\nReason: Settings Mode 'Acquire From UI' is not compatible with {1}. This is because " +
+                        "it needs access to the settings profile .json files in the StreamingAssets folder, which is not supported on {1}." + 
+                        "You can change the settings mode in the UXF UI configuration.",
+                        scene.name,
+                        report.summary.platform
+                    ));
                 }
             }
         }
