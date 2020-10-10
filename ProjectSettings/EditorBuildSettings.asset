@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/UXF/Examples/3_MultiScene_FootballAndRT/OtherScenes/ReactionExample.unity
     guid: 7a79c722962e7d74eb856ff31b309b87
   - enabled: 1
-    path: Assets/UXF/Examples/1_Basic_SpaceShuttle/BasicExample.unity
+    path: Assets/UXF/Examples/1a_SpaceShuttle/BasicExample.unity
     guid: 192babd20ceaeed459fe3693623af344
   m_configObjects: {}
