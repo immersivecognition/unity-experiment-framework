@@ -407,6 +407,7 @@ namespace UXF.UI
                     case FormDataType.Float:
                         newElement = Instantiate(textPrefab, sidebarContentTransform);
                         newElement.title.text = entry.displayName;
+                        newElement.SetDataType(entry.dataType);
                         break;
                     case FormDataType.Bool:
                         newElement = Instantiate(checkBoxPrefab, sidebarContentTransform);

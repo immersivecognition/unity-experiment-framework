@@ -21,7 +21,24 @@ namespace UXF.UI
             Func<object> get = () => { return content.text; };
             Action<object> set = (value) => { content.text = (string) value; };
 
-            GetComponent<FormElement>().Initialise(get, set);
+            Action<FormDataType> setDType = (dType) => {
+                switch (dType)
+                {
+                    case FormDataType.Float:
+                        content.contentType = InputField.ContentType.DecimalNumber;
+                        break;
+                    case FormDataType.Int:
+                        content.contentType = InputField.ContentType.IntegerNumber;
+                        break;
+                    case FormDataType.String:
+                        content.contentType = InputField.ContentType.Standard;
+                        break;
+                    default:
+                        throw new Exception("Data type incompatible with TextElement");
+                }
+            };
+
+            GetComponent<FormElement>().Initialise(get, set, setDType);
         }
 
     } 

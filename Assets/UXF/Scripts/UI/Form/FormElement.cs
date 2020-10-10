@@ -15,11 +15,13 @@ namespace UXF.UI
         private UnityEvent onDisplayFault = new UnityEvent();
         private Func<object> getContentsAction = () => { return null; };
         private Action<object> setContentsAction = (o) => { };
+        private Action<FormDataType> setDataTypeAction = (o) => { };
 
-        public void Initialise(Func<object> getContentsAction, Action<object> setContentsAction)
+        public void Initialise(Func<object> getContentsAction, Action<object> setContentsAction, Action<FormDataType> setDataTypeAction = null)
         {
             this.getContentsAction = getContentsAction;
             this.setContentsAction = setContentsAction;
+            if (setDataTypeAction != null) this.setDataTypeAction = setDataTypeAction;
         }
 
         public void DisplayFault()
@@ -35,6 +37,11 @@ namespace UXF.UI
         public void SetContents(object contents)
         {
             setContentsAction.Invoke(contents);
+        }
+
+        public void SetDataType(FormDataType formDataType)
+        {
+            setDataTypeAction.Invoke(formDataType);
         }
 
     }
