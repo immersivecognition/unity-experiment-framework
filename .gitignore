@@ -63,4 +63,4 @@ $RECYCLE.BIN/
 
 # Visual Studio Code project
 .vscode/*
-example_output/unit_test/*
+example_output/*

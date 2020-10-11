@@ -17,15 +17,22 @@ namespace UXF.Tests
 			{"bool", true},
 			{"int", 3},
 			{"float", 3.14f},
-			{"array", new List<object>(){1, 2, 3, 4}},
+			{"list", new List<object>(){1, 2, 3, 4}},
+			{"array", new object[]{1, 2, 3, 4}},
 			{"object", new Dictionary<string, object>(){{"a", 1}, {"b", "abc"}}}
 		};
 
-		const string expectedOutput = @"{
+		const string jsonString = @"{
     ""string"": ""aaa"",
     ""bool"": true,
     ""int"": 3,
-    ""float"": ""3.14"",
+    ""float"": 3.1400001049041748,
+    ""list"": [
+        1,
+        2,
+        3,
+        4
+    ],
     ""array"": [
         1,
         2,
@@ -42,9 +49,35 @@ namespace UXF.Tests
 		public void JSONIndentation()
 		{
 			string outString = MiniJSON.Json.Serialize(dict);
-			Assert.AreEqual(expectedOutput, outString);
-			Debug.Log(expectedOutput);
+			Assert.AreEqual(jsonString, outString);
 		}
+
+		[Test]
+		public void VectorSerialize()
+		{
+            var vectorDict = new Dictionary<string, object>
+            {
+                { "vector3", new Vector3(1, 2, 3) },
+                { "vector2", new Vector2(1, 2) }
+            };
+			
+            string vectorString = @"{
+    ""vector3"": {
+        ""x"": 1,
+        ""y"": 2,
+        ""z"": 3
+    },
+    ""vector2"": {
+        ""x"": 1,
+        ""y"": 2
+    }
+}";
+            
+            string outString = MiniJSON.Json.Serialize(vectorDict);
+			Assert.AreEqual(vectorString, outString);
+		}
+
+
 	}
 
 }

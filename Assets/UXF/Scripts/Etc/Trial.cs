@@ -129,7 +129,7 @@ namespace UXF
         /// <param name="table">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.SessionInfo)
+        public void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.Other)
         {
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
@@ -145,7 +145,7 @@ namespace UXF
         /// <param name="serializableObject">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo)
+        public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.Other)
         {
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
@@ -161,7 +161,7 @@ namespace UXF
         /// <param name="serializableObject">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo)
+        public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.Other)
         {
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
@@ -177,7 +177,7 @@ namespace UXF
         /// <param name="text">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveText(string text, string dataName, DataType dataType = DataType.SessionInfo)
+        public void SaveText(string text, string dataName, DataType dataType = DataType.Other)
         {
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
@@ -193,7 +193,7 @@ namespace UXF
         /// <param name="bytes">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.SessionInfo)
+        public void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.Other)
         {
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
