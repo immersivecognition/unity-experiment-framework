@@ -103,7 +103,7 @@ namespace UXFExamples
             {
                 // show info, and end
                 int span = currentBlock.settings.GetInt("num_sequence");
-                feedback.ShowFeedback(string.Format("The end! Your Corsi Block Span is {0}.", span), delay: float.PositiveInfinity);
+                feedback.ShowFeedback(string.Format("The end! Your Corsi Block Span is {0}.", span - 1), delay: float.PositiveInfinity);
                 Session.instance.Invoke("End", 5); // 5 second delay
             }
             else
