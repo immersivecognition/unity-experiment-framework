@@ -5553,40 +5553,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &604229785196721647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604229785430918936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13dbc7aef009231419c2e645c8e8579b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectName: shuttle
-  measurementDescriptor: movement
-  customHeader:
-  - pos_x
-  - pos_y
-  - pos_z
-  - rot_x
-  - rot_y
-  - rot_z
---- !u!114 &604229785196721616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604229785430918936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d67d35d27dad1a14b9584f0760f2f56c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  thrust: 0
 --- !u!1 &604229785199160257
 GameObject:
   m_ObjectHideFlags: 0
@@ -6349,6 +6315,40 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &604229785196721616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604229785430918936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67d35d27dad1a14b9584f0760f2f56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thrust: 0
+--- !u!114 &604229785196721647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604229785430918936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13dbc7aef009231419c2e645c8e8579b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: shuttle
+  measurementDescriptor: movement
+  customHeader:
+  - pos_x
+  - pos_y
+  - pos_z
+  - rot_x
+  - rot_y
+  - rot_z
 --- !u!1 &604229785437363960
 GameObject:
   m_ObjectHideFlags: 0
@@ -13684,6 +13684,7 @@ GameObject:
   - component: {fileID: 604229786025701746}
   - component: {fileID: 604229786025701744}
   - component: {fileID: 604229786025701647}
+  - component: {fileID: 7200471625221956067}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -13739,7 +13740,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
+  m_TargetEye: 0
   m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
@@ -13763,6 +13764,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 604229786025701646}
   m_Enabled: 1
+--- !u!114 &7200471625221956067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604229786025701646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77541ad5916737c4e82604fe222a1899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &604229785431015860
 PrefabInstance:
   m_ObjectHideFlags: 0
