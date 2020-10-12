@@ -29,6 +29,7 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 - [Example](#example)
 - [Development](#development)
 - [Documentation](#documentation)
+- [In the News](#in-the-news)
 - [Tutorial: Building an experiment with UXF](#tutorial-building-an-experiment-with-uxf)
 - [Related packages](#related-packages)
 
@@ -197,6 +198,12 @@ This project is developed under Unity 2017.4 LTS but should work on all recent v
 ## Documentation
 
 Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki) for full documentation.
+
+## In the News
+
+* Overview presentation on UXF at SORSE - [Framework for creating Virtual Reality human behavior experiments in Unity](https://sorse.github.io/programme/talks/event-012/)
+* UXF in The Enconomist - [Health care is already benefiting from VR](https://www.economist.com/technology-quarterly/2020/10/01/health-care-is-already-benefiting-from-vr)
+* UXF in The Psychologist - [New immersive cognition laboratory](https://thepsychologist.bps.org.uk/volume-32/august-2019/new-immersive-cognition-laboratory) 
 
 ## Tutorial: Building an experiment with UXF
 
