@@ -70,14 +70,14 @@ namespace UXFExamples
             // reset color
             rend.material.color = originalColor;
 
+            // calculate reaction time
+            float rt = Time.time - shownTime;
+            Session.instance.CurrentTrial.result["reaction_time"] = rt;
+
             // what state are we in? 
             if (currentState == ReactionState.Press)
             {
-                Session.instance.CurrentTrial.result["outcome"] = "success";
-
-                // calculate reaction time
-                float rt = Time.time - shownTime;
-                Session.instance.CurrentTrial.result["reaction_time"] = rt;
+                Session.instance.CurrentTrial.result["outcome"] = "success";                
             }
             else
             {

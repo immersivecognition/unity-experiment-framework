@@ -260,6 +260,43 @@ namespace UXF
             onValidateEvent.Invoke();
         }
 
+
+# if UNITY_EDITOR
+        /// <summary>
+        /// Returns true if this data handler is definitley compatible with this build target.
+        /// </summary>
+        /// <param name="buildTarget"></param>
+        /// <returns></returns>
+        public override bool IsCompatibleWith(UnityEditor.BuildTargetGroup buildTarget)
+        {
+            switch (buildTarget)
+            {
+                case UnityEditor.BuildTargetGroup.Standalone:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+         /// <summary>
+        /// Returns true if this data handler is definitley incompatible with this build target.
+        /// </summary>
+        /// <param name="buildTarget"></param>
+        /// <returns></returns>
+        public override bool IsIncompatibleWith(UnityEditor.BuildTargetGroup buildTarget)
+        {
+            switch (buildTarget)
+            {
+                case UnityEditor.BuildTargetGroup.WebGL:
+                case UnityEditor.BuildTargetGroup.Android:
+                case UnityEditor.BuildTargetGroup.iOS:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+# endif
+
     }
 
     public enum DataSaveLocation

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UXF;
 
 namespace UXFExamples
@@ -28,11 +29,6 @@ namespace UXFExamples
 			block1.settings.SetValue("scene_name", "ShootingExample");
 			block2.settings.SetValue("scene_name", "ReactionExample");
 
-# if UNITY_EDITOR
-			// scenes need to be added to build index in order to be able to be loaded - you can do this by opening the build settings menu
-			// I do it here in script just incase a user changes it.
-			AddScenesToBuildIndex();
-# endif
 			// in block 1, lets create random difficulty on each trial, by changing the "target size"
 			foreach (var trial in block1.trials)
 			{
@@ -109,29 +105,46 @@ namespace UXFExamples
 
 
 # if UNITY_EDITOR
+
+		/// <summary>
+		/// This function is called when the object becomes enabled and active.
+		/// </summary>
+		void OnValidate()
+		{
+			// scenes need to be added to build index in order to be able to be loaded - you can do this by opening the build settings menu
+			// I do it here in script just incase a user changes it.
+			AddScenesToBuildIndex();
+		}
+
 		// this just adds the scenes to the build index - you can normally do this by opening build settings, you don't need to write code
 		// https://docs.unity3d.com/Manual/BuildSettings.html
 		void AddScenesToBuildIndex()
 		{
 			List<string> newSceneNames = new List<string>()
 			{
-				"Assets/UXF/Examples/3_MultiScene/OtherScenes/ShootingExample.unity",
-				"Assets/UXF/Examples/3_MultiScene/OtherScenes/CatchingExample.unity"
+				"Assets/UXF/Examples/3_MultiScene_FootballAndRT/OtherScenes/ShootingExample.unity",
+				"Assets/UXF/Examples/3_MultiScene_FootballAndRT/OtherScenes/ReactionExample.unity"
 			};
 
 			var scenes = new List<UnityEditor.EditorBuildSettingsScene>(UnityEditor.EditorBuildSettings.scenes);
 
-			foreach (var scene in scenes)
-			{
-				if (newSceneNames.Contains(scene.path))	newSceneNames.Remove(scene.path);
-			}
+			var alreadyAddedScenes = scenes
+				.Where(ebss => newSceneNames.Contains(ebss.path));
+
+			if (alreadyAddedScenes.Count() == newSceneNames.Count) return;
 
 			foreach (string newScene in newSceneNames)
 			{
-				scenes.Add(new UnityEditor.EditorBuildSettingsScene(newScene, true));
-			}
+				if (!scenes.Where(s => s.enabled).Select(s => s.path).Contains(newScene))
+				{
+					scenes.Add(new UnityEditor.EditorBuildSettingsScene(newScene, true));
+				}
+			}			
 
 			UnityEditor.EditorBuildSettings.scenes = scenes.ToArray();
+			UnityEditor.EditorApplication.isPlaying = false;
+
+			Debug.Log("Added scenes to build settings for Multi Scene Example.");
 		}
 # endif
 

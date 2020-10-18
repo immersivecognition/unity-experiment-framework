@@ -57,6 +57,31 @@ namespace UXF.EditorUtils
                         report.summary.platform
                     ));
                 }
+
+                Session session = ui.GetComponentInParent<Session>();
+                foreach (var dh in session.ActiveDataHandlers)
+                {
+                    bool compatible = dh.IsCompatibleWith(report.summary.platformGroup);
+                    bool incompatible = dh.IsIncompatibleWith(report.summary.platformGroup);
+
+                    if (incompatible)
+                        CancelBuild(string.Format(
+                            "Cannot build scene {0}. The data handler '{1}' reports it is incompatible with platform group '{2}'. Please disable this data handler or select another build target.",
+                            scene.name, 
+                            dh.name, 
+                            report.summary.platformGroup
+                        ));
+                    
+                    if (!compatible && !incompatible)
+                    {
+                        Debug.LogWarningFormat(
+                            "Warning: (Scene: {0}) - The data handler '{1}' has not reported either compatibility or incompatibility with platform group '{2}'. Use at your own risk!",
+                            scene.name, 
+                            dh.name, 
+                            report.summary.platformGroup
+                        );
+                    }
+                }
             }
         }
 
