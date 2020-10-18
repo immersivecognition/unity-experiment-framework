@@ -115,6 +115,11 @@ namespace UXF
         [Tooltip("Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event")]
         public SessionEvent onSessionEnd = new SessionEvent();
 
+        /// <summary>
+        /// Returns true when the session is in the process of ending. It is useful to query this in On Trial End events, since you may not need to perform some behaviour if the session is ending.
+        /// </summary>
+        /// <value></value>
+        public bool isEnding { get; private set; } = false;
 
         [SerializeField]
         private bool _hasInitialised = false;
@@ -600,6 +605,7 @@ namespace UXF
         {
             if (hasInitialised)
             {
+                isEnding = true;
                 if (InTrial)
                     CurrentTrial.End();
                 SaveResults();
@@ -618,6 +624,7 @@ namespace UXF
                 _hasInitialised = false;
 
                 Debug.Log("Ended session.");
+                isEnding = false;
             }
         }
 

@@ -22,6 +22,9 @@ namespace UXFExamples
 
 		public void EndReactionTaskTrial(Trial trial)
 		{
+			// sometimes we quit the application mid session, and that ends the current trial. If that is the case, we don't need to do anything here. 
+			if (Session.instance.isEnding) return;
+
             // show some feedback
 			string outcomeText = (string) trial.result["outcome"];
 			float rt = (float) trial.result["reaction_time"];
