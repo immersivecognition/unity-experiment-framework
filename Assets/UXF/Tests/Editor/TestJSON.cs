@@ -45,6 +45,7 @@ namespace UXF.Tests
     }
 }";
 
+
 		[Test]
 		public void JSONIndentation()
 		{
@@ -76,7 +77,6 @@ namespace UXF.Tests
             string outString = MiniJSON.Json.Serialize(vectorDict);
 			Assert.AreEqual(vectorString, outString);
 		}
-
 
 	}
 

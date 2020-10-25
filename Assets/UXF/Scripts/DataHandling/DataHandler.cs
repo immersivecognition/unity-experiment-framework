@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,11 +19,11 @@ namespace UXF
 
         public abstract bool CheckIfRiskOfOverwrite(string experiment, string ppid, int sessionNum, string rootPath = ""); 
         public virtual void SetUp() { }
-        public abstract string HandleDataTable(UXFDataTable table, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
-        public abstract string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
-        public abstract string HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
-        public abstract string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
-        public abstract string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other);
+        public abstract string HandleDataTable(UXFDataTable table, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNumber = 0);
+        public abstract string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNumber = 0);
+        public abstract string HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNumber = 0);
+        public abstract string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNumber = 0);
+        public abstract string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNumber = 0);
         public virtual void CleanUp() { }
 
 # if UNITY_EDITOR
@@ -43,18 +44,70 @@ namespace UXF
 
     }
 
-    public enum DataType
+    public enum UXFDataType
     {
-        SessionInfo, TrialResults, Trackers, Other
+        TrialResults, SessionLog, Settings, ParticipantDetails, Trackers, SummaryStatistics, OtherTrialData, OtherSessionData
+    }
+
+    public enum UXFDataLevel
+    {
+        PerTrial, PerSession
+    }
+
+
+    public static class DataHandlerEnumExtensions
+    {
+        public static string GetFolderName(this UXFDataType dt)
+        {
+            switch (dt)
+            {
+                case UXFDataType.TrialResults:
+                    return "";
+                case UXFDataType.SessionLog:
+                case UXFDataType.Settings:
+                case UXFDataType.ParticipantDetails:
+                case UXFDataType.SummaryStatistics:
+                    return "session_info";
+                case UXFDataType.Trackers:
+                    return "trackers";
+                default:
+                    return "other";
+            }
+        }
+
+        static Dictionary<UXFDataType, UXFDataLevel> typeLevelMapping = new Dictionary<UXFDataType, UXFDataLevel>
+        {
+            { UXFDataType.TrialResults, UXFDataLevel.PerSession },
+            { UXFDataType.SessionLog, UXFDataLevel.PerSession },
+            { UXFDataType.Settings, UXFDataLevel.PerSession },
+            { UXFDataType.ParticipantDetails, UXFDataLevel.PerSession },
+            { UXFDataType.SummaryStatistics, UXFDataLevel.PerSession },
+            { UXFDataType.OtherSessionData, UXFDataLevel.PerSession },
+            { UXFDataType.Trackers, UXFDataLevel.PerTrial },
+            { UXFDataType.OtherTrialData, UXFDataLevel.PerTrial }
+        };
+
+        public static UXFDataLevel GetDataLevel(this UXFDataType dt)
+        {
+            return typeLevelMapping[dt];
+        }
+
+        public static IEnumerable<UXFDataType> GetValidDataTypes(this UXFDataLevel level)
+        {
+            return typeLevelMapping
+                .Where(kvp => kvp.Value == level)
+                .Select(kvp => kvp.Key);
+        }
     }
 
     public interface IDataAssociatable
     {
-        void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.SessionInfo);
-        void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo);
-        void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.SessionInfo);
-        void SaveText(string text, string dataName, DataType dataType = DataType.SessionInfo);
-        void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.SessionInfo);
+        void SaveDataTable(UXFDataTable table, string dataName, UXFDataType dataType);
+        void SaveJSONSerializableObject(List<object> serializableObject, string dataName, UXFDataType dataType);
+        void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, UXFDataType dataType);
+        void SaveText(string text, string dataName, UXFDataType dataType);
+        void SaveBytes(byte[] bytes, string dataName, UXFDataType dataType);
+        bool CheckDataTypeIsValid(string dataName, UXFDataType dataType); 
     }
 
 

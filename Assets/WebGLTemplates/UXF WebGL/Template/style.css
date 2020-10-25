@@ -1,0 +1,65 @@
+body {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.5;
+    padding: 4em 1em;
+    color: #555;
+}
+
+h1,
+h2,
+strong {
+    color: #333;
+}
+
+h2 {
+    margin-top: 1em;
+    padding-top: 1em;
+}
+
+a,
+a:link,
+a:visited {
+    color: #a94176;
+}
+
+a:hover {
+    color: #c56e9b;
+}
+
+.webgl-content {
+    position: relative;
+}
+
+.webgl-content * {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.centered {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#unity-container {
+    margin-left: auto;
+    margin-right: auto;
+    z-index: -1;
+}
+
+.loader .progressbar {
+    background-color: #a94176;
+    position: absolute;
+    width: 50%;
+    height: 75px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loader .fill {
+    background-color: #c56e9b;
+    height: 100%;
+}

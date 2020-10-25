@@ -30,22 +30,24 @@ namespace UXF.UI
             }
         }
 
-        public override string HandleDataTable(UXFDataTable table, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other)
+        public override string HandleDataTable(UXFDataTable table, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
-            if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType != UXFDataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
 
             string[] lines = table.GetCSVLines();
             string fname = string.Format("{0}.csv", dataName);
             string content = string.Join("\n", lines);
             // if trial results, push to top of list for convenience
-            CreateNewItem(content, fname, pushToTop: dataType == DataType.TrialResults); 
+            CreateNewItem(content, fname, pushToTop: dataType == UXFDataType.TrialResults); 
 
             return fname;
         }
 
-        public override string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other)
+        public override string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
-            if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType != UXFDataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
 
             string text = MiniJSON.Json.Serialize(serializableObject);
             string fname = string.Format("{0}.json", dataName);
@@ -54,9 +56,11 @@ namespace UXF.UI
             return fname;
         }
 
-        public override string HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other)
+        public override string HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
-            if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType != UXFDataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
+
             string text = MiniJSON.Json.Serialize(serializableObject);
             string fname = string.Format("{0}.json", dataName);
             CreateNewItem(text, fname);
@@ -64,18 +68,22 @@ namespace UXF.UI
             return fname;
         }
 
-        public override string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other)
+        public override string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
-            if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType != UXFDataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
+
             string fname = string.Format("{0}.txt", dataName);
             CreateNewItem(text, fname);
 
             return fname;
         }
 
-        public override string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.Other)
+        public override string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
-            if (dataType != DataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType != UXFDataType.TrialResults && trialResultsOnly) return "NA";
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
+
             string fname = string.Format("{0}.txt", dataName);
             string content = System.Text.Encoding.UTF8.GetString(bytes);
             CreateNewItem(content, fname);

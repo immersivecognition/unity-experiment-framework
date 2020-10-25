@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEditorInternal;
+using System.Reflection;
 
 namespace UXF.EditorUtils
 {
@@ -9,9 +10,9 @@ namespace UXF.EditorUtils
     public class SessionEditor : SubjectNerd.Utilities.ReorderableArrayInspector
     {
         Session session;
-        
+
         static int tabSelection;
-        string[] tabTexts = new string[]{ "Behaviour", "Data collection", "Data handling", "Events" };
+        string[] tabTexts = new string[] { "Behaviour", "Data collection", "Data handling", "Events" };
 
 
         protected override void InitInspector()
@@ -20,7 +21,7 @@ namespace UXF.EditorUtils
 
             // Always call DrawInspector function
             alwaysDrawInspector = true;
-            session = (Session) target;
+            session = (Session)target;
         }
 
         Object obj;
@@ -30,19 +31,19 @@ namespace UXF.EditorUtils
             serializedObject.Update();
 
             EditorGUI.BeginDisabledGroup(true);
-			{
-				EditorGUILayout.ObjectField(
+            {
+                EditorGUILayout.ObjectField(
                     "Script",
                     MonoScript.FromMonoBehaviour(session),
                     typeof(MonoScript),
                     false
                 );
-			}
-			EditorGUI.EndDisabledGroup();
+            }
+            EditorGUI.EndDisabledGroup();
             EditorGUILayout.Separator();
-            
+
             tabSelection = GUILayout.Toolbar(tabSelection, tabTexts);
-            
+
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.Label(":: ", EditorStyles.boldLabel);
@@ -61,7 +62,7 @@ namespace UXF.EditorUtils
                     EditorGUI.indentLevel++;
                     DrawPropertiesFromUpTo("endOnQuit", "setAsMainInstance");
                     EditorGUI.BeginDisabledGroup(true);
-                    EditorGUILayout.Toggle(new GUIContent("Ad Hoc Header Add", "Now permanently enabled. Results that are not listed in Custom Headers can be added at any time. If disabled, adding results that are not listed in Custom Headers will throw an error."), false);
+                    EditorGUILayout.Toggle(new GUIContent("Ad Hoc Header Add", "Now permanently enabled. Results that are not listed in Custom Headers can be added at any time."), true);
                     EditorGUI.EndDisabledGroup();
                     DrawPropertiesFromUpTo("setAsMainInstance", "storeSessionSettings");
                     EditorGUIUtility.labelWidth = lw;
@@ -83,7 +84,7 @@ namespace UXF.EditorUtils
                 case 1:
                     EditorGUIUtility.labelWidth = rectBox.width - 36f;
                     EditorGUI.indentLevel++;
-                    EditorGUI.BeginDisabledGroup(session.hasInitialised);                
+                    EditorGUI.BeginDisabledGroup(session.hasInitialised);
                     DrawPropertiesFromUpTo("storeSessionSettings", "customHeaders");
                     EditorGUIUtility.labelWidth = lw;
                     DrawPropertiesFromUpTo("customHeaders", "onSessionBegin");
@@ -100,8 +101,30 @@ namespace UXF.EditorUtils
                     EditorGUI.indentLevel--;
                     break;
                 case 3:
-                    EditorGUILayout.HelpBox("These events are raised when the session/trial begins/ends. Use them to manipulate the scene to create your experiment manipulation.", MessageType.Info);
-                    DrawPropertiesFromUpTo("onSessionBegin", "_hasInitialised");                    
+                    EditorGUILayout.HelpBox(
+                        "These events are raised when the session/trial begins/ends. Use them to manipulate the scene to create your experiment manipulation. " +
+                        "Importantly, the items within these events are called in order from top to bottom. You can reorder any added items by dragging the handle on the left.",
+                        MessageType.Info);
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("onSessionBegin")).tooltip, MessageType.Info);
+                    DrawPropertiesFromUpTo("onSessionBegin", "onTrialBegin");
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("onTrialBegin")).tooltip, MessageType.Info);
+                    DrawPropertiesFromUpTo("onTrialBegin", "onTrialEnd");
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("onTrialEnd")).tooltip, MessageType.Info);
+                    DrawPropertiesFromUpTo("onTrialEnd", "preSessionEnd");
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("preSessionEnd")).tooltip, MessageType.Info);
+                    DrawPropertiesFromUpTo("preSessionEnd", "onSessionEnd");
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("onSessionEnd")).tooltip, MessageType.Info);
+                    DrawPropertiesFromUpTo("onSessionEnd", "_hasInitialised");
                     break;
             }
             EditorGUILayout.EndVertical();
@@ -110,7 +133,7 @@ namespace UXF.EditorUtils
             //GUILayout.Button("Create a GitHub issue");
             //GUILayout.Button("Get help on the Wiki");
 
-            serializedObject.ApplyModifiedProperties();          
+            serializedObject.ApplyModifiedProperties();
         }
 
         void DrawMonitorTab()
@@ -137,32 +160,53 @@ namespace UXF.EditorUtils
                 // EditorGUI.EndDisabledGroup();
                 // EditorGUILayout.Separator();
 
-                int currentBlockNum = serializedObject.FindProperty("currentBlockNum").intValue;
-                int maxBlockNum = session.blocks[session.blocks.Count - 1].number;
-                string blockProgressText = string.Format("Block {0}/{1}", currentBlockNum, maxBlockNum);
-                float blockProgress = (float) currentBlockNum / maxBlockNum;
+                if (session.blocks.Count == 0)
+                {
+                    GUILayout.Label("No progress to show (no blocks).");
+                }
+                else
+                {
+                    int currentBlockNum = serializedObject.FindProperty("currentBlockNum").intValue;
+                    int maxBlockNum = session.blocks[session.blocks.Count - 1].number;
+                    string blockProgressText = string.Format("Block {0}/{1}", currentBlockNum, maxBlockNum);
+                    float blockProgress = (float)currentBlockNum / maxBlockNum;
 
-                Rect r = EditorGUILayout.BeginVertical();
-                EditorGUI.ProgressBar(r, blockProgress, blockProgressText);
-                GUILayout.Space(18);
-                EditorGUILayout.EndVertical();
+                    Rect r = EditorGUILayout.BeginVertical();
+                    EditorGUI.ProgressBar(r, blockProgress, blockProgressText);
+                    GUILayout.Space(18);
+                    EditorGUILayout.EndVertical();
 
 
-                int currentTrialNum = serializedObject.FindProperty("currentTrialNum").intValue;
-                int maxTrialNum = session.LastTrial.number;
-                string trialProgressText = string.Format("Trial {0}/{1}", currentTrialNum, maxTrialNum);
-                float trialProgress = (float) currentTrialNum / maxTrialNum;
+                    int currentTrialNum = serializedObject.FindProperty("currentTrialNum").intValue;
+                    int maxTrialNum = session.LastTrial.number;
+                    if (maxTrialNum == 0)
+                    {
+                        GUILayout.Label("No progress to show (no trials in block).");
+                    }
+                    else
+                    {
+                        string trialProgressText = string.Format("Trial {0}/{1}", currentTrialNum, maxTrialNum);
+                        float trialProgress = (float)currentTrialNum / maxTrialNum;
 
-                r = EditorGUILayout.BeginVertical();
-                EditorGUI.ProgressBar(r, trialProgress, trialProgressText);
-                GUILayout.Space(18);
-                EditorGUILayout.EndVertical();
+                        r = EditorGUILayout.BeginVertical();
+                        EditorGUI.ProgressBar(r, trialProgress, trialProgressText);
+                        GUILayout.Space(18);
+                        EditorGUILayout.EndVertical();
+                    }
+                }
+
             }
             else
             {
                 EditorGUILayout.HelpBox("You can monitor the progress of the Session here.\nWaiting for Session to begin...", MessageType.Info);
             }
 
+        }
+
+        private TooltipAttribute GetTooltip(FieldInfo field, bool inherit = true)
+        {
+            TooltipAttribute[] attributes = field.GetCustomAttributes(typeof(TooltipAttribute), inherit) as TooltipAttribute[];
+            return attributes.Length > 0 ? attributes[0] : null;
         }
 
     }

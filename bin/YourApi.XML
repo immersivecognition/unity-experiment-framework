@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Assembly-CSharp-Editor</name>
+    </assembly>
+    <members>
+        <member name="M:BasteRainGames.HidingAttributeDrawer.CheckShouldHide(UnityEditor.SerializedProperty)">
+            <summary>
+            Checks if a property is set to be hidden by a HideIfAttribute.
+            
+            Usefull for other property drawers that should respect the HideIfAttribute
+            </summary>
+        </member>
+        <member name="F:BasteRainGames.HidingAttributeDrawer.typeToDrawerType">
+            <summary>
+            Type to PropertyDrawer types for that type
+            </summary>
+        </member>
+        <member name="F:BasteRainGames.HidingAttributeDrawer.drawerTypeToDrawerInstance">
+            <summary>
+            PropertyDrawer types to instances of that type 
+            </summary>
+        </member>
+        <member name="T:SubjectNerd.Utilities.ReorderableArrayInspector.SortableListData">
+            <summary>
+            Internal class that manages ReorderableLists for each reorderable
+            SerializedProperty in a SerializedObject's direct child
+            </summary>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableArrayInspector.GetSortableList(UnityEditor.SerializedProperty)">
+            <summary>
+            Given a SerializedProperty, return the automatic ReorderableList assigned to it if any
+            </summary>
+            <param name="property"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableArrayInspector.SetDragDropHandler(UnityEditor.SerializedProperty,System.Action{UnityEditor.SerializedProperty,UnityEngine.Object[]})">
+            <summary>
+            Set a drag and drop handler function on a SerializedObject's ReorderableList, if any
+            </summary>
+            <param name="property"></param>
+            <param name="handler"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableArrayInspector.DrawPropertySortableArray(UnityEditor.SerializedProperty)">
+            <summary>
+            Draw a SerializedProperty as a ReorderableList if it was found during
+            initialization, otherwise use EditorGUILayout.PropertyField
+            </summary>
+            <param name="property"></param>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableArrayInspector.DrawPropertiesAll">
+            <summary>
+            Draw the default inspector, with the sortable arrays
+            </summary>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableArrayInspector.DrawPropertiesExcept(System.String[])">
+            <summary>
+            Draw the default inspector, except for the given property names
+            </summary>
+            <param name="propertyNames"></param>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableArrayInspector.DrawPropertiesFrom(System.String)">
+            <summary>
+            Draw the default inspector, starting from a given property
+            </summary>
+            <param name="propertyStart">Property name to start from</param>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableArrayInspector.DrawPropertiesUpTo(System.String)">
+            <summary>
+            Draw the default inspector, up to a given property
+            </summary>
+            <param name="propertyStop">Property name to stop at</param>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableArrayInspector.DrawPropertiesFromUpTo(System.String,System.String)">
+            <summary>
+            Draw the default inspector, starting from a given property to a stopping property
+            </summary>
+            <param name="propertyStart">Property name to start from</param>
+            <param name="propertyStop">Property name to stop at</param>
+        </member>
+        <member name="M:SubjectNerd.Utilities.SerializedPropExtension.ParentPath(UnityEditor.SerializedProperty)">
+            <summary>
+            Returns the path to the parent of a SerializedProperty
+            </summary>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SubjectNerd.Utilities.SerializedPropExtension.GetParentProp(UnityEditor.SerializedProperty)">
+            <summary>
+            Returns the parent of a SerializedProperty, as another SerializedProperty
+            </summary>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SubjectNerd.Utilities.SerializedPropExtension.ExpandHierarchy(UnityEditor.SerializedProperty,System.Boolean)">
+            <summary>
+            Set isExpanded of the SerializedProperty and propogate the change up the hierarchy
+            </summary>
+            <param name="prop"></param>
+            <param name="expand">isExpanded value</param>
+        </member>
+        <member name="M:SubjectNerd.Utilities.SerializedPropExtension.GetValue``1(UnityEditor.SerializedProperty)">
+            <summary>
+            Use reflection to get the actual data instance of a SerializedProperty
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SubjectNerd.Utilities.SerializedPropExtension.GetParent``1(UnityEditor.SerializedProperty)">
+            <summary>
+            Uses reflection to get the actual data instance of the parent of a SerializedProperty
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SubjectNerd.Utilities.SerializedPropExtension.HasAttribute``1(UnityEditor.SerializedProperty)">
+            <summary>
+            Use reflection to check if SerializedProperty has a given attribute
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SubjectNerd.Utilities.SerializedPropExtension.GetAttributes``1(UnityEditor.SerializedProperty)">
+            <summary>
+            Use reflection to get the attributes of the SerializedProperty
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SubjectNerd.Utilities.SerializedPropExtension.FindPropsOfType``1(UnityEditor.SerializedObject,System.Boolean)">
+            <summary>
+            Find properties in the serialized object of the given type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="enterChildren"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

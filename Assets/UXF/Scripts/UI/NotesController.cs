@@ -27,7 +27,7 @@ namespace UXF.UI
 		void Start()
 		{
 			canvas = GetComponent<Canvas>();
-			session.cleanUp += WriteNotes; // will write notes when session is finished
+			session.preSessionEnd.AddListener(WriteNotes); // will write notes when session is finished
 		}
 
 		/// <summary>
@@ -69,7 +69,7 @@ namespace UXF.UI
 		/// <summary>
 		/// Writes the session notes to a json file. File includes whether the session is marked as bad and any note added by the experimenter
 		/// </summary>
-		private void WriteNotes()
+		private void WriteNotes(Session session)
 		{
 			Dictionary<string, object> sessionNotes = new Dictionary<string, object>()
 			{
@@ -91,6 +91,7 @@ namespace UXF.UI
 
 			sessionNotes.Add(notesKey, notesValue);
 			session.SaveJSONSerializableObject(sessionNotes, "notes");
+			session.preSessionEnd.RemoveListener(WriteNotes);
 		}
 
 		/// <summary>

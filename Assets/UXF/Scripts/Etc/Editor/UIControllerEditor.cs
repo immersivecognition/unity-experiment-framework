@@ -143,7 +143,7 @@ namespace UXF.EditorUtils
 
                     EditorGUILayout.Separator();
 
-                    if (MiddleButton("Force UI Refresh")) uiController.LateValidate();
+                    if (EditorExtensions.MiddleButton("Force UI Refresh")) uiController.LateValidate();
                     break;
                 case 1:
                     string datapointsReasonText;
@@ -159,7 +159,7 @@ namespace UXF.EditorUtils
                         EditorGUILayout.HelpBox(errorText, UnityEditor.MessageType.Error);
                         EditorGUILayout.Separator();
                     }
-                    if (MiddleButton("Generate", enabled: valid)) uiController.GenerateSidebar();
+                    if (EditorExtensions.MiddleButton("Generate", enabled: valid)) uiController.GenerateSidebar();
                     EditorGUILayout.Separator();
                     EditorGUI.indentLevel++;
                     DrawPropertiesFromUpTo("participantDataPoints", "termsAndConditions");
@@ -172,7 +172,7 @@ namespace UXF.EditorUtils
                         "be performed, and what types of data will be collected. " + 
                         "You can add any UI elements such as text, images, or even buttons to  " +
                         "the Instructions Panel Content GameObject. You can select it with the button below.", UnityEditor.MessageType.Info);
-                    if (MiddleButton("Select Content GameObject"))
+                    if (EditorExtensions.MiddleButton("Select Content GameObject"))
                     {
                         if (uiController.instructionsContentTransform.childCount > 0)
                             Selection.activeObject = uiController.instructionsContentTransform.GetChild(0);
@@ -198,18 +198,6 @@ namespace UXF.EditorUtils
         {
             EditorGUILayout.HelpBox("The Built-in UI is not selected as the Startup Setting - the options below have no effect.", UnityEditor.MessageType.Warning);
             EditorGUILayout.Separator();
-        }
-
-        public bool MiddleButton(string text, bool enabled = true)
-        {
-            EditorGUI.BeginDisabledGroup(!enabled);
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            bool pressed = GUILayout.Button(text, GUILayout.MaxWidth(200), GUILayout.Height(25));
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
-            EditorGUI.EndDisabledGroup();
-            return pressed;
         }
 
 

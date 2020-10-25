@@ -115,7 +115,7 @@ namespace UXFExamples
                     }
                 }
             }
-            else // if wrong number we know its wrong immediately
+            else // if wrong length we know it's wrong immediately
             {
                 allCorrect = false;
             }
@@ -134,8 +134,8 @@ namespace UXFExamples
                 { "clicks", clicks }
             };
 
-            // this will make UXF automatically save this data as a json file, once per trial, organised into folders (with the FileSave Data Handler) 
-            Session.instance.CurrentTrial.SaveJSONSerializableObject(customCorsiResults, "corsi_results", DataType.Other);
+            // this will make UXF automatically save this data as a json file, once per trial, organised into folders (with the FileSaver Data Handler) 
+            Session.instance.CurrentTrial.SaveJSONSerializableObject(customCorsiResults, "corsi_results", UXFDataType.OtherTrialData);
 
             // hide confirm button
             confirmButton.gameObject.SetActive(false);

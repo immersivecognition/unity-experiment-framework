@@ -56,7 +56,7 @@ namespace UXF.Tests
 			{
 				string fileName = string.Format("{0:000}", i);
 				Debug.LogFormat("Queueing {0}", fileName);
-            	string fpath = fileSaver.HandleJSONSerializableObject(dict, experiment, ppid, sessionNum, fileName, dataType: DataType.Other);
+            	string fpath = fileSaver.HandleJSONSerializableObject(dict, experiment, ppid, sessionNum, fileName, UXFDataType.OtherSessionData);
                 fpaths[i] = fpath;
 			}
 

@@ -76,14 +76,14 @@ namespace UXF
             {
                 lines[i] = string.Join(",", 
                     headers
-                    .Select(h => dict[h][i - 1])
+                    .Select(h => dict[h][i - 1].ToString().Replace(",", "_"))
                 );
             }
 
             return lines;
         }
 
-        public Dictionary<string, List<object>> GetDataCopy()
+        public Dictionary<string, List<object>> GetAsDictOfList()
         {
             Dictionary<string, List<object>> dictCopy = new Dictionary<string, List<object>>();
             foreach (var kvp in dict)
@@ -91,6 +91,21 @@ namespace UXF
                 dictCopy.Add(kvp.Key, new List<object>(kvp.Value));
             }
             return dictCopy;
+        }
+
+        public List<Dictionary<string, object>> GetAsListOfDict()
+        {
+            int numRows = CountRows();
+            List<Dictionary<string, object>> listCopy = new List<Dictionary<string, object>>(numRows);
+
+            for (int i = 0; i < numRows; i++)
+            {
+                listCopy.Add(
+                    Headers.ToDictionary(h => h, h => dict[h][i])
+                );
+            }
+
+            return listCopy;
         }
     }
 

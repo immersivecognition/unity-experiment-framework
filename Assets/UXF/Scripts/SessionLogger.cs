@@ -41,7 +41,7 @@ namespace UXF
 		{
 			table = new UXFDataTable("timestamp", "log_type", "message");
             Application.logMessageReceived += HandleLog;
-			session.cleanUp += Finalise; // finalise logger when cleaning up the session
+			session.preSessionEnd.AddListener(Finalise); // finalise logger when cleaning up the session
 		}		
 
 		void HandleLog(string logString, string stackTrace, LogType type)
@@ -74,12 +74,12 @@ namespace UXF
         /// <summary>
         /// Finalises the session logger, saving the data and detaching its logging method from handling Debug.Log messages  
         /// </summary>
-        public void Finalise()
+        public void Finalise(Session session)
 		{
-			session.SaveDataTable(table, "log", dataType: DataType.SessionInfo);
+			session.SaveDataTable(table, "log", dataType: UXFDataType.SessionLog);
 
             Application.logMessageReceived -= HandleLog;
-			session.cleanUp -= Finalise;
+			session.preSessionEnd.RemoveListener(Finalise);
         }
 
 	}

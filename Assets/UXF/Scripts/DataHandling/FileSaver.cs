@@ -132,12 +132,14 @@ namespace UXF
         }
 
 
-        public override string HandleDataTable(UXFDataTable table, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.SessionInfo)
+        public override string HandleDataTable(UXFDataTable table, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
+
             string[] lines = table.GetCSVLines();
             
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
             
@@ -147,12 +149,14 @@ namespace UXF
             return savePath;
         }
 
-        public override string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.SessionInfo)
+        public override string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
+
             string text = MiniJSON.Json.Serialize(serializableObject);
 
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.json", dataName));
             
@@ -162,12 +166,14 @@ namespace UXF
             return savePath;
         }
 
-        public override string HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.SessionInfo)
+        public override string HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
+
             string text = MiniJSON.Json.Serialize(serializableObject);
 
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.json", dataName));
             
@@ -177,10 +183,12 @@ namespace UXF
             return savePath;
         }
 
-        public override string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.SessionInfo)
+        public override string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
+
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.txt", dataName));
             
@@ -190,10 +198,12 @@ namespace UXF
             return savePath;
         }
 
-        public override string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, DataType dataType = DataType.SessionInfo)
+        public override string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
         {
+            if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
+
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != DataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.txt", dataName));  
 
@@ -228,7 +238,7 @@ namespace UXF
         public override void CleanUp()
         {
             if (verboseDebug)
-                Debug.Log("Joining FileIOManagerThread");
+                Debug.Log("Joining File Saver Thread");
             quitting = true;
             bq.Enqueue(doNothing); // ensures bq breaks from foreach loop
             parallelThread.Join();

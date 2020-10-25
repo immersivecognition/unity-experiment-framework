@@ -91,28 +91,35 @@ namespace UXF
         /// Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument
         /// </summary>
         /// <returns></returns>
-        [Tooltip("Event(s) to trigger when the session is initialised. Can pass the instance of the Session as a dynamic argument")]
+        [Tooltip("Items in this event will be triggered when the session begins. Useful generating your trials & blocks, setting up the scene, and triggering the first trial.")]
         public SessionEvent onSessionBegin = new SessionEvent();
 
         /// <summary>
         /// Event(s) to trigger when a trial begins. Can pass the instance of the Trial as a dynamic argument
         /// </summary>
         /// <returns></returns>
-        [Tooltip("Event(s) to trigger when a trial begins. Can pass the instance of the Trial as a dynamic argument")]
+        [Tooltip("Items in this event will be triggered each time a trial begins. Useful for setting up the scene according to the settings in the trial (e.g. displaying stimuli).")]
         public TrialEvent onTrialBegin = new TrialEvent();
 
         /// <summary>
         /// Event(s) to trigger when a trial ends. Can pass the instance of the Trial as a dynamic argument
         /// </summary>
         /// <returns></returns>
-        [Tooltip("Event(s) to trigger when a trial ends. Can pass the instance of the Trial as a dynamic argument")]
+        [Tooltip("Items in this event will be triggered each time a trial ends. Useful for collecting results from the trial as well as showing feedback.")]
         public TrialEvent onTrialEnd = new TrialEvent();
 
         /// <summary>
-        /// Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event.
+        /// Event(s) to trigger just before the session has ended. If you wish to perform any summary statistics or write any final session data this is the time to do it. Do not use this event to quit the application.
         /// </summary>
         /// <returns></returns>
-        [Tooltip("Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event")]
+        [Tooltip("Items in this event will be triggered just before the session ends. Useful for performing any summary statistics, or writing any final session data. Do not use this event to quit the application, or data will be lost.")]
+        public SessionEvent preSessionEnd = new SessionEvent();
+
+        /// <summary>
+        /// Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event. You cannot perform data operations in this event.
+        /// </summary>
+        /// <returns></returns>
+        [Tooltip("Items in this event will be triggered just as the session ends, after data has been written. It is safe to quit the application using this event. You should not perform manual data operations in this event.")]
         public SessionEvent onSessionEnd = new SessionEvent();
 
         /// <summary>
@@ -226,16 +233,6 @@ namespace UXF
         public Dictionary<string, object> participantDetails;
 
         /// <summary>
-        /// An event handler for a C# event.
-        /// </summary>
-        public delegate void EventHandler();
-
-        /// <summary>
-        /// Event raised before session finished, used for UXF functionality. Users should use the similar OnSessionEnd UnityEvent.
-        /// </summary>
-        public event EventHandler cleanUp;
-
-        /// <summary>
         /// A reference to the main session instance that is currently active.
         /// </summary>
         public static Session instance;
@@ -320,7 +317,7 @@ namespace UXF
             if (storeSessionSettings)
             {
                 // copy Settings to session folder
-                SaveJSONSerializableObject(new Dictionary<string, object>(settings.baseDict), "settings", dataType: DataType.SessionInfo);
+                SaveJSONSerializableObject(new Dictionary<string, object>(settings.baseDict), "settings", dataType: UXFDataType.Settings);
             }
 
             if (storeParticipantDetails)
@@ -334,7 +331,7 @@ namespace UXF
                 ppDetailsTable.AddCompleteRow(row);
                 var ppDetailsLines = ppDetailsTable.GetCSVLines();
 
-                SaveDataTable(ppDetailsTable, "participant_details", dataType: DataType.SessionInfo);
+                SaveDataTable(ppDetailsTable, "participant_details", dataType: UXFDataType.ParticipantDetails);
             }
 
 
@@ -371,7 +368,7 @@ namespace UXF
         {
             if (currentTrialNum == 0)
             {
-                throw new NoSuchTrialException("There is no trial zero. If you are the start of the experiment please use NextTrial to get the first trial");
+                throw new NoSuchTrialException("There is no trial zero. Did you try to perform operations on the current trial before the first one started? If you are the start of the experiment please use NextTrial to get the first trial. ");
             }
             return Trials.ToList()[currentTrialNum - 1];
         }
@@ -398,7 +395,7 @@ namespace UXF
             }
             catch (ArgumentOutOfRangeException)
             {
-                throw new NoSuchTrialException("There is no next trial. Reached the end of trial list.");
+                throw new NoSuchTrialException("There is no next trial. Reached the end of trial list. If you are at the start of the session, perhaps you tried to start the next trial before generating your trials? If you are at the end, you can use BeginNextTrialSafe to do nothing if there is no next trial.");
             }
         }
 
@@ -527,6 +524,23 @@ namespace UXF
             return blocks[blockNumber - 1];
         }
 
+        public bool CheckDataTypeIsValid(string dataName, UXFDataType dataType)
+        {
+            if (dataType.GetDataLevel() != UXFDataLevel.PerSession)
+            {
+                Debug.LogErrorFormat(
+                    "Error trying to save data '{0}' of type UXFDataType.{1} associated with the Session. The valid types for this method are {2}. Reverting to type UXFDataType.OtherSessionData.",
+                    dataName,
+                    dataType,
+                    string.Join(", ", UXFDataLevel.PerSession.GetValidDataTypes())
+                    );
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
         /// <summary>
         /// Saves a DataTable to the storage locations(s).
@@ -534,11 +548,13 @@ namespace UXF
         /// <param name="table">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving.</param>
         /// <param name="dataType"></param>
-        public void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.Other)
+        public void SaveDataTable(UXFDataTable table, string dataName, UXFDataType dataType = UXFDataType.OtherSessionData)
         {
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherSessionData;
+
             foreach(var dataHandler in ActiveDataHandlers)
             {
-                string location = dataHandler.HandleDataTable(table, experimentName, ppid, number, dataName, dataType: dataType);
+                string location = dataHandler.HandleDataTable(table, experimentName, ppid, number, dataName, dataType);
             }
         }
 
@@ -548,11 +564,13 @@ namespace UXF
         /// <param name="serializableObject">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving.</param>
         /// <param name="dataType"></param>
-        public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.Other)
+        public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, UXFDataType dataType = UXFDataType.OtherSessionData)
         {
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherSessionData;
+            
             foreach(var dataHandler in ActiveDataHandlers)
             {
-                string location = dataHandler.HandleJSONSerializableObject(serializableObject, experimentName, ppid, number, dataName, dataType: dataType);
+                string location = dataHandler.HandleJSONSerializableObject(serializableObject, experimentName, ppid, number, dataName, dataType);
             }
         }
 
@@ -562,11 +580,13 @@ namespace UXF
         /// <param name="serializableObject">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving.</param>
         /// <param name="dataType"></param>
-        public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.Other)
+        public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, UXFDataType dataType = UXFDataType.OtherSessionData)
         {
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherSessionData;
+
             foreach(var dataHandler in ActiveDataHandlers)
             {
-                string location = dataHandler.HandleJSONSerializableObject(serializableObject, experimentName, ppid, number, dataName, dataType: dataType);
+                string location = dataHandler.HandleJSONSerializableObject(serializableObject, experimentName, ppid, number, dataName, dataType);
             }
         }
 
@@ -576,11 +596,13 @@ namespace UXF
         /// <param name="text">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving.</param>
         /// <param name="dataType"></param>
-        public void SaveText(string text, string dataName, DataType dataType = DataType.Other)
+        public void SaveText(string text, string dataName, UXFDataType dataType = UXFDataType.OtherSessionData)
         {
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherSessionData;
+
             foreach(var dataHandler in ActiveDataHandlers)
             {
-                string location = dataHandler.HandleText(text, experimentName, ppid, number, dataName, dataType: dataType);
+                string location = dataHandler.HandleText(text, experimentName, ppid, number, dataName, dataType);
             }
         }
 
@@ -590,11 +612,13 @@ namespace UXF
         /// <param name="bytes">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving.</param>
         /// <param name="dataType"></param>
-        public void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.Other)
+        public void SaveBytes(byte[] bytes, string dataName, UXFDataType dataType = UXFDataType.OtherSessionData)
         {
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherSessionData;
+            
             foreach(var dataHandler in ActiveDataHandlers)
             {
-                string location = dataHandler.HandleBytes(bytes, experimentName, ppid, number, dataName, dataType: dataType);
+                string location = dataHandler.HandleBytes(bytes, experimentName, ppid, number, dataName, dataType);
             }
         }
 
@@ -607,16 +631,21 @@ namespace UXF
             {
                 isEnding = true;
                 if (InTrial)
-                    CurrentTrial.End();
+                {
+                    try { CurrentTrial.End(); }
+                    catch (Exception e) { Debug.LogException(e); }
+                }
+                    
                 SaveResults();
 
-                // raise cleanup event
-                if (cleanUp != null) cleanUp();
+                try { preSessionEnd.Invoke(this); }
+                catch (Exception e) { Debug.LogException(e); }
 
                 // end DataHandler - forces completion of tasks
                 foreach (var dataHandler in ActiveDataHandlers) dataHandler.CleanUp();
                 
-                onSessionEnd.Invoke(this);
+                try { onSessionEnd.Invoke(this); }
+                catch (Exception e) { Debug.LogException(e); }
 
                 currentTrialNum = 0;
                 currentBlockNum = 0;
@@ -648,7 +677,7 @@ namespace UXF
                     {
                         if (t.result.ContainsKey(h) && t.result[h] != null)
                         {
-                            row.Add(( h, t.result[h].ToString().Replace(",", "_") ));
+                            row.Add(( h, t.result[h] ));
                         }
                         else
                         {
@@ -659,7 +688,7 @@ namespace UXF
                 }
             }
 
-            SaveDataTable(table, "trial_results", dataType: DataType.TrialResults);            
+            SaveDataTable(table, "trial_results", dataType: UXFDataType.TrialResults);            
         }
 
         void OnApplicationQuit()

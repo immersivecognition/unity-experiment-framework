@@ -112,7 +112,7 @@ namespace UXF
             // log tracked objects
             foreach (Tracker tracker in session.trackedObjects)
             {
-                SaveDataTable(tracker.data, tracker.dataName, dataType: DataType.Trackers);
+                SaveDataTable(tracker.data, tracker.dataName, dataType: UXFDataType.Trackers);
             }
 
             // log any settings we need to for this trial
@@ -120,7 +120,26 @@ namespace UXF
             {
                 result[s] = settings.GetObject(s);
             }
+
             session.onTrialEnd.Invoke(this);
+        }
+
+        public bool CheckDataTypeIsValid(string dataName, UXFDataType dataType)
+        {
+            if (dataType.GetDataLevel() != UXFDataLevel.PerTrial)
+            {
+                Debug.LogErrorFormat(
+                    "Error trying to save data '{0}' of type UXFDataType.{1} associated with the Trial. The valid types for this method are {2}. Reverting to type UXFDataType.OtherTrialData.",
+                    dataName,
+                    dataType,
+                    string.Join(", ", UXFDataLevel.PerTrial.GetValidDataTypes())
+                    );
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         /// <summary>
@@ -129,12 +148,14 @@ namespace UXF
         /// <param name="table">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveDataTable(UXFDataTable table, string dataName, DataType dataType = DataType.Other)
+        public void SaveDataTable(UXFDataTable table, string dataName, UXFDataType dataType = UXFDataType.OtherTrialData)
         {
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
+
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
             {
-                string location = dataHandler.HandleDataTable(table, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+                string location = dataHandler.HandleDataTable(table, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
@@ -145,12 +166,14 @@ namespace UXF
         /// <param name="serializableObject">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, DataType dataType = DataType.Other)
+        public void SaveJSONSerializableObject(List<object> serializableObject, string dataName, UXFDataType dataType = UXFDataType.OtherTrialData)
         {
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
+
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
-            {
-                string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+            {              
+                string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
@@ -161,12 +184,14 @@ namespace UXF
         /// <param name="serializableObject">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, DataType dataType = DataType.Other)
+        public void SaveJSONSerializableObject(Dictionary<string, object> serializableObject, string dataName, UXFDataType dataType = UXFDataType.OtherTrialData)
         {
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
+
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
             {
-                string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+                string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
@@ -177,12 +202,14 @@ namespace UXF
         /// <param name="text">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveText(string text, string dataName, DataType dataType = DataType.Other)
+        public void SaveText(string text, string dataName, UXFDataType dataType = UXFDataType.OtherTrialData)
         {
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
+            
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
             {
-                string location = dataHandler.HandleText(text, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+                string location = dataHandler.HandleText(text, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
@@ -193,12 +220,14 @@ namespace UXF
         /// <param name="bytes">The data to be saved.</param>
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
-        public void SaveBytes(byte[] bytes, string dataName, DataType dataType = DataType.Other)
-        {
+        public void SaveBytes(byte[] bytes, string dataName, UXFDataType dataType = UXFDataType.OtherTrialData)
+        {            
+            if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
+            
             int i = 0;
             foreach(var dataHandler in session.ActiveDataHandlers)
             {
-                string location = dataHandler.HandleBytes(bytes, session.experimentName, session.ppid, session.number, string.Format("{0}_T{1:000}", dataName, number), dataType: dataType);
+                string location = dataHandler.HandleBytes(bytes, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
         }
