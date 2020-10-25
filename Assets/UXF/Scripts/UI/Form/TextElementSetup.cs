@@ -13,11 +13,23 @@ namespace UXF.UI
 
         public InputField content;
 
+        public string initialText = "";
+
+        /// <summary>
+        /// Called when the script is loaded or a value is changed in the
+        /// inspector (Called in the editor only).
+        /// </summary>
+        void OnValidate()
+        {
+            if (initialText != string.Empty) content.text = initialText;
+        }
+
         /// <summary>
         /// Awake is called when the script instance is being loaded.
         /// </summary>
         void Awake()
         {
+            if (initialText != string.Empty) content.text = initialText;
             Func<object> get = () => { return content.text; };
             Action<object> set = (value) => { content.text = (string) value; };
 

@@ -232,10 +232,10 @@ namespace UXF
 
 
         /// <summary>
-        /// TODO
+        /// Put an item in the database.
         /// </summary>
-        /// <param name="tableName"></param>
-        /// <param name="item"></param>
+        /// <param name="tableName">The name of the table where the data should be stored</param>
+        /// <param name="item">A dictionary with a string column name as the key, and any value as the object. These will automatically be turned into a database request for you.</param>
         public void PutCustomDataInDB(string tableName, Dictionary<string, object> item)
         {
             bool ok = CheckCurrentTargetOK();
@@ -247,13 +247,14 @@ namespace UXF
 
 
         /// <summary>
-        /// TODO
+        /// Get an item in the database that has been stored by UXF. The method happens asynchronously and so calls <paramref name="callback"/> when it has finished.
+        /// This method will automatically construct the table name and request for you.
         /// </summary>
-        /// <param name="experimentName"></param>
-        /// <param name="dataType"></param>
-        /// <param name="callbackFunction"></param>
-        /// <param name="optionalTrialNumber"></param>
-        public void GetUXFDataFromDB(string experimentName, UXFDataType dataType, string ppid, int sessionNum, string dataName, Action<Dictionary<string, object>> callbackFunction, int optionalTrialNumber = 0)
+        /// <param name="experimentName">Name of the experiment of the item you want to get.</param>
+        /// <param name="dataType">Data type of the item you want to get.</param>
+        /// <param name="callback">A method that accepts a `Dictionary<string, object>` object which contains the item from the database that you wanted. If the get request fails, the object will be null. </param>
+        /// <param name="optionalTrialNumber">The trial number of the item you want. Optional, only required for data types that are stored per-trial.</param>
+        public void GetUXFDataFromDB(string experimentName, UXFDataType dataType, string ppid, int sessionNum, string dataName, Action<Dictionary<string, object>> callback, int optionalTrialNumber = 0)
         {
             bool ok = CheckCurrentTargetOK();
             if (!ok) return;
@@ -265,7 +266,7 @@ namespace UXF
                     GetTableName(experimentName, dataType),
                     primaryKey,
                     GetFormattedPrimaryKeyValue(ppid, sessionNum, dataName),
-                    callbackFunction,
+                    callback,
                     sortKey,
                     optionalTrialNumber
                 );
@@ -276,19 +277,22 @@ namespace UXF
                     GetTableName(experimentName, dataType),
                     primaryKey,
                     GetFormattedPrimaryKeyValue(ppid, sessionNum, dataName),
-                    callbackFunction
+                    callback
                 );
             }            
         }
 
 
         /// <summary>
-        /// TODO
+        /// Get an item in the database that has not been stored by UXF. The method happens asynchronously and so calls <paramref name="callbackFunction"/> when it has finished.
+        /// This method will automatically construct the request for you.
         /// </summary>
-        /// <param name="experimentName"></param>
-        /// <param name="dataType"></param>
-        /// <param name="callback"></param>
-        /// <param name="optionalTrialNumber"></param>
+        /// <param name="tableName">Name of the database table.</param>
+        /// <param name="primaryKeyName">Name of the primary key of the table.</param>
+        /// <param name="primaryKeyValue">Value of the primary key of the table.</param>
+        /// <param name="callback">A method that accepts a `Dictionary<string, object>` object which contains the item from the database that you wanted. If the get request fails, the object will be null. </param>
+        /// <param name="optionalSortKeyName">The name of the sort key, only requred if your table has a sort key.</param>
+        /// <param name="optionalSortKeyValue">The value of the sort key, only requred if your table has a sort key.</param>
         public void GetCustomDataFromDB(string tableName, string primaryKeyName, object primaryKeyValue, Action<Dictionary<string, object>> callback, string optionalSortKeyName = "", object optionalSortKeyValue = null)
         {
             bool ok = CheckCurrentTargetOK();

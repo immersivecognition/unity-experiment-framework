@@ -19,20 +19,29 @@ namespace UXF.EditorUtils
         static Dictionary<StartupMode, string> startupModeDescriptionMapping = new Dictionary<StartupMode, string>()
         {
             { StartupMode.BuiltInUI, "The user interface will display before the session starts, allowing the researcher or participant to enter some basic details, read the instructions, and start the session." },
-            { StartupMode.Automatic, "There will be no user interface displayed, and the session will start immediately and automatically, with an optional settings .json file (stored in the StreamingAssets path)." },
+            { StartupMode.Automatic, "There will be no user interface displayed, and the session will start immediately and automatically, with an optional settings .json file (stored in the StreamingAssets path). Session number will always be set to 1 in this case." },
             { StartupMode.Manual, "The session will not start automatically - you must start it manually with code. You can start a session by calling the session.Begin() method, supplying the session information." }
         };
         static Dictionary<SettingsMode, string> settingsModeDescriptionMapping = new Dictionary<SettingsMode, string>()
         {
-            { SettingsMode.AcquireFromUI, "TODO" },
-            { SettingsMode.DownloadFromURL, "TODO" },
-            { SettingsMode.Empty, "TODO" }
+            { SettingsMode.AcquireFromUI,
+                "A dropdown menu will list .json files in the StreamingAssets folder that match a search pattern. When the researcher or participants selects one of these, it will try to be converted to the session's settings object. " + 
+                "The you can create as many .json files as you want, allowing for different sets of variables (e.g. number of trials) to be selected at startup. These .json files can be edited even in a built application (on Windows) by accessing " + 
+                "the StreamingAssets folder." },
+            { SettingsMode.DownloadFromURL, "Download a json file stored at a URL and try to convert it into the session's settings object. With this, a remotely deployed application can be edited just by modifying the .json file stored at the URL." },
+            { SettingsMode.Empty, "The session will start with empty settings. You can still add your own settings to the session with session.settings.SetValue(...)." }
         };
 
         static Dictionary<PPIDMode, string> ppidModeDescriptionMapping = new Dictionary<PPIDMode, string>()
         {
-            { PPIDMode.AcquireFromUI, "TODO" },
-            { PPIDMode.GenerateUnique, "TODO" }
+            { PPIDMode.AcquireFromUI, "Displays a box which allows the participant or researcher to enter a participant ID. A dice button also displays to allow a random ppid to be quickly generated." },
+            { PPIDMode.GenerateUnique, "No box will be displayed, instead a unique participant ID will be generated and used in the data output. This is recommended for Web-based experiments. The first part of the generated ID comes from a list of words, to make the PPIDs easier to read." }
+        };
+
+        static Dictionary<SessionNumMode, string> sessionNumModeDescriptionMapping = new Dictionary<SessionNumMode, string>()
+        {
+            { SessionNumMode.AcquireFromUI, "Displays a box which allows the participant or researcher to enter their session number. This allows the same participant to repeat the session multiple times by incrementing the session number." },
+            { SessionNumMode.AlwaysSession1, "The session number will always be set to 1. Useful where you know a participant will only perform the session once." }
         };
 
         protected override void InitInspector()
@@ -108,8 +117,8 @@ namespace UXF.EditorUtils
                         EditorGUILayout.Separator();
                     }
 
-                    this.DrawProperty("startupMode");
                     EditorGUILayout.HelpBox("Startup Mode " + uiController.startupMode.ToString() + ": " + startupModeDescriptionMapping[uiController.startupMode], UnityEditor.MessageType.Info);
+                    this.DrawProperty("startupMode");
                     if (uiController.startupMode == StartupMode.Automatic || uiController.settingsMode != SettingsMode.AcquireFromUI) this.DrawProperty("experimentName");
                     EditorGUILayout.Separator();
 
@@ -120,13 +129,24 @@ namespace UXF.EditorUtils
                         EditorGUILayout.Separator();
                     }
 
-                    this.DrawProperty("ppidMode");
                     EditorGUILayout.HelpBox("PPID Mode " + uiController.ppidMode.ToString() + ": " + ppidModeDescriptionMapping[uiController.ppidMode], UnityEditor.MessageType.Info);
-                    if (uiController.ppidMode == PPIDMode.GenerateUnique) this.DrawProperty("uuidWordList");
+                    this.DrawProperty("ppidMode");
+                    if (uiController.ppidMode == PPIDMode.GenerateUnique)
+                    {
+                        this.DrawProperty("uuidWordList");
+                    }
+                    else if (uiController.ppidMode == PPIDMode.AcquireFromUI)
+                    {
+                        EditorGUILayout.Separator();
+                        EditorGUILayout.HelpBox("Session Num Mode " + uiController.sessionNumMode.ToString() + ": " + sessionNumModeDescriptionMapping[uiController.sessionNumMode], UnityEditor.MessageType.Info);
+                        this.DrawProperty("sessionNumMode");
+                        EditorGUILayout.Separator();
+                    }
                     EditorGUILayout.Separator();
 
-                    this.DrawProperty("settingsMode");
+
                     EditorGUILayout.HelpBox("Settings Mode " + uiController.settingsMode.ToString() + ": " + settingsModeDescriptionMapping[uiController.settingsMode], UnityEditor.MessageType.Info);
+                    this.DrawProperty("settingsMode");
                     switch (uiController.settingsMode)
                     {
                         case SettingsMode.AcquireFromUI:

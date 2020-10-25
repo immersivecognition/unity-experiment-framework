@@ -13,19 +13,19 @@ namespace UXF.UI
     [DefaultExecutionOrder(100)]
     public class UIController : MonoBehaviour
     {
-        [Tooltip("TODO")]
+        [Tooltip("How should the session be started? With the built-in UI, automatic start as soon as the scene is loaded, or manual start (useful if you want to build your own UI).")]
         public StartupMode startupMode = StartupMode.BuiltInUI;
 
-        [Tooltip("TODO")]
+        [Tooltip("Name of the experiment used in data output.")]
         public string experimentName = "my_experiment";
 
-        [Tooltip("TODO")]
+        [Tooltip("Where should the session settings be acquired from?")]
         public SettingsMode settingsMode = SettingsMode.AcquireFromUI;
 
-        [Tooltip("TODO")]
+        [Tooltip("The pattern used to search for settings profile files in the StreamingAssets folder.")]
         public string settingsSearchPattern = "*.json";
 
-        [Tooltip("TODO")]
+        [Tooltip("The location of the settings profile file to download.")]
         public string jsonURL = "https://gist.githubusercontent.com/jackbrookes/0f9770fcfe3d448e0f7a1973c2ac7419/raw/f2d234c92c77a817f9fc6390fcfcb39814c33d3c/example_settings.json";
 
         [Tooltip("How should the Participant ID be collected?")]
@@ -33,6 +33,9 @@ namespace UXF.UI
 
         [Tooltip("Assign to a .txt file that contains one word per line. A random item in the list will be used for generating the PPID.")]
         public TextAsset uuidWordList;
+
+        [Tooltip("Should the session number be acquired from the UI, or always be set to 1?")]
+        public SessionNumMode sessionNumMode = SessionNumMode.AcquireFromUI;
 
         [SubjectNerd.Utilities.Reorderable]
         public List<FormElementEntry> participantDataPoints = new List<FormElementEntry>();
@@ -78,6 +81,7 @@ namespace UXF.UI
         public FormElement settingsElement;
         public FormElement localFilePathElement;
         public FormElement ppidElement;
+        public FormElement sessionNumElement;
         public FormElement tsAndCsToggle;
         public FormElement textPrefab;
         public FormElement dropDownPrefab;
@@ -117,7 +121,7 @@ namespace UXF.UI
                 tsAndCsToggle.SetContents(tsAndCsInitialState);
             }
             UpdateExperimentProfileElementState();
-            UpdatePPIDElementState();
+            UpdatePPIDSessionNumElementState();
             UpdateUIState();
             UpdateLocalFileElementState();
         }
@@ -137,10 +141,12 @@ namespace UXF.UI
             if (localFilePathElement != null) localFilePathElement.gameObject.SetActive(RequiresFilePathElement);
         }
 
-        void UpdatePPIDElementState()
+        void UpdatePPIDSessionNumElementState()
         {
             if (ppidElement != null) ppidElement.gameObject.SetActive(ppidMode == PPIDMode.AcquireFromUI);
+            if (sessionNumElement != null) sessionNumElement.gameObject.SetActive(ppidMode == PPIDMode.AcquireFromUI && sessionNumMode == SessionNumMode.AcquireFromUI);
         }
+
 
         /// <summary>
         /// Awake is called when the script instance is being loaded.
@@ -163,7 +169,7 @@ namespace UXF.UI
         {
             UpdateExperimentProfileElementState();
             UpdateLocalFileElementState();
-            UpdatePPIDElementState();
+            UpdatePPIDSessionNumElementState();
             UpdateUIState();
             if (startupMode == StartupMode.Automatic) AutoBeginSession();
         }
@@ -256,8 +262,9 @@ namespace UXF.UI
                 }
             }
 
-            // PPID
+            // PPID & SESSION NUM
             string newPpid = "";
+            int sessionNum = 1;
             switch (ppidMode)
             {
                 case PPIDMode.AcquireFromUI:
@@ -270,6 +277,19 @@ namespace UXF.UI
                         ppidElement.DisplayFault();
                         error = true;
                     }
+                    if (sessionNumMode == SessionNumMode.AcquireFromUI)
+                    {
+                        int newSessionNum = Convert.ToInt32(sessionNumElement.GetContents());
+                        if (newSessionNum <= 0)
+                        {
+                            sessionNumElement.DisplayFault();
+                            error = true;
+                        }
+                        else
+                        {
+                            sessionNum = newSessionNum;
+                        }
+                    }
                     break;
                 case PPIDMode.GenerateUnique:
                     newPpid = GenerateUniquePPID();
@@ -277,10 +297,6 @@ namespace UXF.UI
                 default:
                     throw new Exception();
             }
-
-
-            // SESSION NUM
-            int sessionNum = 1; // TODO get session num here
 
             // PARTICIPANT DETAILS
             Dictionary<string, object> newParticipantDetails;
@@ -370,8 +386,6 @@ namespace UXF.UI
                 newParticipantDetails,
                 newSettings
             );
-
-
         }
 
         public string GenerateUniquePPID()
@@ -394,6 +408,7 @@ namespace UXF.UI
                 if (ReferenceEquals(settingsElement.transform, child)) continue;
                 else if (ReferenceEquals(ppidElement.transform, child)) continue;
                 else if (ReferenceEquals(localFilePathElement.transform, child)) continue;
+                else if (ReferenceEquals(sessionNumElement.transform, child)) continue;
                 else DestroyImmediate(child.gameObject);
             }
 
@@ -592,5 +607,10 @@ namespace UXF.UI
     public enum PPIDMode
     {
         AcquireFromUI, GenerateUnique
+    }
+
+    public enum SessionNumMode
+    {
+        AcquireFromUI, AlwaysSession1
     }
 }
