@@ -3490,7 +3490,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e99fcc263e0faa43b398ccdce90eb56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comment: 
+  comment: This Data Handler will upload your data to an AWS DynamoDB database, if
+    configured correctly.
 --- !u!114 &1999034067558573094
 MonoBehaviour:
   m_ObjectHideFlags: 0
