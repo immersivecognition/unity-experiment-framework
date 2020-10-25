@@ -149,7 +149,7 @@ mergeInto(LibraryManager.library, {
             });
         };
 
-        tryPutItem(tableName, params, callbackGameObjectName);
+        tryBatchWriteItem(tableName, params, callbackGameObjectName);
     },
 
 
