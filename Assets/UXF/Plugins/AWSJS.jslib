@@ -1,6 +1,11 @@
 mergeInto(LibraryManager.library, {
 
     DDB_Setup: function(region, identityPool, callbackGameObjectName) {
+
+        if (typeof unityInstance == "undefined") {
+            throw "Cannot find unityInstance. Make sure you are using the UXF WebGL template."
+        }
+
         AWS.config.region = Pointer_stringify(region);
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
             IdentityPoolId: Pointer_stringify(identityPool),

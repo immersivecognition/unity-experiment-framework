@@ -119,6 +119,26 @@ namespace UXF.EditorUtils
                 }
             }
 
+
+            EditorGUILayout.Separator();
+
+            GUILayout.Label("WebGL", EditorStyles.boldLabel);
+
+            if (PlayerSettings.WebGL.template == "PROJECT:UXF WebGL")
+            {
+                EditorGUILayout.HelpBox("UXF WebGL template is set correctly.", MessageType.Info);
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("UXF WebGL template is not selected as the WebGL Template in Player Settings.", MessageType.Warning);
+                if (GUILayout.Button("Fix"))
+                {
+                    PlayerSettings.WebGL.template = "PROJECT:UXF WebGL";
+                }
+            }
+
+
+
             EditorGUILayout.Separator();
             EditorGUILayout.HelpBox("To show this window again go to UXF -> Show setup wizard in the menubar.", MessageType.None);
 
