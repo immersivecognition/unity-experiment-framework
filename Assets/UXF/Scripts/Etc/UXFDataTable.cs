@@ -12,6 +12,11 @@ namespace UXF
         public string[] Headers { get { return dict.Keys.ToArray(); } }
         private Dictionary<string, List<object>> dict;
 
+        /// <summary>
+        /// Construct a table with given estimated row capacity and column names.
+        /// </summary>
+        /// <param name="capacity"></param>
+        /// <param name="columnNames"></param>
         public UXFDataTable(int capacity, params string[] columnNames)
         {
             dict = new Dictionary<string, List<object>>();
@@ -21,6 +26,10 @@ namespace UXF
             }
         }
 
+        /// <summary>
+        /// Construct a table with given column names.
+        /// </summary>
+        /// <param name="columnNames"></param>
         public UXFDataTable(params string[] columnNames)
         {
             dict = new Dictionary<string, List<object>>();
@@ -30,6 +39,10 @@ namespace UXF
             }
         }
 
+        /// <summary>
+        /// Add a complete row to the table
+        /// </summary>
+        /// <param name="newRow"></param>
         public void AddCompleteRow(UXFDataRow newRow)
         {
             bool sameKeys = (dict
@@ -59,6 +72,10 @@ namespace UXF
             }
         }
 
+        /// <summary>
+        /// Count and return the number of rows.
+        /// </summary>
+        /// <returns></returns>
         public int CountRows()
         {
             string[] keyArray = dict.Keys.ToArray();
@@ -67,6 +84,10 @@ namespace UXF
             return dict[keyArray[0]].Count();
         }
 
+        /// <summary>
+        /// Return the table as a set of strings, each string a line a row with comma-seperated values.
+        /// </summary>
+        /// <returns></returns>
         public string[] GetCSVLines()
         {
             string[] headers = Headers;
@@ -83,6 +104,10 @@ namespace UXF
             return lines;
         }
 
+        /// <summary>
+        /// Return the table as a dictionary of lists.
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, List<object>> GetAsDictOfList()
         {
             Dictionary<string, List<object>> dictCopy = new Dictionary<string, List<object>>();
@@ -93,6 +118,10 @@ namespace UXF
             return dictCopy;
         }
 
+        /// <summary>
+        /// Return the table as a list of dictionaries.
+        /// </summary>
+        /// <returns></returns>
         public List<Dictionary<string, object>> GetAsListOfDict()
         {
             int numRows = CountRows();
