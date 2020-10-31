@@ -284,7 +284,7 @@ namespace UXF
 
 
         /// <summary>
-        /// Get an item in the database that has not been stored by UXF. The method happens asynchronously and so calls <paramref name="callbackFunction"/> when it has finished.
+        /// Get an item in the database that has not been stored by UXF. The method happens asynchronously and so calls <paramref name="callback"/> when it has finished.
         /// This method will automatically construct the request for you.
         /// </summary>
         /// <param name="tableName">Name of the database table.</param>

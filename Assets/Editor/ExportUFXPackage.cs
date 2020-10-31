@@ -13,7 +13,8 @@ public class ExportUFXPackage : MonoBehaviour
         string[] assets = new string[]
         {
             "Assets/StreamingAssets",
-            "Assets/UXF"
+            "Assets/UXF",
+            "Assets/WebGLTemplates"
         };
 
         DateTime dt = DateTime.Now;
