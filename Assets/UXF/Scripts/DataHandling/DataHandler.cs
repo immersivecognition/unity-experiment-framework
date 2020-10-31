@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace UXF
 {
-
+    
     public abstract class DataHandler : MonoBehaviour
     {
         public bool active = true;

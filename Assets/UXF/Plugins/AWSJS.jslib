@@ -12,22 +12,19 @@ mergeInto(LibraryManager.library, {
         });
 
         callbackGameObjectName = Pointer_stringify(callbackGameObjectName);
-
-        window.addEventListener("beforeunload", function(e) {
-
-            // These are the messages you're seeing in the gif
+        window.onbeforeunload = function(e) {
             console.log("Calling OnClose from Browser!");
-            gameInstance.SendMessage(callbackGameObjectName, "HandleBeforeUnloadEvent");
+            unityInstance.SendMessage(callbackGameObjectName, "HandleBeforeUnloadEvent");
 
-            // Cancel the event
-            e.preventDefault();
+            // Cancel the event\\
+            (e || window.event).preventDefault();
 
             // This never shows up correctly for me, but it does prompt
             // the player to close their window with a dialogue box
             var dialogText = "Are you sure you would like to continue unloading the page?";
-            e.returnValue = dialogText;
+            (e || window.event).returnValue = dialogText;
             return dialogText;
-        });
+        };
 
     },
 
@@ -192,10 +189,10 @@ mergeInto(LibraryManager.library, {
 
     DDB_Cleanup: function() {
 
-        window.addEventListener('beforeunload', function(e) {
+        window.onbeforeunload = function(e) {
             // the absence of a returnValue property on the event will guarantee the browser unload happens
             delete e['returnValue'];
-        });
+        };
 
     }
 

@@ -1,6 +1,6 @@
 ## Building the documentation
 
-1. Enable XML documentation generation in Visual Studio project settings
+1. Enable XML documentation generation in Visual Studio project settings (Project settings -> Build -> XML Documentation File)
 2. Build the project
 3. Run the markdown generator script and put files in docs/wiki/Generated folder `python xml2md.py /path/to/docs.xml wiki/Generated`
 

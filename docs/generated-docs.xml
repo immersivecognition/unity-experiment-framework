@@ -4,39 +4,6 @@
         <name>Assembly-CSharp</name>
     </assembly>
     <members>
-        <member name="M:UXFExamples.ExperimentGenerator.MakeCatchTrials(UXF.Block)">
-            <summary>
-            Modify a block by adding several catch trials and then shuffling the trial list.
-            </summary>
-            <param name="block"></param>
-        </member>
-        <member name="T:UXFExamples.StartBlockController">
-            <summary>
-            Controls the start block gameobject
-            </summary>
-        </member>
-        <member name="F:UXFExamples.StartBlockController.session">
-            <summary>
-            Reference to the associated session.
-            </summary>
-        </member>
-        <member name="T:BasicExampleScript">
-            <summary>
-            Example script used to test functionality of the Experiment Manager
-            </summary>
-        </member>
-        <member name="M:BasicExampleScript.GenerateExperiment(UXF.Session)">
-            <summary>
-            generates the trials and blocks for the session
-            </summary>
-            <param name="experimentSession"></param>
-        </member>
-        <member name="M:BasicExampleScript.PresentStimulus(UXF.Trial)">
-            <summary>
-            Example method presenting a stimulus to a user
-            </summary>
-            <param name="trial"></param>
-        </member>
         <member name="M:UXF.ApplicationHandler.Quit">
             <summary>
             Quits the application. This is a handy helper method for use with the onSessionEnd 
@@ -46,6 +13,367 @@
             <summary>
             Reloads the currently active scene. This is a handy helper method for use with the onSessionEnd
             </summary>
+        </member>
+        <member name="M:UXF.DataHandler.IsCompatibleWith(UnityEditor.BuildTargetGroup)">
+            <summary>
+            Returns true if this data handler is definitley compatible with this build target group.
+            </summary>
+            <param name="buildTarget"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.DataHandler.IsIncompatibleWith(UnityEditor.BuildTargetGroup)">
+            <summary>
+            Returns true if this data handler is definitley incompatible with this build target group.
+            </summary>
+            <param name="buildTarget"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.UI.DownloadOrCopyHandler.IsCompatibleWith(UnityEditor.BuildTargetGroup)">
+            <summary>
+            Returns true if this data handler is definitley compatible with this build target.
+            </summary>
+            <param name="buildTarget"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.UI.DownloadOrCopyHandler.IsIncompatibleWith(UnityEditor.BuildTargetGroup)">
+            <summary>
+            Returns true if this data handler is definitley incompatible with this build target.
+            </summary>
+            <param name="buildTarget"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UXF.UI.ClickOutsidePanelEvent">
+            <summary>
+            A script that invokes a UnityEvent if you click outside of the attached UI rectTransform area
+            Useful for closing a panel when a mouse click is outside of the panel
+            </summary>
+        </member>
+        <member name="M:UXF.UI.ClickOutsidePanelEvent.HideIfClickedOutside">
+            <summary>
+            Invokes an event if a mouse click was made outside the bounds of the UI the script is attached to
+            </summary>
+        </member>
+        <member name="M:UXF.UI.ClickOutsidePanelEvent.CheckVisible">
+            <summary>
+            Check if the GameObject the script is attached to is visible in the scene
+            - If there is no parent canvas, the GameObject has to be active in the hierarchy
+            - If there is a parent canvas, the canvas has to be enabled and the GameObject active in the hierarchy
+            </summary>
+            <returns>true if the GameObject is visible in the scene</returns>
+        </member>
+        <member name="T:UXF.UI.DraggableUI">
+            <summary>
+            A script that allows any GUI object to be draggable
+            </summary>
+        </member>
+        <member name="M:UXF.UI.DraggableUI.CalculateNewTransformOffset(UnityEngine.Vector2)">
+            <summary>
+            Clamps a mouse delta from the OnDrag event to ensure the dragged UI stays within the screen
+            </summary>
+            <param name="mouseDelta">Mouse delta from the onDrag event</param>
+            <returns>Corrected delta offset to ensure UI doesn't go off screen</returns>
+        </member>
+        <member name="M:UXF.UI.ExperimentProfileSelector.Awake">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.ExperimentProfileSelector.Start">
+            <summary>
+            Start is called on the frame when a script is enabled just before
+            any of the Update methods is called the first time.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.ExperimentProfileSelector.OnDestroy">
+            <summary>
+            This function is called when the MonoBehaviour will be destroyed.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.CheckboxElementSetup.Awake">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.DropDownElementSetup.Awake">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.TextElementSetup.OnValidate">
+            <summary>
+            Called when the script is loaded or a value is changed in the
+            inspector (Called in the editor only).
+            </summary>
+        </member>
+        <member name="M:UXF.UI.TextElementSetup.Awake">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.InfoBarController.Awake">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.InfoBarController.OnValidate">
+            <summary>
+            Called when the script is loaded or a value is changed in the
+            inspector (Called in the editor only).
+            </summary>
+        </member>
+        <member name="T:UXF.UI.InputFieldKeyboardReturnEvent">
+            <summary>
+            A script that can be added to an object with an input field, when enter is pressed while editing the input field a UnityEvent will be invoked
+            </summary>
+        </member>
+        <member name="T:UXF.UI.KeypressEvent">
+            <summary>
+            Script to invoke a UnityEvent when a specified key is pressed
+            </summary>
+        </member>
+        <member name="M:UXF.UI.LocalDirectorySelector.Awake">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.LocalDirectorySelector.Start">
+            <summary>
+            Start is called on the frame when a script is enabled just before
+            any of the Update methods is called the first time.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.LocalDirectorySelector.OnDestroy">
+            <summary>
+            This function is called when the MonoBehaviour will be destroyed.
+            </summary>
+        </member>
+        <member name="T:UXF.UI.NoteElementController">
+            <summary>
+            A script attached to a NoteElement
+            </summary>
+        </member>
+        <member name="T:UXF.UI.NotesController">
+            <summary>
+            A script to control the NotesPanel
+            </summary>
+        </member>
+        <member name="M:UXF.UI.NotesController.AddNewNote">
+            <summary>
+            Instantiates a new note prefab with the text currently in the new note input field
+            </summary>
+        </member>
+        <member name="M:UXF.UI.NotesController.MoveScrollbarToBottom">
+            <summary>
+            Starts a coroutine that yields 1 frame to allow the canvas to update, and then moves the notes scroll rect to the latest element added
+            </summary>
+        </member>
+        <member name="M:UXF.UI.NotesController.ToggleVisibility">
+            <summary>
+            Performs actions when the NotePanel is turned off and on
+            </summary>
+        </member>
+        <member name="M:UXF.UI.NotesController.WriteNotes(UXF.Session)">
+            <summary>
+            Writes the session notes to a json file. File includes whether the session is marked as bad and any note added by the experimenter
+            </summary>
+        </member>
+        <member name="M:UXF.UI.NotesController.ResetNotes">
+            <summary>
+            Reset the notes panel to default values
+            </summary>
+        </member>
+        <member name="M:UXF.UI.PPIDRandomGenerator.Awake">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.UIController.OnValidate">
+            <summary>
+            Called when the script is loaded or a value is changed in the
+            inspector (Called in the editor only).
+            </summary>
+        </member>
+        <member name="M:UXF.UI.UIController.Awake">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="M:UXF.UI.UIController.Start">
+            <summary>
+            Start is called on the frame when a script is enabled just before
+            any of the Update methods is called the first time.
+            </summary>
+        </member>
+        <member name="T:UXF.FileSaver">
+            <summary>
+            Component which manages File I/O in a seperate thread to avoid hitches.
+            </summary>
+        </member>
+        <member name="F:UXF.FileSaver.verboseDebug">
+            <summary>
+            Enable to print debug messages to the console.
+            </summary>
+        </member>
+        <member name="F:UXF.FileSaver.doNothing">
+            <summary>
+            An action which does nothing.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.FileSaver.SetUp">
+            <summary>
+            Starts the FileIOManager Worker thread.
+            </summary>
+        </member>
+        <member name="M:UXF.FileSaver.ManageInWorker(System.Action)">
+            <summary>
+            Adds a new command to a queue which is executed in a separate worker thread when it is available.
+            Warning: The Unity Engine API is not thread safe, so do not attempt to put any Unity commands here.
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:UXF.FileSaver.CheckIfRiskOfOverwrite(System.String,System.String,System.Int32,System.String)">
+            <summary>
+            Returns true if there may be a risk of overwriting data.
+            </summary>
+            <param name="experiment"></param>
+            <param name="ppid"></param>
+            <param name="sessionNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.FileSaver.CleanUp">
+            <summary>
+            Aborts the FileIOManager's thread and joins the thread to the calling thread.
+            </summary>
+        </member>
+        <member name="F:UXF.LocalFileDataHander.storagePath">
+            <summary>
+            Local path where the data should be stored.
+            </summary>
+        </member>
+        <member name="M:UXF.LocalFileDataHander.OnValidate">
+            <summary>
+            Called when the script is loaded or a value is changed in the
+            inspector (Called in the editor only).
+            </summary>
+        </member>
+        <member name="M:UXF.LocalFileDataHander.IsCompatibleWith(UnityEditor.BuildTargetGroup)">
+            <summary>
+            Returns true if this data handler is definitley compatible with this build target.
+            </summary>
+            <param name="buildTarget"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.LocalFileDataHander.IsIncompatibleWith(UnityEditor.BuildTargetGroup)">
+            <summary>
+            Returns true if this data handler is definitley incompatible with this build target.
+            </summary>
+            <param name="buildTarget"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UXF.WebAWSDynamoDB">
+            <summary>
+            Component which uploads data to an AWS DynamoDB on Web based builds.
+            </summary>
+        </member>
+        <member name="F:UXF.WebAWSDynamoDB.requestCallbackMap">
+            <summary>
+            When we read from the database, we use SendMessage to send the data back. This dictionary stores the user's callback
+            and a unique string as the key to make sure the data gets sent to the right callback. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.WebAWSDynamoDB.HandleDataTable(UXF.UXFDataTable,System.String,System.String,System.Int32,System.String,UXF.UXFDataType,System.Int32)">
+            <summary>
+            Handles a UXF Data Table. Should not normally be called by the user. Instead, call session.SaveDataTable() or trial.SaveDataTable().
+            </summary>
+            <param name="table"></param>
+            <param name="experiment"></param>
+            <param name="ppid"></param>
+            <param name="sessionNum"></param>
+            <param name="dataName"></param>
+            <param name="dataType"></param>
+            <param name="optionalTrialNum"></param>
+        </member>
+        <member name="M:UXF.WebAWSDynamoDB.HandleJSONSerializableObject(System.Collections.Generic.List{System.Object},System.String,System.String,System.Int32,System.String,UXF.UXFDataType,System.Int32)">
+            <summary>
+            Handle a JSON-Serializable object. Should not normally be called by the user. Instead, call session.SaveJSONSerializableObject() or trial.SaveJSONSerializableObject().
+            </summary>
+            <param name="serializableObject"></param>
+            <param name="experiment"></param>
+            <param name="ppid"></param>
+            <param name="sessionNum"></param>
+            <param name="dataName"></param>
+            <param name="dataType"></param>
+            <param name="optionalTrialNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.WebAWSDynamoDB.HandleBytes(System.Byte[],System.String,System.String,System.Int32,System.String,UXF.UXFDataType,System.Int32)">
+            <summary>
+            Handles a byte array. Should not normally be called by the user. Instead, call session.SaveBytes() or trial.SaveBytes().
+            </summary>
+            <param name="bytes"></param>
+            <param name="experiment"></param>
+            <param name="ppid"></param>
+            <param name="sessionNum"></param>
+            <param name="dataName"></param>
+            <param name="dataType"></param>
+            <param name="optionalTrialNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.WebAWSDynamoDB.HandleText(System.String,System.String,System.String,System.Int32,System.String,UXF.UXFDataType,System.Int32)">
+            <summary>
+            Handles a string. Should not normally be called by the user. Instead, call session.SaveBytes() or trial.SaveBytes().
+            </summary>
+            <param name="text"></param>
+            <param name="experiment"></param>
+            <param name="ppid"></param>
+            <param name="sessionNum"></param>
+            <param name="dataName"></param>
+            <param name="dataType"></param>
+            <param name="optionalTrialNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.WebAWSDynamoDB.HandleJSONSerializableObject(System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.String,System.Int32,System.String,UXF.UXFDataType,System.Int32)">
+            <summary>
+            Handle a JSON-Serializable object. Should not normally be called by the user. Instead, call session.SaveJSONSerializableObject() or trial.SaveJSONSerializableObject().
+            </summary>
+            <param name="serializableObject"></param>
+            <param name="experiment"></param>
+            <param name="ppid"></param>
+            <param name="sessionNum"></param>
+            <param name="dataName"></param>
+            <param name="dataType"></param>
+            <param name="optionalTrialNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.WebAWSDynamoDB.PutCustomDataInDB(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Put an item in the database.
+            </summary>
+            <param name="tableName">The name of the table where the data should be stored</param>
+            <param name="item">A dictionary with a string column name as the key, and any value as the object. These will automatically be turned into a database request for you.</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:UXF.WebAWSDynamoDB.GetUXFDataFromDB(System.String,UXF.UXFDataType,System.String,System.Int32,System.String,System.Action{System.Collections.Generic.Dictionary{System.String,System.Object}},System.Int32)" -->
+        <!-- Badly formed XML comment ignored for member "M:UXF.WebAWSDynamoDB.GetCustomDataFromDB(System.String,System.String,System.Object,System.Action{System.Collections.Generic.Dictionary{System.String,System.Object}},System.String,System.Object)" -->
+        <member name="M:UXF.WebAWSDynamoDB.HandleBeforeUnloadEvent">
+            <summary>
+            This is called when the user tries to close the tab.
+            </summary>
+        </member>
+        <member name="M:UXF.WebAWSDynamoDB.IsCompatibleWith(UnityEditor.BuildTargetGroup)">
+            <summary>
+            Returns true if this data handler is definitley compatible with this build target.
+            </summary>
+            <param name="buildTarget"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.WebAWSDynamoDB.IsIncompatibleWith(UnityEditor.BuildTargetGroup)">
+            <summary>
+            Returns true if this data handler is definitley incompatible with this build target.
+            </summary>
+            <param name="buildTarget"></param>
+            <returns></returns>
         </member>
         <member name="T:UXF.Block">
             <summary>
@@ -72,7 +400,7 @@
             Returns the block number of this block, based on its position in the session.
             </summary>
         </member>
-        <member name="F:UXF.Block.settings">
+        <member name="P:UXF.Block.settings">
             <summary>
             Block settings. These will be overridden by trial settings if set.
             </summary>
@@ -102,6 +430,23 @@
             <param name="relativeTrialNumber">Trial number relative to block (non zero indexed)</param>
             <returns></returns>
         </member>
+        <member name="T:UXF.EditorUtils.CameraDisplayOverride">
+            <summary>
+            Class which handles the cascading settings system. Wraps a Dictionary.
+            </summary>
+        </member>
+        <member name="M:UXF.EditorUtils.CameraDisplayOverride.OnValidate">
+            <summary>
+            Called when the script is loaded or a value is changed in the
+            inspector (Called in the editor only).
+            </summary>
+        </member>
+        <member name="M:UXF.EditorUtils.Comment.Start">
+            <summary>
+            Start is called on the frame when a script is enabled just before
+            any of the Update methods is called the first time.
+            </summary>
+        </member>
         <member name="T:UXF.SessionEvent">
             <summary>
             Event containing a Session as a parameter 
@@ -116,6 +461,72 @@
             <summary>
             Event containing a WriteFileInfo object as a parameter
             </summary>
+        </member>
+        <member name="T:UXF.Extensions">
+            <summary>
+            Useful methods
+            </summary>
+        </member>
+        <member name="F:UXF.Extensions.rng">
+            <summary>
+            Random number generator with seed based on current time.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Extensions.Clone``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Clones a list and all items inside
+            </summary>
+            <param name="listToClone"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Extensions.GetSafeFilename(System.String)">
+            <summary>
+            Modify a string to remove any unsafe characters
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.Extensions.Shuffle``1(System.Collections.Generic.IList{``0},System.Random)">
+            <summary>
+            Shuffles a list in-place with a given random number generator.
+            </summary>
+            <param name="list">List to shuffle</param>
+            <param name="rng">Random number generator via which the shuffling occurs</param>
+        </member>
+        <member name="M:UXF.Extensions.Shuffle``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Shuffles a list in-place with the current time based random number generator. 
+            </summary>
+            <param name="list">List to shuffle</param>
+        </member>
+        <member name="M:UXF.Extensions.Swap``1(System.Collections.Generic.IList{``0},System.Int32,System.Int32)">
+            <summary>
+            Swaps the order of the elements at indeces `indexA` and `indexB` within `list`
+            </summary>
+        </member>
+        <member name="M:UXF.Extensions.CombinePaths(System.String,System.String[])">
+            <summary>
+            Combine many path parts into a single path.
+            </summary>
+            <param name="path1">Base path</param>
+            <param name="paths">Array of subsequent paths</param>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.ResultsDictionary.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            Dictionary of results for a trial.
+            </summary>
+            <param name="initialKeys">Initial keys (e.g. headers) to add to dictionary</param>
+            <param name="allowAdHocAdding">Should extra keys be allowed to be added ad-hoc?</param>
+        </member>
+        <member name="P:UXF.ResultsDictionary.Item(System.String)">
+            <summary>
+            Access or set an observation
+            </summary>
+            <param name="key">Name (header) of the observation</param>
+            <returns></returns>
         </member>
         <member name="T:UXF.Settings">
             <summary>
@@ -145,7 +556,19 @@
             </summary>
             <param name="dict"></param>
         </member>
-        <member name="M:UXF.Settings.SetParent(UXF.Settings)">
+        <member name="M:UXF.Settings.#ctor">
+            <summary>
+            Creates new empty Settings instance
+            </summary>
+            <param name="dict"></param>
+        </member>
+        <member name="M:UXF.Settings.UpdateWithDict(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Add all the keys and values from `dict` to the settings.
+            </summary>
+            <param name="dict">Dictionary to add.</param>
+        </member>
+        <member name="M:UXF.Settings.SetParent(UXF.ISettingsContainer)">
             <summary>
             Sets the parent setting object, which is accessed when a setting is not found in the dictionary.
             </summary>
@@ -202,50 +625,163 @@
         <member name="M:UXF.Settings.GetBoolList(System.String)">
             <summary>
             Get a boolean list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
             </summary>
             <param name="key">The key (name) of the setting.</param>
         </member>
         <member name="M:UXF.Settings.GetIntList(System.String)">
             <summary>
             Get a integer list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
             </summary>
             <param name="key">The key (name) of the setting.</param>
         </member>
         <member name="M:UXF.Settings.GetFloatList(System.String)">
             <summary>
             Get a float list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
             </summary>
             <param name="key">The key (name) of the setting.</param>
         </member>
         <member name="M:UXF.Settings.GetLongList(System.String)">
             <summary>
             Get a long list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
             </summary>
             <param name="key">The key (name) of the setting.</param>
         </member>
         <member name="M:UXF.Settings.GetDoubleList(System.String)">
             <summary>
             Get a double list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
             </summary>
             <param name="key">The key (name) of the setting.</param>
         </member>
         <member name="M:UXF.Settings.GetStringList(System.String)">
             <summary>
             Get a string list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
             </summary>
             <param name="key">The key (name) of the setting.</param>
         </member>
-        <member name="M:UXF.Settings.GetDictList(System.String)">
-            <summary>
-            Get a dictionary list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
-            </summary>
-            <param name="key">The key (name) of the setting.</param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:UXF.Settings.GetDictList(System.String)" -->
         <member name="M:UXF.Settings.GetObjectList(System.String)">
             <summary>
             Get a object list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
             </summary>
             <param name="key">The key (name) of the setting.</param>
+        </member>
+        <member name="M:UXF.Settings.GetBool(System.String,System.Boolean)">
+            <summary>
+            Get a boolean setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. Returns valueIfNotFound if the key is not found in the settings.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetInt(System.String,System.Int32)">
+            <summary>
+            Get a integer setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. Returns valueIfNotFound if the key is not found in the settings.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetFloat(System.String,System.Single)">
+            <summary>
+            Get a float setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. Returns valueIfNotFound if the key is not found in the settings.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetLong(System.String,System.Int64)">
+            <summary>
+            Get a long setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. Returns valueIfNotFound if the key is not found in the settings.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetDouble(System.String,System.Double)">
+            <summary>
+            Get a double setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. Returns valueIfNotFound if the key is not found in the settings.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetString(System.String,System.String)">
+            <summary>
+            Get a string setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. Returns valueIfNotFound if the key is not found in the settings.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetDict(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Get a dictionary setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. Returns valueIfNotFound if the key is not found in the settings.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetObject(System.String,System.Object)">
+            <summary>
+            Get a object setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. Returns valueIfNotFound if the key is not found in the settings.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetBoolList(System.String,System.Collections.Generic.List{System.Boolean})">
+            <summary>
+            Get a boolean list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found. Returns valueIfNotFound if the key is not found in the settings.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetIntList(System.String,System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Get a integer list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetFloatList(System.String,System.Collections.Generic.List{System.Single})">
+            <summary>
+            Get a float list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetLongList(System.String,System.Collections.Generic.List{System.Int64})">
+            <summary>
+            Get a long list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetDoubleList(System.String,System.Collections.Generic.List{System.Double})">
+            <summary>
+            Get a double list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <member name="M:UXF.Settings.GetStringList(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Get a string list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            If the setting references a setting stored in the settings json file, a copy of the list will be returned. If it is a setting created with settings.SetValue(...), the original reference will be returned. 
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:UXF.Settings.GetDictList(System.String,System.Collections.Generic.List{System.Collections.Generic.Dictionary{System.String,System.Object}})" -->
+        <member name="M:UXF.Settings.GetObjectList(System.String,System.Collections.Generic.List{System.Object})">
+            <summary>
+            Get a object list setting value. If it is not found, the request will cascade upwards in each parent setting until one is found.
+            </summary>
+            <param name="key">The key (name) of the setting.</param>
+            <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
         </member>
         <member name="M:UXF.Settings.SetValue(System.String,System.Object)">
             <summary>
@@ -278,12 +814,12 @@
         </member>
         <member name="F:UXF.Tracker.customHeader">
             <summary>
-            Custom column headers for tracked objects
+            Custom column headers for tracked objects. Time is added automatically
             </summary>
         </member>
-        <member name="P:UXF.Tracker.filenameHeader">
+        <member name="P:UXF.Tracker.dataName">
             <summary>
-            The header used when saving the filename string within our behavioural data.
+            A name used when saving the data from this tracker.
             </summary>
         </member>
         <member name="P:UXF.Tracker.header">
@@ -312,15 +848,9 @@
             Stops recording.
             </summary>
         </member>
-        <member name="M:UXF.Tracker.GetDataCopy">
-            <summary>
-            Returns a copy of the data collected by this tracker.
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:UXF.Tracker.GetCurrentValues">
             <summary>
-            Acquire values for this frame and store them in an array.
+            Acquire values for this frame and store them in an UXFDataRow. Must return values for ALL columns.
             </summary>
             <returns></returns>
         </member>
@@ -360,7 +890,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="F:UXF.Trial.settings">
+        <member name="P:UXF.Trial.settings">
             <summary>
             Trial settings. These will override block settings if set.
             </summary>
@@ -391,114 +921,65 @@
             Ends the Trial, queues up saving results to output file, stops and saves tracked object data.
             </summary>
         </member>
+        <member name="M:UXF.Trial.SaveDataTable(UXF.UXFDataTable,System.String,UXF.UXFDataType)">
+            <summary>
+            Saves a DataTable to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+            </summary>
+            <param name="table">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+            <param name="dataType"></param>
+        </member>
+        <member name="M:UXF.Trial.SaveJSONSerializableObject(System.Collections.Generic.List{System.Object},System.String,UXF.UXFDataType)">
+            <summary>
+            Saves a JSON Serializable Object to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+            </summary>
+            <param name="serializableObject">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+            <param name="dataType"></param>
+        </member>
+        <member name="M:UXF.Trial.SaveJSONSerializableObject(System.Collections.Generic.Dictionary{System.String,System.Object},System.String,UXF.UXFDataType)">
+            <summary>
+            Saves a JSON Serializable Object to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+            </summary>
+            <param name="serializableObject">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+            <param name="dataType"></param>
+        </member>
+        <member name="M:UXF.Trial.SaveText(System.String,System.String,UXF.UXFDataType)">
+            <summary>
+            Saves a string of text to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+            </summary>
+            <param name="text">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+            <param name="dataType"></param>
+        </member>
+        <member name="M:UXF.Trial.SaveBytes(System.Byte[],System.String,UXF.UXFDataType)">
+            <summary>
+            Saves an array of bytes to the storage locations(s) for this trial. A column will be added in the trial_results CSV listing the location(s) of these data.
+            </summary>
+            <param name="bytes">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
+            <param name="dataType"></param>
+        </member>
         <member name="T:UXF.TrialStatus">
             <summary>
             Status of a trial
             </summary>
         </member>
+        <member name="T:UXF.UXFDataTable">
+            <summary>
+            Represents a table of data. That is, a series of named columns, each column representing a list of data. The lists of data are always the same length.
+            </summary>
+        </member>
+        <member name="T:UXF.UXFDataRow">
+            <summary>
+            Represents a single row of data. That is, a series of named columns, each column representing a single value.
+            The row hold a list of named Tuples (columnName and value). To add values, create a new UXFDataRow then add Tuples with the Add method.
+            </summary>
+        </member>
         <member name="T:UXF.EventSystemFallback">
             <summary>
             Simple script to make an event system if one does not exist already.
-            </summary>
-        </member>
-        <member name="T:UXF.FileIOManager">
-            <summary>
-            Component which manages File I/O in a seperate thread to avoid hitches.
-            </summary>
-        </member>
-        <member name="F:UXF.FileIOManager.debug">
-            <summary>
-            Enable to print debug messages to the console.
-            </summary>
-        </member>
-        <member name="F:UXF.FileIOManager.onWriteFile">
-            <summary>
-            Event(s) to trigger when we write a file. Not performed in amin thread so cannot include most Unity actions.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="F:UXF.FileIOManager.executeOnMainThreadQueue">
-            <summary>
-            Queue of actions which gets emptied on each frame in the main thread.
-            </summary>
-        </member>
-        <member name="F:UXF.FileIOManager.doNothing">
-            <summary>
-            An action which does nothing. Useful if a method requires an Action
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:UXF.FileIOManager.Begin">
-            <summary>
-            Starts the FileIOManager Worker thread.
-            </summary>
-        </member>
-        <member name="M:UXF.FileIOManager.ManageInWorker(System.Action)">
-            <summary>
-            Adds a new command to a queue which is executed in a separate worker thread when it is available.
-            Warning: The Unity Engine API is not thread safe, so do not attempt to put any Unity commands here.
-            </summary>
-            <param name="action"></param>
-        </member>
-        <member name="M:UXF.FileIOManager.CopyFile(System.String,System.String)">
-            <summary>
-            Copy file from one place to another.
-            </summary>
-            <param name="sourceFileName"></param>
-            <param name="destFileName"></param>
-        </member>
-        <member name="M:UXF.FileIOManager.ReadJSON(System.String,System.Action{System.Collections.Generic.Dictionary{System.String,System.Object}})">
-            <summary>
-            Reads a JSON file from a path then calls a given action with the deserialzed object as the first argument 
-            </summary>
-            <param name="fpath"></param>
-            <param name="callback"></param>
-        </member>
-        <member name="M:UXF.FileIOManager.WriteJson(System.Object,UXF.WriteFileInfo)">
-            <summary>
-            Serializes an object using MiniJSON and writes to a given path
-            </summary>
-            <param name="destFileName"></param>
-            <param name="serializableObject"></param>
-        </member>
-        <member name="M:UXF.FileIOManager.WriteTrials(System.Collections.Generic.List{OrderedResultDict},System.String[],UXF.WriteFileInfo)">
-            <summary>
-            Writes trial data (List of OrderedResultsDict) to file at fpath
-            </summary>
-            <param name="dataDict"></param>
-            <param name="headers"></param>
-            <param name="fpath"></param>
-        </member>
-        <member name="M:UXF.FileIOManager.WriteCSV(System.String[],System.Collections.Generic.IList{System.String[]},UXF.WriteFileInfo)">
-            <summary>
-            Writes a list of string arrays with a given header to a file at given path.
-            </summary>
-            <param name="header">Row of headers</param>
-            <param name="data"></param>
-            <param name="fpath"></param>
-        </member>
-        <member name="M:UXF.FileIOManager.ReadCSV(System.String,System.Action{System.Data.DataTable})">
-            <summary>
-            Read a CSV file from path, then runs an action that takes a DataTable as an argument. This code assumes the file is on disk, and the first row of the file has the names of the columns on it. Returns null if not found
-            </summary>
-            <param name="fpath"></param>
-            <param name="callback"></param>
-        </member>
-        <member name="M:UXF.FileIOManager.WriteCSV(System.Data.DataTable,UXF.WriteFileInfo)">
-            <summary>
-            Writes a DataTable to file to a path.
-            </summary>
-            <param name="data"></param>
-            <param name="fpath"></param>
-        </member>
-        <member name="M:UXF.FileIOManager.ManageInMain">
-            <summary>
-            Handles any actions which are enqueued to run on Unity's main thread.
-            </summary>
-        </member>
-        <member name="M:UXF.FileIOManager.End">
-            <summary>
-            Aborts the FileIOManager's thread and joins the thread to the calling thread.
             </summary>
         </member>
         <member name="T:UXF.PositionRotationTracker">
@@ -532,19 +1013,44 @@
             Enable to automatically safely end the session when this object is destroyed.
             </summary>
         </member>
+        <member name="F:UXF.Session.endAfterLastTrial">
+            <summary>
+            Enable to automatically end the session when the final trial has ended.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.setAsMainInstance">
+            <summary>
+            If enabled, you do not need to reference this session component in a public field, you can simply call "Session.instance".
+            </summary>
+        </member>
+        <member name="F:UXF.Session.dontDestroyOnLoadNewScene">
+            <summary>
+            If enabled, this GameObject will not be destroyed when you load a new scene.
+            </summary>
+        </member>
         <member name="F:UXF.Session.blocks">
             <summary>
             List of blocks for this experiment
             </summary>
         </member>
+        <member name="F:UXF.Session.storeSessionSettings">
+            <summary>
+            Enable to save a copy of the session.settings dictionary to the session folder as a `.json` file. This is written just as the session begins.
+            </summary>
+        </member>
+        <member name="F:UXF.Session.storeParticipantDetails">
+            <summary>
+            Enable to save a copy of the session.participantDetails dictionary to the session folder as a `.csv` file. This is written just as the session begins.
+            </summary>
+        </member>
         <member name="F:UXF.Session.customHeaders">
             <summary>
-            List of variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
+            List of dependent variables you plan to measure in your experiment. Once set here, you can add the observations to your results dictionary on each trial.
             </summary>
         </member>
         <member name="F:UXF.Session.settingsToLog">
             <summary>
-            List of settings you wish to log to the behavioural file for each trial.
+            List of settings (independent variables) you wish to log to the behavioural file for each trial.
             </summary>
             <returns></returns>
         </member>
@@ -571,11 +1077,23 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="F:UXF.Session.onSessionEnd">
+        <member name="F:UXF.Session.preSessionEnd">
             <summary>
-            Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event.
+            Event(s) to trigger just before the session has ended. If you wish to perform any summary statistics or write any final session data this is the time to do it. Do not use this event to quit the application.
             </summary>
             <returns></returns>
+        </member>
+        <member name="F:UXF.Session.onSessionEnd">
+            <summary>
+            Event(s) to trigger when the session has ended and all jobs have finished. It is safe to quit the application beyond this event. You cannot perform data operations in this event.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:UXF.Session.isEnding">
+            <summary>
+            Returns true when the session is in the process of ending. It is useful to query this in On Trial End events, since you may not need to perform some behaviour if the session is ending.
+            </summary>
+            <value></value>
         </member>
         <member name="P:UXF.Session.hasInitialised">
             <summary>
@@ -600,7 +1118,7 @@
         </member>
         <member name="F:UXF.Session.currentTrialNum">
             <summary>
-            Currently active trial number.
+            Currently active trial number. Be careful of modifying this.
             </summary>
         </member>
         <member name="F:UXF.Session.currentBlockNum">
@@ -608,7 +1126,7 @@
             Currently active block number.
             </summary>
         </member>
-        <member name="F:UXF.Session.settings">
+        <member name="P:UXF.Session.settings">
             <summary>
             Settings for the experiment. These are provided on initialisation of the session.
             </summary>
@@ -635,7 +1153,7 @@
         </member>
         <member name="P:UXF.Session.FirstTrial">
             <summary>
-            Get the last trial in the last block of the session.
+            Get the first trial in the first block of the session.
             </summary>
         </member>
         <member name="P:UXF.Session.LastTrial">
@@ -668,99 +1186,7 @@
             Path within the experiment path for this particular particpant.
             </summary>
         </member>
-        <member name="P:UXF.Session.FullPath">
-            <summary>
-            Path within the particpant path for this particular session.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.FolderName">
-            <summary>
-            Name of the Session folder 
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:UXF.Session.TrackingHeaders">
-            <summary>
-            List of file headers generated for all referenced tracked objects.
-            </summary>
-        </member>
         <member name="P:UXF.Session.Headers">
-            <summary>
-            Stores combined list of headers for the behavioural output.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.inTrial">
-            <summary>
-            Returns true if current trial is in progress
-            </summary>
-        </member>
-        <member name="P:UXF.Session.currentTrial">
-            <summary>
-            Returns the current trial object.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.nextTrial">
-            <summary>
-            Returns the next trial object (i.e. trial with trial number currentTrialNum + 1 ).
-            </summary>
-        </member>
-        <member name="P:UXF.Session.prevTrial">
-            <summary>
-            Get the trial before the current trial.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.firstTrial">
-            <summary>
-            Get the last trial in the last block of the session.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.lastTrial">
-            <summary>
-            Get the last trial in the last block of the session.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.currentBlock">
-            <summary>
-            Returns the current block object.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.trials">
-            <summary>
-            Returns a list of trials for all blocks.  Modifying the order of this list will not affect trial order. Modify block.trials to change order within blocks.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.basePath">
-            <summary>
-            The path in which the experiment data are stored.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.experimentPath">
-            <summary>
-            Path to the folder used for reading settings and storing the output. 
-            </summary>
-        </member>
-        <member name="P:UXF.Session.ppPath">
-            <summary>
-            Path within the experiment path for this particular particpant.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.path">
-            <summary>
-            Path within the particpant path for this particular session.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.folderName">
-            <summary>
-            Name of the Session folder 
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:UXF.Session.trackingHeaders">
-            <summary>
-            List of file headers generated for all referenced tracked objects.
-            </summary>
-        </member>
-        <member name="P:UXF.Session.headers">
             <summary>
             Stores combined list of headers for the behavioural output.
             </summary>
@@ -770,14 +1196,9 @@
             Dictionary of objects for datapoints collected via the UI, or otherwise.
             </summary>
         </member>
-        <member name="T:UXF.Session.EventHandler">
+        <member name="F:UXF.Session.instance">
             <summary>
-            An event handler for a C# event.
-            </summary>
-        </member>
-        <member name="E:UXF.Session.cleanUp">
-            <summary>
-            Event raised before session finished, used for UXF functionality. Users should use the similar OnSessionEnd UnityEvent.
+            A reference to the main session instance that is currently active.
             </summary>
         </member>
         <member name="F:UXF.Session.baseHeaders">
@@ -785,9 +1206,14 @@
             The headers that are always included in the trial_results output.
             </summary>
         </member>
-        <member name="F:UXF.Session.fileIOManager">
+        <member name="F:UXF.Session.dataHandlers">
             <summary>
-            Reference to the associated FileIOManager which deals with inputting and outputting files.
+            Reference to the associated DataHandlers which handles saving data to the cloud, etc.
+            </summary>
+        </member>
+        <member name="P:UXF.Session.ActiveDataHandlers">
+            <summary>
+            Get the currently selected dataHandlers for this session.
             </summary>
         </member>
         <member name="M:UXF.Session.Awake">
@@ -795,40 +1221,9 @@
             Provide references to other components 
             </summary>
         </member>
-        <member name="M:UXF.Session.AttachReferences(UXF.FileIOManager)">
-            <summary>
-            Provide references to other components 
-            </summary>
-            <param name="newFileIOManager"></param>
-        </member>
-        <member name="M:UXF.Session.InitFolder">
-            <summary>
-            Folder error checks (creates folders, has set save folder, etc)     
-            </summary>
-        </member>
-        <member name="M:UXF.Session.SaveTrackerData(UXF.Tracker)">
-            <summary>
-            Save tracking data for this trial
-            </summary>
-            <param name="tracker">The tracker to take data from to save</param>
-            <returns>Name of the saved file</returns>
-        </member>
-        <member name="M:UXF.Session.CopyFileToSessionFolder(System.String)">
-            <summary>
-            Copies a file to the folder for this session
-            </summary>
-            <param name="filePath"></param>
-        </member>
-        <member name="M:UXF.Session.WriteDictToSessionFolder(System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
-            <summary>
-            Write a dictionary object to a JSON file in the session folder (in a new FileIOManager thread)
-            </summary>
-            <param name="dict">Dictionary object to write</param>
-            <param name="objectName">Name of the object (is used for file name)</param>
-        </member>
         <member name="M:UXF.Session.CheckSessionExists(System.String,System.String,System.String,System.Int32)">
             <summary>
-            Checks if a session folder already exists for this participant
+            Checks if there is a risk of overwriting data for this participant and session number
             </summary>
             <param name="experimentName"></param>
             <param name="participantId"></param>
@@ -836,7 +1231,7 @@
             <param name="sessionNumber"></param>
             <returns></returns>
         </member>
-        <member name="M:UXF.Session.Begin(System.String,System.String,System.String,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object},UXF.Settings)">
+        <member name="M:UXF.Session.Begin(System.String,System.String,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object},UXF.Settings)">
             <summary>
             Initialises a Session
             </summary>
@@ -888,6 +1283,16 @@
             Begins next trial. Useful to call from an inspector event
             </summary>
         </member>
+        <member name="M:UXF.Session.BeginNextTrialSafe">
+            <summary>
+            Begins next trial (if one exists). Useful to call from an inspector event
+            </summary>
+        </member>
+        <member name="M:UXF.Session.EndIfLastTrial(UXF.Trial)">
+            <summary>
+            Ends the session if the supplied trial is the last trial.
+            </summary>
+        </member>
         <member name="M:UXF.Session.GetPrevTrial">
             <summary>
             Get previous Trial.
@@ -918,24 +1323,50 @@
             </summary>
             <returns>Block.</returns>
         </member>
+        <member name="M:UXF.Session.SaveDataTable(UXF.UXFDataTable,System.String,UXF.UXFDataType)">
+            <summary>
+            Saves a DataTable to the storage locations(s).
+            </summary>
+            <param name="table">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving.</param>
+            <param name="dataType"></param>
+        </member>
+        <member name="M:UXF.Session.SaveJSONSerializableObject(System.Collections.Generic.List{System.Object},System.String,UXF.UXFDataType)">
+            <summary>
+            Saves a JSON Serializable Object to the storage locations(s).
+            </summary>
+            <param name="serializableObject">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving.</param>
+            <param name="dataType"></param>
+        </member>
+        <member name="M:UXF.Session.SaveJSONSerializableObject(System.Collections.Generic.Dictionary{System.String,System.Object},System.String,UXF.UXFDataType)">
+            <summary>
+            Saves a JSON Serializable Object to the storage locations(s).
+            </summary>
+            <param name="serializableObject">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving.</param>
+            <param name="dataType"></param>
+        </member>
+        <member name="M:UXF.Session.SaveText(System.String,System.String,UXF.UXFDataType)">
+            <summary>
+            Saves a string of text to the storage locations(s).
+            </summary>
+            <param name="text">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving.</param>
+            <param name="dataType"></param>
+        </member>
+        <member name="M:UXF.Session.SaveBytes(System.Byte[],System.String,UXF.UXFDataType)">
+            <summary>
+            Saves an array of bytes to the storage locations(s).
+            </summary>
+            <param name="bytes">The data to be saved.</param>
+            <param name="dataName">Name to be used in saving.</param>
+            <param name="dataType"></param>
+        </member>
         <member name="M:UXF.Session.End">
             <summary>
             Ends the experiment session.
             </summary>
-        </member>
-        <member name="M:UXF.Session.ReadSettingsFile(System.String,System.Action{System.Collections.Generic.Dictionary{System.String,System.Object}})">
-            <summary>
-            Reads json settings file as Dictionary then calls actioon with Dictionary as parameter
-            </summary>
-            <param name="path">Location of .json file to read</param>
-            <param name="action">Action to call when completed</param>
-        </member>
-        <member name="M:UXF.Session.SessionNumToName(System.Int32)">
-            <summary>
-            Convert a session number to a session name
-            </summary>
-            <param name="num"></param>
-            <returns></returns>
         </member>
         <member name="T:UXF.NoSuchTrialException">
             <summary>
@@ -947,11 +1378,10 @@
             Component that handles collecting all Debug.Log calls
             </summary>
         </member>
-        <member name="M:UXF.SessionLogger.AttachReferences(UXF.FileIOManager,UXF.Session)">
+        <member name="M:UXF.SessionLogger.AttachReferences(UXF.Session)">
             <summary>
             Provide references to other components 
             </summary>
-            <param name="newFileIOManager"></param>
             <param name="newSession"></param>
         </member>
         <member name="M:UXF.SessionLogger.Initialise">
@@ -959,451 +1389,206 @@
             Initialises the session logger, creating the internal data structures, and attaching its logging method to handle Debug.Log messages 
             </summary>
         </member>
-        <member name="M:UXF.SessionLogger.Finalise">
+        <member name="M:UXF.SessionLogger.WriteLog(System.String,System.String)">
+            <summary>
+            Manually log a message to the log file.
+            </summary>
+            <param name="logType">The type of the log. This can be any string you choose.</param>
+            <param name="message">The content you wish to log, expressed as a string.</param>
+        </member>
+        <member name="M:UXF.SessionLogger.Finalise(UXF.Session)">
             <summary>
             Finalises the session logger, saving the data and detaching its logging method from handling Debug.Log messages  
             </summary>
         </member>
-        <member name="T:UXF.ClickOutsidePanelEvent">
+        <member name="T:UXFExamples.Example_DisplayEndSessionMessage">
             <summary>
-            A script that invokes a UnityEvent if you click outside of the attached UI rectTransform area
-            Useful for closing a panel when a mouse click is outside of the panel
+            Example script used to test functionality of the Experiment Manager
             </summary>
         </member>
-        <member name="M:UXF.ClickOutsidePanelEvent.HideIfClickedOutside">
+        <member name="T:UXFExamples.Example_Engine">
             <summary>
-            Invokes an event if a mouse click was made outside the bounds of the UI the script is attached to
+            Example script used to test functionality of the Experiment Manager
             </summary>
         </member>
-        <member name="M:UXF.ClickOutsidePanelEvent.CheckVisible">
+        <member name="M:UXFExamples.Example_Engine.Update">
             <summary>
-            Check if the GameObject the script is attached to is visible in the scene
-            - If there is no parent canvas, the GameObject has to be active in the hierarchy
-            - If there is a parent canvas, the canvas has to be enabled and the GameObject active in the hierarchy
-            </summary>
-            <returns>true if the GameObject is visible in the scene</returns>
-        </member>
-        <member name="T:UXF.DraggableUI">
-            <summary>
-            A script that allows any GUI object to be draggable
+            Update is called every frame, if the MonoBehaviour is enabled.
             </summary>
         </member>
-        <member name="M:UXF.DraggableUI.CalculateNewTransformOffset(UnityEngine.Vector2)">
+        <member name="T:UXFExamples.Example_BasicExampleScript">
             <summary>
-            Clamps a mouse delta from the OnDrag event to ensure the dragged UI stays within the screen
-            </summary>
-            <param name="mouseDelta">Mouse delta from the onDrag event</param>
-            <returns>Corrected delta offset to ensure UI doesn't go off screen</returns>
-        </member>
-        <member name="P:UXF.ExperimentStartupController.participantDataPoints">
-            <summary>
-            List of datapoints you want to collect per participant. These will be generated for the GUI and added as new columns in the participant list. Participant ID is added automatically.
+            Example script used to test functionality of the Experiment Manager
             </summary>
         </member>
-        <member name="M:UXF.ExperimentStartupController.StartExperiment">
+        <member name="M:UXFExamples.Example_BasicExampleScript.GenerateExperiment(UXF.Session)">
             <summary>
-            Called upon press of the start button in the UI. Creates the experiment session
+            generates the trials and blocks for the session
+            </summary>
+            <param name="session"></param>
+        </member>
+        <member name="M:UXFExamples.Example_BasicExampleScript.PresentStimulus(UXF.Trial)">
+            <summary>
+            Example method presenting a stimulus to a user
+            </summary>
+            <param name="trial"></param>
+        </member>
+        <member name="M:UXFExamples.Example_ExperimentGenerator.MakeCatchTrials(UXF.Block)">
+            <summary>
+            Modify a block by adding several catch trials and then shuffling the trial list.
+            </summary>
+            <param name="block"></param>
+        </member>
+        <member name="T:UXFExamples.Example_StartBlockController">
+            <summary>
+            Controls the start block gameobject
             </summary>
         </member>
-        <member name="T:UXF.Extensions">
+        <member name="F:UXFExamples.Example_StartBlockController.session">
             <summary>
-            Useful methods
+            Reference to the associated session.
             </summary>
         </member>
-        <member name="F:UXF.Extensions.rng">
-            <summary>
-            Random number generator with seed based on current time.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:UXF.Extensions.Clone``1(System.Collections.Generic.IList{``0})">
-            <summary>
-            Clones a list and all items inside
-            </summary>
-            <param name="listToClone"></param>
-            <typeparam name="T"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:UXF.Extensions.GetSafeFilename(System.String)">
-            <summary>
-            Modify a string to remove any unsafe characters
-            </summary>
-            <param name="filename"></param>
-            <returns></returns>
-        </member>
-        <member name="M:UXF.Extensions.Shuffle``1(System.Collections.Generic.IList{``0},System.Random)">
-            <summary>
-            Shuffles a list in-place with a given random number generator.
-            </summary>
-            <param name="list">List to shuffle</param>
-            <param name="rng">Random number generator via which the shuffling occurs</param>
-        </member>
-        <member name="M:UXF.Extensions.Shuffle``1(System.Collections.Generic.IList{``0})">
-            <summary>
-            Shuffles a list in-place with the current time based random number generator. 
-            </summary>
-            <param name="list">List to shuffle</param>
-        </member>
-        <member name="M:UXF.Extensions.CombinePaths(System.String,System.String[])">
-            <summary>
-            Combine many path parts into a single path.
-            </summary>
-            <param name="path1">Base path</param>
-            <param name="paths">Array of subsequent paths</param>
-            <returns></returns>
-        </member>
-        <member name="M:UXF.InfoBarController.Start">
+        <member name="M:UXFExamples.Example_MultiSceneExperimentGenerator.Awake">
             <summary>
             Awake is called when the script instance is being loaded.
             </summary>
         </member>
-        <member name="M:UXF.InfoBarController.OnValidate">
+        <member name="M:UXFExamples.Example_MultiSceneExperimentGenerator.OnValidate">
             <summary>
-            Called when the script is loaded or a value is changed in the
-            inspector (Called in the editor only).
+            This function is called when the object becomes enabled and active.
             </summary>
         </member>
-        <member name="T:UXF.InputFieldKeyboardReturnEvent">
+        <member name="M:UXFExamples.Example_ReactionStim.Awake">
             <summary>
-            A script that can be added to an object with an input field, when enter is pressed while editing the input field a UnityEvent will be invoked
+            Awake is called when the script instance is being loaded.
             </summary>
         </member>
-        <member name="T:UXF.KeypressEvent">
+        <member name="M:UXFExamples.Example_ReactionStim.OnMouseDown">
             <summary>
-            Script to invoke a UnityEvent when a specified key is pressed
+            OnMouseDown is called when the user has pressed the mouse button while
+            over the GUIElement or Collider.
             </summary>
         </member>
-        <member name="T:UXF.NoteElementController">
+        <member name="M:UXFExamples.Example_Shooter.Update">
             <summary>
-            A script attached to a NoteElement
+            Update is called every frame, if the MonoBehaviour is enabled.
             </summary>
         </member>
-        <member name="T:UXF.NotesController">
+        <member name="T:UXFExamples.Example_ShootTarget">
             <summary>
-            A script to control the NotesPanel
+            This script controls the movement of the moving target in the shooting task in the MultiSceneExperiment.
             </summary>
         </member>
-        <member name="M:UXF.NotesController.AddNewNote">
+        <member name="M:UXFExamples.Example_ShootTarget.Awake">
             <summary>
-            Instantiates a new note prefab with the text currently in the new note input field
+            Awake is called when the script instance is being loaded.
             </summary>
         </member>
-        <member name="M:UXF.NotesController.MoveScrollbarToBottom">
+        <member name="M:UXFExamples.Example_ShootTarget.Update">
             <summary>
-            Starts a coroutine that yields 1 frame to allow the canvas to update, and then moves the notes scroll rect to the latest element added
+            Update is called every frame, if the MonoBehaviour is enabled.
             </summary>
         </member>
-        <member name="M:UXF.NotesController.ToggleVisibility">
+        <member name="M:UXFExamples.Example_ShootTarget.OnTriggerEnter(UnityEngine.Collider)">
             <summary>
-            Performs actions when the NotePanel is turned off and on
+            OnTriggerEnter is called when the Collider other enters the trigger.
+            </summary>
+            <param name="other">The other Collider involved in this collision.</param>
+        </member>
+        <member name="T:UXFExamples.Example_CorsiBlockTask">
+            <summary>
+            This script defines the IVs in the Corsi Block task
             </summary>
         </member>
-        <member name="M:UXF.NotesController.WriteNotes">
+        <member name="F:UXFExamples.Example_CorsiBlockTask.possiblePositions">
             <summary>
-            Writes the session notes to a json file. File includes whether the session is marked as bad and any note added by the experimenter
+            Store an array of transforms which defines the possible positons that they lie in.
             </summary>
         </member>
-        <member name="M:UXF.NotesController.ResetNotes">
+        <member name="F:UXFExamples.Example_CorsiBlockTask.randomOffsetMax">
             <summary>
-            Reset the notes panel to default values
+            We will offset the position of the cubes by a little in 2D, to make them not appear in a perfect grid.
             </summary>
         </member>
-        <member name="M:CSVFile.CSV.ParseMultiLine(System.IO.StreamReader,System.Char,System.Char)">
+        <member name="F:UXFExamples.Example_CorsiBlockTask.feedback">
             <summary>
-            Parse a line whose values may include newline symbols or CR/LF
-            </summary>
-            <param name="sr"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CSVFile.CSV.ParseLine(System.String,System.Char,System.Char)">
-            <summary>
-            Parse the line and return the array if it succeeds, or as best as we can get
-            </summary>
-            <param name="s"></param>
-            <param name="delimiter"></param>
-            <param name="text_qualifier"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CSVFile.CSV.TryParseLine(System.String,System.Char,System.Char,System.String[]@)">
-            <summary>
-            Read in a line of text, and use the Add() function to add these items to the current CSV structure
-            </summary>
-            <param name="s"></param>
-        </member>
-        <member name="M:CSVFile.CSV.LoadDataTable(System.String,System.Boolean,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Read in a single CSV file into a datatable in memory
-            </summary>
-            <param name="filename"></param>
-            <param name="delim">The CSV field delimiter character.</param>
-            <param name="qual">The CSV text qualifier character.</param>
-            <returns>An data table of strings that were retrieved from the CSV file.</returns>
-        </member>
-        <member name="M:CSVFile.CSV.LoadDataTable(System.IO.StreamReader,System.Boolean,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Read in a single CSV file into a datatable in memory
-            </summary>
-            <param name="filename"></param>
-            <param name="delim">The CSV field delimiter character.</param>
-            <param name="qual">The CSV text qualifier character.</param>
-            <returns>An data table of strings that were retrieved from the CSV file.</returns>
-        </member>
-        <member name="M:CSVFile.CSV.LoadDataTable(System.String,System.String[],System.Boolean,System.Char,System.Char)">
-            <summary>
-            Read in a single CSV file into a datatable in memory
-            </summary>
-            <param name="filename"></param>
-            <param name="delim">The CSV field delimiter character.</param>
-            <param name="qual">The CSV text qualifier character.</param>
-            <returns>An data table of strings that were retrieved from the CSV file.</returns>
-        </member>
-        <member name="M:CSVFile.CSV.LoadDataTable(System.IO.StreamReader,System.String[],System.Boolean,System.Char,System.Char)">
-            <summary>
-            Read in a single CSV file into a datatable in memory
-            </summary>
-            <param name="filename"></param>
-            <param name="delim">The CSV field delimiter character.</param>
-            <param name="qual">The CSV text qualifier character.</param>
-            <returns>An data table of strings that were retrieved from the CSV file.</returns>
-        </member>
-        <member name="M:CSVFile.CSV.LoadString(System.String,System.Boolean,System.Boolean)">
-            <summary>
-            Convert a CSV file (in string form) into a data table
-            </summary>
-            <param name="source_string"></param>
-            <param name="first_row_are_headers"></param>
-            <param name="ignore_dimension_errors"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CSVFile.CSV.SaveAsCSV(System.Data.DataTable,System.String,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Write a data table to disk at the designated file name in CSV format
-            </summary>
-            <param name="dt"></param>
-            <param name="fn"></param>
-        </member>
-        <member name="M:CSVFile.CSV.SendCsvAttachment(System.Data.DataTable,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <summary>
-            Send this 
-            </summary>
-            <param name="dt"></param>
-            <param name="from_address"></param>
-            <param name="to_address"></param>
-            <param name="subject"></param>
-            <param name="body"></param>
-            <param name="??"></param>
-        </member>
-        <member name="M:CSVFile.CSV.WriteToStream(System.Data.DataTable,System.IO.StreamWriter,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Write the data table to a stream in CSV format
-            </summary>
-            <param name="dt">The data table to write</param>
-            <param name="sw">The stream where the CSV text will be written</param>
-            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
-            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
-            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
-        </member>
-        <member name="M:CSVFile.CSV.WriteToString(System.Data.DataTable,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Write a DataTable to a string in CSV format
-            </summary>
-            <param name="dt">The datatable to write</param>
-            <param name="sw">The stream where the CSV text will be written</param>
-            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
-            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
-            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
-            <returns>The CSV string representing the object array.</returns>
-        </member>
-        <member name="M:CSVFile.CSV.WriteToStream``1(System.Collections.Generic.IEnumerable{``0},System.IO.StreamWriter,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Serialize an object array to a stream in CSV format
-            </summary>
-            <param name="list">The object array to write</param>
-            <param name="sw">The stream where the CSV text will be written</param>
-            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
-            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
-            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
-        </member>
-        <member name="M:CSVFile.CSV.WriteToStream``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Serialize an object array to a stream in CSV format
-            </summary>
-            <param name="list">The object array to write</param>
-            <param name="sw">The stream where the CSV text will be written</param>
-            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
-            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
-            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
-        </member>
-        <member name="M:CSVFile.CSV.WriteToString``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Char,System.Char)">
-            <summary>
-            Serialize an object array to a string in CSV format
-            </summary>
-            <param name="list">The object array to write</param>
-            <param name="sw">The stream where the CSV text will be written</param>
-            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
-            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
-            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
-            <returns>The CSV string representing the object array.</returns>
-        </member>
-        <member name="M:CSVFile.CSV.LoadArray``1(System.String,System.Boolean,System.Boolean,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Read in a single CSV file as an array of objects
-            </summary>
-            <typeparam name="T">The type of objects to deserialize from this CSV.</typeparam>
-            <param name="stream">The stream to read.</param>
-            <param name="ignore_dimension_errors">Set to true if you wish to ignore rows that have a different number of columns.</param>
-            <param name="ignore_bad_columns">Set to true if you wish to ignore column headers that don't match up to object attributes.</param>
-            <param name="ignore_type_conversion_errors">Set to true if you wish to overlook elements in the CSV array that can't be properly converted.</param>
-            <param name="delim">The CSV field delimiter character.</param>
-            <param name="qual">The CSV text qualifier character.</param>
-            <returns>An array of objects that were retrieved from the CSV file.</returns>
-        </member>
-        <member name="M:CSVFile.CSV.Output(System.Collections.Generic.IEnumerable{System.Object},System.Char,System.Char,System.Boolean)">
-            <summary>
-            Output a single field value as appropriate
-            </summary>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CSVFile.CSV.SaveArray``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Saves an array of objects to a CSV string in memory.
-            </summary>
-            <typeparam name="T">The type of objects to serialize from this CSV.</typeparam>
-            <param name="list">The array of objects to serialize.</param>
-            <param name="save_column_names">Set to true if you wish the first line of the CSV to contain the field names.</param>
-            <param name="force_qualifiers">Set to true to force qualifier characters around each field.</param>
-            <param name="delim">The CSV field delimiter character.</param>
-            <param name="qual">The CSV text qualifier character.</param>
-            <returns>The CSV string.</returns>
-        </member>
-        <member name="M:CSVFile.CSV.LoadArray``1(System.IO.StreamReader,System.Boolean,System.Boolean,System.Boolean,System.Char,System.Char)">
-            <summary>
-            Read in a single CSV file as an array of objects
-            </summary>
-            <typeparam name="T">The type of objects to deserialize from this CSV.</typeparam>
-            <param name="stream">The stream to read.</param>
-            <param name="ignore_dimension_errors">Set to true if you wish to ignore rows that have a different number of columns.</param>
-            <param name="ignore_bad_columns">Set to true if you wish to ignore column headers that don't match up to object attributes.</param>
-            <param name="ignore_type_conversion_errors">Set to true if you wish to overlook elements in the CSV array that can't be properly converted.</param>
-            <param name="delim">The CSV field delimiter character.</param>
-            <param name="qual">The CSV text qualifier character.</param>
-            <returns>An array of objects that were retrieved from the CSV file.</returns>
-        </member>
-        <member name="M:CSVFile.CSV.ChopFile(System.String,System.String,System.Boolean,System.Int32,System.Char,System.Char)">
-            <summary>
-            Take a CSV file and chop it into multiple chunks of a specified maximum size.
-            </summary>
-            <param name="filename"></param>
-            <param name="out_folder"></param>
-            <param name="first_row_are_headers"></param>
-            <param name="max_lines_per_file"></param>
-            <returns>Number of files chopped</returns>
-        </member>
-        <member name="F:CSVFile.CSVReader.Headers">
-            <summary>
-            If the first row in the file is a header row, this will be populated
+            reference to feedback script
             </summary>
         </member>
-        <member name="M:CSVFile.CSVReader.#ctor(System.IO.StreamReader,System.Char,System.Char,System.Boolean)">
+        <member name="M:UXFExamples.Example_CorsiBlockTask.GenerateExperiment(UXF.Session)">
             <summary>
-            Construct a new CSV reader off a streamed source
+            Generate blocks and trials. We can call this from OnSessionBegin 
+            </summary>
+            <param name="session"></param>
+        </member>
+        <member name="T:UXFExamples.Example_CorsiCube">
+            <summary>
+            This script controls an individual corsi cube
             </summary>
         </member>
-        <member name="M:CSVFile.CSVReader.#ctor(System.IO.Stream,System.Char,System.Char,System.Boolean)">
+        <member name="M:UXFExamples.Example_CorsiCube.Awake">
             <summary>
-            Construct a new CSV reader off a streamed source
+            Awake is called when the script instance is being loaded.
             </summary>
         </member>
-        <member name="M:CSVFile.CSVReader.#ctor(System.String,System.Char,System.Char,System.Boolean)">
+        <member name="M:UXFExamples.Example_CorsiCube.OnMouseDown">
             <summary>
-            Initialize a new CSV file structure to write to disk
+            OnMouseDown is called when the user has pressed the mouse button while
+            over the GUIElement or Collider.
             </summary>
         </member>
-        <member name="M:CSVFile.CSVReader.System#Collections#IEnumerable#GetEnumerator">
+        <member name="T:UXFExamples.Example_CorsiCubeGroup">
             <summary>
-            Iterate through all lines in this CSV file
-            </summary>
-            <returns>An array of all data columns in the line</returns>
-        </member>
-        <member name="M:CSVFile.CSVReader.System#Collections#Generic#IEnumerable{System#String[]}#GetEnumerator">
-            <summary>
-            Iterate through all lines in this CSV file
-            </summary>
-            <returns>An array of all data columns in the line</returns>
-        </member>
-        <member name="M:CSVFile.CSVReader.Lines">
-            <summary>
-            Iterate through all lines in this CSV file
-            </summary>
-            <returns>An array of all data columns in the line</returns>
-        </member>
-        <member name="M:CSVFile.CSVReader.NextLine">
-            <summary>
-            Retrieve the next line from the file.
-            </summary>
-            <returns>One line from the file.</returns>
-        </member>
-        <member name="M:CSVFile.CSVReader.ReadAsDataTable(System.Boolean,System.Boolean,System.String[])">
-            <summary>
-            Read this file into a data table in memory
-            </summary>
-            <param name="first_row_are_headers"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CSVFile.CSVReader.Dispose">
-            <summary>
-            Close our resources - specifically, the stream reader
+            This script controls the set of cubes
             </summary>
         </member>
-        <member name="M:CSVFile.CSVReader.Deserialize``1(System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:UXFExamples.Example_CorsiCubeGroup.RegisterClick(System.Int32)">
             <summary>
-            Deserialize a CSV file into a list of typed objects
+            Called when user clicks on any cube
+            </summary>
+        </member>
+        <member name="M:UXFExamples.Example_CorsiCubeGroup.Confirm">
+            <summary>
+            Called when user clicks confirm button.
+            </summary>
+        </member>
+        <member name="T:UXFExamples.Example_CorsiFeedback">
+            <summary>
+            This script controls feedback text
+            </summary>
+        </member>
+        <member name="M:UXFExamples.Example_CorsiFeedback.Awake">
+            <summary>
+            Awake is called when the script instance is being loaded.
+            </summary>
+        </member>
+        <member name="T:BlockingQueue`1">
+            <summary>
+            Queue class used to manage multithreaded file IO.
             </summary>
             <typeparam name="T"></typeparam>
-            <returns></returns>
         </member>
-        <member name="M:CSVFile.CSVWriter.#ctor(System.IO.StreamWriter,System.Char,System.Char)">
+        <member name="T:BasteRainGames.HideIfAttribute">
             <summary>
-            Construct a new CSV writer to produce output on the enclosed StreamWriter
+            Hides a field if the bool 'variable' has the state 'state'
             </summary>
         </member>
-        <member name="M:CSVFile.CSVWriter.#ctor(System.IO.Stream,System.Char,System.Char)">
+        <member name="T:BasteRainGames.HideIfNullAttribute">
             <summary>
-            Construct a new CSV reader to produce output on the specified stream
+            Hides a field if the Object 'variable' is null
             </summary>
         </member>
-        <member name="M:CSVFile.CSVWriter.#ctor(System.String,System.Char,System.Char)">
+        <member name="T:BasteRainGames.HideIfNotNullAttribute">
             <summary>
-            Initialize a new CSV file structure to write data to disk
+            Hides a field if the Object 'variable' is not null
             </summary>
         </member>
-        <member name="M:CSVFile.CSVWriter.WriteLine(System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+        <member name="T:BasteRainGames.HideIfEnumValueAttribute">
             <summary>
-            Write one line to the file
-            </summary>
-            <param name="line">The array of values for this line</param>
-            <param name="force_qualifiers">True if you want to force qualifiers for this line.</param>
-        </member>
-        <member name="M:CSVFile.CSVWriter.Write(System.Data.DataTable,System.Boolean,System.Boolean)">
-            <summary>
-            Write the data table to a stream in CSV format
-            </summary>
-            <param name="dt">The data table to write</param>
-            <param name="sw">The stream where the CSV text will be written</param>
-            <param name="save_column_names">True if you wish the first line of the file to have column names</param>
-            <param name="delim">The delimiter (comma, tab, pipe, etc) to separate fields</param>
-            <param name="qual">The text qualifier (double-quote) that encapsulates fields that include delimiters</param>
-        </member>
-        <member name="M:CSVFile.CSVWriter.WriteObjects``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Boolean)">
-            <summary>
-            Serialize a list of objects to CSV using this writer
-            </summary>
-            <typeparam name="IEnumerable">An IEnumerable that produces the list of objects to serialize.</typeparam>
-        </member>
-        <member name="M:CSVFile.CSVWriter.Dispose">
-            <summary>
-            Close our resources - specifically, the stream reader
+            Hides a field based on it's enum value.
+            use hideIf to specify if the variable must be equal to one of the attributes, or if it must be 
+            unequal to all of the attributes
             </summary>
         </member>
         <member name="T:InspectorButtonAttribute">
@@ -1462,23 +1647,28 @@
             <seealso cref="T:BeginReadOnlyGroupAttribute"/>
             <seealso cref="T:ReadOnlyAttribute"/>
         </member>
-        <member name="T:BlockingQueue`1">
+        <member name="T:SubjectNerd.Utilities.EditScriptableAttribute">
             <summary>
-            Queue class used to manage multithreaded file IO.
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="T:OrderedResultDict">
-            <summary>
-            Class used to store trial results. Is a dictionary that stores its entries in a given order.
+            Display a ScriptableObject field with an inline editor
             </summary>
         </member>
-        <member name="P:OrderedResultDict.Item(System.String)">
+        <member name="T:SubjectNerd.Utilities.ReorderableAttribute">
             <summary>
-            Access or set an observation
+            Display a List/Array as a sortable list in the inspector
             </summary>
-            <param name="key">Name (header) of the observation</param>
-            <returns></returns>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableAttribute.#ctor">
+            <summary>
+            Display a List/Array as a sortable list in the inspector
+            </summary>
+        </member>
+        <member name="M:SubjectNerd.Utilities.ReorderableAttribute.#ctor(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Display a List/Array as a sortable list in the inspector
+            </summary>
+            <param name="headerString">Customize the element name in the inspector</param>
+            <param name="isZeroIndex">If false, start element list count from 1</param>
+            <param name="isSingleLine">Try to fit the array elements in a single line</param>
         </member>
         <member name="M:SFB.StandaloneFileBrowser.OpenFilePanel(System.String,System.String,System.String,System.Boolean)">
             <summary>
