@@ -971,6 +971,49 @@
             Represents a table of data. That is, a series of named columns, each column representing a list of data. The lists of data are always the same length.
             </summary>
         </member>
+        <member name="M:UXF.UXFDataTable.#ctor(System.Int32,System.String[])">
+            <summary>
+            Construct a table with given estimated row capacity and column names.
+            </summary>
+            <param name="capacity"></param>
+            <param name="columnNames"></param>
+        </member>
+        <member name="M:UXF.UXFDataTable.#ctor(System.String[])">
+            <summary>
+            Construct a table with given column names.
+            </summary>
+            <param name="columnNames"></param>
+        </member>
+        <member name="M:UXF.UXFDataTable.AddCompleteRow(UXF.UXFDataRow)">
+            <summary>
+            Add a complete row to the table
+            </summary>
+            <param name="newRow"></param>
+        </member>
+        <member name="M:UXF.UXFDataTable.CountRows">
+            <summary>
+            Count and return the number of rows.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.UXFDataTable.GetCSVLines">
+            <summary>
+            Return the table as a set of strings, each string a line a row with comma-seperated values.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.UXFDataTable.GetAsDictOfList">
+            <summary>
+            Return the table as a dictionary of lists.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UXF.UXFDataTable.GetAsListOfDict">
+            <summary>
+            Return the table as a list of dictionaries.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:UXF.UXFDataRow">
             <summary>
             Represents a single row of data. That is, a series of named columns, each column representing a single value.
