@@ -88,6 +88,7 @@ namespace UXF
         /// <param name="optionalTrialNum"></param>
         public override string HandleDataTable(UXFDataTable table, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum)
         {
+            if (!CheckCurrentTargetOK()) return "not supported in editor";
             if (dataType == UXFDataType.TrialResults)
             {
                 // special case, one item per trial, but multiple items
@@ -137,6 +138,7 @@ namespace UXF
         /// <returns></returns>
         public override string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum)
         {
+            if (!CheckCurrentTargetOK()) return "not supported in editor";
             // turn list<object> into Dict with one key: data
             var newDict = new Dictionary<string, object>()
             {
@@ -159,6 +161,7 @@ namespace UXF
         /// <returns></returns>
         public override string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum)
         {
+            if (!CheckCurrentTargetOK()) return "not supported in editor";
             string content = System.Text.Encoding.UTF8.GetString(bytes);
             return HandleText(content, experiment, ppid, sessionNum, dataName, dataType, optionalTrialNum);
         }
@@ -177,6 +180,7 @@ namespace UXF
 
         public override string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum)
         {
+            if (!CheckCurrentTargetOK()) return "not supported in editor";
             var newDict = new Dictionary<string, object>()
             {
                 { dataName, text }
@@ -198,6 +202,7 @@ namespace UXF
         /// <returns></returns>
         public override string HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum)
         {
+            if (!CheckCurrentTargetOK()) return "not supported in editor";
             // most of the other methods end up calling this
 
             serializableObject = new Dictionary<string, object>(serializableObject); // copy
@@ -226,6 +231,8 @@ namespace UXF
 
         public override void CleanUp()
         {
+            bool ok = CheckCurrentTargetOK();
+            if (!ok) return;
             DDB_Cleanup();
             requestCallbackMap.Clear();
         }
