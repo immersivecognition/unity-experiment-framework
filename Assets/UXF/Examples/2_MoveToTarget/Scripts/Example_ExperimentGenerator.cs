@@ -10,7 +10,7 @@ namespace UXFExamples
     {
         public void Generate(Session session)
 		{
-			int numTrials = session.settings.GetInt("trials_per_block");
+			int numTrials = session.settings.GetInt("trials_per_block", 10);
 
 			// create two blocks
 			Block block1 = session.CreateBlock(numTrials);
@@ -39,6 +39,12 @@ namespace UXFExamples
                 // during quick start mode, there are no participant details, so we get null reference exception
                 invertedBlockFirst = Random.value > 0.5;
 				Debug.LogFormat("Inverted block first: {0}", invertedBlockFirst);
+			}	
+			catch (KeyNotFoundException)
+			{
+                // during quick start mode, there are no participant details, so we get null reference exception
+                invertedBlockFirst = Random.value > 0.5;
+				Debug.LogFormat("Inverted block first: {0}", invertedBlockFirst);
 			}			
 
 			
@@ -61,7 +67,7 @@ namespace UXFExamples
 		/// <param name="block"></param>
 		void MakeCatchTrials(Block block)
 		{
-			int numCatchTrials = block.settings.GetInt("catch_trials_per_block");
+			int numCatchTrials = block.settings.GetInt("catch_trials_per_block", 2);
 			
 			if (numCatchTrials > block.trials.Count)
 			{
@@ -72,7 +78,7 @@ namespace UXFExamples
 			{
 				// double the existing delay time during catch trials
 				Trial trial = block.trials[i];
-				float delayTime = 2 * trial.settings.GetFloat("delay_time");
+				float delayTime = 2 * trial.settings.GetFloat("delay_time", 0.5f);
                 trial.settings.SetValue("delay_time", delayTime); 
 			}
 

@@ -40,7 +40,7 @@ namespace UXFExamples
             // Take the delay time (seconds) for the next trial, wait for that time
             // If we move from the start block too early, StopCoroutine(runningSequence); will halt the execution of this coroutine
             // System.Convert: Safely convert to single (float)
-            float delayTime = session.NextTrial.settings.GetFloat("delay_time");
+            float delayTime = session.NextTrial.settings.GetFloat("delay_time", 0.5f);
 			yield return new WaitForSeconds(delayTime);
 
 			Go();
