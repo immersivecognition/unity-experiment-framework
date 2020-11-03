@@ -22,7 +22,6 @@ If you have developed a project using UXF please [let me know](http://twitter.co
   - [Programming style](#programming-style)
   - [Data collection](#data-collection)
   - [Events](#events)
-  - [CSV Participant List](#csv-participant-list)
   - [Settings system](#settings-system)
   - [UI](#ui)
   - [File IO](#file-io)
