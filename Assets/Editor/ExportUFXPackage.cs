@@ -18,7 +18,7 @@ public class ExportUFXPackage : MonoBehaviour
         };
 
         DateTime dt = DateTime.Now;
-        string date = dt.ToString("yy_MM_dd");
+        string date = dt.ToString("yyyy_MM_dd");
 
         if (!Directory.Exists("Package"))
             Directory.CreateDirectory("Package");
