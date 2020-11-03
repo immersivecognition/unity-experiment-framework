@@ -13,7 +13,6 @@ namespace UXF.EditorUtils
         
         private BuildTarget[] localFileDataHandlerCompatiblePlatforms = new BuildTarget[]
         {
-            BuildTarget.StandaloneLinux,
             BuildTarget.StandaloneLinux64,
             BuildTarget.StandaloneOSX,
             BuildTarget.StandaloneWindows,

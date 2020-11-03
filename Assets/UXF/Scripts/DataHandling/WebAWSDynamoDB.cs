@@ -419,7 +419,6 @@ namespace UXF
             switch (buildTarget)
             {
                 case UnityEditor.BuildTargetGroup.Android:
-                case UnityEditor.BuildTargetGroup.Facebook:
                 case UnityEditor.BuildTargetGroup.iOS:
                 case UnityEditor.BuildTargetGroup.Lumin:
                 case UnityEditor.BuildTargetGroup.PS4:
