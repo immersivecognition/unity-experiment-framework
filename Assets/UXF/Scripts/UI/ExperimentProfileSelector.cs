@@ -37,6 +37,12 @@ namespace UXF.UI
 
         public void Populate(bool retry = true)
         {
+            if (!Directory.Exists(Application.streamingAssetsPath))
+            {
+                Debug.LogWarning("StreamingAssets folder was moved or deleted! Creating a new one.");
+                Directory.CreateDirectory(Application.streamingAssetsPath);
+            }
+
             var profileNames = Directory.GetFiles(Application.streamingAssetsPath, uiController.settingsSearchPattern)
                 .Select(f => Path.GetFileName(f))
                 .ToList();
