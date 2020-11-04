@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -18,6 +19,8 @@ namespace UXF.EditorUtils
 #endif
         static string settingsKey { get { return PlayerSettings.productName + ":uxf_seen_wizard"; } }
 
+        static string version;
+
         static UXFWizard()
         {
 #if UNITY_2018_1_OR_NEWER
@@ -35,6 +38,16 @@ namespace UXF.EditorUtils
             window.minSize = new Vector2(300, 501);
 			window.titleContent = new GUIContent("UXF Wizard");
             window.Show();
+
+            
+            if (File.Exists("VERSION.txt"))
+            {
+                version = File.ReadAllText("VERSION.txt");
+            }
+            else
+            {
+                version = "unknown";
+            }
         }
 
         static void OnProjectChanged()
@@ -70,6 +83,12 @@ namespace UXF.EditorUtils
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.Label("UXF: Unity Experiment Framework", EditorStyles.boldLabel);
+            GUILayout.FlexibleSpace();
+			GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Version " + version, EditorStyles.boldLabel);
             GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
 

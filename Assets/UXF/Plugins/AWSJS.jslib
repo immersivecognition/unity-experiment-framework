@@ -54,10 +54,7 @@ mergeInto(LibraryManager.library, {
                         KeyType: 'RANGE'
                     }
                 ],
-                ProvisionedThroughput: {
-                    ReadCapacityUnits: 5,
-                    WriteCapacityUnits: 5
-                },
+                BillingMode: "PAY_PER_REQUEST",
                 TableName: tableName
             };
         } else {
@@ -70,10 +67,7 @@ mergeInto(LibraryManager.library, {
                     AttributeName: Pointer_stringify(primaryKeyName),
                     KeyType: 'HASH'
                 }],
-                ProvisionedThroughput: {
-                    ReadCapacityUnits: 5,
-                    WriteCapacityUnits: 5
-                },
+                BillingMode: "PAY_PER_REQUEST",
                 TableName: tableName
             };
         }

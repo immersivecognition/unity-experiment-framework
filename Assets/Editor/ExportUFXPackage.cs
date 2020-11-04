@@ -10,22 +10,35 @@ public class ExportUFXPackage : MonoBehaviour
     [MenuItem("UXF/Export package")]
     static void ExportPackage()
     {
-        string[] assets = new string[]
+        string version;
+        if (File.Exists("VERSION.txt"))
         {
-            "Assets/StreamingAssets",
-            "Assets/UXF",
-            "Assets/WebGLTemplates"
-        };
+            version = File.ReadAllText("VERSION.txt");
+        }
+        else
+        {
+            version = "unknown";
+        }
+         
+        string outName = string.Format("UXF.v{0}.unitypackage", version);
+        if (EditorUtility.DisplayDialog("Export Package", string.Format("Export package '{0}'?", outName), "Yes", "Cancel"))
+        {
+            string[] assets = new string[]
+            {
+                "Assets/StreamingAssets",
+                "Assets/UXF",
+                "Assets/WebGLTemplates"
+            };
 
-        DateTime dt = DateTime.Now;
-        string date = dt.ToString("yyyy_MM_dd");
+            if (!Directory.Exists("Package"))
+                Directory.CreateDirectory("Package");
 
-        if (!Directory.Exists("Package"))
-            Directory.CreateDirectory("Package");
-        string path = string.Format("Package/UXF_{0}.unitypackage", date);
+            string path = Path.Combine("Package", outName);
 
-        ExportPackageOptions options = ExportPackageOptions.Recurse;
+            ExportPackageOptions options = ExportPackageOptions.Recurse;
 
-        AssetDatabase.ExportPackage(assets, path, options);
+            AssetDatabase.ExportPackage(assets, path, options);
+        }
+
     }
 }
