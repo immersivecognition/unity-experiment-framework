@@ -825,8 +825,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: That is the end of the session. Your data files displayed below ready for
-    download or copying.
+  m_Text: That is the end of the session. Your data files are displayed below ready
+    for download or copying.
 --- !u!1 &1082378339635665462
 GameObject:
   m_ObjectHideFlags: 0
@@ -9667,7 +9667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1033861776628790, guid: 15c278d5156bae1489e9a38ad279bee2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114566013805535272, guid: 15c278d5156bae1489e9a38ad279bee2,
         type: 3}
