@@ -28,6 +28,12 @@ namespace UXF.EditorUtils
                 .GetRootGameObjects()
                 .SelectMany(go => go.GetComponentsInChildren<UXF.UI.UIController>(true));
 
+            if (report.summary.platform == BuildTarget.WebGL &&
+                    PlayerSettings.WebGL.template != "PROJECT:UXF WebGL")
+            {
+                Debug.LogWarning("The UXF WebGL template is not selected in WebGL player settings! This may lead to errors. You can fix the is with the UXF Wizard (press UXF at the top, Show UXF Wizard).");
+            }
+
             foreach (var ui in uis)
             {
                 var localHandlers = ui.ActiveLocalFileDataHandlers;

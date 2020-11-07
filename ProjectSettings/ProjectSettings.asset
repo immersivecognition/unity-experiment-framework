@@ -44,8 +44,8 @@ PlayerSettings:
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
-  defaultScreenWidthWeb: 1600
-  defaultScreenHeightWeb: 900
+  defaultScreenWidthWeb: 1280
+  defaultScreenHeightWeb: 720
   m_StereoRenderingPath: 0
   m_ActiveColorSpace: 0
   m_MTRendering: 1
@@ -277,7 +277,8 @@ PlayerSettings:
   m_BuildTargetEnableVuforiaSettings: []
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
-  m_TemplateCustomTags: {}
+  m_TemplateCustomTags:
+    DESCRIPTION: Description goes here...
   mobileMTRendering:
     Android: 1
     iPhone: 1
