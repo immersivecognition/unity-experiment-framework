@@ -273,10 +273,13 @@ namespace UXF
         /// <returns></returns>
         public bool CheckSessionExists(string rootPath, string experimentName, string participantId, int sessionNumber)
         {
-            bool overwriteRisk = false;
-            foreach (var dataHandler in ActiveDataHandlers) overwriteRisk = overwriteRisk || dataHandler.CheckIfRiskOfOverwrite(experimentName, participantId, sessionNumber, rootPath: rootPath);
+            foreach (var dataHandler in ActiveDataHandlers)
+            {
+                bool overwriteRisk = dataHandler.CheckIfRiskOfOverwrite(experimentName, participantId, sessionNumber, rootPath: rootPath);
+                if (overwriteRisk) return true;
+            }
 
-            return overwriteRisk;
+            return false;
         }
 
 

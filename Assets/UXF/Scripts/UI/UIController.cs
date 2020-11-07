@@ -88,6 +88,7 @@ namespace UXF.UI
         public FormElement checkBoxPrefab;
         private Session session;
         private Canvas canvas;
+        private PopupController popupController;
         private string[] words;
         private string jsonText;
         private Coroutine uiStartRoutine;
@@ -103,6 +104,7 @@ namespace UXF.UI
         {
             if (session == null) session = GetComponentInParent<Session>();
             if (canvas == null) canvas = GetComponent<Canvas>();
+            if (popupController == null) popupController = GetComponentInChildren<PopupController>(true);
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.delayCall += LateValidate;
             foreach (var dh in ActiveLocalFileDataHandlers)
@@ -190,7 +192,7 @@ namespace UXF.UI
             }
             try
             {
-                newSettings = new Settings((Dictionary<string, object>) MiniJSON.Json.Deserialize(jsonText));
+                newSettings = new Settings((Dictionary<string, object>)MiniJSON.Json.Deserialize(jsonText));
             }
             catch (InvalidCastException)
             {
@@ -234,6 +236,7 @@ namespace UXF.UI
             }
 
             // DATA PATH
+            string localFilePath = "";
             if (RequiresFilePathElement)
             {
                 if (!localFilePathElement.gameObject.activeSelf)
@@ -242,7 +245,7 @@ namespace UXF.UI
                     yield break;
                 }
 
-                string localFilePath = (string)localFilePathElement.GetContents();
+                localFilePath = (string)localFilePathElement.GetContents();
                 if (localFilePath.Trim() == string.Empty)
                 {
                     localFilePathElement.DisplayFault();
@@ -358,7 +361,7 @@ namespace UXF.UI
                     }
                     try
                     {
-                        newSettings = new Settings((Dictionary<string, object>) MiniJSON.Json.Deserialize(jsonText));
+                        newSettings = new Settings((Dictionary<string, object>)MiniJSON.Json.Deserialize(jsonText));
                     }
                     catch (InvalidCastException)
                     {
@@ -376,16 +379,54 @@ namespace UXF.UI
 
             uiStartRoutine = null;
             if (error) yield break;
-            gameObject.SetActive(false);
 
-            // BEGIN!
-            session.Begin(
+            bool exists = session.CheckSessionExists(
+                localFilePath,
                 newExperimentName,
                 newPpid,
-                sessionNum,
-                newParticipantDetails,
-                newSettings
+                sessionNum
             );
+
+            if (exists)
+            {
+                Popup newPopup = new Popup()
+                {
+                    message = string.Format(
+                        "{0} - {1} - Session #{2} already exists! Press OK to start the session anyway, data may be overwritten.",
+                        newExperimentName,
+                        newPpid,
+                        sessionNum
+                    ),
+                    messageType = MessageType.Warning,
+                    onOK = () => {
+                        gameObject.SetActive(false);
+                        // BEGIN!
+                        session.Begin(
+                            newExperimentName,
+                            newPpid,
+                            sessionNum,
+                            newParticipantDetails,
+                            newSettings
+                        );
+                    }
+                };
+                popupController.DisplayPopup(newPopup);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+
+                // BEGIN!
+                session.Begin(
+                    newExperimentName,
+                    newPpid,
+                    sessionNum,
+                    newParticipantDetails,
+                    newSettings
+                );
+            }
+
+            
         }
 
         public string GenerateUniquePPID()
