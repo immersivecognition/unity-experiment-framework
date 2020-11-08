@@ -316,28 +316,6 @@ namespace UXF
 
             // raise the session events
             onSessionBegin.Invoke(this);
-
-            if (storeSessionSettings)
-            {
-                // copy Settings to session folder
-                SaveJSONSerializableObject(new Dictionary<string, object>(settings.baseDict), "settings", dataType: UXFDataType.Settings);
-            }
-
-            if (storeParticipantDetails)
-            {
-                // copy participant details to session folder
-                // we convert to a DataTable because we know the dictionary will be "flat" (one value per key)
-
-                UXFDataTable ppDetailsTable = new UXFDataTable(participantDetails.Keys.ToArray());
-                var row = new UXFDataRow();
-                foreach (var kvp in participantDetails) row.Add((kvp.Key, kvp.Value));
-                ppDetailsTable.AddCompleteRow(row);
-                var ppDetailsLines = ppDetailsTable.GetCSVLines();
-
-                SaveDataTable(ppDetailsTable, "participant_details", dataType: UXFDataType.ParticipantDetails);
-            }
-
-
         }
 
         /// <summary>
@@ -638,11 +616,31 @@ namespace UXF
                     try { CurrentTrial.End(); }
                     catch (Exception e) { Debug.LogException(e); }
                 }
-                    
+                
                 SaveResults();
 
                 try { preSessionEnd.Invoke(this); }
                 catch (Exception e) { Debug.LogException(e); }
+
+                if (storeSessionSettings)
+                {
+                    // copy Settings to session folder
+                    SaveJSONSerializableObject(new Dictionary<string, object>(settings.baseDict), "settings", dataType: UXFDataType.Settings);
+                }
+
+                if (storeParticipantDetails)
+                {
+                    // copy participant details to session folder
+                    // we convert to a DataTable because we know the dictionary will be "flat" (one value per key)
+
+                    UXFDataTable ppDetailsTable = new UXFDataTable(participantDetails.Keys.ToArray());
+                    var row = new UXFDataRow();
+                    foreach (var kvp in participantDetails) row.Add((kvp.Key, kvp.Value));
+                    ppDetailsTable.AddCompleteRow(row);
+                    var ppDetailsLines = ppDetailsTable.GetCSVLines();
+
+                    SaveDataTable(ppDetailsTable, "participant_details", dataType: UXFDataType.ParticipantDetails);
+                }
 
                 // end DataHandler - forces completion of tasks
                 foreach (var dataHandler in ActiveDataHandlers) dataHandler.CleanUp();

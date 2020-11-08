@@ -22,6 +22,20 @@ mergeInto(LibraryManager.library, {
         elem.select();
         document.execCommand("copy");
         document.body.removeChild(elem);
+    },
+
+    GetUserInfo: function() {
+        var data = {
+            "user_agent": navigator.userAgent,
+            "screen_width": window.screen.width,
+            "screen_height": window.screen.height
+        }
+        var returnStr = JSON.stringify(data);
+
+        var bufferSize = lengthBytesUTF8(returnStr) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(returnStr, buffer, bufferSize);
+        return buffer;
     }
 
 });

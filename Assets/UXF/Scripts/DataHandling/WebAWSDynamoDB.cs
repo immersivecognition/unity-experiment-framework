@@ -16,11 +16,14 @@ namespace UXF
     public class WebAWSDynamoDB : DataHandler
     {
 
+        [Tooltip("Enable to intercept the closing of the browser tab or window and end the session, so that data is saved.")]
         public bool endSessionWhenTryCloseTab = true;
+
+        [Tooltip("Enable collect browser info from the participant, and store them in the session.participantDetails dictionary. (Key-value pairs are: \"screen_width\": int, \"screen_height\": int, \"user_agent\": string)")]
+        public bool collectBrowserInfo = true;
 
         [SubjectNerd.Utilities.EditScriptable]
         public AWSCredentials credentials;
-
 
         [DllImport("__Internal")]
         private static extern void DDB_Setup(string region, string identityPool, string callbackGameObjectName);
@@ -39,6 +42,9 @@ namespace UXF
 
         [DllImport("__Internal")]
         private static extern void DDB_Cleanup();
+
+        [DllImport("__Internal")]
+        private static extern string GetUserInfo();
 
         private const string primaryKey = "ppid_session_dataname";
         private const string sortKey = "trial_num";
@@ -67,8 +73,27 @@ namespace UXF
                 string newSortKey = dl == UXFDataLevel.PerTrial ? sortKey : string.Empty;
                 DDB_CreateTable(tableName, primaryKey, newSortKey, gameObject.name);
             }
+
+            if (collectBrowserInfo) AddBrowserInfo();
         }
 
+        void AddBrowserInfo()
+        {
+            string data = GetUserInfo();
+            Dictionary<string, object> userInfo = (Dictionary<string, object>) MiniJSON.Json.Deserialize(data);
+            foreach (var kvp in userInfo)
+            {
+                if (!session.participantDetails.ContainsKey(kvp.Key))
+                {
+                    session.participantDetails.Add(kvp.Key, kvp.Value);
+                    Debug.LogFormat("{0}: {1}", kvp.Key, kvp.Value);
+                }
+                else
+                {
+                    Debug.LogErrorFormat("participantDetails already contains key \"{0}\"!", kvp.Key);
+                }
+            }
+        }
 
         public override bool CheckIfRiskOfOverwrite(string experiment, string ppid, int sessionNum, string rootPath = "")
         {
