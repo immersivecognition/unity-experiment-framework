@@ -129,7 +129,7 @@ namespace UXFExamples
 			var scenes = new List<UnityEditor.EditorBuildSettingsScene>(UnityEditor.EditorBuildSettings.scenes);
 
 			var alreadyAddedScenes = scenes
-				.Where(ebss => newSceneNames.Contains(ebss.path));
+				.Where(ebss => ebss.enabled && newSceneNames.Contains(ebss.path));
 
 			if (alreadyAddedScenes.Count() == newSceneNames.Count) return;
 
