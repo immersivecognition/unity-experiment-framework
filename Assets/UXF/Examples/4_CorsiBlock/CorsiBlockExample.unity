@@ -2350,6 +2350,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
+      propertyPath: trackedObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
       propertyPath: onSessionBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 0
       objectReference: {fileID: 0}
@@ -2592,6 +2597,11 @@ PrefabInstance:
         type: 3}
       propertyPath: storeSessionSettings
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
+      propertyPath: trackedObjects.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 203569540471596912, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
@@ -2856,7 +2866,7 @@ PrefabInstance:
     - target: {fileID: 2834388984357925155, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 2080
+      value: 4225
       objectReference: {fileID: 0}
     - target: {fileID: 2896031059644693069, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
@@ -2946,7 +2956,7 @@ PrefabInstance:
     - target: {fileID: 4267567203292169432, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3840
+      value: 7800
       objectReference: {fileID: 0}
     - target: {fileID: 4298776666381973480, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
@@ -4836,6 +4846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1513556399}
   - component: {fileID: 1513556400}
+  - component: {fileID: 1513556401}
   m_Layer: 0
   m_Name: CorsiBlockTask
   m_TagString: Untagged
@@ -4898,6 +4909,27 @@ MonoBehaviour:
   - {fileID: 1622668012}
   randomOffsetMax: {x: 0.5, y: 0.5}
   feedback: {fileID: 448119297}
+--- !u!114 &1513556401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513556398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e116bc94825b784182983179cfbb420, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: corsiblocktask
+  measurementDescriptor: mouse_position
+  customHeader:
+  - pos_x
+  - pos_y
+  - pos_z
+  updateType: 0
+  distanceFromCamera: 25
+  mainCamera: {fileID: 33142922}
 --- !u!1 &1574932393
 GameObject:
   m_ObjectHideFlags: 0

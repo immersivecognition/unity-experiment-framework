@@ -95,7 +95,14 @@ namespace UXF
 
             foreach (Tracker tracker in session.trackedObjects)
             {
-                tracker.StartRecording();
+                try
+                {
+                    tracker.StartRecording();
+                }
+                catch (NullReferenceException)
+                {
+                    Debug.LogWarning("Tracked objects in the UXF session has an empty field!");
+                }
             }
             session.onTrialBegin.Invoke(this);
         }
@@ -107,12 +114,29 @@ namespace UXF
         {
             status = TrialStatus.Done;
             endTime = Time.time;
-            result["end_time"] = endTime;            
+            result["end_time"] = endTime;
+
+            // check no duplicate trackers
+            List<string> duplicateTrackers = session.trackedObjects.Where(tracker => tracker != null)
+              .GroupBy(tracker => tracker.dataName)
+              .Where(g => g.Count() > 1)
+              .Select(y => y.Key)
+              .ToList(); 
+
+            if (duplicateTrackers.Any()) throw new InvalidOperationException(string.Format("Two or more trackers in the Tracked Objects field in the Session Inspector have the following object name and descriptor pair, please change the object name fields on the trackers to make them unique: {0}", string.Join(",", duplicateTrackers)));
 
             // log tracked objects
             foreach (Tracker tracker in session.trackedObjects)
             {
-                SaveDataTable(tracker.data, tracker.dataName, dataType: UXFDataType.Trackers);
+                try
+                {
+                    tracker.StopRecording();
+                    SaveDataTable(tracker.data, tracker.dataName, dataType: UXFDataType.Trackers);
+                }
+                catch (NullReferenceException)
+                {
+                    Debug.LogWarning("Tracked objects in the UXF session has an empty field!");
+                }
             }
 
             // log any settings we need to for this trial
