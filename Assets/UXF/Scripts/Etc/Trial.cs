@@ -101,7 +101,7 @@ namespace UXF
                 }
                 catch (NullReferenceException)
                 {
-                    Debug.LogWarning("Tracked objects in the UXF session has an empty field!");
+                    Debug.LogWarning("An item in the Tracked Objects field of the UXF session if empty (null)!");
                 }
             }
             session.onTrialBegin.Invoke(this);
@@ -135,7 +135,7 @@ namespace UXF
                 }
                 catch (NullReferenceException)
                 {
-                    Debug.LogWarning("Tracked objects in the UXF session has an empty field!");
+                    Debug.LogWarning("An item in the Tracked Objects field of the UXF session if empty (null)!");
                 }
             }
 
