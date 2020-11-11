@@ -129,14 +129,26 @@ namespace UXFExamples
 			var scenes = new List<UnityEditor.EditorBuildSettingsScene>(UnityEditor.EditorBuildSettings.scenes);
 
 			var alreadyAddedScenes = scenes
-				.Where(ebss => ebss.enabled && newSceneNames.Contains(ebss.path));
+				.Where(ebss => newSceneNames.Contains(ebss.path));
 
-			if (alreadyAddedScenes.Count() == newSceneNames.Count) return;
-
-			foreach (string newScene in newSceneNames)
+			foreach (var newScene in newSceneNames)
 			{
-				if (!scenes.Where(s => s.enabled).Select(s => s.path).Contains(newScene))
+				var newSceneAdded = scenes
+					.Where(s => s.path == newScene);
+
+				if (newSceneAdded.Count() == 0)
 				{
+					scenes.Add(new UnityEditor.EditorBuildSettingsScene(newScene, true));
+				}
+				else if (newSceneAdded.Count() == 1)
+				{
+					newSceneAdded.Single().enabled = true;			
+				}
+				else
+				{
+					scenes = scenes
+						.Where(s => s.path != newScene)
+						.ToList();
 					scenes.Add(new UnityEditor.EditorBuildSettingsScene(newScene, true));
 				}
 			}			
@@ -144,7 +156,7 @@ namespace UXFExamples
 			UnityEditor.EditorBuildSettings.scenes = scenes.ToArray();
 			UnityEditor.EditorApplication.isPlaying = false;
 
-			Debug.Log("Added scenes to build settings for Multi Scene Example.");
+			Debug.Log("Added scenes to build settings for Multi Scene Example. Try playing again.");
 		}
 # endif
 
