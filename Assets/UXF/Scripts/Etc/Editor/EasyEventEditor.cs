@@ -350,7 +350,7 @@ public class EasyEventEditorHandler
         {
             overrideEventDrawer = EditorPrefs.GetBool(eeeOverrideEventDrawerKey, true),
             showPrivateMembers = EditorPrefs.GetBool(eeeShowPrivateMembersKey, true),
-            showInvokeField = EditorPrefs.GetBool(eeeShowInvokeFieldKey, true),
+            showInvokeField = EditorPrefs.GetBool(eeeShowInvokeFieldKey, false),
             displayArgumentType = EditorPrefs.GetBool(eeeDisplayArgumentTypeKey, true),
             groupSameComponentType = EditorPrefs.GetBool(eeeGroupSameComponentTypeKey, false),
             useHotkeys = EditorPrefs.GetBool(eeeUseHotkeys, true),
@@ -507,6 +507,68 @@ public class EasyEventEditorDrawer : PropertyDrawer
     MethodInfo cachedFindMethodInfo = null;
     static EasyEventEditorHandler.EEESettings cachedSettings;
 
+#if UNITY_2018_4_OR_NEWER
+    private static UnityEventBase GetDummyEventStep(string propertyPath, System.Type propertyType, BindingFlags bindingFlags)
+    {
+        UnityEventBase dummyEvent = null;
+        
+        while (propertyPath.Length > 0)
+        {
+            if (propertyPath.StartsWith("."))
+                propertyPath = propertyPath.Substring(1);
+
+            string[] splitPath = propertyPath.Split(new char[] { '.' }, 2);
+
+            FieldInfo newField = propertyType.GetField(splitPath[0], bindingFlags);
+
+            if (newField == null)
+                break;
+
+            propertyType = newField.FieldType;
+            if (propertyType.IsArray)
+            {
+                propertyType = propertyType.GetElementType();
+            }
+            else if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                propertyType = propertyType.GetGenericArguments()[0];
+            }
+
+            if (splitPath.Length == 1)
+                break;
+
+            propertyPath = splitPath[1];
+            if (propertyPath.StartsWith("Array.data["))
+                propertyPath = propertyPath.Split(new char[] { ']' }, 2)[1];
+        }
+
+        if (propertyType.IsSubclassOf(typeof(UnityEventBase)))
+            dummyEvent = System.Activator.CreateInstance(propertyType) as UnityEventBase;
+
+        return dummyEvent;
+    }
+
+    private static UnityEventBase GetDummyEvent(SerializedProperty property)
+    {
+        Object targetObject = property.serializedObject.targetObject;
+        if (targetObject == null)
+            return new UnityEvent();
+
+        UnityEventBase dummyEvent = null;
+        System.Type targetType = targetObject.GetType();
+        BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+        do
+        {
+            dummyEvent = GetDummyEventStep(property.propertyPath, targetType, bindingFlags);
+            bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+            targetType = targetType.BaseType;
+        } while (dummyEvent == null && targetType != null);
+
+        return dummyEvent ?? new UnityEvent();
+    }
+#endif
+
     private void PrepareState(SerializedProperty propertyForState)
     {
         DrawerState state;
@@ -540,51 +602,7 @@ public class EasyEventEditorDrawer : PropertyDrawer
 
         // Setup dummy event
 #if UNITY_2018_4_OR_NEWER
-        Object targetObject = currentProperty.serializedObject.targetObject;
-        if (targetObject == null)
-        {
-            dummyEvent = new UnityEvent();
-        }
-        else
-        {
-            string propertyPath = currentProperty.propertyPath;
-            System.Type propertyType = targetObject.GetType();
-
-            while (propertyPath.Length > 0)
-            {
-                if (propertyPath.StartsWith("."))
-                    propertyPath = propertyPath.Substring(1);
-
-                string[] splitPath = propertyPath.Split(new char[] { '.' }, 2);
-
-                FieldInfo newField = propertyType.GetField(splitPath[0], BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-
-                if (newField == null)
-                    break;
-
-                propertyType = newField.FieldType;
-                if (propertyType.IsArray)
-                {
-                    propertyType = propertyType.GetElementType();
-                }
-                else if (propertyType.IsGenericType && typeof(List<>).IsAssignableFrom(propertyType))
-                {
-                    propertyType = propertyType.GetGenericArguments()[0];
-                }
-
-                if (splitPath.Length == 1)
-                    break;
-
-                propertyPath = splitPath[1];
-                if (propertyPath.StartsWith("Array.data["))
-                    propertyPath = propertyPath.Split(new char[] { ']' }, 2)[1];
-            }
-
-            if (propertyType.IsSubclassOf(typeof(UnityEventBase)))
-                dummyEvent = System.Activator.CreateInstance(propertyType) as UnityEventBase;
-            else
-                dummyEvent = new UnityEvent();
-        }
+        dummyEvent = GetDummyEvent(propertyForState);
 #else
         string eventTypeName = currentProperty.FindPropertyRelative("m_TypeName").stringValue;
         System.Type eventType = EasyEventEditorHandler.FindTypeInAllAssemblies(eventTypeName);
@@ -895,10 +913,15 @@ public class EasyEventEditorDrawer : PropertyDrawer
         if (findMethod == null)
         {
             // Rather not reinvent the wheel considering this function calls different functions depending on the number of args the event has...
+            // Unity 2020.1 changed the function signature for the FindMethod method (the second parameter is a Type instead of an object)
             findMethod = eventObject.GetType().GetMethod("FindMethod", BindingFlags.NonPublic | BindingFlags.Instance, null,
                     new System.Type[] {
                     typeof(string),
+#if UNITY_2020_1_OR_NEWER
+                    typeof(System.Type),
+#else
                     typeof(object),
+#endif
                     typeof(PersistentListenerMode),
                     typeof(System.Type)
                     },
@@ -913,7 +936,11 @@ public class EasyEventEditorDrawer : PropertyDrawer
             return null;
         }
 
-        return findMethod.Invoke(eventObject, new object[] { functionName, targetObject, listenerMode, argType }) as MethodInfo;
+#if UNITY_2020_1_OR_NEWER
+        return findMethod.Invoke(eventObject, new object[] {functionName, targetObject?.GetType(), listenerMode, argType }) as MethodInfo;
+#else
+        return findMethod.Invoke(eventObject, new object[] {functionName, targetObject, listenerMode, argType }) as MethodInfo;
+#endif
     }
 
     System.Type[] GetEventParams(UnityEventBase eventIn)
@@ -951,9 +978,13 @@ public class EasyEventEditorDrawer : PropertyDrawer
     void DrawHeaderCallback(Rect headerRect)
     {
         // We need to know where to position the invoke field based on the length of the title in the UI
-        GUIContent headerTitle = new GUIContent(string.IsNullOrEmpty(currentLabelText) ? "Event" : currentLabelText + " " + GetEventParamsStr(dummyEvent));       
+        GUIContent headerTitle = new GUIContent(string.IsNullOrEmpty(currentLabelText) ? "Event" : currentLabelText + " " + GetEventParamsStr(dummyEvent));
+        float headerStartOffset = EditorStyles.label.CalcSize(headerTitle).x;
+        
         GUI.Label(headerRect, headerTitle);
         
+        if (cachedSettings.showInvokeField)
+            DrawInvokeField(headerRect, headerStartOffset);
     }
 
     Rect[] GetElementRects(Rect rect)
