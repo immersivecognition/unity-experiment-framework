@@ -41,6 +41,8 @@ namespace UXF
 
         private bool recording;
 
+        public bool Recording { get { return recording; } }
+
         public UXFDataTable data { get; private set; } = new UXFDataTable();
         
         /// <summary>
@@ -56,7 +58,13 @@ namespace UXF
                 customHeader.CopyTo(newHeader, 1);
                 return newHeader;
             }
-        } 
+        }
+
+        /// <summary>
+        /// When the tracker should take measurements.
+        /// </summary>
+        [Tooltip("When the measurements should be taken.\n\nManual should only be selected if the user is calling the RecordRow method either from another script or a custom Tracker class.")]
+        public TrackerUpdateType updateType = TrackerUpdateType.LateUpdate;
 
         // called when component is added
         void Reset()
@@ -68,7 +76,13 @@ namespace UXF
         // called by unity just before rendering the frame
         void LateUpdate()
         {
-            if (recording) RecordRow();
+            if (recording && updateType == TrackerUpdateType.LateUpdate) RecordRow();
+        }
+
+        // called by unity when physics simulations are run
+        void FixedUpdate()
+        {
+            if (recording && updateType == TrackerUpdateType.FixedUpdate) RecordRow();
         }
 
         /// <summary>
@@ -76,11 +90,12 @@ namespace UXF
         /// </summary>
         public void RecordRow()
         {
+            if (!recording) throw new System.InvalidOperationException("Tracker measurements cannot be taken when not in a trial!");
+            
             UXFDataRow newRow = GetCurrentValues();
             newRow.Add(("time", Time.time));
             data.AddCompleteRow(newRow);
         }
-
 
         /// <summary>
         /// Begins recording.
@@ -89,14 +104,6 @@ namespace UXF
         {
             data = new UXFDataTable(header);
             recording = true;
-        }
-
-        /// <summary>
-        /// Pauses recording.
-        /// </summary>
-        public void PauseRecording()
-        {
-            recording = false;
         }
 
         /// <summary>
@@ -118,5 +125,13 @@ namespace UXF
         /// </summary>
         protected abstract void SetupDescriptorAndHeader();
 
+    }
+
+    /// <summary>
+    /// When the tracker should collect new measurements. Manual should only be selected if the user is calling the RecordRow method either from another script or a custom Tracker class.
+    /// </summary>
+    public enum TrackerUpdateType
+    {
+        LateUpdate, FixedUpdate, Manual
     }
 }
