@@ -151,6 +151,14 @@ namespace UXF.Tests
 
         }
 
+        [Test]
+        public void RecordingException()
+        {
+            Tracker testTracker = tracked[0].GetComponent<Tracker>();
+
+            Assert.Throws<System.InvalidOperationException>(() => testTracker.RecordRow());
+        }
+
 	}
 
 }

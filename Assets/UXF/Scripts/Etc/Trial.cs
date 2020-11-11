@@ -112,6 +112,7 @@ namespace UXF
             // log tracked objects
             foreach (Tracker tracker in session.trackedObjects)
             {
+                tracker.StopRecording();
                 SaveDataTable(tracker.data, tracker.dataName, dataType: UXFDataType.Trackers);
             }
 
