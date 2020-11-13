@@ -140,10 +140,14 @@ namespace UXF
 
     /// <summary>
     /// Represents a single row of data. That is, a series of named columns, each column representing a single value.
-    /// The row hold a list of named Tuples (columnName and value). To add values, create a new UXFDataRow then add Tuples with the Add method.
+    /// The row hold a list of named Tuples (columnName and value). This inherits from List, so to add values, create a new UXFDataRow then add Tuples with the Add method.
     /// </summary>
     public class UXFDataRow : List<(string columnName, object value)>
     {
+        /// <summary>
+        /// Gets trhe headers of the row.
+        /// </summary>
+        /// <returns>IEnumerable of strings representing the headers of the row.</returns>
         public IEnumerable<string> Headers { get { return this.Select(kvp => kvp.columnName); } }
     }
 

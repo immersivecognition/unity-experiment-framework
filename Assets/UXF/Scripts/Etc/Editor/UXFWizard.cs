@@ -34,15 +34,15 @@ namespace UXF.EditorUtils
         [MenuItem("UXF/Show setup wizard")]
         static void Init()
         {
-            var window = (UXFWizard) EditorWindow.GetWindow(typeof(UXFWizard), true, "UXF Wizard");
+            var window = (UXFWizard) EditorWindow.GetWindow(typeof(UXFWizard), false, "UXF Wizard");
             window.minSize = new Vector2(300, 501);
 			window.titleContent = new GUIContent("UXF Wizard");
             window.Show();
 
             
-            if (File.Exists("VERSION.txt"))
+            if (File.Exists("Assets/UXF/VERSION.txt"))
             {
-                version = File.ReadAllText("VERSION.txt");
+                version = File.ReadAllText("Assets/UXF/VERSION.txt");
             }
             else
             {

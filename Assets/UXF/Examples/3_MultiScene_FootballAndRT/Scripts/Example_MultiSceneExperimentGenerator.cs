@@ -151,9 +151,8 @@ namespace UXFExamples
 			}			
 
 			UnityEditor.EditorBuildSettings.scenes = scenes.ToArray();
-			UnityEditor.EditorApplication.isPlaying = false;
 
-			Debug.Log("Added scenes to build settings for Multi Scene Example. Try playing again.");
+			Debug.Log("Added scenes to build settings for Multi Scene Example.");
 		}
 # endif
 

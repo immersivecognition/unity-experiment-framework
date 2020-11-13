@@ -11,6 +11,7 @@ namespace UXF.UI
     /// </summary>
     public class DraggableUI : MonoBehaviour, IDragHandler
     {
+        public Transform transformToRaise;
         public RectTransform visibleRect;
         private Vector2 screenSize;
 
@@ -22,6 +23,7 @@ namespace UXF.UI
         public void OnDrag(PointerEventData eventData)
         {
             visibleRect.transform.position += CalculateNewTransformOffset(eventData.delta);
+            transformToRaise.SetAsLastSibling(); // bring to front
         }
 
         /// <summary>

@@ -11,9 +11,9 @@ public class ExportUFXPackage : MonoBehaviour
     static void ExportPackage()
     {
         string version;
-        if (File.Exists("VERSION.txt"))
+        if (File.Exists("Assets/UXF/VERSION.txt"))
         {
-            version = File.ReadAllText("VERSION.txt");
+            version = File.ReadAllText("Assets/UXF/VERSION.txt");
         }
         else
         {

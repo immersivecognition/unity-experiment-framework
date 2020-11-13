@@ -10,6 +10,7 @@ namespace UXF.UI
 	/// </summary>
 	public class NotesController : MonoBehaviour 
 	{
+		public GameObject panel;
 		public GameObject contentParent;
 		public GameObject notePrefab;
 
@@ -22,11 +23,8 @@ namespace UXF.UI
 		[Space]
 		public Session session;
 
-		private Canvas canvas;
-
 		void Start()
 		{
-			canvas = GetComponent<Canvas>();
 			session.preSessionEnd.AddListener(WriteNotes); // will write notes when session is finished
 		}
 
@@ -63,7 +61,7 @@ namespace UXF.UI
 		/// </summary>
 		public void ToggleVisibility()
 		{
-			canvas.enabled = canvas.enabled ? false : true;
+			panel.SetActive(!panel.activeSelf);
 		}
 		
 		/// <summary>
@@ -91,7 +89,6 @@ namespace UXF.UI
 
 			sessionNotes.Add(notesKey, notesValue);
 			session.SaveJSONSerializableObject(sessionNotes, "notes");
-			session.preSessionEnd.RemoveListener(WriteNotes);
 		}
 
 		/// <summary>

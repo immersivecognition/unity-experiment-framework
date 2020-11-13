@@ -6,6 +6,9 @@ using System.Collections.Specialized;
 
 namespace UXF
 {
+    /// <summary>
+    /// Specialised class used to store Trial Results.
+    /// </summary>
     public class ResultsDictionary
     {
         private Dictionary<string, object> baseDict;
@@ -46,6 +49,10 @@ namespace UXF
             }
         }
 
+        /// <summary>
+        /// Returns the keys in this results dictionary.
+        /// </summary>
+        /// <value></value>
         public Dictionary<string, object>.KeyCollection Keys
         {
             get
@@ -54,6 +61,11 @@ namespace UXF
             }
         }
 
+        /// <summary>
+        /// Check if the results dictionary contains the given key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public bool ContainsKey(string key)
         {
             return baseDict.ContainsKey(key);

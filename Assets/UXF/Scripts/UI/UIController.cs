@@ -575,7 +575,7 @@ namespace UXF.UI
             reasonText = string.Empty;
             if (startupMode == StartupMode.Automatic && RequiresFilePathElement)
             {
-                reasonText = "A DataHander has been set to acquire a local data save path from the UI. This is not possible if the startup mode is not set to use the Built-in UI.";
+                reasonText = "A DataHander has been set to acquire a local data save path from the UI. This is not possible if the startup mode is not set to use the Built-in UI. You can change the Data Save Location to Fixed in the relevant data handlers if you wish to not use the Built-in UI.";
                 return false;
             }
 

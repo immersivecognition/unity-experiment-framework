@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace UXF.UI
 {
 	/// <summary>
-	/// Script to invoke a UnityEvent when a specified key is pressed
+	/// Script to invoke a UnityEvent when a specified key is pressed down
 	/// </summary>
 	public class KeypressEvent : MonoBehaviour 
 	{

@@ -19,6 +19,7 @@ namespace UXF.UI
 			popupMessage.text = popup.message;
 			nextAction = popup.onOK;
 			gameObject.SetActive(true);
+			transform.SetAsLastSibling();
 		}
 
 		public void OkPress()
