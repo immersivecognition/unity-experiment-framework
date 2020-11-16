@@ -188,7 +188,7 @@ More examples are contained in the package and on the [Wiki](https://github.com/
 
 ## Development
 
-This project is developed under Unity 2017.4 LTS but should work on all recent versions of Unity. Tested and working on Unity 2018 & 2019 LTS.
+This project is developed under Unity 2018.4 LTS but should work on all recent versions of Unity. Tested and working on Unity 2018 & 2019 LTS.
 
 ## Documentation
 
