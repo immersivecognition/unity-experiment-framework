@@ -30,7 +30,6 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 - [Documentation](#documentation)
 - [In the News](#in-the-news)
 - [Tutorial: Building an experiment with UXF](#tutorial-building-an-experiment-with-uxf)
-- [Related packages](#related-packages)
 
 ## Built with UXF
 
@@ -203,10 +202,4 @@ Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framewor
 ## Tutorial: Building an experiment with UXF
 
 A full tutorial for building an experiment with UXF is available [here](https://immersivecognition.github.io/uxf-tutorial/).
-
-## Related packages
-
-* [UXF Web Settings](https://github.com/jackbrookes/uxf-web-settings)
-* [UXF S3 Uploader](https://github.com/jackbrookes/uxf-s3-uploader)
-
 
