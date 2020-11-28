@@ -13,12 +13,19 @@ namespace UXF
 	/// </summary>
 	public class SessionLogger : MonoBehaviour
 	{	
+		public static SessionLogger instance { get; private set; }
+
+		public bool setAsMainInstance = true;
+		public bool logDebugLogCalls = true;
+
 		private Session session;
 		private string[] header = new string[]{ "timestamp", "log_type", "message"};
 		private UXFDataTable table;
 
 		void Awake()
 		{
+			if (setAsMainInstance) instance = this;
+
 			AttachReferences(
 				newSession: GetComponent<Session>()
 			);
@@ -40,7 +47,7 @@ namespace UXF
 		public void Initialise()
 		{
 			table = new UXFDataTable("timestamp", "log_type", "message");
-            Application.logMessageReceived += HandleLog;
+            if (logDebugLogCalls) Application.logMessageReceived += HandleLog;
 			session.preSessionEnd.AddListener(Finalise); // finalise logger when cleaning up the session
 		}		
 
@@ -58,15 +65,15 @@ namespace UXF
 		/// <summary>
 		/// Manually log a message to the log file.
 		/// </summary>
-		/// <param name="logType">The type of the log. This can be any string you choose.</param>
-		/// <param name="message">The content you wish to log, expressed as a string.</param>
-		public void WriteLog(string logType, string value)
+		/// <param name="text">The content you wish to log, expressed as a string.</param>
+		/// <param name="logType">The type of the log. This can be any string you choose. Default is \"user\"</param>
+		public void Log(string text, string logType = "user")
 		{
 			var row = new UXFDataRow();
 
 			row.Add(("timestamp", Time.time.ToString()));
 			row.Add(("log_type", logType));
-			row.Add(("message", value.Replace(",", string.Empty)));
+			row.Add(("message", text.Replace(",", string.Empty)));
 
 			table.AddCompleteRow(row);
 		}
@@ -78,7 +85,7 @@ namespace UXF
 		{
 			session.SaveDataTable(table, "log", dataType: UXFDataType.SessionLog);
 
-            Application.logMessageReceived -= HandleLog;
+			if (logDebugLogCalls) Application.logMessageReceived -= HandleLog;
 			session.preSessionEnd.RemoveListener(Finalise);
         }
 
