@@ -41,7 +41,7 @@ namespace UXF
 
 
         /// <summary>
-        /// Starts the FileIOManager Worker thread.
+        /// Starts the FileSaver Worker thread.
         /// </summary>
         public override void SetUp()
         {
@@ -71,7 +71,7 @@ namespace UXF
             {
                 throw new System.InvalidOperationException(
                     string.Format(
-                        "Cant add action to FileIOManager, is currently quitting. Action: {0}.{1}",
+                        "Cannot add action to FileSaver, is currently quitting. Action: {0}.{1}",
                         action.Method.ReflectedType.FullName,
                         action.Method.Name
                         )
@@ -160,7 +160,7 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.json", dataName));
             
-             if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllText(savePath, text); });
             return savePath;
@@ -233,7 +233,7 @@ namespace UXF
         }
 
         /// <summary>
-        /// Aborts the FileIOManager's thread and joins the thread to the calling thread.
+        /// Aborts the FileSaver's thread and joins the thread to the calling thread.
         /// </summary>
         public override void CleanUp()
         {

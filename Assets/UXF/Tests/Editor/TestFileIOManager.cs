@@ -43,24 +43,28 @@ namespace UXF.Tests
             // generate a large dictionary
 			var dict = new Dictionary<string, object>();
 
-            var largeArray = new int[10000];
-			for (int i = 0; i < largeArray.Length; i++)
-                largeArray[i] = i;
-
-			dict["large_array"] = largeArray;
+            var largeArray = new string[100];
+            string largeString = new string('*', 50000);
 
 			// write lots and lots of JSON files
 			int n = 100;
             string[] fpaths = new string[n];
 			for (int i = 0; i < n; i++)
 			{
-				string fileName = string.Format("{0:000}", i);
+				string fileName = string.Format("{0}", i);
 				Debug.LogFormat("Queueing {0}", fileName);
-            	string fpath = fileSaver.HandleJSONSerializableObject(dict, experiment, ppid, sessionNum, fileName, UXFDataType.OtherSessionData);
+            	string fpath = fileSaver.HandleText(largeString, experiment, ppid, sessionNum, fileName, UXFDataType.OtherSessionData);
                 fpaths[i] = fpath;
 			}
 
+            Debug.Log("###########################################");
+            Debug.Log("############## CLEANING UP ################");
+            Debug.Log("###########################################");
             fileSaver.CleanUp();
+
+            Assert.Throws<System.InvalidOperationException>(() => {
+                fileSaver.HandleText(largeString, experiment, ppid, sessionNum, "0", UXFDataType.OtherSessionData);
+            });
 
 			// cleanup files
             foreach (var fpath in fpaths)

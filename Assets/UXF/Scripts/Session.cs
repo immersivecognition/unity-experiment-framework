@@ -642,8 +642,12 @@ namespace UXF
                     SaveDataTable(ppDetailsTable, "participant_details", dataType: UXFDataType.ParticipantDetails);
                 }
 
-                // end DataHandler - forces completion of tasks
-                foreach (var dataHandler in ActiveDataHandlers) dataHandler.CleanUp();
+                // end DataHandlers - forces completion of tasks
+                foreach (var dataHandler in ActiveDataHandlers)
+                {
+                    try { dataHandler.CleanUp(); }
+                    catch (Exception e) { Debug.LogException(e); }
+                }
                 
                 try { onSessionEnd.Invoke(this); }
                 catch (Exception e) { Debug.LogException(e); }

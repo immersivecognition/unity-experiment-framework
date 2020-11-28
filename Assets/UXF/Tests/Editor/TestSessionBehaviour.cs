@@ -67,6 +67,20 @@ namespace UXF.Tests
             Assert.AreEqual(6, lines.Length);
         }
 
+
+        [Test]
+        public void TestEndMultipleTimes()
+        {
+            (Session session, FileSaver fileSaver) = CreateSession("endmultipletimes");
+            foreach (var trial in session.Trials)
+            {
+                trial.Begin();
+                trial.End();
+            }
+            session.End();
+            session.End();
+        }
+
         Tuple<Session, FileSaver> CreateSession(string ppidExtra)
         {
             GameObject gameObject = new GameObject();
