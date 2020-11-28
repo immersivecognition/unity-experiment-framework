@@ -23,7 +23,6 @@ namespace UXF.Tests
         {
 			var gameObject = new GameObject();
 			fileSaver = gameObject.AddComponent<FileSaver>();
-            fileSaver.storagePath = "example_output";
 			fileSaver.verboseDebug = true;
         }
 
@@ -38,6 +37,7 @@ namespace UXF.Tests
         [Test]
         public void WriteManyFiles()
         {
+            fileSaver.storagePath = "example_output";
             fileSaver.SetUp();
 
             // generate a large dictionary
@@ -69,7 +69,7 @@ namespace UXF.Tests
 			// cleanup files
             foreach (var fpath in fpaths)
             {
-                System.IO.File.Delete(fpath);
+                System.IO.File.Delete(Path.Combine(fileSaver.storagePath, fpath));
             }
         }
 
@@ -77,6 +77,7 @@ namespace UXF.Tests
         [Test]
         public void EarlyExit()
         {
+            fileSaver.storagePath = "example_output";
             fileSaver.SetUp();
             fileSaver.CleanUp();
 			
@@ -89,7 +90,44 @@ namespace UXF.Tests
             fileSaver.SetUp();
             fileSaver.ManageInWorker(() => Debug.Log("Code enqueued after FileSaver re-opened"));
             fileSaver.CleanUp();
+        }
 
+        [Test]
+        public void AbsolutePath()
+        {
+            fileSaver.storagePath = "C:/example_output";
+            fileSaver.SetUp();
+            
+            string outString = fileSaver.HandleText("abc", experiment, ppid, sessionNum, "test", UXFDataType.OtherSessionData);
+
+            Assert.AreEqual(outString, @"fileSaver_test/test_ppid/S001/othersessiondata/test.txt");
+
+            fileSaver.CleanUp();
+        }
+
+        [Test]
+        public void FileSaverRelPath()
+        {
+
+            Assert.AreEqual(
+                FileSaver.GetRelativePath("C:\\base", "C:\\base\\123"),
+                "123"
+            );
+
+            Assert.AreEqual(
+                FileSaver.GetRelativePath("base", "base\\123"),
+                "123"
+            );
+
+            Assert.AreEqual(
+                FileSaver.GetRelativePath("base/", "base\\123"),
+                "123"
+            );
+
+            Assert.AreEqual(
+                FileSaver.GetRelativePath("C:/base/", "C:/base\\123"),
+                "123"
+            );
         }
 
     }

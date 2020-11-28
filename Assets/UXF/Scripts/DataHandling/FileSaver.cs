@@ -143,10 +143,10 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
             
-             if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllLines(savePath, lines); });
-            return savePath;
+            return GetRelativePath(storagePath, savePath);;
         }
 
         public override string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
@@ -163,7 +163,7 @@ namespace UXF
             if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllText(savePath, text); });
-            return savePath;
+            return GetRelativePath(storagePath, savePath);;
         }
 
         public override string HandleJSONSerializableObject(Dictionary<string, object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
@@ -177,10 +177,10 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.json", dataName));
             
-             if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllText(savePath, text); });
-            return savePath;
+            return GetRelativePath(storagePath, savePath);;
         }
 
         public override string HandleText(string text, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
@@ -192,10 +192,10 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.txt", dataName));
             
-             if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllText(savePath, text); });
-            return savePath;
+            return GetRelativePath(storagePath, savePath);;
         }
 
         public override string HandleBytes(byte[] bytes, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)
@@ -207,10 +207,10 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.txt", dataName));  
 
-             if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllBytes(savePath, bytes); });
-            return savePath;
+            return GetRelativePath(storagePath, savePath);
         }
 
 
@@ -242,6 +242,20 @@ namespace UXF
             quitting = true;
             bq.Enqueue(doNothing); // ensures bq breaks from foreach loop
             parallelThread.Join();
+        }
+
+        public static string GetRelativePath(string relativeToDirectory, string path)
+        {
+            relativeToDirectory = Path.GetFullPath(relativeToDirectory);
+            if (!relativeToDirectory.EndsWith("\\")) relativeToDirectory += "\\";
+
+            path = Path.GetFullPath(path);
+
+            Uri path1 = new Uri(relativeToDirectory);
+            Uri path2 = new Uri(path);
+
+            Uri diff = path1.MakeRelativeUri(path2);
+            return diff.OriginalString;
         }
     }
 
