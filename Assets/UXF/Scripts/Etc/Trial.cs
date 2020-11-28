@@ -78,6 +78,8 @@ namespace UXF
         /// </summary>
         public void Begin()
         {
+            if (session.InTrial) session.CurrentTrial.End();
+
             session.currentTrialNum = number;
             session.currentBlockNum = block.number;
 

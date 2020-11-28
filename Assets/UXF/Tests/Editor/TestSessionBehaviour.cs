@@ -81,6 +81,26 @@ namespace UXF.Tests
             session.End();
         }
 
+        [Test]
+        public void TestCurrentEndTrialOnBeginNext()
+        {
+            (Session session, FileSaver fileSaver) = CreateSession("endonbegin");
+            session.endOnDestroy = true;
+            
+            foreach (var t in session.Trials)
+            {
+                t.Begin();
+            }
+
+            foreach (var t in session.Trials)
+            {
+                TrialStatus expectedStatus = t == session.LastTrial ? TrialStatus.InProgress : TrialStatus.Done;
+                Assert.AreEqual(t.status, expectedStatus);
+            }
+
+            GameObject.DestroyImmediate(session.gameObject);
+        }
+
         Tuple<Session, FileSaver> CreateSession(string ppidExtra)
         {
             GameObject gameObject = new GameObject();
