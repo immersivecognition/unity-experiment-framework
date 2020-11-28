@@ -44,7 +44,7 @@ namespace UXF.EditorUtils
             {
                 var obj = new SerializedObject(property.objectReferenceValue);
                 var prop = obj.FindProperty("active");
-                if (EditorGUI.PropertyField(activeBox, prop, GUIContent.none)) Debug.Log("df");
+                if (EditorGUI.PropertyField(activeBox, prop, GUIContent.none)) { }
                 obj.ApplyModifiedProperties();
                 name = dh.name;
             }

@@ -103,7 +103,7 @@ namespace UXF
                 }
                 catch (NullReferenceException)
                 {
-                    Debug.LogWarning("An item in the Tracked Objects field of the UXF session if empty (null)!");
+                    Utilities.UXFDebugLogWarning("An item in the Tracked Objects field of the UXF session if empty (null)!");
                 }
             }
             session.onTrialBegin.Invoke(this);
@@ -137,7 +137,7 @@ namespace UXF
                 }
                 catch (NullReferenceException)
                 {
-                    Debug.LogWarning("An item in the Tracked Objects field of the UXF session if empty (null)!");
+                    Utilities.UXFDebugLogWarning("An item in the Tracked Objects field of the UXF session if empty (null)!");
                 }
             }
 
@@ -154,7 +154,7 @@ namespace UXF
         {
             if (dataType.GetDataLevel() != UXFDataLevel.PerTrial)
             {
-                Debug.LogErrorFormat(
+                Utilities.UXFDebugLogErrorFormat(
                     "Error trying to save data '{0}' of type UXFDataType.{1} associated with the Trial. The valid types for this method are {2}. Reverting to type UXFDataType.OtherTrialData.",
                     dataName,
                     dataType,

@@ -18,12 +18,12 @@ namespace UXF
         {
             if (region == string.Empty)
             {
-                Debug.LogError("Region in AWS Credentials is blank! Please supply your region (e.g. eu-west-2)");
+                Utilities.UXFDebugLogError("Region in AWS Credentials is blank! Please supply your region (e.g. eu-west-2)");
                 return false;
             }
             if (cognitoIdentityPool == string.Empty)
             {
-                Debug.LogError("Cognito Identity Pool in AWS Credentials is blank! Please supply your Cognito Identity Pool (e.g. eu-west-2:00000000-0000-0000-0000-000000000000)");
+                Utilities.UXFDebugLogError("Cognito Identity Pool in AWS Credentials is blank! Please supply your Cognito Identity Pool (e.g. eu-west-2:00000000-0000-0000-0000-000000000000)");
                 return false;
             }
             return true;

@@ -230,7 +230,7 @@ namespace UXF.EditorUtils
                 {
                     EditorApplication.isPlaying = false;
                     string errorText = "Incompatibility Error: " + ppidReasonText;
-                    Debug.LogError(errorText);
+                    Utilities.UXFDebugLogError(errorText);
                 }
 
                 string settingsReasonText;
@@ -238,7 +238,7 @@ namespace UXF.EditorUtils
                 {
                     EditorApplication.isPlaying = false;
                     string errorText = "Incompatibility Error: " + settingsReasonText;
-                    Debug.LogError(errorText);
+                    Utilities.UXFDebugLogError(errorText);
                 }
 
                 string datapointsReasonText;
@@ -246,14 +246,14 @@ namespace UXF.EditorUtils
                 {
                     EditorApplication.isPlaying = false;
                     string errorText = "Incompatibility Error: " + datapointsReasonText;
-                    Debug.LogError(errorText);
+                    Utilities.UXFDebugLogError(errorText);
                 }
 
                 string localPathStateReasonText;
                 if (!uiController.LocalPathStateIsValid(out localPathStateReasonText))
                 {
                     string errorText = "Incompatibility Error: " + localPathStateReasonText;
-                    Debug.LogError(errorText);
+                    Utilities.UXFDebugLogError(errorText);
                 }
             }
         }

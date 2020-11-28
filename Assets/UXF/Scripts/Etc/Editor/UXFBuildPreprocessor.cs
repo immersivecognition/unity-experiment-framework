@@ -22,7 +22,7 @@ namespace UXF.EditorUtils
         public void OnProcessScene(Scene scene, BuildReport report)
         {
             if (report == null) return;
-            Debug.LogFormat("UXF is pre-processing your built scene '{0}' for platform '{1}' to make sure settings are compatible with the build... ", scene.name, report.summary.platform);
+            Utilities.UXFDebugLogFormat("UXF is pre-processing your built scene '{0}' for platform '{1}' to make sure settings are compatible with the build... ", scene.name, report.summary.platform);
 
             var uis = scene
                 .GetRootGameObjects()
@@ -31,7 +31,7 @@ namespace UXF.EditorUtils
             if (report.summary.platform == BuildTarget.WebGL &&
                     PlayerSettings.WebGL.template != "PROJECT:UXF WebGL")
             {
-                Debug.LogWarning("The UXF WebGL template is not selected in WebGL player settings! This may lead to errors. You can fix the is with the UXF Wizard (press UXF at the top, Show UXF Wizard).");
+                Utilities.UXFDebugLogWarning("The UXF WebGL template is not selected in WebGL player settings! This may lead to errors. You can fix the is with the UXF Wizard (press UXF at the top, Show UXF Wizard).");
             }
 
             foreach (var ui in uis)
@@ -79,7 +79,7 @@ namespace UXF.EditorUtils
                     
                     if (!compatible && !incompatible)
                     {
-                        Debug.LogWarningFormat(
+                        Utilities.UXFDebugLogWarningFormat(
                             "Warning: (Scene: {0}) - The data handler '{1}' has not reported either compatibility or incompatibility with platform group '{2}'. Use at your own risk!",
                             scene.name, 
                             dh.name, 

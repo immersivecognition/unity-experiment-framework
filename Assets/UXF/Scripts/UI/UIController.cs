@@ -188,7 +188,7 @@ namespace UXF.UI
             yield return GetJsonUrl();
             if (jsonText == string.Empty)
             {
-                Debug.LogErrorFormat("Error downloading data from URL: {0}. Using blank settings instead.", jsonURL);
+                Utilities.UXFDebugLogErrorFormat("Error downloading data from URL: {0}. Using blank settings instead.", jsonURL);
             }
             try
             {
@@ -196,7 +196,7 @@ namespace UXF.UI
             }
             catch (InvalidCastException)
             {
-                Debug.LogErrorFormat("Text downloaded from {0} is cannot be parsed, empty settings used instead. Check the data is valid json ({1})", jsonURL, jsonText);
+                Utilities.UXFDebugLogErrorFormat("Text downloaded from {0} is cannot be parsed, empty settings used instead. Check the data is valid json ({1})", jsonURL, jsonText);
             }
 
             autoStartRoutine = null;
@@ -241,7 +241,7 @@ namespace UXF.UI
             {
                 if (!localFilePathElement.gameObject.activeSelf)
                 {
-                    Debug.LogError("Cannot start session - need Local Data Directory element, but it is not active.");
+                    Utilities.UXFDebugLogError("Cannot start session - need Local Data Directory element, but it is not active.");
                     yield break;
                 }
 
@@ -249,13 +249,13 @@ namespace UXF.UI
                 if (localFilePath.Trim() == string.Empty)
                 {
                     localFilePathElement.DisplayFault();
-                    Debug.LogError("Local data directory is empty");
+                    Utilities.UXFDebugLogError("Local data directory is empty");
                     error = true;
                 }
                 else if (!Directory.Exists(localFilePath))
                 {
                     localFilePathElement.DisplayFault();
-                    Debug.LogErrorFormat("Cannot start session - local data directory {0} does not exist.", localFilePath);
+                    Utilities.UXFDebugLogErrorFormat("Cannot start session - local data directory {0} does not exist.", localFilePath);
                     error = true;
                 }
 
@@ -342,7 +342,7 @@ namespace UXF.UI
                     Dictionary<string, object> deserializedJson = (Dictionary<string, object>)MiniJSON.Json.Deserialize(settingsText);
                     if (deserializedJson == null)
                     {
-                        Debug.LogErrorFormat("Cannot deserialize json file: {0}.", settingsPath);
+                        Utilities.UXFDebugLogErrorFormat("Cannot deserialize json file: {0}.", settingsPath);
                         settingsElement.DisplayFault();
                         error = true;
                     }
@@ -356,7 +356,7 @@ namespace UXF.UI
                     if (jsonText == string.Empty)
                     {
                         error = true;
-                        Debug.LogErrorFormat("Error downloading data from URL: {0}. Using blank settings instead.", jsonURL);
+                        Utilities.UXFDebugLogErrorFormat("Error downloading data from URL: {0}. Using blank settings instead.", jsonURL);
                         newSettings = Settings.empty;
                     }
                     try
@@ -366,7 +366,7 @@ namespace UXF.UI
                     catch (InvalidCastException)
                     {
                         error = true;
-                        Debug.LogErrorFormat("Text downloaded from {0} is cannot be parsed, empty settings used instead. Check the data is valid json ({1})", jsonURL, jsonText);
+                        Utilities.UXFDebugLogErrorFormat("Text downloaded from {0} is cannot be parsed, empty settings used instead. Check the data is valid json ({1})", jsonURL, jsonText);
                         newSettings = Settings.empty;
                     }
                     break;
@@ -627,7 +627,7 @@ namespace UXF.UI
 
             if (www.isNetworkError || www.isHttpError)
             {
-                Debug.LogError(www.error);
+                Utilities.UXFDebugLogError(www.error);
                 yield break;
             }
             jsonText = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);

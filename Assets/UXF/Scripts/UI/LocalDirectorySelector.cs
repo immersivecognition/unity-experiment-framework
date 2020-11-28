@@ -48,7 +48,7 @@ namespace UXF.UI
             string[] selected = SFB.StandaloneFileBrowser.OpenFolderPanel("Select data directory", current, false);
             if (selected != null && selected.Length > 0) inputField.SetContents(selected[0]);
 #else
-            Debug.LogError("Cannot select directory unless on PC platform!");
+            Utilities.UXFDebugLogError("Cannot select directory unless on PC platform!");
 #endif
         }
 

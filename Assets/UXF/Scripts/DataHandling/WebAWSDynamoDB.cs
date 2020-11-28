@@ -62,7 +62,7 @@ namespace UXF
         {
             bool ok = CheckCurrentTargetOK();
             if (!ok) return;
-            if (credentials == null) Debug.LogError("Credentials have not been set!");
+            if (credentials == null) Utilities.UXFDebugLogError("Credentials have not been set!");
             DDB_Setup(credentials.region, credentials.cognitoIdentityPool, gameObject.name);
             
             var allDataTypes = Enum.GetValues(typeof(UXFDataType)); 
@@ -86,11 +86,10 @@ namespace UXF
                 if (!session.participantDetails.ContainsKey(kvp.Key))
                 {
                     session.participantDetails.Add(kvp.Key, kvp.Value);
-                    Debug.LogFormat("{0}: {1}", kvp.Key, kvp.Value);
                 }
                 else
                 {
-                    Debug.LogErrorFormat("participantDetails already contains key \"{0}\"!", kvp.Key);
+                    Utilities.UXFDebugLogErrorFormat("participantDetails already contains key \"{0}\"!", kvp.Key);
                 }
             }
         }
@@ -123,7 +122,7 @@ namespace UXF
 
                 if (!table.Headers.Contains("trial_num"))
                 {
-                    Debug.LogError("Data supplied is supposed to be per-trial but does not contain 'trial_num' column!");
+                    Utilities.UXFDebugLogError("Data supplied is supposed to be per-trial but does not contain 'trial_num' column!");
                     return "error";
                 }
                 var dataList = table.GetAsListOfDict()
@@ -347,12 +346,12 @@ namespace UXF
 
         private void ShowError(string text)
         {
-            Debug.LogError(text);
+            Utilities.UXFDebugLogError(text);
         }
 
         private void HandleSuccessfulDBRead(string jsonResult)
         {
-            Debug.Log(jsonResult);
+            Utilities.UXFDebugLog(jsonResult);
             Dictionary<string, object> jsonRequest = (Dictionary<string, object>) MiniJSON.Json.Deserialize(jsonResult);
             string guid = (string) jsonRequest["guid"];
             Action<Dictionary<string, object>> callback = requestCallbackMap[guid];
@@ -408,9 +407,9 @@ namespace UXF
             var buildTarget = UnityEditor.EditorUserBuildSettings.activeBuildTarget;
             if (buildTarget != UnityEditor.BuildTarget.WebGL)
             {
-                Debug.LogError("Web AWS DynamoDB Data Handler is not compatible with current build target. Please switch your platform in Build Settings to WebGL if you wish to use this.");
+                Utilities.UXFDebugLogError("Web AWS DynamoDB Data Handler is not compatible with current build target. Please switch your platform in Build Settings to WebGL if you wish to use this.");
             }
-            Debug.LogWarning("Unfortunately the Web AWS DynamoDB Data Handler cannot communicate with the database whilst running in the Unity Editor, because it relies on the AWS JavaScript SDK. To test data upload, create a build of your application and test it in a web browser. You can still test in the Unity Editor without database access.");
+            Utilities.UXFDebugLogWarning("Unfortunately the Web AWS DynamoDB Data Handler cannot communicate with the database whilst running in the Unity Editor, because it relies on the AWS JavaScript SDK. To test data upload, create a build of your application and test it in a web browser. You can still test in the Unity Editor without database access.");
             return false;
 # else
             return true;

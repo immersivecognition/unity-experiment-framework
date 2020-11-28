@@ -314,6 +314,8 @@ namespace UXF
             }
             _hasInitialised = true;
 
+            Utilities.UXFDebugLog("Beginning session.");
+
             // raise the session events
             onSessionBegin.Invoke(this);
         }
@@ -509,7 +511,7 @@ namespace UXF
         {
             if (dataType.GetDataLevel() != UXFDataLevel.PerSession)
             {
-                Debug.LogErrorFormat(
+                Utilities.UXFDebugLogErrorFormat(
                     "Error trying to save data '{0}' of type UXFDataType.{1} associated with the Session. The valid types for this method are {2}. Reverting to type UXFDataType.OtherSessionData.",
                     dataName,
                     dataType,
@@ -657,7 +659,7 @@ namespace UXF
                 blocks = new List<Block>();
                 _hasInitialised = false;
 
-                Debug.Log("Ended session.");
+                Utilities.UXFDebugLog("Ended session.");
                 isEnding = false;
             }
         }

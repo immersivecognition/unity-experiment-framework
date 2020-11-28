@@ -39,7 +39,7 @@ namespace UXF.UI
         {
             if (!Directory.Exists(Application.streamingAssetsPath))
             {
-                Debug.LogWarning("StreamingAssets folder was moved or deleted! Creating a new one.");
+                Utilities.UXFDebugLogWarning("StreamingAssets folder was moved or deleted! Creating a new one.");
                 Directory.CreateDirectory(Application.streamingAssetsPath);
             }
 
@@ -78,7 +78,7 @@ namespace UXF.UI
                 if (!File.Exists(newPath))
                 {
                     File.WriteAllText(newPath, "{\n}");
-                    Debug.LogErrorFormat("No profiles found in {0} that match search pattern {1}. A blank one called {2} has been made for you.", Application.streamingAssetsPath, uiController.settingsSearchPattern, newName);
+                    Utilities.UXFDebugLogErrorFormat("No profiles found in {0} that match search pattern {1}. A blank one called {2} has been made for you.", Application.streamingAssetsPath, uiController.settingsSearchPattern, newName);
                     if (retry) Populate(retry: false);
                 }
             }
@@ -91,7 +91,7 @@ namespace UXF.UI
             string winPath = Application.streamingAssetsPath.Replace("/", "\\");
             System.Diagnostics.Process.Start("explorer.exe", "/root," + winPath);
 #else
-            Debug.LogError("Cannot open directory unless on PC platform!");
+            Utilities.UXFDebugLogError("Cannot open directory unless on PC platform!");
 #endif
         }
 

@@ -55,7 +55,7 @@ namespace UXF
             }
             else
             {
-                Debug.LogWarning("Parallel thread is still active!");
+                Utilities.UXFDebugLogWarning("Parallel thread is still active!");
             }
         }
 
@@ -84,13 +84,13 @@ namespace UXF
         void Worker()
         {
             if (verboseDebug)
-                Debug.Log("Started worker thread");
+                Utilities.UXFDebugLog("Started worker thread");
 
             // performs FileIO tasks in seperate thread
             foreach (var action in bq)
             {
                 if (verboseDebug)
-                    Debug.LogFormat("Managing action");
+                    Utilities.UXFDebugLogFormat("Managing action");
 
                 try
                 {
@@ -102,7 +102,7 @@ namespace UXF
                 }
                 catch (IOException e)
                 {
-                    Debug.LogError(string.Format("Error, file may be in use! Exception: {0}", e));
+                    Utilities.UXFDebugLogError(string.Format("Error, file may be in use! Exception: {0}", e));
                 }
                 catch (System.Exception e)
                 {
@@ -115,7 +115,7 @@ namespace UXF
             }
 
             if (verboseDebug)
-                Debug.Log("Finished worker thread");
+                Utilities.UXFDebugLog("Finished worker thread");
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.csv", dataName));
             
-            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllLines(savePath, lines); });
             return GetRelativePath(storagePath, savePath);;
@@ -160,7 +160,7 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.json", dataName));
             
-            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllText(savePath, text); });
             return GetRelativePath(storagePath, savePath);;
@@ -177,7 +177,7 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.json", dataName));
             
-            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllText(savePath, text); });
             return GetRelativePath(storagePath, savePath);;
@@ -192,7 +192,7 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.txt", dataName));
             
-            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllText(savePath, text); });
             return GetRelativePath(storagePath, savePath);;
@@ -207,7 +207,7 @@ namespace UXF
             Directory.CreateDirectory(directory);
             string savePath = Path.Combine(directory, string.Format("{0}.txt", dataName));  
 
-            if (verboseDebug) Debug.LogFormat("Queuing save of file: {0}", savePath);
+            if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllBytes(savePath, bytes); });
             return GetRelativePath(storagePath, savePath);
@@ -221,7 +221,7 @@ namespace UXF
             {
                 storageLocationSafe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "UXF_Data");
                 Directory.CreateDirectory(storageLocationSafe);
-                Debug.LogErrorFormat("Selected storage location ({0}) does not exist! Defaulting to {1}.", base.storagePath, storageLocationSafe);
+                Utilities.UXFDebugLogErrorFormat("Selected storage location ({0}) does not exist! Defaulting to {1}.", base.storagePath, storageLocationSafe);
             }
             return Path.Combine(storageLocationSafe, experiment, ppid, SessionNumToName(sessionNum));
         }
@@ -238,7 +238,7 @@ namespace UXF
         public override void CleanUp()
         {
             if (verboseDebug)
-                Debug.Log("Joining File Saver Thread");
+                Utilities.UXFDebugLog("Joining File Saver Thread");
             quitting = true;
             bq.Enqueue(doNothing); // ensures bq breaks from foreach loop
             parallelThread.Join();
