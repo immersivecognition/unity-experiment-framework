@@ -130,11 +130,15 @@ namespace UXF
                         item[primaryKey] = primaryKeyValue;
                         return item;
                     })
-                    .Cast<object>()
-                    .ToList();
+                    .Cast<object>();
 
-                string req = MiniJSON.Json.Serialize(dataList);
-                DDB_BatchWriteItem(tableName, req, gameObject.name);
+                // split the request into batches of 25 because of limit in DynamoDB BatchWriteItem 
+                var batches = dataList.Batch(25);
+                foreach (var batch in batches)
+                {
+                    string req = MiniJSON.Json.Serialize(batch.ToList());
+                    DDB_BatchWriteItem(tableName, req, gameObject.name);
+                }
                 return string.Format("dynamodb:{0}:{1}", tableName, primaryKeyValue);
             }
             else
