@@ -91,7 +91,7 @@ settings.json            | Copy of the settings applied to the Session
 trial_results.csv        | Main results file (behavioural data)
 ```
 
-**Example Output** You can see an example of the data structure UXF outputs in the [example_output](example_output) folder of this repository.
+**Example Output** You can see an example of the data structure UXF outputs in the [example_output](example_output/basic_example_1) folder of this repository.
 
 ### Web & Database
 
