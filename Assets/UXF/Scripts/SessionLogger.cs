@@ -46,7 +46,7 @@ namespace UXF
 		/// </summary>
 		public void Initialise()
 		{
-			table = new UXFDataTable("timestamp", "log_type", "message");
+			table = new UXFDataTable("timestamp", "log_type", "message", "stacktrace");
             if (logDebugLogCalls) Application.logMessageReceived += HandleLog;
 			session.preSessionEnd.AddListener(Finalise); // finalise logger when cleaning up the session
 		}		
@@ -58,6 +58,7 @@ namespace UXF
 			row.Add(("timestamp", Time.time.ToString()));
 			row.Add(("log_type", type.ToString()));
 			row.Add(("message", logString.Replace(",", string.Empty)));
+			row.Add(("stacktrace", stackTrace.Replace(",", string.Empty).Replace("\n", ".  ").Replace("\r", ".  ")));
 
 			table.AddCompleteRow(row);
 		}
@@ -74,6 +75,7 @@ namespace UXF
 			row.Add(("timestamp", Time.time.ToString()));
 			row.Add(("log_type", logType));
 			row.Add(("message", text.Replace(",", string.Empty)));
+			row.Add(("stacktrace", "NA"));
 
 			table.AddCompleteRow(row);
 		}
