@@ -157,6 +157,7 @@ namespace UXF.UI
         {
             if (session == null) session = GetComponentInParent<Session>();
             if (canvas == null) canvas = GetComponent<Canvas>();
+            if (popupController == null) popupController = GetComponentInChildren<PopupController>(true);
             // read word list
             if (uuidWordList) words = uuidWordList.text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             GenerateSidebar();
