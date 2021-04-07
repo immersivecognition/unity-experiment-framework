@@ -73,7 +73,10 @@ namespace UXF.EditorUtils
                     Dictionary<string, object> trialDict = new Dictionary<string, object>();
                     // log each trial setting
                     foreach (string key in trial.settings.Keys)
-                        trialDict.Add(key, trial.settings.GetObject(key).ToString());
+                    {
+                        var val = trial.settings.GetObject(key);
+                        trialDict.Add(key, val?.ToString() ?? "(null)");
+                    }
 
                     // add trial to block
                     trialList.Add(trialDict);

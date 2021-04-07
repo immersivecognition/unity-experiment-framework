@@ -144,7 +144,7 @@ namespace UXF
             // log any settings we need to for this trial
             foreach (string s in session.settingsToLog)
             {
-                result[s] = settings.GetObject(s);
+                result[s] = settings.GetObject(s, string.Empty);
             }
 
             session.onTrialEnd.Invoke(this);

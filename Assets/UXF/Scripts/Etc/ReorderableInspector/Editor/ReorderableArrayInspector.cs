@@ -101,7 +101,15 @@ namespace SubjectNerd.Utilities
 
 				propList.drawElementCallback = delegate (Rect rect, int index, bool active, bool focused)
 				{
-					SerializedProperty targetElement = property.GetArrayElementAtIndex(index);
+					SerializedProperty targetElement;
+					try
+					{
+						targetElement = property.GetArrayElementAtIndex(index);
+					}
+					catch (NullReferenceException)
+					{
+						return;
+					}
 
 					bool isExpanded = targetElement.isExpanded;
 					rect.height = EditorGUI.GetPropertyHeight(targetElement, GUIContent.none, isExpanded);
@@ -148,7 +156,15 @@ namespace SubjectNerd.Utilities
 
 			private float ElementHeightCallback(SerializedProperty property, int index)
 			{
-				SerializedProperty arrayElement = property.GetArrayElementAtIndex(index);
+				SerializedProperty arrayElement;
+				try
+				{
+					arrayElement = property.GetArrayElementAtIndex(index);
+				}
+				catch (NullReferenceException)
+				{
+					return 0f;
+				}
 				float calculatedHeight = EditorGUI.GetPropertyHeight(arrayElement,
 																	GUIContent.none,
 																	arrayElement.isExpanded);
@@ -319,7 +335,9 @@ namespace SubjectNerd.Utilities
 			if (isInitialized && FORCE_INIT == false)
 				return;
 
-			styleEditBox = new GUIStyle(EditorStyles.helpBox) { padding = new RectOffset(5, 5, 5, 5) };
+			try { styleEditBox = new GUIStyle(EditorStyles.helpBox) { padding = new RectOffset(5, 5, 5, 5) }; }
+			catch (NullReferenceException) { return; }
+			
 			FindTargetProperties();
 			FindContextMenu();
 		}
@@ -612,7 +630,11 @@ namespace SubjectNerd.Utilities
 
 			if (EditorGUI.EndChangeCheck())
 			{
-				serializedObject.ApplyModifiedProperties();
+				try
+				{
+					serializedObject.ApplyModifiedProperties();
+				}
+				catch (System.Exception) { return; }
 				InitInspector(true);
 			}
 
@@ -630,27 +652,34 @@ namespace SubjectNerd.Utilities
 		{
 			if (property.NextVisible(true))
 			{
-				// Remember depth iteration started from
-				int depth = property.Copy().depth;
-				do
+				try
 				{
-					// If goes deeper than the iteration depth, get out
-					if (property.depth != depth)
-						break;
-					if (isSubEditor && property.name.Equals("m_Script"))
-						continue;
-
-					if (filter != null)
+					// Remember depth iteration started from
+					int depth = property.Copy().depth;
+					do
 					{
-						var filterResult = filter();
-						if (filterResult == IterControl.Break)
+						// If goes deeper than the iteration depth, get out
+						if (property.depth != depth)
 							break;
-						if (filterResult == IterControl.Continue)
+						if (isSubEditor && property.name.Equals("m_Script"))
 							continue;
-					}
 
-					DrawPropertySortableArray(property);
-				} while (property.NextVisible(false));
+						if (filter != null)
+						{
+							var filterResult = filter();
+							if (filterResult == IterControl.Break)
+								break;
+							if (filterResult == IterControl.Continue)
+								continue;
+						}
+
+						DrawPropertySortableArray(property);
+					} while (property == null || property.NextVisible(false));
+				}
+				catch (NullReferenceException) 
+				{
+					return;
+				}
 			}
 		}
 
