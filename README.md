@@ -175,9 +175,9 @@ public class SceneManipulator : MonoBehaviour
     public void RecordResultsAndEnd(int score)
     {
         // store their score
-        session.currentTrial.results["score"] = score;
+        session.CurrentTrial.result["score"] = score;
         // end this trial
-        session.currentTrial.End();
+        session.CurrentTrial.End();
     }
 
 }
