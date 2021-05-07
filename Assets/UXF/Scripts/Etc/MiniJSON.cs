@@ -33,6 +33,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Globalization;
 
 using UnityEngine;
 
@@ -327,12 +328,12 @@ namespace MiniJSON
                 if (number.IndexOf('.') == -1)
                 {
                     long parsedLong;
-                    long.TryParse(number, out parsedLong);
+                    long.TryParse(number, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedLong);
                     return parsedLong;
                 }
 
                 double parsedDouble;
-                double.TryParse(number, out parsedDouble);
+                double.TryParse(number, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedDouble);
                 return parsedDouble;
             }
 
@@ -632,7 +633,7 @@ namespace MiniJSON
                     || value is float
                     || value is decimal)
                 {
-                    builder.Append(Convert.ToDouble(value).ToString("R"));
+                    builder.Append(Convert.ToDouble(value).ToString("R", CultureInfo.InvariantCulture));
                 }
                 else if (value is int
                     || value is uint

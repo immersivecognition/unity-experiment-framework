@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -56,7 +58,7 @@ namespace UXF
                 (newRow.Count == dict.Keys.Count);
 
             if (!sameKeys)
-            { 
+            {
                 throw new InvalidOperationException(
                     string.Format(
                         "The row does not contain values for the same columns as the columns in the table!\nTable: {0}\nRow: {1}",
@@ -87,21 +89,42 @@ namespace UXF
         /// <summary>
         /// Return the table as a set of strings, each string a line a row with comma-seperated values.
         /// </summary>
+        /// <param name="formatProvider">Format provider (e.g. CultureInfo for decimal separator). Defaults to en-US.</param>
         /// <returns></returns>
-        public string[] GetCSVLines()
+        public string[] GetCSVLines(CultureInfo culture = null, string decimalFormat = "0.######")
         {
+            culture = culture ?? Thread.CurrentThread.CurrentCulture;
             string[] headers = Headers;
             string[] lines = new string[CountRows() + 1];
-            lines[0] = string.Join(",", headers);
+            lines[0] = string.Join(culture.TextInfo.ListSeparator, headers);
             for (int i = 1; i < lines.Length; i++)
             {
-                lines[i] = string.Join(",", 
+                lines[i] = string.Join(culture.TextInfo.ListSeparator,
                     headers
-                    .Select(h => dict[h][i - 1].ToString().Replace(",", "_"))
+                    .Select(h => FormatItem(dict[h][i - 1], culture, decimalFormat))
                 );
             }
 
             return lines;
+        }
+
+        static string FormatItem(object item, CultureInfo culture, string decimalFormat = "0.######")
+        {
+            switch (item)
+            {
+                case sbyte sbyteNum:     return sbyteNum.ToString(culture);
+                case byte byteNum:       return byteNum.ToString(culture); 
+                case short shortNum:     return shortNum.ToString(culture); 
+                case ushort ushortNum:   return ushortNum.ToString(culture); 
+                case int intNum:         return intNum.ToString(culture);
+                case uint uintNum:       return uintNum.ToString(culture);
+                case long longNum:       return longNum.ToString(culture);
+                case ulong ulongNum:     return ulongNum.ToString(culture);
+                case float floatNum:     return floatNum.ToString(decimalFormat, culture);
+                case double doubleNum:   return doubleNum.ToString(decimalFormat, culture);
+                case decimal decimalNum: return decimalNum.ToString(decimalFormat, culture);
+                default:                 return item.ToString().Replace(culture.TextInfo.ListSeparator, "_");
+            };
         }
 
         /// <summary>

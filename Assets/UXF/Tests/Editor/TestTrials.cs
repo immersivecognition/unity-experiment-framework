@@ -121,6 +121,7 @@ namespace UXF.Tests
             Assert.AreEqual(numHeaders, lines[0].Split(',').GetLength(0));
 
             // trial 1 columns should equal header length
+            Debug.Log( lines[1]);
             Assert.AreEqual(numHeaders, lines[1].Split(',').GetLength(0));
 
             // trial 2 columns should equal header length

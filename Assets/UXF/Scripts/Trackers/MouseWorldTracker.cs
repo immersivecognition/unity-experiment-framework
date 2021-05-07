@@ -37,14 +37,12 @@ namespace UXF
             // get position and rotation
             Vector3 p = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceFromCamera));
 
-            string format = "0.####";
-
             // return position, rotation (x, y, z) as an array
             var values = new UXFDataRow()
             {
-                ("pos_x", p.x.ToString(format)),
-                ("pos_y", p.y.ToString(format)),
-                ("pos_z", p.z.ToString(format))
+                ("pos_x", p.x),
+                ("pos_y", p.y),
+                ("pos_z", p.z)
             };
 
             return values;
