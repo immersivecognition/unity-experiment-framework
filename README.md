@@ -3,7 +3,7 @@
 </p>
 
 # UXF - Unity Experiment Framework
-A set of components which simplify human behaviour experiments developed in the Unity engine. UXF 2.0 supports Desktop, PCVR, Standalone VR, as well as Web based experiments for full remote data collection, with different data output modes. This is the development project, if you want to download the package, do not clone this repository, see "Get Started" below. 
+A set of components which simplify human behaviour experiments developed in the Unity engine. UXF 2.0 supports experiments for VR, Desktop, as well as Web based experiments for full remote data collection, with different data output modes. This is the development project, if you want to download the package, do not clone this repository, see "Get Started" below. 
 
 <p align="center">
   <a href="https://doi.org/10.3758/s13428-019-01242-0">
@@ -33,7 +33,6 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 ## Built with UXF
 
-
 <p align="center">
   <a href="https://immersivecognition.github.io/projects/virtual-reality-experiments/" target="_blank">
   <img src="media/built-with-uxf.jpg">
@@ -43,6 +42,7 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 </p>
 
 ## Get started
+
 0. Read over this Readme and the [paper](https://doi.org/10.3758/s13428-019-01242-0) to understand UXF.
 
 1. Import the latest ```UXF.unitypackage``` [release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) to your existing Unity project. (Drag the file into your project.)
