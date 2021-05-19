@@ -371,14 +371,14 @@ namespace UXF
         /// <param name="valueIfNotFound">The value returned if the setting does not exist (i.e., a default value).</param>
         public List<object> GetObjectList(string key, List<object> valueIfNotFound) { return ContainsKey(key) ? GetObjectList(key) : valueIfNotFound; }
 
-
+        
         public bool ContainsKey(string key)
         {
-            try
+            if (baseDict.ContainsKey(key))
             {
-                return baseDict.ContainsKey(key);
+                return true;
             }
-            catch (KeyNotFoundException)
+            else
             {
                 if (parentSettingsContainer != null && parentSettingsContainer.settings != null)
                 {

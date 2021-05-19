@@ -14,7 +14,6 @@ namespace UXF
     /// The Session represents a single "run" of an experiment, and contains all information about that run. 
     /// </summary>
     [ExecuteInEditMode]
-    [RequireComponent(typeof(FileSaver))]
     public class Session : MonoBehaviour, ISettingsContainer, IDataAssociatable
     {
         /// <summary>

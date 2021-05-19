@@ -626,7 +626,16 @@ namespace UXF.UI
             www.timeout = 5;
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
+            bool error;
+#if UNITY_2020_OR_NEWER
+            error = www.result != UnityWebRequest.Result.Success;
+#else
+#pragma warning disable
+            error = www.isHttpError || www.isNetworkError;
+#pragma warning restore
+#endif
+
+            if (error)
             {
                 Utilities.UXFDebugLogError(www.error);
                 yield break;

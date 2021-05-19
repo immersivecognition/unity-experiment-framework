@@ -143,6 +143,26 @@ namespace UXF.Tests
 			Assert.IsNull(s.settings);
 		}
 
+		[Test]
+		public void CascadeSettingsWithDefault()
+		{
+			GameObject go = new GameObject();
+			Session s = go.AddComponent<Session>();
+			Block b = s.CreateBlock();
+			Trial t = b.CreateTrial();
+			
+			Dictionary<string, object> dict = MiniJSON.Json.Deserialize(jsonString) as Dictionary<string, object>;
+			b.settings.UpdateWithDict(dict);
+
+			t.settings.SetValue("key1", "test");
+			t.settings.SetValue("key2", 100);
+
+			Assert.AreEqual(t.settings.GetString("string"), "The quick brown fox \"jumps\" over the lazy dog ");
+			Assert.AreEqual(t.settings.GetString("string", string.Empty), "The quick brown fox \"jumps\" over the lazy dog ");
+			Assert.AreEqual(t.settings.GetObject("string", string.Empty), "The quick brown fox \"jumps\" over the lazy dog ");
+			Assert.AreEqual(t.settings.GetObject("something_not_set", string.Empty), string.Empty);
+		}
+
 	}
 
 }

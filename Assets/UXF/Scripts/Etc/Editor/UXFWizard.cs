@@ -72,9 +72,8 @@ namespace UXF.EditorUtils
 
         public void OnGUI()
         {
-            GUIStyle labelStyle = new GUIStyle();
+            GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
             labelStyle.wordWrap = true;
-            labelStyle.margin = new RectOffset(6, 0, 0, 0);
 
             var rect = GUILayoutUtility.GetRect(Screen.width, 128, GUI.skin.box);
             if (uxfIcon)
