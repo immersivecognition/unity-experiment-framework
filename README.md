@@ -195,6 +195,9 @@ Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framewor
 
 ## In the News
 
+* Ubiquitous Media Technology Lab Uses UXF for HCI research:
+    - [Blink-Suppressed Hand Redirection](https://umtl.cs.uni-saarland.de/research/projects/blink-suppressed-hand-redirection.html) 
+    - [Combining Dynamic Passive Haptics & Haptic Retargeting in VR](https://umtl.cs.uni-saarland.de/research/projects/shifty-and-haptic-retargeting.html)
 * Overview presentation on UXF at SORSE - [Framework for creating Virtual Reality human behavior experiments in Unity](https://sorse.github.io/programme/talks/event-012/)
 * UXF in The Economist - [Health care is already benefiting from VR](https://www.economist.com/technology-quarterly/2020/10/01/health-care-is-already-benefiting-from-vr)
 * UXF in The Psychologist - [New immersive cognition laboratory](https://thepsychologist.bps.org.uk/volume-32/august-2019/new-immersive-cognition-laboratory) 
