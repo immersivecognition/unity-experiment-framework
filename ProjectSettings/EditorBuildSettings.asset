@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Testing/AWSDDBTest.unity
     guid: 1cbe324e7580ab74c87eb2a93457b331
-  - enabled: 0
+  - enabled: 1
     path: Assets/UXF/Examples/1a_SpaceShuttle/SpaceShuttleExample.unity
     guid: 192babd20ceaeed459fe3693623af344
   - enabled: 0
@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/UXF/Examples/3_MultiScene_FootballAndRT/OtherScenes/ReactionExample.unity
     guid: 7a79c722962e7d74eb856ff31b309b87
-  - enabled: 1
+  - enabled: 0
     path: Assets/Testing/AWS1HourTest.unity
     guid: 446013cde4af0f6489957921c51d090c
   m_configObjects: {}
