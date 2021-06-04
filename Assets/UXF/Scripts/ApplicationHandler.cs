@@ -8,7 +8,7 @@ namespace UXF
     public class ApplicationHandler : MonoBehaviour
     {
         /// <summary>
-        /// Quits the application. This is a handy helper method for use with the onSessionEnd 
+        /// Quits the application. This is a handy helper method for use with the onSessionEnd event.
         /// </summary>
         public void Quit()
         {
@@ -20,12 +20,11 @@ namespace UXF
         }
 
         /// <summary>
-        /// Reloads the currently active scene. This is a handy helper method for use with the onSessionEnd
+        /// Reloads the currently active scene. This is a handy helper method for use with the onSessionEnd event.
         /// </summary>
         public void ReloadScene()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);            
         }
     }
 }
