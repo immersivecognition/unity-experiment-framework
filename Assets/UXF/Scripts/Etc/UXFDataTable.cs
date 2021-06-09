@@ -95,8 +95,6 @@ namespace UXF
         /// <returns></returns>
         public string[] GetCSVLines(CultureInfo culture = null, string decimalFormat = "0.######")
         {
-            UnityEngine.Debug.Log(dict);
-
             culture = culture ?? Thread.CurrentThread.CurrentCulture;
             string[] headers = Headers;
             string[] lines = new string[CountRows() + 1];
