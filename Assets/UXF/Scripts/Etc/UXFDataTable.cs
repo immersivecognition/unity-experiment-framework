@@ -47,6 +47,8 @@ namespace UXF
         /// <param name="newRow"></param>
         public void AddCompleteRow(UXFDataRow newRow)
         {
+            if (newRow == null) throw new ArgumentNullException("newRow");
+
             bool sameKeys = (dict
                 .Keys
                 .All(
@@ -89,10 +91,12 @@ namespace UXF
         /// <summary>
         /// Return the table as a set of strings, each string a line a row with comma-seperated values.
         /// </summary>
-        /// <param name="formatProvider">Format provider (e.g. CultureInfo for decimal separator). Defaults to en-US.</param>
+        /// <param name="formatProvider">Format provider (e.g. CultureInfo for decimal separator). Defaults to current culture.</param>
         /// <returns></returns>
         public string[] GetCSVLines(CultureInfo culture = null, string decimalFormat = "0.######")
         {
+            UnityEngine.Debug.Log(dict);
+
             culture = culture ?? Thread.CurrentThread.CurrentCulture;
             string[] headers = Headers;
             string[] lines = new string[CountRows() + 1];
@@ -123,6 +127,7 @@ namespace UXF
                 case float floatNum:     return floatNum.ToString(decimalFormat, culture);
                 case double doubleNum:   return doubleNum.ToString(decimalFormat, culture);
                 case decimal decimalNum: return decimalNum.ToString(decimalFormat, culture);
+                case null:               return "null";
                 default:                 return item.ToString().Replace(culture.TextInfo.ListSeparator, "_");
             };
         }
