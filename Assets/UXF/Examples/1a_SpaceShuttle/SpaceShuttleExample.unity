@@ -777,12 +777,12 @@ PrefabInstance:
     - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
       propertyPath: storeSessionSettings
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114916036141644208, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
       propertyPath: storeParticipantDetails
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 203569540471596912, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
@@ -997,7 +997,7 @@ PrefabInstance:
     - target: {fileID: 653059108743847710, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
       propertyPath: participantDataPoints.Array.data[0].displayName
-      value: Age
+      value: 34354635463546345
       objectReference: {fileID: 0}
     - target: {fileID: 653059108743847710, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
@@ -1056,11 +1056,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 653059108743847710, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
-      propertyPath: termsAndConditions
-      value: Please tick if you understand the instructions.<color=red>*</color>
-      objectReference: {fileID: 0}
-    - target: {fileID: 653059108743847710, guid: 0a3b6392f04558844bd340e68ced1ff9,
-        type: 3}
       propertyPath: participantDataPoints.Array.data[2].displayName
       value: Cou
       objectReference: {fileID: 0}
@@ -1098,6 +1093,11 @@ PrefabInstance:
         type: 3}
       propertyPath: startupMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 653059108743847710, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
+      propertyPath: termsAndConditions
+      value: Please tick if you understand the instructions.<color=red>*</color>
       objectReference: {fileID: 0}
     - target: {fileID: 759169902625461607, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}
@@ -2689,6 +2689,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5489284586117691312, guid: 0a3b6392f04558844bd340e68ced1ff9,
+        type: 3}
+      propertyPath: m_Text
+      value: Please tick if you understand the instructions and agree for your data
+        to be collected and used for research purposes.<color=red>*</color>
       objectReference: {fileID: 0}
     - target: {fileID: 5540555593714305841, guid: 0a3b6392f04558844bd340e68ced1ff9,
         type: 3}

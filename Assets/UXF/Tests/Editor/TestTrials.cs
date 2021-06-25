@@ -98,6 +98,19 @@ namespace UXF.Tests
         }
 
         [Test]
+        public void BeginTrialBeforeBeginSession()
+        {
+            gameObject = new GameObject();
+            session = gameObject.AddComponent<Session>();
+
+			// generate trials
+			session.CreateBlock(1);
+
+            Assert.Throws<InvalidOperationException>(() => session.FirstTrial.Begin());
+        }
+
+
+        [Test]
         public void WriteCommas()
         {
             Start();

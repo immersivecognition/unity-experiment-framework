@@ -224,7 +224,7 @@ namespace UXF
         /// <summary>
         /// Stores combined list of headers for the behavioural output.
         /// </summary>
-        public List<string> Headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).ToList(); } }
+        public List<string> Headers { get { return baseHeaders.Concat(settingsToLog).Concat(customHeaders).Distinct().ToList(); } }
 
         /// <summary>
         /// Dictionary of objects for datapoints collected via the UI, or otherwise.

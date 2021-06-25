@@ -78,6 +78,10 @@ namespace UXF
         /// </summary>
         public void Begin()
         {
+            if (!session.hasInitialised)
+            {
+                throw new InvalidOperationException("Cannot begin trial, session is is not ready! Session has not been started yet with session.Begin() (or via the UI), or session has already ended.");
+            }
             if (session.InTrial) session.CurrentTrial.End();
 
             session.currentTrialNum = number;

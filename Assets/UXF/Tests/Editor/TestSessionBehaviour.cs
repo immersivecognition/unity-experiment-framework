@@ -101,6 +101,23 @@ namespace UXF.Tests
             GameObject.DestroyImmediate(session.gameObject);
         }
 
+
+        [Test]
+		public void DuplicateHeaders()
+		{
+            (Session session, FileSaver fileSaver) = CreateSession("duplicateheaders");
+
+			session.settingsToLog.Add("hello");
+			session.settingsToLog.Add("hello");
+			session.customHeaders.Add("hello");
+			session.customHeaders.Add("hello");
+
+			session.FirstTrial.Begin();
+			session.FirstTrial.End();
+
+			session.End();
+		}
+
         Tuple<Session, FileSaver> CreateSession(string ppidExtra)
         {
             GameObject gameObject = new GameObject();
