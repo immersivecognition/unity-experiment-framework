@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{{{ PRODUCT_NAME }}} | UXF WebGL Experiment</title>
+    <link rel="stylesheet" href="./Template/style.css" />
+
+    <!-- AWS SDK required for DynamoDB -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.776.0.min.js"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <h1>{{{ PRODUCT_NAME }}}</h1>
+
+    <div class="centered" style="width: {{{ WIDTH }}}px;">
+        <!-- Edit the description field in Unity WebGL Player Settings -->
+        <p>{{{ CUSTOM_DESCRIPTION }}}</p>
+    </div>
+
+    <div class="centered" style="width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px;">
+
+        <!-- Unity content -->
+        <script src="Build/{{{ LOADER_FILENAME }}}"></script>
+        <canvas id="unity-container" style="width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px;">
+        </canvas>
+
+        <!-- progress bar & load message -->
+        <div id="loader" class="loader">
+            <p>The experiment is loading...</p>
+            <div class="progressbar">
+                <div id="fill" class="fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- If you do not care about fullscreen, delete the below div -->
+        <div id="fullscreen-message" style="display: none;">
+            <div class="fullscreen-message-inner">
+                <p>
+                    You must run the experiment in Fullscreen. Please press the button below to play.
+                </p>
+                <p>
+                    <button class="action" onclick="openFullscreen();">
+                        <div class="text">
+                            Fullscreen
+                        </div>
+                        <svg id="i-fullscreen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" stroke-width="2" stroke="currentColor" fill="none" style="vertical-align:middle">
+                            <path d="M3 11V3H11M21 3H29V11 M29 21V29H21 M11 29H3V21" />
+                        </svg>
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unity Container -->
+    <p>Experiment developed with
+        <a href="http://immersivecognition.com/unity-experiment-framework/">UXF</a>
+    </p>
+
+    <script>
+        // Custom progressbar function
+        function customProgress(progress) {
+            // Change fill of the progress bar
+            const fill = document.getElementById("fill");
+            fill.style.width = progress * 100 + "%";
+
+            // If loaded, remove loader
+            if (progress === 1) {
+                const loader = document.getElementById("loader");
+                loader.remove();
+
+                const fsMessage = document.getElementById("fullscreen-message");
+                fsMessage.style.display = "block";
+            }
+        }
+
+        var unityContainer = document.getElementById("unity-container");
+
+        // Unity Initialization
+        createUnityInstance(unityContainer, {
+            dataUrl: "Build/{{{ DATA_FILENAME }}}",
+            frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+            codeUrl: "Build/{{{ CODE_FILENAME }}}",
+#if MEMORY_FILENAME
+            memoryUrl: "Build/{{{ MEMORY_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+            symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+#endif
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "{{{ COMPANY_NAME }}}",
+            productName: "{{{ PRODUCT_NAME }}}",
+            productVersion: "{{{ PRODUCT_VERSION }}}",
+        }, customProgress).then((unityInstance) => {
+            window.unityInstance = unityInstance; // store the object globally
+            fullscreenButton.onclick = () => {
+                unityInstance.SetFullscreen(1);
+            };
+        })
+
+        /* When the openFullscreen() function is executed, open the video in fullscreen.
+        Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
+        function openFullscreen() {
+            if (unityContainer.requestFullscreen) {
+                unityContainer.requestFullscreen();
+            } else if (unityContainer.webkitRequestFullscreen) { /* Safari */
+                unityContainer.webkitRequestFullscreen();
+            } else if (unityContainer.msRequestFullscreen) { /* IE11 */
+                unityContainer.msRequestFullscreen();
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+body {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.5;
+    padding: 2em 1em;
+    color: #555;
+}
+
+h1,
+h2,
+strong {
+    color: #333;
+}
+
+h1 {
+    margin-top: 1em;
+    padding-top: 1em;
+}
+
+a,
+a:link,
+a:visited {
+    color: #a94176;
+}
+
+a:hover {
+    color: #c56e9b;
+}
+
+.content {
+    position: relative;
+}
+
+.centered {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#unity-container {
+    margin-left: auto;
+    margin-right: auto;
+    z-index: -1;
+}
+
+#fullscreen-message {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    background-color: #333;
+    color: white;
+    font-size: 22px;
+}
+
+#fullscreen-message .fullscreen-message-inner {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translate(0, -50%);
+}
+
+#loader {
+    background-color: #E2E2E2;
+    padding: 25px;
+    width: 50%;
+    height: 75px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+#loader .progressbar {
+    border: 0;
+    margin: 16px 0;
+    padding: 0;
+    background-color: #a94176;
+}
+
+#loader .fill {
+    background-color: #c56e9b;
+    height: 24px;
+}
+
+button.action {
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #a94176;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    transition-duration: 0.1s;
+    cursor: pointer;
+}
+
+button.action:hover {
+    background-color: #c56e9b;
+}
+
+button.action .text {
+    padding-top: 2px;
+    margin-right: 0.4em;
+    display: inline-block;
+    vertical-align: middle;
+}

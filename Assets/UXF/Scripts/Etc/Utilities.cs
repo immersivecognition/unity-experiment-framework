@@ -18,7 +18,16 @@ namespace UXF
         public static void UXFDebugLogErrorFormat(string format, params object[] args) { Debug.LogErrorFormat(UXFFormatString(format), args); }
 
 
-        private static string UXFFormatString(string message) { return string.Format("[<b><color=#AD477C>UXF</color></b>] {0}", message); }
+        private static string UXFFormatString(string message)
+        {
+            return string.Format(
+                "{0} {1}",
+                Application.platform != RuntimePlatform.WebGLPlayer ?
+                    "[<b><color=#AD477C>UXF</color></b>]" :
+                    "[UXF]",
+                message
+            );
+        }
 
     }       
 

@@ -142,19 +142,26 @@ namespace UXF.EditorUtils
 
             GUILayout.Label("WebGL", EditorStyles.boldLabel);
 
-            if (PlayerSettings.WebGL.template == "PROJECT:UXF WebGL")
+            string expected;
+
+#if UNITY_2020_1_OR_NEWER
+            expected = "PROJECT:UXF WebGL 2020";
+#else
+            expected = "PROJECT:UXF WebGL 2019";
+#endif
+
+            if (PlayerSettings.WebGL.template == expected)
             {
-                EditorGUILayout.HelpBox("UXF WebGL template is set correctly.", MessageType.Info);
+                EditorGUILayout.HelpBox("UXF WebGL template is set correctly. You may still need to enable WebGL in build settings.", MessageType.Info);
             }
             else
             {
-                EditorGUILayout.HelpBox("UXF WebGL template is not selected as the WebGL Template in Player Settings.", MessageType.Warning);
+                EditorGUILayout.HelpBox("Do you plan to run your experiment in a web browser? UXF WebGL template is not selected as the WebGL Template in Player Settings.", MessageType.Warning);
                 if (GUILayout.Button("Fix"))
                 {
-                    PlayerSettings.WebGL.template = "PROJECT:UXF WebGL";
+                    PlayerSettings.WebGL.template = expected;
                 }
             }
-
 
 
             EditorGUILayout.Separator();

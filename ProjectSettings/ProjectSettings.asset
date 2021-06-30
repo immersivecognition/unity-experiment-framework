@@ -278,7 +278,7 @@ PlayerSettings:
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
   m_TemplateCustomTags:
-    DESCRIPTION: Description goes here...
+    DESCRIPTION: 
   mobileMTRendering:
     Android: 1
     iPhone: 1
@@ -509,7 +509,7 @@ PlayerSettings:
   webGLDebugSymbols: 0
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
-  webGLTemplate: PROJECT:UXF WebGL
+  webGLTemplate: PROJECT:UXF WebGL 2019
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLCompressionFormat: 2

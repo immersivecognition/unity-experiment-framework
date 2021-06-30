@@ -26,7 +26,7 @@ namespace UXF
         [BasteRainGames.HideIf("httpBasicAuthentication", false)]
         public string username = "susan";
         [BasteRainGames.HideIf("httpBasicAuthentication", false)]
-        public string password = "hello";
+        public string password = "password";
 
 
         public override bool CheckIfRiskOfOverwrite(string experiment, string ppid, int sessionNum, string rootPath = "")
