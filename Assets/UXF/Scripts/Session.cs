@@ -336,7 +336,7 @@ namespace UXF
         /// <returns></returns>
         public Block CreateBlock(int numberOfTrials)
         {
-            if (numberOfTrials > 0)
+            if (numberOfTrials >= 0)
                 return new Block((uint)numberOfTrials, this);
             else
                 throw new Exception("Invalid number of trials supplied");
@@ -468,24 +468,21 @@ namespace UXF
         /// <returns></returns>
         Trial GetLastTrial()
         {
-            Block lastBlock;
-            try
-            {
-                lastBlock = blocks[blocks.Count - 1];
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                throw new NoSuchTrialException("There is no last trial because no blocks have been created!");
-            }
+            if (blocks.Count == 0) throw new NoSuchTrialException("There is no last trial because no blocks have been created!");
             
-            try
+            Block lastValidBlock;
+            int i = blocks.Count - 1;
+            while (i >= 0)
             {
-                return lastBlock.trials[lastBlock.trials.Count - 1];
+                lastValidBlock = blocks[i];
+                if (lastValidBlock.trials.Count > 0)
+                {
+                    return lastValidBlock.trials[lastValidBlock.trials.Count - 1];
+                }
+                i--;
             }
-            catch (ArgumentOutOfRangeException)
-            {
-                throw new NoSuchTrialException("There is no last trial. No trials exist in the last block.");
-            }
+
+            throw new NoSuchTrialException("There is no last trial, blocks are present but they are all empty.");
         }
 
         /// <summary>
