@@ -35,9 +35,9 @@ namespace UXF
         public bool endAfterLastTrial = false;
         
         /// <summary>
-        /// If enabled, you do not need to reference this session component in a public field, you can simply call "Session.instance".
+        /// If enabled, you do not need to reference this session component in a public field, you can simply call "Session.instance". This object will be destroyed if another session component is the main instance.
         /// </summary>
-        [Tooltip("If enabled, you do not need to reference this session component in a public field, you can simply call \"Session.instance\".")]
+        [Tooltip("If enabled, you do not need to reference this session component in a public field, you can simply call \"Session.instance\". This object will be destroyed if another session component is the main instance.")]
         public bool setAsMainInstance = true;
 
         /// <summary>
@@ -257,7 +257,15 @@ namespace UXF
         /// </summary>
         void Awake()
         {
-            if (setAsMainInstance) instance = this;
+            if (setAsMainInstance)
+            {
+                if (instance != null && !ReferenceEquals(instance, this))
+                {
+                    Destroy(this.gameObject);
+                    return;
+                }
+                instance = this;
+            }
             if (dontDestroyOnLoadNewScene && Application.isPlaying) DontDestroyOnLoad(gameObject);            
             if (endAfterLastTrial) onTrialEnd.AddListener(EndIfLastTrial);
         }

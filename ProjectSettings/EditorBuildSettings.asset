@@ -17,10 +17,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/UXF/Examples/4_CorsiBlock/CorsiBlockExample.unity
     guid: d79ca1b5241496f4fba7622d23d6fa08
-  - enabled: 0
+  - enabled: 1
     path: Assets/UXF/Examples/3_MultiScene_FootballAndRT/OtherScenes/ShootingExample.unity
     guid: 1d5a4e0513b6be0428267c45d923520b
-  - enabled: 0
+  - enabled: 1
     path: Assets/UXF/Examples/3_MultiScene_FootballAndRT/OtherScenes/ReactionExample.unity
     guid: 7a79c722962e7d74eb856ff31b309b87
   - enabled: 0
