@@ -11,12 +11,17 @@ mergeInto(LibraryManager.library, {
             IdentityPoolId: Pointer_stringify(identityPool),
         });
 
+        // get credentials to account for lazy loading
+        AWS.config.credentials.get(function(err) {
+            if (err) console.log(err);
+        });
+
         callbackGameObjectName = Pointer_stringify(callbackGameObjectName);
         window.onbeforeunload = function(e) {
             console.log("Calling OnClose from Browser!");
             unityInstance.SendMessage(callbackGameObjectName, "HandleBeforeUnloadEvent");
 
-            // Cancel the event\\
+            // Cancel the event so the page doesn't close
             (e || window.event).preventDefault();
 
             // This never shows up correctly for me, but it does prompt
