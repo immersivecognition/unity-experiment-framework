@@ -42,7 +42,7 @@ namespace UXF.Tests
                 table.AddCompleteRow(row);
             }
 
-            session.TryBuildFromTable(table);
+            session.BuildFromTable(table);
 			Assert.AreEqual(10, session.Trials.Count());
 			Assert.AreEqual(1, session.blocks.Count);
 
@@ -82,7 +82,7 @@ namespace UXF.Tests
                 table.AddCompleteRow(row);
             }
 
-            session.TryBuildFromTable(table);
+            session.BuildFromTable(table);
 			Assert.AreEqual(20, session.Trials.Count());
 			Assert.AreEqual(2, session.blocks.Count);
 
