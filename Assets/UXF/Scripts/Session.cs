@@ -261,7 +261,7 @@ namespace UXF
             {
                 if (instance != null && !ReferenceEquals(instance, this))
                 {
-                    Destroy(this.gameObject);
+                    DestroyImmediate(this.gameObject);
                     return;
                 }
                 instance = this;

@@ -17,6 +17,7 @@ namespace UXF.Tests
 		public void SetUp()
 		{
 			gameObject = new GameObject();
+            if (Session.instance != null) GameObject.DestroyImmediate(Session.instance.gameObject);
 			session = gameObject.AddComponent<Session>();			
 		}
 

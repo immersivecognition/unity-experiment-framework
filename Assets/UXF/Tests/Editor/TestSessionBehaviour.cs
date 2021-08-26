@@ -123,6 +123,7 @@ namespace UXF.Tests
             GameObject gameObject = new GameObject();
             FileSaver fileSaver = gameObject.AddComponent<FileSaver>();
             SessionLogger sessionLogger = gameObject.AddComponent<SessionLogger>();
+            if (Session.instance != null) GameObject.DestroyImmediate(Session.instance.gameObject);
             Session session = gameObject.AddComponent<Session>();
             fileSaver.storagePath = "example_output";
 

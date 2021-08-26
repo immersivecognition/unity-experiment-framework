@@ -42,6 +42,38 @@ namespace UXF
         }
 
         /// <summary>
+        /// Build a table from lines of CSV text.
+        /// </summary>
+        /// <param name="csvLines"></param>
+        /// <returns></returns>
+        public static UXFDataTable FromCSV(string[] csvLines)
+        {
+            string[] headers = csvLines[0].Split(',');
+            var table = new UXFDataTable(csvLines.Length - 1, headers);
+
+            // traverse down rows
+            for (int i = 1; i < csvLines.Length; i++)
+            {
+                string[] values = csvLines[i].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+                // if last line is blank, ignore it
+                if (values.Length == 0 && i == csvLines.Length - 1) break;
+
+                // check if number of columns is correct
+                if (values.Length != headers.Length) throw new Exception($"CSV line {i} has {values.Length} columns, but expected {headers.Length}");
+
+                // build across the row
+                var row = new UXFDataRow();
+                for (int j = 0; j < values.Length; j++)
+                    row.Add((headers[j], values[j]));
+
+                table.AddCompleteRow(row);
+            }
+
+            return table;
+        }
+
+        /// <summary>
         /// Add a complete row to the table
         /// </summary>
         /// <param name="newRow"></param>

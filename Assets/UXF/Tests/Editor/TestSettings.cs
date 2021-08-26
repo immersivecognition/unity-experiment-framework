@@ -123,6 +123,7 @@ namespace UXF.Tests
 		public void CascadeSettings()
 		{
 			GameObject go = new GameObject();
+			if (Session.instance != null) GameObject.DestroyImmediate(Session.instance.gameObject);
 			Session s = go.AddComponent<Session>();
 			Block b = s.CreateBlock();
 			Trial t = b.CreateTrial();
@@ -147,6 +148,7 @@ namespace UXF.Tests
 		public void CascadeSettingsWithDefault()
 		{
 			GameObject go = new GameObject();
+			if (Session.instance != null) GameObject.DestroyImmediate(Session.instance.gameObject);
 			Session s = go.AddComponent<Session>();
 			Block b = s.CreateBlock();
 			Trial t = b.CreateTrial();

@@ -26,6 +26,7 @@ namespace UXF.Tests
             gameObject = new GameObject();
             fileSaver = gameObject.AddComponent<FileSaver>();
             sessionLogger = gameObject.AddComponent<SessionLogger>();
+			if (Session.instance != null) GameObject.DestroyImmediate(Session.instance.gameObject);
             session = gameObject.AddComponent<Session>();
 
             session.dataHandlers = new DataHandler[]{ fileSaver };
@@ -101,6 +102,7 @@ namespace UXF.Tests
         public void BeginTrialBeforeBeginSession()
         {
             gameObject = new GameObject();
+			if (Session.instance != null) GameObject.DestroyImmediate(Session.instance.gameObject);
             session = gameObject.AddComponent<Session>();
 
 			// generate trials
