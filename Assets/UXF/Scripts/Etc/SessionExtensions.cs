@@ -9,7 +9,13 @@ namespace UXF
     public static class SessionExtensions
     {
         
-        public static void TryBuildFromTable(this Session session, UXFDataTable table)
+        /// <summary>
+        /// Build the experiment using a UXFDataTable. 
+        /// The table is used to generate trials row-by-row, assigning a setting per column.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="table"></param>
+        public static void BuildFromTable(this Session session, UXFDataTable table)
         {
             if (table == null) throw new ArgumentNullException("table");
             if (session == null) throw new ArgumentNullException("session");
@@ -51,7 +57,13 @@ namespace UXF
                 // add all the columns to the settings for the trial
                 foreach (var kvp in row)
                 {
+                    // skip block_num
                     if (kvp.Key == "block_num") continue;
+
+                    // empty values do not assign a setting
+                    if (kvp.Value.ToString() == string.Empty) continue;
+
+                    // add trial setting                    
                     newTrial.settings.SetValue(kvp.Key, kvp.Value);
                 }
 

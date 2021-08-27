@@ -45,7 +45,7 @@ namespace UXF
             // this adds a new trial to the session for each row in the table
             // the trial will be created with the settings from the values from the table
             // if "block_num" is specified in the table, the trial will be added to the block with that number
-            session.TryBuildFromTable(table);
+            session.BuildFromTable(table);
         }
     }
 

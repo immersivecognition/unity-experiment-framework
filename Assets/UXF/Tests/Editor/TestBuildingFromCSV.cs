@@ -127,6 +127,39 @@ namespace UXF.Tests
 			}            
         }
 
+        [Test]
+        public void BuildFromTableWithBlankEntries()
+        {
+            UXFDataTable table = new UXFDataTable("some_text");
+
+            var row1 = new UXFDataRow();
+            row1.Add(("some_text", "trial_string"));
+            table.AddCompleteRow(row1);
+
+            var row2 = new UXFDataRow();
+            row2.Add(("some_text", "")); // blank entry
+            table.AddCompleteRow(row2);
+            
+            session.BuildFromTable(table);
+
+            // set a session setting. session needs to be started to create session settings
+            session.Begin("test", "test_ppid");
+            session.settings.SetValue("some_text", "session_string");
+
+            // should be 2 trials
+            Assert.AreEqual(2, session.Trials.Count());
+
+            // pull out the text
+            string trial1text = session.GetTrial(1).settings.GetString("some_text");
+            string trial2text = session.GetTrial(2).settings.GetString("some_text");
+
+            // check that the trial setting is correct
+            Assert.AreEqual("trial_string", trial1text);
+
+            // check that the blank entry was ignored in place of the session setting
+            Assert.AreEqual("session_string", trial2text);
+        }
+
     }
 
 }
