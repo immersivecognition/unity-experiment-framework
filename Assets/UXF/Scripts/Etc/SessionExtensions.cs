@@ -61,7 +61,7 @@ namespace UXF
                     if (kvp.Key == "block_num") continue;
 
                     // empty values do not assign a setting
-                    if (kvp.Value.ToString() == string.Empty) continue;
+                    if (kvp.Value.ToString().Trim() == string.Empty) continue;
 
                     // add trial setting                    
                     newTrial.settings.SetValue(kvp.Key, kvp.Value);

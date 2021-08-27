@@ -54,10 +54,10 @@ namespace UXF
             // traverse down rows
             for (int i = 1; i < csvLines.Length; i++)
             {
-                string[] values = csvLines[i].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                string[] values = csvLines[i].Split(',');
 
-                // if last line is blank, ignore it
-                if (values.Length == 0 && i == csvLines.Length - 1) break;
+                // if last line, just 1 item in the row, and it is blank, then ignore it
+                if (i == csvLines.Length - 1 && values.Length == 1 && values[0].Trim() == string.Empty ) break;
 
                 // check if number of columns is correct
                 if (values.Length != headers.Length) throw new Exception($"CSV line {i} has {values.Length} columns, but expected {headers.Length}");
