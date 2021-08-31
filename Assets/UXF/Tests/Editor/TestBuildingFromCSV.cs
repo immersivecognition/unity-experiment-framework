@@ -30,7 +30,7 @@ namespace UXF.Tests
         [Test]
         public void BuildFromTable()
         {
-            UXFDataTable table = new UXFDataTable("some_text", "an_integer", "a_float");
+            UXFDataTable table = new UXFDataTable("some_text", "an_integer", "a_float", "a_bool_lower", "a_bool_pascal", "a_bool_upper");
 
             for (int i = 0; i < 10; i++)
             {
@@ -38,6 +38,9 @@ namespace UXF.Tests
                 row.Add(("some_text", "hello"));
                 row.Add(("an_integer", "123"));
                 row.Add(("a_float", "3.14"));
+                row.Add(("a_bool_lower", "true"));
+                row.Add(("a_bool_pascal", "True"));
+                row.Add(("a_bool_upper", "TRUE"));
 
                 table.AddCompleteRow(row);
             }
@@ -51,6 +54,9 @@ namespace UXF.Tests
                 Assert.AreEqual("hello", trial.settings.GetString("some_text"));
                 Assert.AreEqual(123, trial.settings.GetInt("an_integer"));
                 Assert.AreEqual(3.14f, trial.settings.GetFloat("a_float"));
+                Assert.AreEqual(true, trial.settings.GetBool("a_bool_lower"));
+                Assert.AreEqual(true, trial.settings.GetBool("a_bool_pascal"));
+                Assert.AreEqual(true, trial.settings.GetBool("a_bool_upper"));
             }
 
         }
