@@ -21,10 +21,10 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 - [Features](#features)
   - [Programming style](#programming-style)
   - [Data collection](#data-collection)
+  - [Web & Database](#web-database)
   - [Events](#events)
   - [Settings system](#settings-system)
   - [UI](#ui)
-  - [File IO](#file-io)
 - [Example](#example)
 - [Development](#development)
 - [Documentation](#documentation)
@@ -74,22 +74,17 @@ UXF automates the process of collecting data. How the data are stored depends on
 
 Data is stored in CSV files with automatic handling of file & directory naming.
 
-UXF also stores other data in the form of `.json` files (full details on the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki)). Running a session with UXF will result in an output like this (assuming three trials with a tracked object called `object`).
+UXF also stores other data in the form of `.csv` & `.json` files (full details on the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki)). Running a session with UXF will result in several forms of data being stored:
 
-```
-Path: /experiment_name/participant_id/session_number/
+| File(s) | Folder | Description |
+|---|---|---|
+| `trial_results.csv` | (none) | The main behavioural results file, with one row per trial. It also contains references (relative paths) to other trial-level data files such as tracker files, so you can read in the data and associate it with a trial. |
+| `participant_details.csv` | /session_info | A copy of the participant's details (typically the data that are collected along with participant ID using the UI). Stored as a single row. |
+| `log.csv` | /session_info | A copy of all `Debug.Log` calls during the session, as well as any other custom data saved under datatype SessionLog. |
+| `settings.json` | /session_info | A copy of all settings applied as the session begins. |
+| Trackers e.g `head_movement_T001.csv` | /trackers | A copy of tracker data, stored with one file per trial. Tracker data is continuous data, the most common will be tracking the movement of an object (e.g. head/hands) with the `PositionRotationTracker` component. |
+| Other data | /other | Any other [custom data stored manually](https://github.com/immersivecognition/unity-experiment-framework/wiki/Collect-Custom-Data), associated with a trial or a session. |
 
-Filename                   Description
------------------------- | ----------------------------------------------------------
-log.csv                  | Copy of all Debug.Log calls during the Session
-notes.json               | Notes collected by the Notes UI
-participant_details.json | Copy of participant details (e.g. info entered via the UI)
-object_movement_T001.csv | Position and rotation of "object" within trial 1
-object_movement_T002.csv | Position and rotation of "object" within trial 2
-object_movement_T003.csv | Position and rotation of "object" within trial 3
-settings.json            | Copy of the settings applied to the Session
-trial_results.csv        | Main results file (behavioural data)
-```
 
 **Example Output** You can see an example of the data structure UXF outputs in the [example_output](example_output/basic_example_1) folder of this repository.
 
