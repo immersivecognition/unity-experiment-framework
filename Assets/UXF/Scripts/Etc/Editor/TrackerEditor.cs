@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using System.Reflection;
 
 namespace UXF.EditorUtils
 {
@@ -17,27 +18,47 @@ namespace UXF.EditorUtils
 
         public override void OnInspectorGUI()
         {
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"));
+            EditorGUI.EndDisabledGroup();
+            
             serializedObject.Update();
-            DrawDefaultInspector();
-            EditorGUILayout.Space();
 
-            serializedObject.Update();
-            EditorGUILayout.PropertyField(customHeader);
+            FieldInfo[] childFields = target.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            // draw all default fields
+            foreach (FieldInfo field in childFields)
+            {
+                if (field.IsPublic || field.GetCustomAttribute(typeof(SerializeField)) != null)
+                {                    
+                    if (field.Name != measurementDescriptor.name && field.Name != customHeader.name)
+                    {
+                        var prop = serializedObject.FindProperty(field.Name);
+                        EditorGUILayout.PropertyField(prop);
+                    }
+                }
+            }
+
+            EditorGUILayout.Space();
+            GUI.enabled = false;
+
+            EditorGUILayout.LabelField(customHeader.displayName);
             EditorGUI.indentLevel += 1;
 
             foreach (SerializedProperty element in customHeader)
             {
-                GUI.enabled = false;
                 EditorGUILayout.TextField(element.stringValue);
-                GUI.enabled = true;
             }
             EditorGUI.indentLevel -= 1;
             
             EditorGUILayout.Space();
-            GUI.enabled = false;
-            EditorGUILayout.PropertyField(measurementDescriptor);
-            GUI.enabled = true;
 
+            EditorGUILayout.LabelField(measurementDescriptor.displayName);
+            EditorGUI.indentLevel += 1;
+            EditorGUILayout.TextField(measurementDescriptor.stringValue);
+            EditorGUI.indentLevel -= 1;
+            
+            GUI.enabled = true;
             serializedObject.ApplyModifiedProperties();
         }
     }
