@@ -142,7 +142,7 @@ namespace UXF
             string[] lines = table.GetCSVLines();
             
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.GetFolderName());
             Directory.CreateDirectory(directory);
             string name = string.IsNullOrEmpty(ext) ? string.Format("{0}.csv", dataName) : string.Format("{0}{1}", dataName, ext);
             string savePath = Path.Combine(directory, name);
@@ -163,7 +163,7 @@ namespace UXF
             string text = MiniJSON.Json.Serialize(serializableObject);
 
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.GetFolderName());
             Directory.CreateDirectory(directory);
             string name = string.IsNullOrEmpty(ext) ? string.Format("{0}.json", dataName) : string.Format("{0}{1}", dataName, ext);
             string savePath = Path.Combine(directory, name);
@@ -184,7 +184,7 @@ namespace UXF
             string text = MiniJSON.Json.Serialize(serializableObject);
 
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.GetFolderName());
             Directory.CreateDirectory(directory);
             string name = string.IsNullOrEmpty(ext) ? string.Format("{0}.json", dataName) : string.Format("{0}{1}", dataName, ext);
             string savePath = Path.Combine(directory, name);
@@ -203,7 +203,7 @@ namespace UXF
             if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
 
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.GetFolderName());
             Directory.CreateDirectory(directory);
 
             string name = string.IsNullOrEmpty(ext) ? string.Format("{0}.txt", dataName) : string.Format("{0}{1}", dataName, ext);
@@ -223,7 +223,7 @@ namespace UXF
             if (dataType.GetDataLevel() == UXFDataLevel.PerTrial) dataName = string.Format("{0}_T{1:000}", dataName, optionalTrialNum);
 
             string directory = GetSessionPath(experiment, ppid, sessionNum);
-            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.ToLower());
+            if (sortDataIntoFolders && dataType != UXFDataType.TrialResults) directory = Path.Combine(directory, dataType.GetFolderName());
             Directory.CreateDirectory(directory);
 
             string name = string.IsNullOrEmpty(ext) ? string.Format("{0}.txt", dataName) : string.Format("{0}{1}", dataName, ext);

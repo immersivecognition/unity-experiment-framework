@@ -100,7 +100,7 @@ namespace UXF.Tests
             
             string outString = fileSaver.HandleText("abc", experiment, ppid, sessionNum, "test", UXFDataType.OtherSessionData);
 
-            Assert.AreEqual(outString, @"fileSaver_test/test_ppid/S001/othersessiondata/test.txt");
+            Assert.AreEqual(outString, @"fileSaver_test/test_ppid/S001/other/test.txt");
 
             fileSaver.CleanUp();
         }
