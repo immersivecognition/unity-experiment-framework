@@ -36,7 +36,7 @@ namespace UXFExamples
                 string path = localFileDataHanders
                     .Cast<LocalFileDataHander>()
                     .First()
-                    .storagePath;
+                    .StoragePath;
 
                 displayText.text = "Session complete! The data are stored in " + path;
             }

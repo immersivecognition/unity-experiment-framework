@@ -262,7 +262,7 @@ namespace UXF.UI
 
                 foreach (var dh in ActiveLocalFileDataHandlers)
                 {
-                    dh.storagePath = localFilePath;
+                    dh.StoragePath = localFilePath;
                 }
             }
 

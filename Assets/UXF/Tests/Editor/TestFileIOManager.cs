@@ -37,7 +37,7 @@ namespace UXF.Tests
         [Test]
         public void WriteManyFiles()
         {
-            fileSaver.storagePath = "example_output";
+            fileSaver.StoragePath = "example_output";
             fileSaver.SetUp();
 
             // generate a large dictionary
@@ -69,7 +69,7 @@ namespace UXF.Tests
 			// cleanup files
             foreach (var fpath in fpaths)
             {
-                System.IO.File.Delete(Path.Combine(fileSaver.storagePath, fpath));
+                System.IO.File.Delete(Path.Combine(fileSaver.StoragePath, fpath));
             }
         }
 
@@ -77,7 +77,7 @@ namespace UXF.Tests
         [Test]
         public void EarlyExit()
         {
-            fileSaver.storagePath = "example_output";
+            fileSaver.StoragePath = "example_output";
             fileSaver.SetUp();
             fileSaver.CleanUp();
 			
@@ -95,7 +95,7 @@ namespace UXF.Tests
         [Test]
         public void AbsolutePath()
         {
-            fileSaver.storagePath = "C:/example_output";
+            fileSaver.StoragePath = "C:/example_output";
             fileSaver.SetUp();
             
             string outString = fileSaver.HandleText("abc", experiment, ppid, sessionNum, "test", UXFDataType.OtherSessionData);
@@ -103,6 +103,24 @@ namespace UXF.Tests
             Assert.AreEqual(outString, @"fileSaver_test/test_ppid/S001/other/test.txt");
 
             fileSaver.CleanUp();
+        }
+
+        [Test]
+        public void PersistentDataPath()
+        {
+            fileSaver.dataSaveLocation = DataSaveLocation.PersistentDataPath;
+            fileSaver.SetUp();
+            Assert.AreEqual(Application.persistentDataPath, fileSaver.StoragePath);
+
+            string dataOutput = "abc";
+            fileSaver.HandleText(dataOutput, experiment, ppid, sessionNum, "test", UXFDataType.OtherSessionData);
+
+            string outFile = Path.Combine(Application.persistentDataPath, @"fileSaver_test/test_ppid/S001/other/test.txt");
+
+            string readData = File.ReadAllText(outFile);
+            Assert.AreEqual(dataOutput, readData);
+            
+            if (File.Exists(outFile)) File.Delete(outFile);
         }
 
         [Test]

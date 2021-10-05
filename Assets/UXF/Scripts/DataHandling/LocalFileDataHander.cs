@@ -19,11 +19,34 @@ namespace UXF
         /// Local path where the data should be stored.
         /// </summary>
         [Tooltip("If fixed path is selected, where should the data be stored? You could set this value by writing a script that writes to this field in Awake()."), SerializeField]
-        [BasteRainGames.HideIfEnumValue("dataSaveLocation", BasteRainGames.HideIf.Equal, (int) DataSaveLocation.AcquireFromUI)]
+        [BasteRainGames.HideIfEnumValue("dataSaveLocation", BasteRainGames.HideIf.NotEqual, (int)DataSaveLocation.Fixed)]
         public string storagePath = "~";
 
         [HideInInspector]
         public UnityEvent onValidateEvent = new UnityEvent();
+
+        public string StoragePath
+        {
+            get
+            {
+                if (dataSaveLocation == DataSaveLocation.PersistentDataPath)
+                {
+                    return Application.persistentDataPath;
+                }
+                else
+                {
+                    return storagePath;
+                }
+            }
+            set
+            {
+                if (dataSaveLocation == DataSaveLocation.PersistentDataPath)
+                {
+                    throw new InvalidOperationException("Cannot set storagePath - dataSaveLocation is set to PersistentDataPath.");
+                }
+                storagePath = value;
+            }
+        }
 
         /// <summary>
         /// Called when the script is loaded or a value is changed in the
@@ -37,7 +60,7 @@ namespace UXF
 
 # if UNITY_EDITOR
         /// <summary>
-        /// Returns true if this data handler is definitley compatible with this build target.
+        /// Returns true if this data handler is definitely compatible with this build target.
         /// </summary>
         /// <param name="buildTarget"></param>
         /// <returns></returns>
@@ -46,6 +69,7 @@ namespace UXF
             switch (buildTarget)
             {
                 case UnityEditor.BuildTargetGroup.Standalone:
+                case UnityEditor.BuildTargetGroup.Android:
                     return true;
                 default:
                     return false;
@@ -53,7 +77,7 @@ namespace UXF
         }
 
          /// <summary>
-        /// Returns true if this data handler is definitley incompatible with this build target.
+        /// Returns true if this data handler is definitely incompatible with this build target.
         /// </summary>
         /// <param name="buildTarget"></param>
         /// <returns></returns>
@@ -62,7 +86,6 @@ namespace UXF
             switch (buildTarget)
             {
                 case UnityEditor.BuildTargetGroup.WebGL:
-                case UnityEditor.BuildTargetGroup.Android:
                 case UnityEditor.BuildTargetGroup.iOS:
                     return true;
                 default:
@@ -75,7 +98,7 @@ namespace UXF
 
     public enum DataSaveLocation
     {
-        AcquireFromUI, Fixed
+        AcquireFromUI, Fixed, PersistentDataPath
     }
 
 

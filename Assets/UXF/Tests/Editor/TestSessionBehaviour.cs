@@ -125,7 +125,7 @@ namespace UXF.Tests
             SessionLogger sessionLogger = gameObject.AddComponent<SessionLogger>();
             if (Session.instance != null) GameObject.DestroyImmediate(Session.instance.gameObject);
             Session session = gameObject.AddComponent<Session>();
-            fileSaver.storagePath = "example_output";
+            fileSaver.StoragePath = "example_output";
 
             sessionLogger.AttachReferences(
                 session
