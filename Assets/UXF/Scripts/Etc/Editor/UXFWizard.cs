@@ -21,6 +21,8 @@ namespace UXF.EditorUtils
 
         static string version;
 
+        Vector2 scrollPos;
+
         static UXFWizard()
         {
 #if UNITY_2018_1_OR_NEWER
@@ -35,11 +37,10 @@ namespace UXF.EditorUtils
         static void Init()
         {
             var window = (UXFWizard) EditorWindow.GetWindow(typeof(UXFWizard), false, "UXF Wizard");
-            window.minSize = new Vector2(300, 501);
+            window.minSize = new Vector2(300, 785);
 			window.titleContent = new GUIContent("UXF Wizard");
             window.Show();
 
-            
             if (File.Exists("Assets/UXF/VERSION.txt"))
             {
                 version = File.ReadAllText("Assets/UXF/VERSION.txt");
@@ -72,13 +73,18 @@ namespace UXF.EditorUtils
 
         public void OnGUI()
         {
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos, false, false);
             GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
             labelStyle.wordWrap = true;
-
-            var rect = GUILayoutUtility.GetRect(Screen.width, 128, GUI.skin.box);
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            var rect = GUILayoutUtility.GetRect(128, 128, GUI.skin.box);
             if (uxfIcon)
                 GUI.DrawTexture(rect, uxfIcon, ScaleMode.ScaleToFit);
-
+            GUILayout.FlexibleSpace();
+			GUILayout.EndHorizontal();
+            
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             GUILayout.Label("UXF: Unity Experiment Framework", EditorStyles.boldLabel);
@@ -90,6 +96,16 @@ namespace UXF.EditorUtils
             GUILayout.Label("Version " + version, EditorStyles.boldLabel);
             GUILayout.FlexibleSpace();
 			GUILayout.EndHorizontal();
+
+            EditorGUILayout.Separator();
+
+            GUILayout.Label("Platform selector", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Click the buttons below to switch to your desired output platform. You will also need to select the Data Handler(s) you wish to use in your UXF Session Component.", MessageType.Info);
+
+            if (GUILayout.Button("Select Windows / PC VR")) SetSettingsWindows();
+            if (GUILayout.Button("Select Web Browser")) SetSettingsWebGL();
+            if (GUILayout.Button("Select Android VR (e.g. Oculus Quest)")) SetSettingsOculus();
+            if (GUILayout.Button("Select Android")) SetSettingsAndroid();
 
             EditorGUILayout.Separator();
 
@@ -108,7 +124,6 @@ namespace UXF.EditorUtils
             EditorGUILayout.Separator();
 
             GUILayout.Label("Examples", EditorStyles.boldLabel);
-
             GUILayout.Label("Check your Assets > UXF > Examples folder", labelStyle);
 
             EditorGUILayout.Separator();
@@ -137,7 +152,6 @@ namespace UXF.EditorUtils
                 }
             }
 
-
             EditorGUILayout.Separator();
 
             GUILayout.Label("WebGL", EditorStyles.boldLabel);
@@ -163,10 +177,83 @@ namespace UXF.EditorUtils
                 }
             }
 
-
             EditorGUILayout.Separator();
             EditorGUILayout.HelpBox("To show this window again go to UXF -> Show setup wizard in the menubar.", MessageType.None);
+            
+            EditorGUILayout.EndScrollView();
+        }
 
+        private static void SetSettingsWindows()
+        {
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
+            Utilities.UXFDebugLog("Setup for Windows/PCVR.");
+        }
+
+        private static void SetSettingsWebGL()
+        {
+            string expected;
+#if UNITY_2020_1_OR_NEWER
+            expected = "PROJECT:UXF WebGL 2020";
+#else
+            expected = "PROJECT:UXF WebGL 2019";
+#endif
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
+            PlayerSettings.WebGL.template = expected;
+            Utilities.UXFDebugLog("Setup for WebGL.");
+        }
+
+        private static void SetSettingsAndroid()
+        {
+            // Switch to Android build.
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+
+            // If the current build target is Android, then set the write permission to external
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
+            {
+                // Changes Android write permission to external
+                PlayerSettings.Android.forceSDCardPermission = true;
+
+                // Sets the Texture Compression to Default (Don't override)
+                EditorUserBuildSettings.androidBuildSubtarget = MobileTextureSubtarget.Generic;
+
+                Utilities.UXFDebugLog("Setup for Android.");
+            }
+
+            // If the build target was not set to Android (it may not be available on the system)
+            else
+            {
+                Utilities.UXFDebugLog("Android build was not set, check if it is available. If it isn't, add it to the Unity Editor version via the Unity Hub.");
+            }
+        }
+
+        private static void SetSettingsOculus()
+        {
+            // Switch to Android build.
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);        
+
+            // If the current build target is Android, then set the write permission to external, and configure API levels and Texture compression
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
+            {
+                // Changes Android write permission to external
+                PlayerSettings.Android.forceSDCardPermission = true;
+
+                // Sets the Android API Level to 26
+                PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel26;
+
+                // Sets the Android API Level to Automatic (highest installed)
+                PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
+
+                // Sets the Texture Compression to ASTC
+                EditorUserBuildSettings.androidBuildSubtarget = MobileTextureSubtarget.ASTC;
+
+                Utilities.UXFDebugLog("Setup for Android VR System (e.g. Oculus Quest).");
+            }
+
+            // If the build target was not set to Android (it may not be available on the system)
+            else
+            {
+                Utilities.UXFDebugLog("Android build was not set, check if it is available. If it isn't, add it to the Unity Editor version via the Unity Hub.");
+            }
         }
 
     }
