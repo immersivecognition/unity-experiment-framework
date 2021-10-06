@@ -246,7 +246,7 @@ namespace UXF.EditorUtils
                 // Sets the Texture Compression to ASTC
                 EditorUserBuildSettings.androidBuildSubtarget = MobileTextureSubtarget.ASTC;
 
-                Utilities.UXFDebugLog("Setup for Android VR System (e.g. Oculus Quest).");
+                Utilities.UXFDebugLog("Setup for Android VR systems (e.g. Oculus Quest).");
             }
 
             // If the build target was not set to Android (it may not be available on the system)

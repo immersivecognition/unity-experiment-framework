@@ -16,7 +16,8 @@ namespace UXF.EditorUtils
             BuildTarget.StandaloneLinux64,
             BuildTarget.StandaloneOSX,
             BuildTarget.StandaloneWindows,
-            BuildTarget.StandaloneWindows64
+            BuildTarget.StandaloneWindows64,
+            BuildTarget.Android
         };
 
         public void OnProcessScene(Scene scene, BuildReport report)
@@ -28,14 +29,23 @@ namespace UXF.EditorUtils
                 .GetRootGameObjects()
                 .SelectMany(go => go.GetComponentsInChildren<UXF.UI.UIController>(true));
 
+            string expected;
+#if UNITY_2020_1_OR_NEWER
+            expected = "PROJECT:UXF WebGL 2020";
+#else
+            expected = "PROJECT:UXF WebGL 2019";
+#endif
+
+            // check webGL
             if (report.summary.platform == BuildTarget.WebGL &&
-                    PlayerSettings.WebGL.template != "PROJECT:UXF WebGL")
+                    PlayerSettings.WebGL.template != expected)
             {
                 Utilities.UXFDebugLogWarning("The UXF WebGL template is not selected in WebGL player settings! This may lead to errors. You can fix the is with the UXF Wizard (press UXF at the top, Show UXF Wizard).");
             }
 
             foreach (var ui in uis)
             {
+                // check local file access requirement
                 var localHandlers = ui.ActiveLocalFileDataHandlers;
                 if (localHandlers.Count() > 0 && !localFileDataHandlerCompatiblePlatforms.Contains(report.summary.platform))
                 {
@@ -50,8 +60,8 @@ namespace UXF.EditorUtils
                         localHandlers.Count() == 1 ? "s" : ""
                         ));
                 }
-
-
+                
+                // check UI
                 if (ui.settingsMode == UI.SettingsMode.AcquireFromUI && !localFileDataHandlerCompatiblePlatforms.Contains(report.summary.platform))
                 {
                     CancelBuild(string.Format(
@@ -63,6 +73,7 @@ namespace UXF.EditorUtils
                     ));
                 }
 
+                // manually test for data handlers that are not compatible with the build target
                 Session session = ui.GetComponentInParent<Session>();
                 foreach (var dh in session.ActiveDataHandlers)
                 {
@@ -85,6 +96,43 @@ namespace UXF.EditorUtils
                             dh.name, 
                             report.summary.platformGroup
                         );
+                    }
+                }
+
+                // check android
+                if (report.summary.platform == BuildTarget.Android)
+                {
+                    foreach (var dh in session.ActiveDataHandlers)
+                    {
+                        if (dh is FileSaver)
+                        {
+                            var fileSaver = dh as FileSaver;
+
+                            // check android must be set to persistent data path
+                            if (fileSaver.dataSaveLocation != DataSaveLocation.PersistentDataPath)
+                            {
+                                CancelBuild(string.Format(
+                                    "Cannot build scene {0} for platform '{1}'.\nReason: To use the Data Handler '{2}' with {1} " +
+                                    "you must set the Data Save Location to '{3}'. Data will then be stored on the internal file system.",
+                                    scene.name,
+                                    report.summary.platform,
+                                    fileSaver.name,
+                                    DataSaveLocation.PersistentDataPath
+                                ));
+                            }
+
+                            // check external SD card access is set in player settings
+                            if (!PlayerSettings.Android.forceSDCardPermission)
+                            {
+                                CancelBuild(string.Format(
+                                    "Cannot build scene {0} for platform '{1}'.\nReason: To use the Data Handler '{2}' you must set the Write Permission " +
+                                    "in the Player Settings to 'External (SDCard)'.",
+                                    scene.name,
+                                    report.summary.platform,
+                                    fileSaver.name
+                                ));
+                            }
+                        }
                     }
                 }
             }
