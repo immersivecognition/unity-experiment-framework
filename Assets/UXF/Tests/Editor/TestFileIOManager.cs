@@ -114,7 +114,7 @@ namespace UXF.Tests
 
             string dataOutput = "abc";
             fileSaver.HandleText(dataOutput, experiment, ppid, sessionNum, "test", UXFDataType.OtherSessionData);
-
+            fileSaver.CleanUp();
             string outFile = Path.Combine(Application.persistentDataPath, @"fileSaver_test/test_ppid/S001/other/test.txt");
 
             string readData = File.ReadAllText(outFile);
