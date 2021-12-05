@@ -65,7 +65,7 @@ namespace UXF
                 // build across the row
                 var row = new UXFDataRow();
                 for (int j = 0; j < values.Length; j++)
-                    row.Add((headers[j], values[j]));
+                    row.Add((headers[j], values[j].Trim('\"')));
 
                 table.AddCompleteRow(row);
             }
