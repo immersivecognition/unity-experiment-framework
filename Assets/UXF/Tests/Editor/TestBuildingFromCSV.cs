@@ -134,7 +134,7 @@ namespace UXF.Tests
         }
 
         [Test]
-        public void BuildTableFromCSVithBlankEntries()
+        public void BuildTableFromCSVWithBlankEntries()
         {
             string testCsv = "some_text,an_integer,a_float\n" +
                 "hello,123,3.14\n" +
