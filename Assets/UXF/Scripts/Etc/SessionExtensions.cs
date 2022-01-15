@@ -15,7 +15,7 @@ namespace UXF
         /// </summary>
         /// <param name="session"></param>
         /// <param name="table"></param>
-        public static void BuildFromTable(this Session session, UXFDataTable table)
+        public static void BuildFromTable(this Session session, UXFDataTable table, bool addSettingsToLog = true)
         {
             if (table == null) throw new ArgumentNullException("table");
             if (session == null) throw new ArgumentNullException("session");
@@ -65,6 +65,12 @@ namespace UXF
 
                     // add trial setting                    
                     newTrial.settings.SetValue(kvp.Key, kvp.Value);
+
+                    // possibly mark the setting to be logged in the results output
+                    if (addSettingsToLog && !session.settingsToLog.Contains(kvp.Key))
+                    {
+                        session.settingsToLog.Add(kvp.Key);                        
+                    }
                 }
 
                 rowNum++;
