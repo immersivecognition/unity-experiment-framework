@@ -11,6 +11,8 @@ namespace UXF
 
         [Tooltip("The name key in the settings that contains the name of the trial specification file.")]
         [SerializeField] private string csvFileKey = "trial_specification_name";
+        [Tooltip("Enable to copy all settings from each trial in the CSV file to the the trial results output.")]
+        [SerializeField] private bool copyToResults = true;
 
         /// <summary>
         /// Reads a CSV from filepath as specified in csvFileKey in the settings.
@@ -45,7 +47,7 @@ namespace UXF
             // this adds a new trial to the session for each row in the table
             // the trial will be created with the settings from the values from the table
             // if "block_num" is specified in the table, the trial will be added to the block with that number
-            session.BuildFromTable(table);
+            session.BuildFromTable(table, copyToResults);
         }
     }
 
