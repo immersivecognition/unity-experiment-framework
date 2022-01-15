@@ -335,6 +335,9 @@ public class EasyEventEditorHandler
 
     public static void ApplyEventPropertyDrawerPatch(bool forceApply = false)
     {
+#if UNITY_2021_1_OR_NEWER
+    // no need in Unity 2021
+#else
         EEESettings settings = GetEditorSettings();
 
         if (!patchApplied || forceApply)
@@ -342,6 +345,7 @@ public class EasyEventEditorHandler
             ApplyEventDrawerPatch(settings.overrideEventDrawer);
             patchApplied = true;
         }
+#endif
     }
 
     public static EEESettings GetEditorSettings()
@@ -382,7 +386,7 @@ internal class SettingsGUIContent
     public static void DrawSettingsButtons(EasyEventEditorHandler.EEESettings settings)
     {
         EditorGUI.indentLevel += 1;
-
+//
         settings.overrideEventDrawer = EditorGUILayout.ToggleLeft(enableToggleGuiContent, settings.overrideEventDrawer);
 
         EditorGUI.BeginDisabledGroup(!settings.overrideEventDrawer);
@@ -403,6 +407,9 @@ internal class SettingsGUIContent
 // Using the IMGUI method
 static class EasyEventEditorSettingsProvider
 {
+#if UNITY_2021_1_OR_NEWER
+    // no need in Unity 2021
+#else
     [SettingsProvider]
     public static SettingsProvider CreateSettingsProvider()
     {
@@ -430,11 +437,15 @@ static class EasyEventEditorSettingsProvider
 
         return provider;
     }
+#endif
 }
-#else
 public class EasyEventEditorSettings : EditorWindow
 {
+#if UNITY_2021_1_OR_NEWER
+    // no need in Unity 2021
+#else
     [MenuItem("Edit/Easy Event Editor Settings")]
+#endif
     static void Init()
     {
         EasyEventEditorSettings window = GetWindow<EasyEventEditorSettings>(false, "EEE Settings");
@@ -917,7 +928,7 @@ public class EasyEventEditorDrawer : PropertyDrawer
             findMethod = eventObject.GetType().GetMethod("FindMethod", BindingFlags.NonPublic | BindingFlags.Instance, null,
                     new System.Type[] {
                     typeof(string),
-#if UNITY_2020_1_OR_NEWER
+#if UNITY_2021_1_OR_NEWER
                     typeof(System.Type),
 #else
                     typeof(object),
@@ -936,7 +947,7 @@ public class EasyEventEditorDrawer : PropertyDrawer
             return null;
         }
 
-#if UNITY_2020_1_OR_NEWER
+#if UNITY_2021_1_OR_NEWER
         return findMethod.Invoke(eventObject, new object[] {functionName, targetObject?.GetType(), listenerMode, argType }) as MethodInfo;
 #else
         return findMethod.Invoke(eventObject, new object[] {functionName, targetObject, listenerMode, argType }) as MethodInfo;

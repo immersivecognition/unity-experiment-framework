@@ -785,7 +785,7 @@ namespace SubjectNerd.Utilities
 				bool isStartProp = targetProp.propertyPath.StartsWith("m_");
 				using (new EditorGUI.DisabledScope(isStartProp))
 				{
-					EditorGUILayout.PropertyField(targetProp, targetProp.isExpanded);
+					EditorGUILayout.PropertyField(targetProp, true);
 				}
 			}
 		}
