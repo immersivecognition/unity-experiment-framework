@@ -42,7 +42,7 @@ namespace UXF
         /// </summary>
         /// <returns></returns>
         public Session session { get; private set; }
-        
+
         /// <summary>
         /// Trial settings. These will override block settings if set.
         /// </summary>
@@ -52,6 +52,11 @@ namespace UXF
         /// Dictionary of results in a order.
         /// </summary>
         public ResultsDictionary result;
+
+        /// <summary>
+        /// Setting to determine whether we want to record data this session. If false, no data will be recorded.
+        /// </summary>
+        public bool recordData = true;
 
         /// <summary>
         /// Manually create a trial. When doing this you need to add this trial to a block with block.trials.Add(trial)
@@ -89,6 +94,11 @@ namespace UXF
 
             status = TrialStatus.InProgress;
             startTime = Time.time;
+
+            session.onTrialBegin.Invoke(this);
+
+            if (!recordData) return;
+
             result = new ResultsDictionary(session.Headers, true);
 
             result["experiment"] = session.experimentName;
@@ -110,7 +120,6 @@ namespace UXF
                     Utilities.UXFDebugLogWarning("An item in the Tracked Objects field of the UXF session if empty (null)!");
                 }
             }
-            session.onTrialBegin.Invoke(this);
         }
 
         /// <summary>
@@ -119,15 +128,18 @@ namespace UXF
         public void End()
         {
             status = TrialStatus.Done;
+            session.onTrialEnd.Invoke(this);
+
+            if (!recordData) return;
+
             endTime = Time.time;
             result["end_time"] = endTime;
-
             // check no duplicate trackers
             List<string> duplicateTrackers = session.trackedObjects.Where(tracker => tracker != null)
               .GroupBy(tracker => tracker.dataName)
               .Where(g => g.Count() > 1)
               .Select(y => y.Key)
-              .ToList(); 
+              .ToList();
 
             if (duplicateTrackers.Any()) throw new InvalidOperationException(string.Format("Two or more trackers in the Tracked Objects field in the Session Inspector have the following object name and descriptor pair, please change the object name fields on the trackers to make them unique: {0}", string.Join(",", duplicateTrackers)));
 
@@ -151,7 +163,6 @@ namespace UXF
                 result[s] = settings.GetObject(s, string.Empty);
             }
 
-            session.onTrialEnd.Invoke(this);
         }
 
         public bool CheckDataTypeIsValid(string dataName, UXFDataType dataType)
@@ -183,7 +194,7 @@ namespace UXF
             if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
 
             int i = 0;
-            foreach(var dataHandler in session.ActiveDataHandlers)
+            foreach (var dataHandler in session.ActiveDataHandlers)
             {
                 string location = dataHandler.HandleDataTable(table, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
@@ -201,8 +212,8 @@ namespace UXF
             if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
 
             int i = 0;
-            foreach(var dataHandler in session.ActiveDataHandlers)
-            {              
+            foreach (var dataHandler in session.ActiveDataHandlers)
+            {
                 string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
             }
@@ -219,7 +230,7 @@ namespace UXF
             if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
 
             int i = 0;
-            foreach(var dataHandler in session.ActiveDataHandlers)
+            foreach (var dataHandler in session.ActiveDataHandlers)
             {
                 string location = dataHandler.HandleJSONSerializableObject(serializableObject, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
@@ -235,9 +246,9 @@ namespace UXF
         public void SaveText(string text, string dataName, UXFDataType dataType = UXFDataType.OtherTrialData)
         {
             if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
-            
+
             int i = 0;
-            foreach(var dataHandler in session.ActiveDataHandlers)
+            foreach (var dataHandler in session.ActiveDataHandlers)
             {
                 string location = dataHandler.HandleText(text, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
@@ -251,11 +262,11 @@ namespace UXF
         /// <param name="dataName">Name to be used in saving. It will be appended with the trial number.</param>
         /// <param name="dataType"></param>
         public void SaveBytes(byte[] bytes, string dataName, UXFDataType dataType = UXFDataType.OtherTrialData)
-        {            
+        {
             if (!CheckDataTypeIsValid(dataName, dataType)) dataType = UXFDataType.OtherTrialData;
-            
+
             int i = 0;
-            foreach(var dataHandler in session.ActiveDataHandlers)
+            foreach (var dataHandler in session.ActiveDataHandlers)
             {
                 string location = dataHandler.HandleBytes(bytes, session.experimentName, session.ppid, session.number, dataName, dataType, number);
                 result[string.Format("{0}_location_{1}", dataName, i++)] = location.Replace("\\", "/");
@@ -265,7 +276,7 @@ namespace UXF
 
     }
 
-    
+
 
     /// <summary>
     /// Status of a trial
