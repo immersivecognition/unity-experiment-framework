@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Linq;
-
+using System.Globalization;
 
 namespace UXF
 {
@@ -18,6 +18,13 @@ namespace UXF
 
         [Tooltip("Enable to sort session files into folders. The trial_results CSV is never put into a folder.")]
         public bool sortDataIntoFolders = true;
+
+        /// <summary>
+        /// Enable to force the data to save with an english-US format (i.e. `,` to serapate values,
+        /// and `.` to separate decimal points).
+        /// </summary>
+        [Tooltip("Enable to force the data to save with an english-US format (i.e. `,` to serapate values, and `.` to separate decimal points).")]
+        public bool forceENUSLocale = true;
 
         /// <summary>
         /// Enable to print debug messages to the console.
@@ -45,12 +52,21 @@ namespace UXF
         /// </summary>
         public override void SetUp()
         {
+            if (forceENUSLocale)
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            }
+
             quitting = false;
             Directory.CreateDirectory(base.StoragePath);
 
             if (!IsActive)
             {
                 parallelThread = new Thread(Worker);
+                if (forceENUSLocale)
+                {
+                    parallelThread.CurrentCulture = new CultureInfo("en-US");
+                }
                 parallelThread.Start();
             }
             else
@@ -150,7 +166,7 @@ namespace UXF
             if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
             ManageInWorker(() => { File.WriteAllLines(savePath, lines); });
-            return GetRelativePath(StoragePath, savePath);;
+            return GetRelativePath(StoragePath, savePath);
         }
 
         public override string HandleJSONSerializableObject(List<object> serializableObject, string experiment, string ppid, int sessionNum, string dataName, UXFDataType dataType, int optionalTrialNum = 0)

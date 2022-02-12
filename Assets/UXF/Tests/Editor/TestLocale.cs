@@ -70,6 +70,7 @@ namespace UXF.Tests
             sessionLogger.Initialise();
 
             fileSaver.verboseDebug = false;
+            fileSaver.forceENUSLocale = false;
 
             string experimentName = "unit_test";
             string ppid = "test_locale_" + ppidExtra;
