@@ -928,7 +928,7 @@ public class EasyEventEditorDrawer : PropertyDrawer
             findMethod = eventObject.GetType().GetMethod("FindMethod", BindingFlags.NonPublic | BindingFlags.Instance, null,
                     new System.Type[] {
                     typeof(string),
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
                     typeof(System.Type),
 #else
                     typeof(object),
@@ -947,7 +947,7 @@ public class EasyEventEditorDrawer : PropertyDrawer
             return null;
         }
 
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
         return findMethod.Invoke(eventObject, new object[] {functionName, targetObject?.GetType(), listenerMode, argType }) as MethodInfo;
 #else
         return findMethod.Invoke(eventObject, new object[] {functionName, targetObject, listenerMode, argType }) as MethodInfo;
