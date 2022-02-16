@@ -59,7 +59,11 @@ public class EasyEventEditorHandler
     private const string eeeGroupSameComponentTypeKey = "EEE.groupSameComponentType";
     private const string eeeUseHotkeys = "EEE.usehotkeys";
 
+#if UNITY_2021_1_OR_NEWER
+    // no need in Unity 2021
+#else
     private static bool patchApplied = false;
+#endif
     private static FieldInfo internalDrawerTypeMap = null;
     private static System.Type attributeUtilityType = null;
 
