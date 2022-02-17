@@ -179,13 +179,21 @@ namespace SubjectNerd.Utilities
 
 				// Draw the header
 				string headerText = string.Format("{0} [{1}]", property.displayName, property.arraySize);
-				EditorGUILayout.PropertyField(property, new GUIContent(headerText), false);
+
+                bool drawChildren;
+#if UNITY_2020_2_OR_NEWER
+				EditorGUILayout.PropertyField(property, new GUIContent(headerText), true);
+				drawChildren = false;
+#else
+                EditorGUILayout.PropertyField(property, new GUIContent(headerText), false);
+				drawChildren = property.isExpanded;
+#endif
 
 				// Save header rect for handling drag and drop
 				Rect dropRect = GUILayoutUtility.GetLastRect();
 
 				// Draw the reorderable list for the property
-				if (property.isExpanded)
+				if (drawChildren)
 				{
 					int newArraySize = EditorGUILayout.IntField("Size", property.arraySize);
 					if (newArraySize != property.arraySize)

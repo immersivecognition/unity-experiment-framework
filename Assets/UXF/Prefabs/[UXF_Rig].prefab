@@ -4040,6 +4040,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   sortDataIntoFolders: 1
+  forceENUSLocale: 1
   verboseDebug: 0
 --- !u!1 &4157116251522641278
 GameObject:
