@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace UXF
 {
@@ -13,20 +14,9 @@ namespace UXF
         [Tooltip("Assign the main camera in the scene here.")]
         public Camera mainCamera;
 
-        /// <summary>
-        /// Sets measurementDescriptor and customHeader to appropriate values
-        /// </summary>
-        protected override void SetupDescriptorAndHeader()
-        {
-            measurementDescriptor = "mouse_world";
-            
-            customHeader = new string[]
-            {
-                "pos_x",
-                "pos_y",
-                "pos_z",
-            };
-        }
+        public override string MeasurementDescriptor => "mouse_world";
+
+        public override IEnumerable<string> CustomHeader => new string[] { "pos_x", "pos_y", "pos_z", };
 
         /// <summary>
         /// Returns current mouse position in world coordinates

@@ -124,7 +124,7 @@ namespace UXF
 
             // check no duplicate trackers
             List<string> duplicateTrackers = session.trackedObjects.Where(tracker => tracker != null)
-              .GroupBy(tracker => tracker.dataName)
+              .GroupBy(tracker => tracker.DataName)
               .Where(g => g.Count() > 1)
               .Select(y => y.Key)
               .ToList(); 
@@ -137,7 +137,7 @@ namespace UXF
                 try
                 {
                     tracker.StopRecording();
-                    SaveDataTable(tracker.data, tracker.dataName, dataType: UXFDataType.Trackers);
+                    SaveDataTable(tracker.Data, tracker.DataName, dataType: UXFDataType.Trackers);
                 }
                 catch (NullReferenceException)
                 {

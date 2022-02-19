@@ -164,14 +164,12 @@ namespace UXF.Tests
         public void DuplicateTrackersCausesError()
         {
             string objectName = session.trackedObjects[0].objectName;
-            string measurementDescriptor = session.trackedObjects[0].measurementDescriptor;
 
             bool errorCaught = false;
 
             foreach (var trial in session.Trials)
 			{
                 session.trackedObjects[0].objectName = session.trackedObjects[1].objectName;
-                session.trackedObjects[0].measurementDescriptor = session.trackedObjects[1].measurementDescriptor;
 
 				trial.Begin();
 
@@ -185,7 +183,6 @@ namespace UXF.Tests
                 }
 
                 session.trackedObjects[0].objectName = objectName;
-                session.trackedObjects[0].measurementDescriptor = measurementDescriptor;
 
                 trial.End();
             }

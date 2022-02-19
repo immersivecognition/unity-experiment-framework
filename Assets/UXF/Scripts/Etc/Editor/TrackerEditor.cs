@@ -4,16 +4,18 @@ using System.Reflection;
 
 namespace UXF.EditorUtils
 {
-    [CustomEditor(typeof(UXF.Tracker), true)]
+    [CustomEditor(typeof(Tracker), true)]
     [CanEditMultipleObjects]
     public class TrackerEditor : Editor
     {
-        SerializedProperty customHeader, measurementDescriptor;
+        GUIStyle smallText = new GUIStyle();
+        Tracker thisTracker;
         
         void OnEnable()
         {
-            customHeader = serializedObject.FindProperty("customHeader");
-            measurementDescriptor = serializedObject.FindProperty("measurementDescriptor");
+            smallText.font = EditorStyles.miniFont;
+            smallText.fontSize = 9;
+            thisTracker = (Tracker)serializedObject.targetObject;
         }
 
         public override void OnInspectorGUI()
@@ -31,34 +33,38 @@ namespace UXF.EditorUtils
             {
                 if (field.IsPublic || field.GetCustomAttribute(typeof(SerializeField)) != null)
                 {                    
-                    if (field.Name != measurementDescriptor.name && field.Name != customHeader.name)
-                    {
-                        var prop = serializedObject.FindProperty(field.Name);
-                        EditorGUILayout.PropertyField(prop);
-                    }
+                    var prop = serializedObject.FindProperty(field.Name);
+                    EditorGUILayout.PropertyField(prop);
                 }
             }
 
             EditorGUILayout.Space();
-            GUI.enabled = false;
 
-            EditorGUILayout.LabelField(customHeader.displayName);
+            EditorGUILayout.LabelField("Custom Header");
+            EditorGUILayout.TextField("(\"time\" is added automatically)", smallText);
             EditorGUI.indentLevel += 1;
-
-            foreach (SerializedProperty element in customHeader)
-            {
-                EditorGUILayout.TextField(element.stringValue);
-            }
+            GUI.enabled = false;
+            EditorGUILayout.TextField(string.Join(", ", thisTracker.CustomHeader));
+            GUI.enabled = true;
             EditorGUI.indentLevel -= 1;
             
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField(measurementDescriptor.displayName);
+            EditorGUILayout.LabelField("Measurement Descriptor");
             EditorGUI.indentLevel += 1;
-            EditorGUILayout.TextField(measurementDescriptor.stringValue);
+            GUI.enabled = false;
+            EditorGUILayout.TextField(thisTracker.MeasurementDescriptor);
+            GUI.enabled = true;
             EditorGUI.indentLevel -= 1;
             
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Example Filename");
+            EditorGUI.indentLevel += 1;
+            GUI.enabled = false;
+            EditorGUILayout.TextField(string.Format("{0}_T001.csv", thisTracker.DataName));
             GUI.enabled = true;
+            EditorGUI.indentLevel -= 1;
+
             serializedObject.ApplyModifiedProperties();
         }
     }

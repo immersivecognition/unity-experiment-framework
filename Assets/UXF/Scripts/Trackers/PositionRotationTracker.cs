@@ -11,23 +11,8 @@ namespace UXF
     /// </summary>
     public class PositionRotationTracker : Tracker
     {
-        /// <summary>
-        /// Sets measurementDescriptor and customHeader to appropriate values
-        /// </summary>
-        protected override void SetupDescriptorAndHeader()
-        {
-            measurementDescriptor = "movement";
-            
-            customHeader = new string[]
-            {
-                "pos_x",
-                "pos_y",
-                "pos_z",
-                "rot_x",
-                "rot_y",
-                "rot_z"
-            };
-        }
+        public override string MeasurementDescriptor => "movement";
+        public override IEnumerable<string> CustomHeader => new string[] { "pos_x", "pos_y", "pos_z", "rot_x", "rot_y", "rot_z" };
 
         /// <summary>
         /// Returns current position and rotation values
