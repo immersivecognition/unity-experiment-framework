@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UXF
 {
@@ -10,6 +11,9 @@ namespace UXF
     /// </summary>
     public abstract class Tracker : MonoBehaviour
     {
+        private bool recording = false;
+        private static string[] baseHeaders = new string[] { "time" };
+
         /// <summary>
         /// Name of the object used in saving
         /// </summary>
@@ -18,47 +22,29 @@ namespace UXF
         /// <summary>
         /// Description of the type of measurement this tracker will perform.
         /// </summary>
-        [Tooltip("Description of the type of measurement this tracker will perform.")]
-        public string measurementDescriptor;
+        public abstract string MeasurementDescriptor { get; }  
 
         /// <summary>
-        /// Custom column headers for tracked objects. Time is added automatically
+        /// Custom column headers for tracked objects.
         /// </summary>
-        [Tooltip("Custom column headers for each measurement.")]
-        public string[] customHeader = new string[] { };
+        public abstract IEnumerable<string> CustomHeader { get; }  
    
         /// <summary>
         /// A name used when saving the data from this tracker.
         /// </summary>
-        public string dataName
+        public string DataName
         {
             get
             {
-                Debug.AssertFormat(measurementDescriptor.Length > 0, "No measurement descriptor has been specified for this Tracker!");
-                return string.Join("_", new string[]{ objectName, measurementDescriptor });
+                Debug.AssertFormat(MeasurementDescriptor.Length > 0, "No measurement descriptor has been specified for this Tracker!");
+                return string.Join("_", new string[]{ objectName, MeasurementDescriptor });
             }
         }
-
-        private bool recording;
 
         public bool Recording { get { return recording; } }
 
-        public UXFDataTable data { get; private set; } = new UXFDataTable();
+        public UXFDataTable Data { get; private set; } = new UXFDataTable();
         
-        /// <summary>
-        /// The header that will go at the top of the output file associated with this tracker
-        /// </summary>
-        /// <returns></returns>
-        public string[] header
-        { 
-            get
-            {
-                var newHeader = new string[customHeader.Length + 1];
-                newHeader[0] = "time";
-                customHeader.CopyTo(newHeader, 1);
-                return newHeader;
-            }
-        }
 
         /// <summary>
         /// When the tracker should take measurements.
@@ -70,7 +56,6 @@ namespace UXF
         void Reset()
         {
             objectName = gameObject.name.Replace(" ", "_").ToLower();
-            SetupDescriptorAndHeader();
         }
 
         // called by unity just before rendering the frame
@@ -90,11 +75,11 @@ namespace UXF
         /// </summary>
         public void RecordRow()
         {
-            if (!recording) throw new System.InvalidOperationException("Tracker measurements cannot be taken when not in a trial!");
+            if (!recording) throw new System.InvalidOperationException("Tracker measurements cannot be taken when not recording!");
             
             UXFDataRow newRow = GetCurrentValues();
             newRow.Add(("time", Time.time));
-            data.AddCompleteRow(newRow);
+            Data.AddCompleteRow(newRow);
         }
 
         /// <summary>
@@ -102,7 +87,8 @@ namespace UXF
         /// </summary>
         public void StartRecording()
         {
-            data = new UXFDataTable(header);
+            var header = baseHeaders.Concat(CustomHeader);
+            Data = new UXFDataTable(header.ToArray());
             recording = true;
         }
 
@@ -119,11 +105,6 @@ namespace UXF
         /// </summary>
         /// <returns></returns>
         protected abstract UXFDataRow GetCurrentValues();
-
-        /// <summary>
-        /// Override this method and define your own descriptor and header.
-        /// </summary>
-        protected abstract void SetupDescriptorAndHeader();
 
     }
 

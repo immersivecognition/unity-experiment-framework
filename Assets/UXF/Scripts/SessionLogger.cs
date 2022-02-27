@@ -85,7 +85,10 @@ namespace UXF
         /// </summary>
         public void Finalise(Session session)
 		{
-			session.SaveDataTable(table, "log", dataType: UXFDataType.SessionLog);
+			if (session.saveData)
+			{
+				session.SaveDataTable(table, "log", dataType: UXFDataType.SessionLog);
+			}
 
 			if (logDebugLogCalls) Application.logMessageReceived -= HandleLog;
 			session.preSessionEnd.RemoveListener(Finalise);

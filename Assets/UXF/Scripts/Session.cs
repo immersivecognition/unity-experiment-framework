@@ -14,7 +14,7 @@ namespace UXF
     /// The Session represents a single "run" of an experiment, and contains all information about that run. 
     /// </summary>
     [ExecuteInEditMode]
-    public class Session : MonoBehaviour, ISettingsContainer, IDataAssociatable
+    public class Session : MonoBehaviour, IExperimentUnit, IDataAssociatable
     {
         /// <summary>
         /// Enable to automatically safely end the session when the application is quitting.
@@ -252,6 +252,15 @@ namespace UXF
         /// </summary>
         public IEnumerable<DataHandler> ActiveDataHandlers { get { return dataHandlers.Where(d => d != null && d.active).Distinct(); }}
          
+        /// <summary>
+        /// Should data be saved for this session?
+        /// </summary>
+        public bool saveData
+        {
+            get => settings.GetBool(Constants.SAVE_DATA_SETTING_NAME, true);
+            set => settings.SetValue(Constants.SAVE_DATA_SETTING_NAME, value);
+        }
+
         /// <summary>
         /// Provide references to other components 
         /// </summary>
@@ -628,13 +637,13 @@ namespace UXF
                 try { preSessionEnd.Invoke(this); }
                 catch (Exception e) { Debug.LogException(e); }
 
-                if (storeSessionSettings)
+                if (storeSessionSettings && saveData)
                 {
                     // copy Settings to session folder
                     SaveJSONSerializableObject(new Dictionary<string, object>(settings.baseDict), "settings", dataType: UXFDataType.Settings);
                 }
 
-                if (storeParticipantDetails)
+                if (storeParticipantDetails && saveData)
                 {
                     // copy participant details to session folder
                     // we convert to a DataTable because we know the dictionary will be "flat" (one value per key)
@@ -674,14 +683,14 @@ namespace UXF
             // hashset keeps unique set of keys
             HashSet<string> resultsHeaders = new HashSet<string>();
             foreach (Trial t in Trials)
-                if (t.result != null)
+                if (t.result != null && t.saveData)
                     foreach (string key in t.result.Keys)
                         resultsHeaders.Add(key);
 
             UXFDataTable table = new UXFDataTable(Trials.Count(), resultsHeaders.ToArray());
             foreach (Trial t in Trials)
             {
-                if (t.result != null)
+                if (t.result != null && t.saveData)
                 {
                     UXFDataRow row = new UXFDataRow();
                     foreach (string h in resultsHeaders)

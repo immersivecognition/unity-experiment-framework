@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace UXF
 {
@@ -8,19 +9,8 @@ namespace UXF
     /// </summary>
     public class MouseScreenTracker : Tracker
     {
-        /// <summary>
-        /// Sets measurementDescriptor and customHeader to appropriate values
-        /// </summary>
-        protected override void SetupDescriptorAndHeader()
-        {
-            measurementDescriptor = "mouse_screen";
-            
-            customHeader = new string[]
-            {
-                "pix_x",
-                "pix_y"
-            };
-        }
+        public override string MeasurementDescriptor => "mouse_screen";
+        public override IEnumerable<string> CustomHeader => new string[] { "pix_x", "pix_y" };
 
         /// <summary>
         /// Returns current mouse position in screen coordinates
