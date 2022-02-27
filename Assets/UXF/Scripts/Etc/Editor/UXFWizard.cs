@@ -152,6 +152,22 @@ namespace UXF.EditorUtils
                 }
             }
 
+#if UNITY_2019_3_OR_NEWER
+            if (!EditorSettings.enterPlayModeOptionsEnabled || EditorSettings.enterPlayModeOptions != EnterPlayModeOptions.None)
+            {
+                EditorGUILayout.HelpBox("You currently must enable Reload Domain and Reload Scene in the Editor Settings to use UXF. Please enable these options.", MessageType.Error);
+                if (GUILayout.Button("Fix"))
+                {
+                    EditorSettings.enterPlayModeOptionsEnabled = true;
+                    EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.None;
+                }
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("Reload Domain and Reload Scene Editor Settings are correctly enabled.", MessageType.Info);
+            }
+#endif
+
             EditorGUILayout.Separator();
 
             GUILayout.Label("WebGL", EditorStyles.boldLabel);
