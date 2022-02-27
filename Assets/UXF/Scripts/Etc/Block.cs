@@ -8,7 +8,7 @@ namespace UXF
     /// <summary>
     /// A set of trials, often used to group a number of consecutive Trial objects that share something in common.
     /// </summary>
-    public class Block : ISettingsContainer
+    public class Block : IExperimentUnit
     {
         /// <summary>
         /// List of trials associated with this block
@@ -33,13 +33,21 @@ namespace UXF
         /// <summary>
         /// Block settings. These will be overridden by trial settings if set.
         /// </summary>
-        public Settings settings { get; private set; }
+        public Settings settings { get; protected set; }
 
         /// <summary>
         /// The session associated with this block
         /// </summary>
         public Session session { get; private set; }
 
+        /// <summary>
+        /// Should data be saved for this session?
+        /// </summary>
+        public bool saveData
+        {
+            get => settings.GetBool(Constants.SAVE_DATA_SETTING_NAME, true);
+            set => settings.SetValue(Constants.SAVE_DATA_SETTING_NAME, value);
+        }
 
         /// <summary>
         /// Create a block with a given number of trials under a given session
