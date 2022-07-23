@@ -1,0 +1,17 @@
+{
+    "name": "UXF",
+    "rootNamespace": "UXF",
+    "references": [
+        "GUID:060b1abbb328d4242a83b6f1f39a064c",
+        "GUID:d3f3a6348b06a8c41aa86523ba2a11ec"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

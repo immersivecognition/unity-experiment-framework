@@ -1,0 +1,15 @@
+{
+  "name": "com.immersivecognition.uxf",
+  "version": "2.4.3",
+  "displayName": "Unity Experiment Framework",
+  "description": "UXF - Framework for creating human behaviour experiments in Unity",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "documentationUrl": "https://github.com/immersivecognition/unity-experiment-framework/wiki",
+  "changelogUrl": "https://github.com/immersivecognition/unity-experiment-framework/blob/master/CHANGELOG.md",
+  "licensesUrl": "https://github.com/immersivecognition/unity-experiment-framework/blob/master/LICENSE",
+  "dependencies": {},
+  "author": {
+    "name": "Jack Brookes"
+  }
+}
