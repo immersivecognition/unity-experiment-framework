@@ -264,7 +264,10 @@ namespace UXF
                 try
                 {
                     tracker.StopRecording();
-                    SaveDataTable(tracker.Data, tracker.DataName, dataType: UXFDataType.Trackers);
+                    if (tracker.Data.CountRows() > 0)
+                    {
+                        SaveDataTable(tracker.Data, tracker.DataName, dataType: UXFDataType.Trackers);
+                    }
                 }
                 catch (NullReferenceException)
                 {
