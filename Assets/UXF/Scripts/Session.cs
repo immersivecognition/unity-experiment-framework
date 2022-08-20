@@ -94,6 +94,13 @@ namespace UXF
         public SessionEvent onSessionBegin = new SessionEvent();
 
         /// <summary>
+        /// Event(s) to trigger when a block begins. Can pass the instance of the Block as a dynamic argument
+        /// </summary>
+        /// <returns></returns>
+        [Tooltip("Items in this event will be triggered each time a block begins.")]
+        public BlockEvent onBlockBegin = new BlockEvent();
+
+        /// <summary>
         /// Event(s) to trigger when a trial begins. Can pass the instance of the Trial as a dynamic argument
         /// </summary>
         /// <returns></returns>
@@ -106,6 +113,13 @@ namespace UXF
         /// <returns></returns>
         [Tooltip("Items in this event will be triggered each time a trial ends. Useful for collecting results from the trial as well as showing feedback.")]
         public TrialEvent onTrialEnd = new TrialEvent();
+
+        /// <summary>
+        /// Event(s) to trigger when a block ends. Can pass the instance of the Block as a dynamic argument
+        /// </summary>
+        /// <returns></returns>
+        [Tooltip("Items in this event will be triggered each time a block ends.")]
+        public BlockEvent onBlockEnd = new BlockEvent();
 
         /// <summary>
         /// Event(s) to trigger just before the session has ended. If you wish to perform any summary statistics or write any final session data this is the time to do it. Do not use this event to quit the application.
