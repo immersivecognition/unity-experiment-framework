@@ -486,15 +486,17 @@ namespace UXF
         Trial GetLastTrial()
         {
             if (blocks.Count == 0) throw new NoSuchTrialException("There is no last trial because no blocks have been created!");
-            
+
             Block lastValidBlock;
+            Trial lastTrial;
             int i = blocks.Count - 1;
             while (i >= 0)
             {
                 lastValidBlock = blocks[i];
-                if (lastValidBlock.trials.Count > 0)
+                lastTrial = lastValidBlock.lastTrial;
+                if (lastTrial != null)
                 {
-                    return lastValidBlock.trials[lastValidBlock.trials.Count - 1];
+                    return lastTrial;
                 }
                 i--;
             }
