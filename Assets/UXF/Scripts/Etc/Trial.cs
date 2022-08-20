@@ -122,7 +122,7 @@ namespace UXF
 
             if (this == block.firstTrial)
             {
-                // call block on begin event
+                session.onBlockBegin.Invoke(block);
             }
 
             session.onTrialBegin.Invoke(this);
@@ -146,7 +146,7 @@ namespace UXF
 
             if (this == block.lastTrial)
             {
-                // call block on end event
+                session.onBlockEnd.Invoke(block);
             }
         }
 
