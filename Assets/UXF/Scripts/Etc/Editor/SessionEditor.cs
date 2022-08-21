@@ -108,7 +108,11 @@ namespace UXF.EditorUtils
 
                     EditorGUILayout.Space();
                     EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("onSessionBegin")).tooltip, MessageType.Info);
-                    DrawPropertiesFromUpTo("onSessionBegin", "onTrialBegin");
+                    DrawPropertiesFromUpTo("onSessionBegin", "onBlockBegin");
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("onBlockBegin")).tooltip, MessageType.Info);
+                    DrawPropertiesFromUpTo("onBlockBegin", "onTrialBegin");
 
                     EditorGUILayout.Space();
                     EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("onTrialBegin")).tooltip, MessageType.Info);
@@ -116,7 +120,11 @@ namespace UXF.EditorUtils
 
                     EditorGUILayout.Space();
                     EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("onTrialEnd")).tooltip, MessageType.Info);
-                    DrawPropertiesFromUpTo("onTrialEnd", "preSessionEnd");
+                    DrawPropertiesFromUpTo("onTrialEnd", "onBlockEnd");
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("onBlockEnd")).tooltip, MessageType.Info);
+                    DrawPropertiesFromUpTo("onBlockEnd", "preSessionEnd");
 
                     EditorGUILayout.Space();
                     EditorGUILayout.HelpBox(GetTooltip(session.GetType().GetField("preSessionEnd")).tooltip, MessageType.Info);

@@ -119,6 +119,12 @@ namespace UXF
                     Utilities.UXFDebugLogWarning("An item in the Tracked Objects field of the UXF session if empty (null)!");
                 }
             }
+
+            if (this == block.firstTrial)
+            {
+                session.onBlockBegin.Invoke(block);
+            }
+
             session.onTrialBegin.Invoke(this);
         }
 
@@ -137,6 +143,11 @@ namespace UXF
             }
 
             session.onTrialEnd.Invoke(this);
+
+            if (this == block.lastTrial)
+            {
+                session.onBlockEnd.Invoke(block);
+            }
         }
 
         public bool CheckDataTypeIsValid(string dataName, UXFDataType dataType)

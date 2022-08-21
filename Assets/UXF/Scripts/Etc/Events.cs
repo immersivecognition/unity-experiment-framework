@@ -16,6 +16,15 @@ namespace UXF
     }
 
     /// <summary>
+    /// Event containing a Block as a parameter
+    /// </summary>
+    [Serializable]
+    public class BlockEvent : UnityEvent<Block>
+    {
+
+    }
+
+    /// <summary>
     /// Event containing a Trial as a parameter
     /// </summary>
     [Serializable]
