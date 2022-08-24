@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using System;
 using System.IO;
 using System.Threading;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Globalization;
 
 namespace UXF
@@ -32,47 +30,30 @@ namespace UXF
         [Tooltip("Enable to print debug messages to the console.")]
         public bool verboseDebug = false;
 
-        /// <summary>
-        /// An action which does nothing.
-        /// </summary>
-        /// <returns></returns>
-        public static System.Action doNothing = () => { };
-
-        public bool IsActive { get { return parallelThread != null && parallelThread.IsAlive; } }
-
-
-        BlockingQueue<System.Action> bq = new BlockingQueue<System.Action>();
-        Thread parallelThread;
-
         bool quitting = false;
 
+        List<Task> tasks = new List<Task>();
+
+        CultureInfo targetCultureInfo;
 
         /// <summary>
         /// Starts the FileSaver Worker thread.
         /// </summary>
         public override void SetUp()
         {
+            // NOTE: This gets prporgated to other threads in .NET 4.6+
             if (forceENUSLocale)
             {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+                targetCultureInfo = new CultureInfo("en-US");
+                Thread.CurrentThread.CurrentCulture = targetCultureInfo;
+            }
+            else
+            {
+                targetCultureInfo = Thread.CurrentThread.CurrentCulture;
             }
 
             quitting = false;
             Directory.CreateDirectory(base.StoragePath);
-
-            if (!IsActive)
-            {
-                parallelThread = new Thread(Worker);
-                if (forceENUSLocale)
-                {
-                    parallelThread.CurrentCulture = new CultureInfo("en-US");
-                }
-                parallelThread.Start();
-            }
-            else
-            {
-                Utilities.UXFDebugLogWarning("Parallel thread is still active!");
-            }
         }
 
         /// <summary>
@@ -94,19 +75,13 @@ namespace UXF
                 );
             }
 
-            bq.Enqueue(action);
-        }
-
-        void Worker()
-        {
-            if (verboseDebug)
-                Utilities.UXFDebugLog("Started worker thread");
-
-            // performs FileIO tasks in seperate thread
-            foreach (var action in bq)
+            Task t = Task.Factory.StartNew(() =>  // Wrapper to handle errors, logging and CultureInfo
             {
+                Thread.CurrentThread.CurrentCulture = targetCultureInfo;
                 if (verboseDebug)
+                {
                     Utilities.UXFDebugLogFormat("Managing action");
+                }
 
                 try
                 {
@@ -114,7 +89,7 @@ namespace UXF
                 }
                 catch (ThreadAbortException)
                 {
-                    break;
+                    return;
                 }
                 catch (IOException e)
                 {
@@ -125,13 +100,20 @@ namespace UXF
                     // stops thread aborting upon an exception
                     Debug.LogException(e);
                 }
+            }, TaskCreationOptions.LongRunning);
 
-                if (quitting && bq.NumItems() == 0)
-                    break;
-            }
+            // Tracking task
+            tasks.Add(t);
 
-            if (verboseDebug)
-                Utilities.UXFDebugLog("Finished worker thread");
+            // Once task is complete remove it from the list of tasks being tracked
+            t.ContinueWith((task) =>
+            {
+                if (verboseDebug)
+                {
+                    Utilities.UXFDebugLogFormat("A writing task is complete");
+                }
+                tasks.Remove(task);
+            });
         }
 
         /// <summary>
@@ -287,10 +269,9 @@ namespace UXF
         public override void CleanUp()
         {
             if (verboseDebug)
-                Utilities.UXFDebugLog("Joining File Saver Thread");
+                Utilities.UXFDebugLog("Joining File Saver Tasks");
             quitting = true;
-            bq.Enqueue(doNothing); // ensures bq breaks from foreach loop
-            parallelThread.Join();
+            Task.WaitAll(tasks.ToArray());
         }
 
         public static string GetRelativePath(string relativeToDirectory, string path)
