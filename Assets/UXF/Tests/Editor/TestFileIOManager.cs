@@ -148,6 +148,33 @@ namespace UXF.Tests
             );
         }
 
+        [Test]
+        public void MoveToBackup()
+        {
+            fileSaver.StoragePath = "test_output";
+            if (Directory.Exists(fileSaver.StoragePath))
+            {
+                Directory.Delete(fileSaver.StoragePath, true);
+            }
+
+            fileSaver.SetUp();
+
+            string fileName = "testMoveToBackup";
+            fileSaver.HandleText("", "a", "b", 1, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", "a", "b", 1, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", "a", "b", 1, fileName, UXFDataType.TrialResults);
+
+            System.Threading.Thread.Sleep(500);
+
+            string testFilesDirectory = fileSaver.GetSessionPath("a", "b", 1);
+
+            string[] files = Directory.GetFiles(testFilesDirectory, $"{fileName}*.txt");
+            Assert.AreEqual(files.Length, 3);
+
+            fileSaver.CleanUp();
+            Directory.Delete(fileSaver.StoragePath, true);
+        }
+
     }
 
 }
