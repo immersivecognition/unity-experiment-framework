@@ -13,6 +13,7 @@ namespace UXF
     {
         private bool recording = false;
         private static string[] baseHeaders = new string[] { "time" };
+        private TrackerState currentState = TrackerState.Uninitialised;
 
         /// <summary>
         /// Name of the object used in saving
@@ -44,7 +45,11 @@ namespace UXF
         public bool Recording { get { return recording; } }
 
         public UXFDataTable Data { get; private set; } = new UXFDataTable();
-        
+
+        /// <summary>
+        /// The current state of the tracker.
+        /// </summary>
+        public TrackerState CurrentState { get => currentState; }
 
         /// <summary>
         /// When the tracker should take measurements.
@@ -87,9 +92,16 @@ namespace UXF
         /// </summary>
         public void StartRecording()
         {
+            if (currentState == TrackerState.On)
+            {
+                Debug.LogWarning($"Start command received for tracker in state: '{TrackerState.On}'." +
+                    $" This will dump exisiting data! " +
+                    "If you want to restart a paused tracker, use 'ResumeRecording()' instead.");
+            }
             var header = baseHeaders.Concat(CustomHeader);
             Data = new UXFDataTable(header.ToArray());
             recording = true;
+            currentState = TrackerState.On;
         }
 
         /// <summary>
@@ -97,7 +109,41 @@ namespace UXF
         /// </summary>
         public void StopRecording()
         {
+            if (currentState != TrackerState.On)
+            {
+                Debug.LogWarning($"Stop command received for tracker in state: '{currentState}'." +
+                    $" This should only be called when tracker is in state '{TrackerState.On}'");
+            }
             recording = false;
+            currentState = TrackerState.Off;
+        }
+
+        /// <summary>
+        /// Pauses recording.
+        /// </summary>
+        public void PauseRecording()
+        {
+            if (currentState != TrackerState.On)
+            {
+                Debug.LogWarning($"Pause command received for tracker in state: '{currentState}'." +
+                    $"This should only be called when tracker is in state '{TrackerState.On}'");
+            }
+            recording = false;
+            currentState = TrackerState.Paused;
+        }
+
+        /// <summary>
+        /// Resumes recording.
+        /// </summary>
+        public void ResumeRecording()
+        {
+            if (currentState != TrackerState.Paused)
+            {
+                Debug.LogWarning($"Resume command received for tracker in state: '{currentState}'." +
+                    $"This should only be called when tracker is in state '{TrackerState.Paused}'");
+            }
+            recording = true;
+            currentState = TrackerState.On;
         }
 
         /// <summary>
@@ -114,5 +160,13 @@ namespace UXF
     public enum TrackerUpdateType
     {
         LateUpdate, FixedUpdate, Manual
+    }
+
+    /// <summary>
+    /// The possible states a tracker can be in.
+    /// </summary>
+    public enum TrackerState
+    {
+        On, Off, Paused, Uninitialised
     }
 }
