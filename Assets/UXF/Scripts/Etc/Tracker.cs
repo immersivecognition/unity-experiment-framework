@@ -7,13 +7,13 @@ using System.Linq;
 namespace UXF
 {
     /// <summary>
-    /// Create a new class that inherits from this component to create custom tracking behaviour on a frame-by-frame basis.
+    /// Create a new class that inherits from this component to create custom tracking behaviour
+    /// on a frame-by-frame basis.
     /// </summary>
     public abstract class Tracker : MonoBehaviour
     {
-        private bool recording = false;
         private static string[] baseHeaders = new string[] { "time" };
-        private TrackerState currentState = TrackerState.Uninitialised;
+        private TrackerState currentState = TrackerState.Stopped;
 
         /// <summary>
         /// Name of the object used in saving
@@ -37,12 +37,13 @@ namespace UXF
         {
             get
             {
-                Debug.AssertFormat(MeasurementDescriptor.Length > 0, "No measurement descriptor has been specified for this Tracker!");
+                Debug.AssertFormat(MeasurementDescriptor.Length > 0,
+                    "No measurement descriptor has been specified for this Tracker!");
                 return string.Join("_", new string[]{ objectName, MeasurementDescriptor });
             }
         }
 
-        public bool Recording { get { return recording; } }
+        public bool Recording { get { return currentState == TrackerState.Recording; } }
 
         public UXFDataTable Data { get; private set; } = new UXFDataTable();
 
@@ -54,7 +55,9 @@ namespace UXF
         /// <summary>
         /// When the tracker should take measurements.
         /// </summary>
-        [Tooltip("When the measurements should be taken.\n\nManual should only be selected if the user is calling the RecordRow method either from another script or a custom Tracker class.")]
+        [Tooltip("When the measurements should be taken." +
+            "\n\nManual should only be selected if the user is calling the RecordRow method" +
+            " either from another script or a custom Tracker class.")]
         public TrackerUpdateType updateType = TrackerUpdateType.LateUpdate;
 
         // called when component is added
@@ -66,13 +69,13 @@ namespace UXF
         // called by unity just before rendering the frame
         void LateUpdate()
         {
-            if (recording && updateType == TrackerUpdateType.LateUpdate) RecordRow();
+            if (Recording && updateType == TrackerUpdateType.LateUpdate) RecordRow();
         }
 
         // called by unity when physics simulations are run
         void FixedUpdate()
         {
-            if (recording && updateType == TrackerUpdateType.FixedUpdate) RecordRow();
+            if (Recording && updateType == TrackerUpdateType.FixedUpdate) RecordRow();
         }
 
         /// <summary>
@@ -80,7 +83,8 @@ namespace UXF
         /// </summary>
         public void RecordRow()
         {
-            if (!recording) throw new System.InvalidOperationException("Tracker measurements cannot be taken when not recording!");
+            if (!Recording) throw new System.InvalidOperationException(
+                "Tracker measurements cannot be taken when not recording!");
             
             UXFDataRow newRow = GetCurrentValues();
             newRow.Add(("time", Time.time));
@@ -92,16 +96,15 @@ namespace UXF
         /// </summary>
         public void StartRecording()
         {
-            if (currentState == TrackerState.On)
+            if (currentState == TrackerState.Recording)
             {
-                Debug.LogWarning($"Start command received for tracker in state: '{TrackerState.On}'." +
-                    $" This will dump exisiting data! " +
-                    "If you want to restart a paused tracker, use 'ResumeRecording()' instead.");
+                Utilities.UXFDebugLogWarning($"Start command received for tracker in state: '{TrackerState.Recording}'." +
+                    " This will dump exisiting data! " +
+                    $"If you want to restart a paused tracker, use '{nameof(ResumeRecording)}()' instead.");
             }
             var header = baseHeaders.Concat(CustomHeader);
             Data = new UXFDataTable(header.ToArray());
-            recording = true;
-            currentState = TrackerState.On;
+            currentState = TrackerState.Recording;
         }
 
         /// <summary>
@@ -109,13 +112,12 @@ namespace UXF
         /// </summary>
         public void StopRecording()
         {
-            if (currentState != TrackerState.On)
+            if (currentState != TrackerState.Recording)
             {
-                Debug.LogWarning($"Stop command received for tracker in state: '{currentState}'." +
-                    $" This should only be called when tracker is in state '{TrackerState.On}'");
+                Utilities.UXFDebugLogWarning($"Stop command received for tracker in state: '{currentState}'." +
+                    $" This should only be called when tracker is in state '{TrackerState.Recording}'");
             }
-            recording = false;
-            currentState = TrackerState.Off;
+            currentState = TrackerState.Stopped;
         }
 
         /// <summary>
@@ -123,12 +125,11 @@ namespace UXF
         /// </summary>
         public void PauseRecording()
         {
-            if (currentState != TrackerState.On)
+            if (currentState != TrackerState.Recording)
             {
-                Debug.LogWarning($"Pause command received for tracker in state: '{currentState}'." +
-                    $"This should only be called when tracker is in state '{TrackerState.On}'");
+                Utilities.UXFDebugLogWarning($"Pause command received for tracker in state: '{currentState}'." +
+                    $"This should only be called when tracker is in state '{TrackerState.Recording}'");
             }
-            recording = false;
             currentState = TrackerState.Paused;
         }
 
@@ -139,11 +140,10 @@ namespace UXF
         {
             if (currentState != TrackerState.Paused)
             {
-                Debug.LogWarning($"Resume command received for tracker in state: '{currentState}'." +
+                Utilities.UXFDebugLogWarning($"Resume command received for tracker in state: '{currentState}'." +
                     $"This should only be called when tracker is in state '{TrackerState.Paused}'");
             }
-            recording = true;
-            currentState = TrackerState.On;
+            currentState = TrackerState.Recording;
         }
 
         /// <summary>
@@ -155,7 +155,9 @@ namespace UXF
     }
 
     /// <summary>
-    /// When the tracker should collect new measurements. Manual should only be selected if the user is calling the RecordRow method either from another script or a custom Tracker class.
+    /// When the tracker should collect new measurements. 
+    /// Manual should only be selected if the user is calling the RecordRow method
+    /// either from another script or a custom Tracker class.
     /// </summary>
     public enum TrackerUpdateType
     {
@@ -167,6 +169,6 @@ namespace UXF
     /// </summary>
     public enum TrackerState
     {
-        On, Off, Paused, Uninitialised
+        Recording, Paused, Stopped
     }
 }
