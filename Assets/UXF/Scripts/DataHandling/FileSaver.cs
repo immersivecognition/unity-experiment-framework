@@ -135,6 +135,58 @@ namespace UXF
         }
 
         /// <summary>
+        /// Move `path` to a back up path.
+        /// Backup is the path file name with its LastWriteTime as a suffix.
+        /// </summary>
+        protected virtual void MoveToBackup(string path)
+        {
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            string suffix = File.GetLastWriteTime(path).ToString("dd-MM-yyyy-HH-mm-FF");
+            string ext = Path.GetExtension(path);
+            string newPath = Path.Combine(Path.GetDirectoryName(path), $"{fileName}_{suffix}{ext}");
+            File.Move(path, newPath);
+        }
+
+        /// <summary>
+        /// Same as File.WriteAllText, but makes sure files are not overwritten.
+        /// If file file exists, the old file will be renamed with a suffix with its LastWriteTime.
+        /// </summary>
+        protected virtual void SafeFileWriteAllText(string path, string content)
+        {
+            if (File.Exists(path))
+            {
+                MoveToBackup(path);
+            }
+            File.WriteAllText(path, content);
+        }
+
+        /// <summary>
+        /// Same as File.WriteAllLines, but makes sure files are not overwritten.
+        /// If file file exists, the old file will be renamed with a suffix with its LastWriteTime.
+        /// </summary>
+        protected virtual void SafeFileWriteAllLines(string path, string[] content)
+        {
+            if (File.Exists(path))
+            {
+                MoveToBackup(path);
+            }
+            File.WriteAllLines(path, content);
+        }
+
+        /// <summary>
+        /// Same as File.WriteAllBytes, but makes sure files are not overwritten.
+        /// If file file exists, the old file will be renamed with a suffix with its LastWriteTime.
+        /// </summary>
+        protected virtual void SafeFileWriteAllBytes(string path, byte[] content)
+        {
+            if (File.Exists(path))
+            {
+                MoveToBackup(path);
+            }
+            File.WriteAllBytes(path, content);
+        }
+
+        /// <summary>
         /// Returns true if there may be a risk of overwriting data.
         /// </summary>
         /// <param name="experiment"></param>
@@ -165,7 +217,7 @@ namespace UXF
             
             if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
-            ManageInWorker(() => { File.WriteAllLines(savePath, lines); });
+            ManageInWorker(() => { SafeFileWriteAllLines(savePath, lines); });
             return GetRelativePath(StoragePath, savePath);
         }
 
@@ -186,7 +238,7 @@ namespace UXF
             
             if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
-            ManageInWorker(() => { File.WriteAllText(savePath, text); });
+            ManageInWorker(() => { SafeFileWriteAllText(savePath, text); });
             return GetRelativePath(StoragePath, savePath);;
         }
 
@@ -207,7 +259,7 @@ namespace UXF
             
             if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
-            ManageInWorker(() => { File.WriteAllText(savePath, text); });
+            ManageInWorker(() => { SafeFileWriteAllText(savePath, text); });
             return GetRelativePath(StoragePath, savePath);;
         }
 
@@ -227,7 +279,7 @@ namespace UXF
             
             if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
-            ManageInWorker(() => { File.WriteAllText(savePath, text); });
+            ManageInWorker(() => { SafeFileWriteAllText(savePath, text); });
             return GetRelativePath(StoragePath, savePath);;
         }
 
@@ -247,7 +299,7 @@ namespace UXF
 
             if (verboseDebug) Utilities.UXFDebugLogFormat("Queuing save of file: {0}", savePath);
 
-            ManageInWorker(() => { File.WriteAllBytes(savePath, bytes); });
+            ManageInWorker(() => { SafeFileWriteAllBytes(savePath, bytes); });
             return GetRelativePath(StoragePath, savePath);
         }
 
