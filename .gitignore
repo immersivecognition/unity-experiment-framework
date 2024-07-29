@@ -63,6 +63,7 @@ $RECYCLE.BIN/
 
 # Visual Studio Code project
 .vscode/*
+.idea/*
 example_output/*
 
 Assets/MyAWSCredentials.asset*
