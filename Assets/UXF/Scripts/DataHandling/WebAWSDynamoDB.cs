@@ -466,7 +466,9 @@ namespace UXF
             {
                 case UnityEditor.BuildTargetGroup.Android:
                 case UnityEditor.BuildTargetGroup.iOS:
+#if !UNITY_2022_2_OR_NEWER
                 case UnityEditor.BuildTargetGroup.Lumin:
+#endif
                 case UnityEditor.BuildTargetGroup.PS4:
                 case UnityEditor.BuildTargetGroup.Switch:
                 case UnityEditor.BuildTargetGroup.tvOS:

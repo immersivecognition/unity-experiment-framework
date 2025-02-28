@@ -41,7 +41,11 @@ namespace UXF.EditorUtils
 
 		static void FetchReferences()
 		{
+#if UNITY_6000
+            session = FindFirstObjectByType<Session>();
+#else
             session = FindObjectOfType<Session>();
+#endif            
             if (!session)
 			{
                 settingsDict = null;

@@ -77,11 +77,19 @@ namespace UXFExamples
 			// there are lots of ways to do this, but this works fine here
 			if (trial.block.number == 1)
 			{
+#if UNITY_6000
+				FindFirstObjectByType<Example_ShootingTask>().StartShootingTaskTrial(trial);
+#else
 				FindObjectOfType<Example_ShootingTask>().StartShootingTaskTrial(trial);
+#endif
 			}
 			else if (trial.block.number == 2)
 			{
+#if UNITY_6000
+				FindFirstObjectByType<Example_ReactionTask>().StartReactionTaskTrial(trial);
+#else
 				FindObjectOfType<Example_ReactionTask>().StartReactionTaskTrial(trial);
+#endif
 			}
 		}
 
@@ -94,11 +102,19 @@ namespace UXFExamples
 			// there are lots of ways to do this, but this works fine here
 			if (trial.block.number == 1)
 			{
+#if UNITY_6000
+				FindFirstObjectByType<Example_ShootingTask>().EndShootingTaskTrial(trial);
+#else
 				FindObjectOfType<Example_ShootingTask>().EndShootingTaskTrial(trial);
+#endif
 			}
 			else if (trial.block.number == 2)
 			{
+#if UNITY_6000
+				FindFirstObjectByType<Example_ReactionTask>().EndReactionTaskTrial(trial);
+#else
 				FindObjectOfType<Example_ReactionTask>().EndReactionTaskTrial(trial);
+#endif
 			}
 		}
 
