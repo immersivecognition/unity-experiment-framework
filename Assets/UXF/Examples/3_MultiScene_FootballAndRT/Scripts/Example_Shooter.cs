@@ -51,7 +51,11 @@ namespace UXFExamples
                     // launch when clicked
                     if (Input.GetMouseButtonDown(0))
                     {
+#if UNITY_6000
+                        ball.linearVelocity = launchVelocity;
+#else
                         ball.velocity = launchVelocity;
+#endif
                         canShoot = false;
 
                         // only have a certain time to score, or its classified as a miss!
