@@ -11,6 +11,7 @@ namespace UXF.Tests
         string ppid = "test_ppid";
         int sessionNum = 1;
         FileSaver fileSaver;
+        Session session;
 
         [SetUp]
         public void SetUp()
@@ -18,6 +19,12 @@ namespace UXF.Tests
             var gameObject = new GameObject();
             fileSaver = gameObject.AddComponent<FileSaver>();
             fileSaver.verboseDebug = true;
+            if (Session.instance != null) GameObject.DestroyImmediate(Session.instance.gameObject);
+            session = gameObject.AddComponent<Session>();
+            session.experimentName = "test_experiment";
+            session.ppid = "P001";
+            session.number = 1;
+            fileSaver.Initialise(session);
         }
 
 
@@ -149,5 +156,80 @@ namespace UXF.Tests
                 SystemInfo.operatingSystemFamily == OperatingSystemFamily.Windows ? "123" : "../123" 
             );
         }
+
+        [Test]
+        public void TestBackupSession()
+        {
+            fileSaver.StoragePath = "test_output";
+            fileSaver.backupSessionIfExists = true;
+            if (Directory.Exists(fileSaver.StoragePath))
+            {
+                Directory.Delete(fileSaver.StoragePath, true);
+            }
+
+            fileSaver.SetUp();
+
+            string fileName = "testMoveToBackup";
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+
+            fileSaver.CleanUp();
+            System.Threading.Thread.Sleep(500);
+
+            fileSaver.SetUp();
+
+            fileName = "testMoveToBackup";
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+
+            fileSaver.CleanUp();
+
+            string testFilesDirectory = fileSaver.GetSessionPath(session.experimentName, session.ppid, session.number);
+
+            string[] directories = Directory.GetDirectories(Directory.GetParent(testFilesDirectory).ToString(), $"{FileSaver.SessionNumToName(1)}*", SearchOption.TopDirectoryOnly);
+            Assert.AreEqual(directories.Length, 2);
+
+            Directory.Delete(fileSaver.StoragePath, true);
+        }
+
+        [Test]
+        public void TestSessionOverwrite()
+        {
+            fileSaver.StoragePath = "test_output";
+            fileSaver.backupSessionIfExists = false;
+            if (Directory.Exists(fileSaver.StoragePath))
+            {
+                Directory.Delete(fileSaver.StoragePath, true);
+            }
+
+            fileSaver.SetUp();
+
+            string fileName = "testMoveToBackup";
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+
+            fileSaver.CleanUp();
+            System.Threading.Thread.Sleep(500);
+
+            fileSaver.SetUp();
+
+            fileName = "testMoveToBackup";
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+            fileSaver.HandleText("", session.experimentName, session.ppid, session.number, fileName, UXFDataType.TrialResults);
+
+            fileSaver.CleanUp();
+
+            string testFilesDirectory = fileSaver.GetSessionPath(session.experimentName, session.ppid, session.number);
+
+            string[] directories = Directory.GetDirectories(Directory.GetParent(testFilesDirectory).ToString(), $"{FileSaver.SessionNumToName(1)}*", SearchOption.TopDirectoryOnly);
+            Assert.AreEqual(directories.Length, 1);
+
+            Directory.Delete(fileSaver.StoragePath, true);
+        }
     }
+
 }

@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using System;
 using System.IO;
 using System.Threading;
-using System.Linq;
 using System.Globalization;
 
 namespace UXF
@@ -33,6 +30,16 @@ namespace UXF
         public bool verboseDebug = false;
 
         /// <summary>
+        /// Enable backing up the session directory if it already exists when a session starts.  If
+        /// not true, this will overwrite the is the UXF runs with the same experiment name, ppid,
+        /// and session number again.
+        /// </summary>
+        [Tooltip("Enable backing up the session directory if it already exists when a session starts.  If" +
+                 "not true, this will overwrite the is the UXF runs with the same experiment name, ppid," +
+                 "and session number again.")]
+        public bool backupSessionIfExists = true;
+
+        /// <summary>
         /// An action which does nothing.
         /// </summary>
         /// <returns></returns>
@@ -46,7 +53,6 @@ namespace UXF
 
         bool quitting = false;
 
-
         /// <summary>
         /// Starts the FileSaver Worker thread.
         /// </summary>
@@ -59,6 +65,37 @@ namespace UXF
 
             quitting = false;
             Directory.CreateDirectory(base.StoragePath);
+            string sessionDirectory = GetSessionPath(session.experimentName, session.ppid, session.number);
+            if (Directory.Exists(sessionDirectory))
+            {
+                Utilities.UXFDebugLogWarning($"Session directory {sessionDirectory} already exists.");
+                if (backupSessionIfExists)
+                {
+                    string suffix = Directory.GetLastWriteTime(sessionDirectory).ToString("dd-MM-yyyy-HH-mm-FF");
+                    string backupSessionDirectory = $"{sessionDirectory}_{suffix}";
+
+                    int idx = 1;
+                    while (Directory.Exists(backupSessionDirectory))
+                    {
+                        backupSessionDirectory = $"{backupSessionDirectory}_{idx}";
+                    }
+
+                    try
+                    {
+                        Directory.Move(sessionDirectory, backupSessionDirectory);
+                        Utilities.UXFDebugLogWarning($"Trying to backup {sessionDirectory} to {backupSessionDirectory}.");
+                    }
+                    catch(Exception e)
+                    {
+                        Utilities.UXFDebugLogError($"Failed to backup {sessionDirectory} to {backupSessionDirectory} with exception ({e}): {e.Message}");
+                        throw e;
+                    }
+                }
+                else
+                {
+                    Utilities.UXFDebugLogWarning($"backupSessionIfExists is False. Content in {sessionDirectory} may be overwritten.");
+                }
+            }
 
             if (!IsActive)
             {
