@@ -74,6 +74,38 @@ namespace UXF
         }
 
         /// <summary>
+        /// Build a table from lines of TSV text.
+        /// </summary>
+        /// <param name="tsvLines"></param>
+        /// <returns></returns>
+        public static UXFDataTable FromTSV(string[] tsvLines)
+        {
+            string[] headers = tsvLines[0].Split('\t');
+            var table = new UXFDataTable(tsvLines.Length - 1, headers);
+
+            // traverse down rows
+            for (int i = 1; i < tsvLines.Length; i++)
+            {
+                string[] values = tsvLines[i].Split('\t');
+
+                // if last line, just 1 item in the row, and it is blank, then ignore it
+                if (i == tsvLines.Length - 1 && values.Length == 1 && values[0].Trim() == string.Empty ) break;
+
+                // check if number of columns is correct
+                if (values.Length != headers.Length) throw new Exception($"TSV line {i} has {values.Length} columns, but expected {headers.Length}");
+
+                // build across the row
+                var row = new UXFDataRow();
+                for (int j = 0; j < values.Length; j++)
+                    row.Add((headers[j], values[j].Trim('\"')));
+
+                table.AddCompleteRow(row);
+            }
+
+            return table;
+        }
+
+        /// <summary>
         /// Add a complete row to the table
         /// </summary>
         /// <param name="newRow"></param>
