@@ -12,7 +12,7 @@ namespace UXF
     /// </summary>
     public abstract class Tracker : MonoBehaviour
     {
-        private static string[] baseHeaders = new string[] { "time" };
+        private static string[] baseHeaders = new string[] { };
         private TrackerState currentState = TrackerState.Stopped;
 
         /// <summary>
@@ -87,7 +87,6 @@ namespace UXF
                 "Tracker measurements cannot be taken when not recording!");
             
             UXFDataRow newRow = GetCurrentValues();
-            newRow.Add(("time", Time.time));
             Data.AddCompleteRow(newRow);
         }
 

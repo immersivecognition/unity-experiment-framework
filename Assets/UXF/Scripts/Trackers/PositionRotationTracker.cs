@@ -12,7 +12,7 @@ namespace UXF
     public class PositionRotationTracker : Tracker
     {
         public override string MeasurementDescriptor => "movement";
-        public override IEnumerable<string> CustomHeader => new string[] { "pos_x", "pos_y", "pos_z", "rot_x", "rot_y", "rot_z" };
+        public override IEnumerable<string> CustomHeader => new string[] { "time", "pos_x", "pos_y", "pos_z", "rot_x", "rot_y", "rot_z" };
 
         /// <summary>
         /// Returns current position and rotation values
@@ -20,6 +20,8 @@ namespace UXF
         /// <returns></returns>
         protected override UXFDataRow GetCurrentValues()
         {
+            float time = Time.time;
+
             // get position and rotation
             Vector3 p = gameObject.transform.position;
             Vector3 r = gameObject.transform.eulerAngles;
@@ -27,6 +29,7 @@ namespace UXF
             // return position, rotation (x, y, z) as an array
             var values = new UXFDataRow()
             {
+                ("time", time),
                 ("pos_x", p.x),
                 ("pos_y", p.y),
                 ("pos_z", p.z),

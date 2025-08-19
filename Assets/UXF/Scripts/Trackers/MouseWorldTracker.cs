@@ -16,7 +16,7 @@ namespace UXF
 
         public override string MeasurementDescriptor => "mouse_world";
 
-        public override IEnumerable<string> CustomHeader => new string[] { "pos_x", "pos_y", "pos_z", };
+        public override IEnumerable<string> CustomHeader => new string[] { "time", "pos_x", "pos_y", "pos_z", };
 
         /// <summary>
         /// Returns current mouse position in world coordinates
@@ -24,12 +24,15 @@ namespace UXF
         /// <returns></returns>
         protected override UXFDataRow GetCurrentValues()
         {
+            float time = Time.time;
+
             // get position and rotation
             Vector3 p = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceFromCamera));
 
             // return position, rotation (x, y, z) as an array
             var values = new UXFDataRow()
             {
+                ("time", time),
                 ("pos_x", p.x),
                 ("pos_y", p.y),
                 ("pos_z", p.z)
