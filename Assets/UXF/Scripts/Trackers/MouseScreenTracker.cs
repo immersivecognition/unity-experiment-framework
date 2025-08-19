@@ -10,7 +10,7 @@ namespace UXF
     public class MouseScreenTracker : Tracker
     {
         public override string MeasurementDescriptor => "mouse_screen";
-        public override IEnumerable<string> CustomHeader => new string[] { "pix_x", "pix_y" };
+        public override IEnumerable<string> CustomHeader => new string[] { "time", "pix_x", "pix_y" };
 
         /// <summary>
         /// Returns current mouse position in screen coordinates
@@ -18,6 +18,8 @@ namespace UXF
         /// <returns></returns>
         protected override UXFDataRow GetCurrentValues()
         {
+            float time = Time.time;
+
             // get position and rotation
             Vector2 p = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 
@@ -25,6 +27,7 @@ namespace UXF
             // return position, rotation (x, y, z) as an array
             var values = new UXFDataRow()
             {
+                ("time", time),
                 ("pix_x", p.x),
                 ("pix_y", p.y)
             };
