@@ -1690,29 +1690,6 @@
             <seealso cref="T:BeginReadOnlyGroupAttribute"/>
             <seealso cref="T:ReadOnlyAttribute"/>
         </member>
-        <member name="T:SubjectNerd.Utilities.EditScriptableAttribute">
-            <summary>
-            Display a ScriptableObject field with an inline editor
-            </summary>
-        </member>
-        <member name="T:SubjectNerd.Utilities.ReorderableAttribute">
-            <summary>
-            Display a List/Array as a sortable list in the inspector
-            </summary>
-        </member>
-        <member name="M:SubjectNerd.Utilities.ReorderableAttribute.#ctor">
-            <summary>
-            Display a List/Array as a sortable list in the inspector
-            </summary>
-        </member>
-        <member name="M:SubjectNerd.Utilities.ReorderableAttribute.#ctor(System.String,System.Boolean,System.Boolean)">
-            <summary>
-            Display a List/Array as a sortable list in the inspector
-            </summary>
-            <param name="headerString">Customize the element name in the inspector</param>
-            <param name="isZeroIndex">If false, start element list count from 1</param>
-            <param name="isSingleLine">Try to fit the array elements in a single line</param>
-        </member>
         <member name="M:SFB.StandaloneFileBrowser.OpenFilePanel(System.String,System.String,System.String,System.Boolean)">
             <summary>
             Native open file dialog

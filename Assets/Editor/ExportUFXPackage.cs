@@ -11,9 +11,9 @@ public class ExportUFXPackage : MonoBehaviour
     static void ExportPackage()
     {
         string version;
-        if (File.Exists("Assets/UXF/VERSION.txt"))
+        if (File.Exists("Packages/com.immersivecognition.uxf/VERSION.txt"))
         {
-            version = File.ReadAllText("Assets/UXF/VERSION.txt");
+            version = File.ReadAllText("Packages/com.immersivecognition.uxf/VERSION.txt");
         }
         else
         {
@@ -26,7 +26,7 @@ public class ExportUFXPackage : MonoBehaviour
             string[] assets = new string[]
             {
                 "Assets/StreamingAssets",
-                "Assets/UXF",
+                "Packages/com.immersivecognition.uxf",
                 "Assets/WebGLTemplates"
             };
 

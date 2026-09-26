@@ -7,7 +7,14 @@
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
+/[Ll]ogs/
+/dist/
+/Package/
 /Assets/AssetStoreTools*
+/Assets/Samples/
+/Assets/Samples.meta
+__pycache__/
+*.py[cod]
 
 # Visual Studio 2015 cache directory
 /.vs/

@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "com.immersivecognition.uxf": "file:../../../Packages/com.immersivecognition.uxf",
+    "com.unity.test-framework": "1.6.0",
+    "com.unity.ugui": "2.0.0"
+  },
+  "testables": [
+    "com.immersivecognition.uxf"
+  ]
+}

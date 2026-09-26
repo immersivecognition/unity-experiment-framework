@@ -1,0 +1,278 @@
+name: Validate and package UXF
+
+on:
+  pull_request:
+  push:
+    branches: [ master ]
+    tags: [ 'v*', '[0-9]*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Validate UPM package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Validate package manifest and required files
+        shell: pwsh
+        run: |
+          $packageRoot = Join-Path $env:GITHUB_WORKSPACE 'Packages/com.immersivecognition.uxf'
+          $manifestPath = Join-Path $packageRoot 'package.json'
+          if (Test-Path -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'Assets/UXF')) { throw 'Legacy Assets/UXF source directory must not coexist with the embedded package.' }
+          if (Test-Path -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'Assets/UXF.meta')) { throw 'Legacy Assets/UXF.meta must not coexist with the embedded package.' }
+          $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+          if ($manifest.name -ne 'com.immersivecognition.uxf') { throw "Unexpected package name: $($manifest.name)" }
+          if ($manifest.version -notmatch '^\d+\.\d+\.\d+$') { throw "Package version must be semver: $($manifest.version)" }
+          if ($manifest.dependencies.'com.unity.ugui' -ne '2.0.0') { throw 'Package must declare the UGUI runtime dependency.' }
+          if ($manifest.dependencies.'com.unity.modules.unitywebrequest' -ne '1.0.0') { throw 'Package must declare the UnityWebRequest module dependency.' }
+          if (-not $manifest.samples -or $manifest.samples[0].path -ne 'Samples~') { throw 'Package manifest must advertise Samples~.' }
+          foreach ($requiredPackageFile in @('README.md', 'AGENTS.md', 'CHANGELOG.md', 'LICENSE.md')) {
+            if (-not (Test-Path -LiteralPath (Join-Path $packageRoot $requiredPackageFile))) { throw "Package $requiredPackageFile is missing" }
+          }
+          if (-not (Test-Path -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'LICENSE'))) { throw 'Root LICENSE is missing' }
+          $developmentManifest = Get-Content -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'Packages/manifest.json') -Raw | ConvertFrom-Json
+          if (-not ($developmentManifest.testables -contains 'com.immersivecognition.uxf')) { throw 'Development manifest must enable the package test assemblies.' }
+          foreach ($assemblyDefinition in @('Scripts/UXF.Runtime.asmdef', 'Scripts/Etc/Editor/UXF.Editor.asmdef', 'Tests/Editor/UXF.Tests.Editor.asmdef', 'Tests/Runtime/UXF.Tests.PlayMode.asmdef')) {
+            if (-not (Test-Path -LiteralPath (Join-Path $packageRoot $assemblyDefinition))) { throw "Assembly definition is missing: $assemblyDefinition" }
+          }
+          if (-not (Test-Path -LiteralPath (Join-Path $packageRoot 'Samples~'))) { throw 'Package Samples~ directory is missing' }
+          if (-not (Test-Path -LiteralPath (Join-Path $packageRoot 'Samples~/WebGLTemplates/UXF WebGL 2020/index.html'))) { throw 'Package samples must include the Unity 6 WebGL template.' }
+          if (-not (Test-Path -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'ci/consumer/Packages/manifest.json'))) { throw 'Clean consumer manifest is missing' }
+          foreach ($consumerAssembly in @('ci/consumer/Assets/UXF.Consumer.Tests.asmdef', 'ci/consumer/Assets/Editor/UXF.Consumer.EditorTests.asmdef')) {
+            if (-not (Test-Path -LiteralPath (Join-Path $env:GITHUB_WORKSPACE $consumerAssembly))) { throw "Clean consumer test assembly is missing: $consumerAssembly" }
+          }
+          $consumerManifest = Get-Content -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'ci/consumer/Packages/manifest.json') -Raw | ConvertFrom-Json
+          if ($consumerManifest.dependencies.'com.immersivecognition.uxf' -ne 'file:../../../Packages/com.immersivecognition.uxf') { throw 'Clean consumer must use the repository package path.' }
+          $buildSettings = Get-Content -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'ProjectSettings/EditorBuildSettings.asset') -Raw
+          if ($buildSettings -match 'Packages/com\.immersivecognition\.uxf/Samples~/') { throw 'Development build settings must not reference package sample source paths.' }
+          foreach ($retiredSource in @('Scripts/Etc/Editor/EasyEventEditor.cs', 'Scripts/Etc/ReorderableInspector/Editor/ReorderableArrayInspector.cs')) {
+            if (Test-Path -LiteralPath (Join-Path $packageRoot $retiredSource)) { throw "Retired editor source is still present: $retiredSource" }
+          }
+          foreach ($retiredAssembly in @('Plugins/System.Windows.Forms.dll', 'Plugins/Ookii.Dialogs.dll')) {
+            if (Test-Path -LiteralPath (Join-Path $packageRoot $retiredAssembly)) { throw "Retired dialog assembly is still present: $retiredAssembly" }
+          }
+          $legacyRefs = Get-ChildItem -LiteralPath (Join-Path $packageRoot 'Scripts') -Recurse -Filter '*.cs' | Select-String -Pattern 'System\.Windows\.Forms|Ookii\.Dialogs|Vista(Open|Folder|Save)FileDialog|IWin32Window'
+          if ($legacyRefs) { throw "Legacy managed dialog reference found: $($legacyRefs[0].Path):$($legacyRefs[0].LineNumber)" }
+          $legacyAndroidPermission = Get-ChildItem -LiteralPath (Join-Path $packageRoot 'Scripts') -Recurse -Filter '*.cs' | Select-String -Pattern 'forceSDCardPermission'
+          if ($legacyAndroidPermission) { throw "Legacy Android External (SDCard) permission reference found: $($legacyAndroidPermission[0].Path):$($legacyAndroidPermission[0].LineNumber)" }
+          $guidPaths = @{}
+          $importedSamplesRoot = [IO.Path]::GetFullPath((Join-Path $env:GITHUB_WORKSPACE 'Assets/Samples')).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
+          foreach ($assetRoot in @((Join-Path $env:GITHUB_WORKSPACE 'Assets'), $packageRoot)) {
+            foreach ($metaFile in Get-ChildItem -LiteralPath $assetRoot -Recurse -Filter '*.meta') {
+            $metaText = Get-Content -LiteralPath $metaFile.FullName -Raw
+            $guidLine = ($metaText -split "`r?`n" | Where-Object { $_ -match '^guid:\s*' } | Select-Object -First 1)
+            if (-not $guidLine) { throw "Meta file has no GUID: $($metaFile.FullName)" }
+            $guid = ($guidLine -replace '^guid:\s*', '').Trim()
+            if ($guid -notmatch '^[0-9a-fA-F]{32}$') { throw "Meta file has an invalid 32-character GUID: $($metaFile.FullName)" }
+            if ($metaFile.Name -like '*.cs.meta' -and $metaText -notmatch '(?m)^MonoImporter:') { throw "C# meta file is missing MonoImporter data: $($metaFile.FullName)" }
+            if ($metaText -match '(?m)^folderAsset:\s*yes' -and -not (Test-Path -LiteralPath ($metaFile.FullName.Substring(0, $metaFile.FullName.Length - 5)) -PathType Container)) { throw "Folder meta has no matching folder: $($metaFile.FullName)" }
+            $isImportedSample = [IO.Path]::GetFullPath($metaFile.FullName).StartsWith($importedSamplesRoot, [StringComparison]::OrdinalIgnoreCase)
+            if ($isImportedSample) { continue }
+            if (-not $guidPaths.ContainsKey($guid)) { $guidPaths[$guid] = @() }
+            $guidPaths[$guid] += $metaFile.FullName
+            }
+          }
+          $duplicateGuids = $guidPaths.GetEnumerator() | Where-Object { $_.Value.Count -gt 1 }
+          if ($duplicateGuids) { throw "Duplicate Unity asset GUIDs found: $($duplicateGuids[0].Key)" }
+
+      - name: Build package archive
+        id: archive
+        shell: pwsh
+        run: |
+          $manifest = Get-Content -LiteralPath 'Packages/com.immersivecognition.uxf/package.json' -Raw | ConvertFrom-Json
+          $staging = Join-Path $env:RUNNER_TEMP 'uxf-package'
+          $dist = Join-Path $env:GITHUB_WORKSPACE 'dist'
+          New-Item -ItemType Directory -Force -Path $staging, $dist | Out-Null
+          Copy-Item -Path 'Packages/com.immersivecognition.uxf/*' -Destination $staging -Recurse -Force
+          $archive = Join-Path $dist "$($manifest.name)-$($manifest.version).zip"
+          Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $archive -CompressionLevel Optimal -Force
+          $zip = [System.IO.Compression.ZipFile]::OpenRead($archive)
+          $entries = @($zip.Entries | ForEach-Object FullName)
+          $zip.Dispose()
+          foreach ($requiredEntry in @('package.json', 'README.md', 'AGENTS.md', 'AGENT-RECIPES.md', 'CHANGELOG.md', 'LICENSE.md')) {
+            if ($entries -notcontains $requiredEntry) { throw "Archive is missing $requiredEntry" }
+          }
+          if (-not ($entries -match '^Samples~/')) { throw 'Archive is missing Package Manager samples' }
+          $checksum = "$archive.sha256"
+          $hash = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+          Set-Content -LiteralPath $checksum -Value "$hash  $(Split-Path -Leaf $archive)" -NoNewline
+          "archive=$archive" >> $env:GITHUB_OUTPUT
+          "checksum=$checksum" >> $env:GITHUB_OUTPUT
+
+      - name: Upload UPM archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: uxf-upm-package
+          path: |
+            ${{ steps.archive.outputs.archive }}
+            ${{ steps.archive.outputs.checksum }}
+          if-no-files-found: error
+
+  release:
+    name: Publish tagged package release
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') }}
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: uxf-upm-package
+          path: release-artifact
+
+      - name: Verify tag and package version
+        shell: pwsh
+        run: |
+          $zip = Get-ChildItem -LiteralPath 'release-artifact' -Filter '*.zip' | Select-Object -First 1
+          $checksum = Get-ChildItem -LiteralPath 'release-artifact' -Filter '*.sha256' | Select-Object -First 1
+          if (-not $zip -or -not $checksum) { throw 'Package archive or checksum was not downloaded.' }
+          $expected = (Get-Content -LiteralPath $checksum.FullName -Raw).Trim().Split(' ')[0].ToLowerInvariant()
+          $actual = (Get-FileHash -LiteralPath $zip.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($expected -ne $actual) { throw "Package checksum mismatch: expected $expected, got $actual" }
+          $tagVersion = $env:GITHUB_REF_NAME -replace '^v', ''
+          $temp = Join-Path $env:RUNNER_TEMP 'uxf-release-package'
+          Expand-Archive -LiteralPath $zip.FullName -DestinationPath $temp -Force
+           $manifest = Get-Content -LiteralPath (Join-Path $temp 'package.json') -Raw | ConvertFrom-Json
+           if ($manifest.version -ne $tagVersion) { throw "Tag $env:GITHUB_REF_NAME does not match package version $($manifest.version)" }
+           $changelog = Get-Content -LiteralPath (Join-Path $temp 'CHANGELOG.md') -Raw
+           if ($changelog -notmatch "(?m)^##\s+$([regex]::Escape($manifest.version))(\s|$)") { throw "CHANGELOG.md has no heading for package version $($manifest.version)" }
+           "ZIP=$($zip.FullName)" >> $env:GITHUB_ENV
+          "CHECKSUM=$($checksum.FullName)" >> $env:GITHUB_ENV
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "$ZIP" "$CHECKSUM" --verify-tag --generate-notes
+
+  unity-tests:
+    name: Unity ${{ matrix.testMode }} tests (licensed runner)
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.UNITY_CI_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        testMode: [editmode, playmode]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Run Unity tests
+        uses: game-ci/unity-test-runner@v4
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 6000.3.25f1
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: test-results
+          coverageEnabled: false
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Unity test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uxf-unity-${{ matrix.testMode }}-test-results
+          path: ${{ steps.tests.outputs.artifactsPath }}
+          if-no-files-found: warn
+
+      - name: Require discovered Unity tests
+        shell: pwsh
+        env:
+          TEST_RESULTS: ${{ steps.tests.outputs.artifactsPath }}
+        run: |
+          $xmlFiles = @(Get-ChildItem -LiteralPath $env:TEST_RESULTS -Recurse -Filter '*.xml' -ErrorAction SilentlyContinue)
+          if ($xmlFiles.Count -eq 0) { throw 'Unity test runner produced no XML results.' }
+          $totalTests = 0
+          foreach ($xmlFile in $xmlFiles) {
+            [xml]$xml = Get-Content -LiteralPath $xmlFile.FullName
+            foreach ($run in $xml.SelectNodes("//*[local-name()='test-run']")) {
+              $value = 0
+              if ([int]::TryParse($run.tests, [ref]$value)) { $totalTests += $value }
+            }
+          }
+          if ($totalTests -eq 0) { throw 'Unity test runner discovered zero tests.' }
+          Write-Output "Unity tests discovered: $totalTests"
+
+  consumer-tests:
+    name: Clean UPM consumer ${{ matrix.testMode }} tests (licensed runner)
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.UNITY_CI_ENABLED == 'true' }}
+    needs: package
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        testMode: [editmode, playmode]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Download packaged UPM archive
+        uses: actions/download-artifact@v4
+        with:
+          name: uxf-upm-package
+          path: package-artifact
+
+      - name: Install the packaged archive into the clean consumer fixture
+        shell: pwsh
+        run: |
+          $zip = Get-ChildItem -LiteralPath 'package-artifact' -Filter '*.zip' | Select-Object -First 1
+          if (-not $zip) { throw 'Packaged UPM archive was not downloaded.' }
+          $destination = Join-Path $env:GITHUB_WORKSPACE 'ci/consumer-package'
+          if (Test-Path -LiteralPath $destination) { Remove-Item -LiteralPath $destination -Recurse -Force }
+          Expand-Archive -LiteralPath $zip.FullName -DestinationPath $destination -Force
+          $manifestPath = Join-Path $env:GITHUB_WORKSPACE 'ci/consumer/Packages/manifest.json'
+          $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+          $manifest.dependencies.'com.immersivecognition.uxf' = 'file:../../../ci/consumer-package'
+          $manifest | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $manifestPath
+          if (-not (Test-Path -LiteralPath (Join-Path $destination 'package.json'))) { throw 'Extracted package.json is missing.' }
+
+      - name: Run clean consumer tests
+        uses: game-ci/unity-test-runner@v4
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: ci/consumer
+          unityVersion: 6000.3.25f1
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: test-results
+          coverageEnabled: false
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload clean consumer results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uxf-consumer-${{ matrix.testMode }}-test-results
+          path: ${{ steps.tests.outputs.artifactsPath }}
+          if-no-files-found: warn
+
+      - name: Require discovered clean consumer tests
+        shell: pwsh
+        env:
+          TEST_RESULTS: ${{ steps.tests.outputs.artifactsPath }}
+        run: |
+          $xmlFiles = @(Get-ChildItem -LiteralPath $env:TEST_RESULTS -Recurse -Filter '*.xml' -ErrorAction SilentlyContinue)
+          if ($xmlFiles.Count -eq 0) { throw 'Clean consumer test runner produced no XML results.' }
+          $totalTests = 0
+          foreach ($xmlFile in $xmlFiles) {
+            [xml]$xml = Get-Content -LiteralPath $xmlFile.FullName
+            foreach ($run in $xml.SelectNodes("//*[local-name()='test-run']")) {
+              $value = 0
+              if ([int]::TryParse($run.tests, [ref]$value)) { $totalTests += $value }
+            }
+          }
+          if ($totalTests -eq 0) { throw 'Clean consumer test runner discovered zero tests.' }
+          Write-Output "Clean consumer tests discovered: $totalTests"

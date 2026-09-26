@@ -1,0 +1,5 @@
+# Clean UPM consumer fixture
+
+This is the smallest project used by CI to exercise the package-manager layout. Its manifest points at the repository's embedded package under `Packages/com.immersivecognition.uxf` with the same relative file dependency a local package consumer would use. Its smoke tests create a UI-free session through the public runtime assembly and, in EditMode, verify that the resolved package advertises `Samples~/README.md` and the Unity 6 WebGL template. The licensed CI job runs the package's testables plus these consumer tests in EditMode and PlayMode; the artifact path is substituted for the source path in that job.
+
+For a manual sample check, open **Window > Package Manager > In Project**, select UXF, choose **Samples**, and import **UXF Examples**. Open scenes from the resulting `Assets/Samples/` folder and copy the sample `StreamingAssets` fixtures into the consumer project's root `Assets/StreamingAssets` when required. For WebGL, copy `WebGLTemplates/UXF WebGL 2020` into the root `Assets/WebGLTemplates/` folder before selecting it in Player Settings.

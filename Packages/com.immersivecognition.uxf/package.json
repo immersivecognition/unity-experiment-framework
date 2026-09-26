@@ -1,0 +1,37 @@
+{
+  "name": "com.immersivecognition.uxf",
+  "displayName": "UXF - Unity Experiment Framework",
+  "version": "3.0.0",
+  "unity": "6000.3",
+  "description": "Components for building human behaviour experiments in Unity, including sessions, trials, tracking and data handlers. The repository develops this source as an embedded package.",
+  "type": "library",
+  "keywords": [
+    "experiment",
+    "research",
+    "data-collection",
+    "vr",
+    "webgl"
+  ],
+  "author": {
+    "name": "Immersive Cognition Group",
+    "url": "https://github.com/immersivecognition/unity-experiment-framework"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "com.unity.ugui": "2.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/immersivecognition/unity-experiment-framework.git"
+  },
+  "documentationUrl": "https://github.com/immersivecognition/unity-experiment-framework/wiki",
+  "changelogUrl": "https://github.com/immersivecognition/unity-experiment-framework/blob/master/CHANGELOG.md",
+  "samples": [
+    {
+      "displayName": "UXF Examples",
+      "description": "Standalone experiment examples covering automatic, manual, CSV-driven, tracking, multi-scene and Corsi-block workflows.",
+      "path": "Samples~"
+    }
+  ]
+}

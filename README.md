@@ -3,7 +3,7 @@
 </p>
 
 # UXF - Unity Experiment Framework
-A set of components which simplify human behaviour experiments developed in the Unity engine. UXF 2.0 supports experiments for VR, Desktop, as well as Web based experiments for full remote data collection, with different data output modes. This is the development project, if you want to download the package, do not clone this repository, see "Get Started" below. 
+A set of components which simplify human behaviour experiments developed in the Unity engine. UXF 3.0 is a Unity 6 Package Manager release for VR, desktop and browser experiments, with platform-specific data handlers. This is the development project; if you want to consume the package, follow "Get started" below.
 
 <p align="center">
   <a href="https://doi.org/10.3758/s13428-019-01242-0">
@@ -45,11 +45,23 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 0. Read over this Readme and the [paper](https://doi.org/10.3758/s13428-019-01242-0) to understand UXF.
 
-1. Import the latest ```UXF.unitypackage``` [release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) to your existing Unity project. (Drag the file into your project.)
+1. Install UXF through Unity Package Manager using the release tag URL below, or import the latest ```UXF.unitypackage``` [legacy release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) into your existing Unity project. (Drag the legacy file into your project.)
+
+   ```text
+   https://github.com/immersivecognition/unity-experiment-framework.git?path=Packages/com.immersivecognition.uxf#<release-tag>
+   ```
+
+   Use a release tag in the URL for reproducible projects. The package-local [README](Packages/com.immersivecognition.uxf/README.md) and [agent guide](Packages/com.immersivecognition.uxf/AGENTS.md) describe the installed package and its extension points.
+
+   The repository's development project embeds the package under `Packages/com.immersivecognition.uxf`, so UXF appears in that project's Package Manager list. Select the package's **Samples** tab and import **UXF Examples**; `ci/consumer` is the clean local fixture used to exercise a separate consumer.
 
 2. The UXF Setup Wizard will launch (or via the top menu: UXF > UXF Wizard) - Use it to fix any compatibility issues. 
 
-3. Open an example scene. (e.g. UXF -> Examples -> 2_MoveToTarget -> MoveToTargetExample)
+3. In Package Manager, select **UXF Examples** under the package's **Samples** tab and import it. Then open an example scene such as `2_MoveToTarget/MoveToTargetExample` from the imported sample folder.
+
+   The automatic, CSV and multi-scene examples also need the sample `StreamingAssets` files copied into the consumer project's root `Assets/StreamingAssets` folder. Merge with an existing folder so user files are preserved.
+
+   For WebGL, copy `WebGLTemplates/UXF WebGL 2020` from the imported sample into the project's root `Assets/WebGLTemplates/` folder before selecting that template in WebGL Player Settings.
 
 4. Press play, and use the UI to enter any details.
 
@@ -182,7 +194,9 @@ More examples are contained in the package and on the [Wiki](https://github.com/
 
 ## Development
 
-This project is developed under Unity 2018.4 LTS but should work on all recent versions of Unity. Tested and working on Unity 2018 & 2019 LTS.
+The current development baseline is Unity 6000.3.25f1. Supported editor versions and platform combinations are recorded in the release documentation; they are advertised only after the corresponding CI, player or device checks pass. Older Unity versions are not implied by the current package manifest.
+
+The repository uses an embedded-package workflow: edit the authoritative source in `Packages/com.immersivecognition.uxf`, consume it from this development project through Package Manager, and validate a separate installation with `ci/consumer`. The [package development workflow](docs/maintenance/Package-development-workflow.md) explains the source, sample, test, archive and migration boundaries.
 
 ## Documentation
 
