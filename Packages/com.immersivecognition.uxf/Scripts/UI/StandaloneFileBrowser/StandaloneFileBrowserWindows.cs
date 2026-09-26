@@ -107,7 +107,9 @@ namespace SFB {
             if (!string.IsNullOrEmpty(directory)) {
                 callback = (windowHandle, message, lParam, data) => {
                     if (message == BFFM_INITIALIZED) {
-                        SendMessage(windowHandle, BFFM_SETSELECTIONW, IntPtr.Zero, directory);
+                        // wParam must be TRUE when lParam points to a path string;
+                        // FALSE tells the shell to interpret it as an ITEMIDLIST.
+                        SendMessage(windowHandle, BFFM_SETSELECTIONW, new IntPtr(1), directory);
                     }
                     return 0;
                 };
