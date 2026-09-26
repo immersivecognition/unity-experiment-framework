@@ -2,7 +2,8 @@
   "name": "UXF.Tests.PlayMode",
   "rootNamespace": "UXF.Tests",
   "references": [
-    "UXF.Runtime"
+    "UXF.Runtime",
+    "Unity.InputSystem"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

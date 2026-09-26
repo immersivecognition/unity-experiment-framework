@@ -31,10 +31,10 @@ namespace UXF.UI
 		/// </summary>
 		private void HideIfClickedOutside ()
 		{
-			if (Input.GetMouseButtonDown(0) && CheckVisible() &&
+			if (UXFInput.GetMouseButtonDown(0) && CheckVisible() &&
 				!RectTransformUtility.RectangleContainsScreenPoint (
 					this.GetComponent<RectTransform>(),
-					Input.mousePosition,
+					UXFInput.MousePosition,
 					null))
 			{
 				onClickOutsidePanel.Invoke ();

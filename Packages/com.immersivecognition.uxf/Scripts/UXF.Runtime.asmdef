@@ -1,7 +1,7 @@
 {
   "name": "UXF.Runtime",
   "rootNamespace": "UXF",
-  "references": [],
+  "references": ["Unity.InputSystem"],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,

@@ -57,7 +57,7 @@ The current development-editor Console import diagnostics were triaged through `
 | iOS if retained | AOT/stripping, supported handler/output/input paths and device lifecycle | Wiki claim only; no device validation |
 | Built-in rendering | All samples/UI/materials correct after upgrade | Configured, no visual run |
 | URP/HDRP if advertised | Core behavior plus explicit sample-material policy; no pink/invisible required content | No active pipeline dependency; not validated |
-| Legacy input / Both / Input System only | Pointer/keyboard UI, trackers, fallback EventSystem and additive scenes work as documented | Legacy configured; other modes unverified |
+| Legacy input / Both / Input System only | Pointer/keyboard UI, trackers, fallback and scene-owned EventSystems and additive scenes work as documented | Package input bridge and runtime EventSystem conversion implemented; local Input System-only run pending because Unity Licensing Client timed out; CI clean-consumer matrix now covers legacy and Input System-only EditMode/PlayMode |
 
 Live cloud tests must be opt-in, use disposable resources and synthetic data, and record cleanup. Browser-beforeunload cannot be treated as guaranteed durable upload; test normal completion and document unavoidable close/offline limitations.
 

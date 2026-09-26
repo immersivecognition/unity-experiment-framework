@@ -29,6 +29,7 @@ jobs:
           if ($manifest.name -ne 'com.immersivecognition.uxf') { throw "Unexpected package name: $($manifest.name)" }
           if ($manifest.version -notmatch '^\d+\.\d+\.\d+$') { throw "Package version must be semver: $($manifest.version)" }
           if ($manifest.dependencies.'com.unity.ugui' -ne '2.0.0') { throw 'Package must declare the UGUI runtime dependency.' }
+          if ($manifest.dependencies.'com.unity.inputsystem' -ne '1.16.0') { throw 'Package must declare the Input System runtime dependency.' }
           if ($manifest.dependencies.'com.unity.modules.unitywebrequest' -ne '1.0.0') { throw 'Package must declare the UnityWebRequest module dependency.' }
           if (-not $manifest.samples -or $manifest.samples[0].path -ne 'Samples~') { throw 'Package manifest must advertise Samples~.' }
           foreach ($requiredPackageFile in @('README.md', 'AGENTS.md', 'CHANGELOG.md', 'LICENSE.md')) {
@@ -204,7 +205,7 @@ jobs:
           Write-Output "Unity tests discovered: $totalTests"
 
   consumer-tests:
-    name: Clean UPM consumer ${{ matrix.testMode }} tests (licensed runner)
+    name: Clean UPM consumer ${{ matrix.inputBackend }} ${{ matrix.testMode }} tests (licensed runner)
     if: ${{ github.event_name == 'workflow_dispatch' || vars.UNITY_CI_ENABLED == 'true' }}
     needs: package
     runs-on: ubuntu-latest
@@ -212,6 +213,7 @@ jobs:
       fail-fast: false
       matrix:
         testMode: [editmode, playmode]
+        inputBackend: [legacy, inputsystem]
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -236,6 +238,17 @@ jobs:
           $manifest | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $manifestPath
           if (-not (Test-Path -LiteralPath (Join-Path $destination 'package.json'))) { throw 'Extracted package.json is missing.' }
 
+      - name: Configure Input System-only consumer
+        if: matrix.inputBackend == 'inputsystem'
+        shell: pwsh
+        run: |
+          $source = Join-Path $env:GITHUB_WORKSPACE 'ProjectSettings/ProjectSettings.asset'
+          $destination = Join-Path $env:GITHUB_WORKSPACE 'ci/consumer/ProjectSettings/ProjectSettings.asset'
+          $settings = Get-Content -LiteralPath $source -Raw
+          if ($settings -notmatch 'activeInputHandler: 0') { throw 'Development PlayerSettings input handling has changed.' }
+          $settings = $settings -replace 'activeInputHandler: 0', 'activeInputHandler: 1'
+          Set-Content -LiteralPath $destination -Value $settings
+
       - name: Run clean consumer tests
         uses: game-ci/unity-test-runner@v4
         id: tests
@@ -255,7 +268,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: uxf-consumer-${{ matrix.testMode }}-test-results
+          name: uxf-consumer-${{ matrix.inputBackend }}-${{ matrix.testMode }}-test-results
           path: ${{ steps.tests.outputs.artifactsPath }}
           if-no-files-found: warn
 

@@ -15,11 +15,37 @@ namespace UXF.UI
 
         public UnityEvent onReturn;
 
-        void Start()
+        void OnEnable()
         {
             inputField = GetComponent<InputField>();
+#if ENABLE_INPUT_SYSTEM
+            // OnGUI does not receive keyboard events in Input System-only players.
+            inputField.onSubmit.AddListener(Submit);
+#endif
         }
 
+#if ENABLE_INPUT_SYSTEM
+        void OnDisable()
+        {
+            if (inputField != null) inputField.onSubmit.RemoveListener(Submit);
+        }
+
+        void Submit(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+            onReturn.Invoke();
+            StartCoroutine(RefocusNextFrame());
+        }
+
+        IEnumerator RefocusNextFrame()
+        {
+            // InputField finishes deactivation after invoking onSubmit.
+            yield return null;
+            if (inputField == null || !inputField.isActiveAndEnabled) yield break;
+            inputField.Select();
+            inputField.ActivateInputField();
+        }
+#else
         void OnGUI()
         {
             if (inputField.isFocused &&
@@ -31,5 +57,6 @@ namespace UXF.UI
                 inputField.ActivateInputField();
             }
         }
+#endif
     }
 }

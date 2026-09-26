@@ -17,7 +17,7 @@ namespace UXF.UI
 
 		void Update () 
 		{
-			if (Input.GetKeyDown(eventKey))
+			if (UXFInput.GetKeyDown(eventKey))
 				onKeypress.Invoke();
 		}
 	}

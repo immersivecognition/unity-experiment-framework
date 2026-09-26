@@ -10,7 +10,7 @@ For the current development repository, add this Git URL in **Window > Package M
 https://github.com/immersivecognition/unity-experiment-framework.git?path=Packages/com.immersivecognition.uxf#<release-tag>
 ```
 
-Use a release tag instead of `master` for a reproducible project. The package requires Unity 6000.3 or newer for this release line and declares UGUI plus UnityWebRequest as package dependencies. The package is hosted inside the development repository; the `?path=Packages/com.immersivecognition.uxf` suffix is required.
+Use a release tag instead of `master` for a reproducible project. The package requires Unity 6000.3 or newer for this release line and declares UGUI, Input System and UnityWebRequest as package dependencies. The package is hosted inside the development repository; the `?path=Packages/com.immersivecognition.uxf` suffix is required.
 
 The repository's own development project embeds this package under `Packages/com.immersivecognition.uxf`, so it appears under Package Manager's **In Project** list and exposes the **UXF Examples** sample. A separate consumer can install the same package through the Git URL above or a local `file:` dependency, as exercised by `ci/consumer`.
 
@@ -25,6 +25,8 @@ After installation, core runtime scripts are under `Scripts`; editor tooling is 
 5. For WebGL, copy `Assets/Samples/<package>/3.0.0/UXF Examples/WebGLTemplates/UXF WebGL 2020` into the project's root `Assets/WebGLTemplates/` folder, then select **UXF WebGL 2020** in WebGL Player Settings. Unity does not discover custom templates from `Assets/Samples/` directly.
 
 The `[UXF_Rig]` Session component is enabled by default and only runs its lifecycle in play mode. If a rig imported from an older UXF version still shows Session disabled, enable it and apply the prefab override (or re-import the sample). UXF's editor validation is side-effect-free, so opening or inspecting the rig should not dirty the scene.
+
+UXF's pointer, key and UI components use the Input System when **Active Input Handling** is **Input System Package** or **Both**. At runtime, an active `[UXF_Rig]` replaces a legacy `StandaloneInputModule` on its own or scene-owned EventSystem with `InputSystemUIInputModule`; it leaves scene assets unchanged. If you do not use a UXF rig and supply your own EventSystem, select `InputSystemUIInputModule` yourself. In Input System-only projects, custom experiment scripts must also migrate any direct `UnityEngine.Input` calls. Re-import **UXF Examples** after updating the package to refresh previously imported sample scripts; preserve any edits you made to those copies first.
 
 If UXF is not listed after changing the package source or adding a Git URL, let Package Manager finish resolving packages or restart the Unity editor once. Do not open scenes directly from `Samples~`; that folder is package source and remains hidden by design.
 

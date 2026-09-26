@@ -25,7 +25,8 @@ namespace UXF
         protected override UXFDataRow GetCurrentValues()
         {
             // get position and rotation
-            Vector3 p = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceFromCamera));
+            Vector2 mousePosition = UXFInput.MousePosition;
+            Vector3 p = mainCamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, distanceFromCamera));
 
             // return position, rotation (x, y, z) as an array
             var values = new UXFDataRow()

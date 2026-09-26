@@ -3,6 +3,7 @@
 ## 3.0.0
 
 - Major release for the Unity 6 / UPM package line. Review the package migration and platform validation notes before upgrading an existing project.
+- UXF pointer/key reads and rig-managed EventSystems now use the Input System backend when enabled, including Input System-only consumer projects.
 
 - Moved the authoritative package source to `Packages/com.immersivecognition.uxf` so the development project consumes the same embedded package source that CI archives and consumers install.
 - Added package development workflow documentation, updated the Git URL path and changed the clean consumer fixture to use the embedded package path.

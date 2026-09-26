@@ -19,7 +19,7 @@ namespace UXF
         protected override UXFDataRow GetCurrentValues()
         {
             // get position and rotation
-            Vector2 p = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            Vector2 p = UXFInput.MousePosition;
 
 
             // return position, rotation (x, y, z) as an array

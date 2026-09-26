@@ -7,3 +7,5 @@ For a development checkout, those files are already present. In a clean consumer
 If you build WebGL, copy the selected template folder from `WebGLTemplates/` into the consumer project's root `Assets/WebGLTemplates/` folder. Unity discovers custom WebGL templates only from that project path. Select `UXF WebGL 2020` in WebGL Player Settings; the 2019 folder is retained only as a historical migration reference.
 
 The sample data is deliberately kept outside the runtime package assembly. If an agent is diagnosing a sample, report the imported sample version, the scene name and whether these StreamingAssets files were copied.
+
+The examples use `UXFInput` for mouse and key reads, so they can run with **Active Input Handling** set to **Input System Package**. Each scene's active UXF rig switches its EventSystem to `InputSystemUIInputModule` at runtime; no scene-asset change is needed. Package Manager imports are copies: after updating UXF, re-import **UXF Examples** to refresh old scripts, keeping a backup of any local changes first.

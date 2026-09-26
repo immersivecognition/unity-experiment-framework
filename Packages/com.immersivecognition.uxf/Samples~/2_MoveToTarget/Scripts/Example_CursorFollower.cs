@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UXF;
 
 namespace UXFExamples
 {
@@ -12,7 +13,7 @@ namespace UXFExamples
         // Update is called once per frame
         void Update()
         {
-            Vector3 mousePos = Input.mousePosition;
+            Vector2 mousePos = UXFInput.MousePosition;
 			Vector3 worldPos = cam.ScreenToWorldPoint(
 				new Vector3(mousePos.x, mousePos.y, 1f)
 			);

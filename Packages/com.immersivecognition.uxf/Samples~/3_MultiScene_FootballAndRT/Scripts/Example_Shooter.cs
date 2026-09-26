@@ -33,7 +33,7 @@ namespace UXFExamples
                 Plane plane = new Plane(Vector3.forward, transform.position);
 
                 // where is my mouse on the plane?
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Ray ray = Camera.main.ScreenPointToRay(UXFInput.MousePosition);
                 float distance;
                 if (plane.Raycast(ray, out distance))
                 {
@@ -49,7 +49,7 @@ namespace UXFExamples
                     ball.angularVelocity = Vector3.zero;
 
                     // launch when clicked
-                    if (Input.GetMouseButtonDown(0))
+                    if (UXFInput.GetMouseButtonDown(0))
                     {
 #if UNITY_6000
                         ball.linearVelocity = launchVelocity;

@@ -11,7 +11,7 @@ Read `README.md` and the installed package version before editing. This file is 
 - Editor tooling lives under `Scripts/Etc/Editor`; UI and platform integrations are optional. Keep `UnityEditor` out of runtime code.
 - `UXF.Runtime` is the player-facing assembly; `UXF.Editor`, `UXF.Form.Editor` and `UXF.HideIf.Editor` contain editor-only drawers. Tests are isolated in `UXF.Tests.Editor` and `UXF.Tests.PlayMode`; do not add NUnit or UnityEditor references to runtime code.
 - The bundled Windows file-dialog integration uses Win32 P/Invoke and does not impose the legacy `.NET Framework` / `NET_Unity_4_8` API profile. The package target is `.NET Standard 2.1`; validate any project-specific dependency that requires Framework.
-- The package manifest declares UGUI 2.0.0 because the optional UI components use `UnityEngine.UI`; core Session/Block/Trial code can still be used without adding a `UIController`.
+- The package manifest declares UGUI 2.0.0 and Input System 1.16.0 for the UI and input compatibility components; core Session/Block/Trial code can still be used without adding a `UIController`.
 - Full domain and scene reloads remain the validated play-session configuration. Runtime reset hooks clear known static Session, SessionLogger and random-generator state even when domain reload is disabled, but fast Enter Play Mode remains unvalidated while scene reload is disabled because component and integration state can persist.
 - Android FileSaver builds use `PersistentDataPath` (app-private storage). The package no longer enables or requires Unity's legacy External (SDCard) permission; a different storage provider must document and own any platform permission it needs.
 
