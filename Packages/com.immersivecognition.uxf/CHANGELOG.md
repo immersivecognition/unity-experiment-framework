@@ -4,7 +4,8 @@
 
 - Major release for the Unity 6 / UPM package line. Review the package migration and platform validation notes before upgrading an existing project.
 - Added Input System dependency and runtime input bridge for UXF pointer/key reads; the rig switches its own and scene-owned legacy UI input modules at runtime so Input System-only consumers can use the UI.
-- Fixed the Windows folder browser's initial-path callback passing a string as a shell item ID, which could corrupt native state and cause a stack overflow.
+- Corrected the Windows folder browser's initial-path callback flag so the shell reads its string path correctly.
+- Fixed Windows `BROWSEINFO` marshalling by passing `pszDisplayName` through an unmanaged output buffer; a `StringBuilder` field cannot be marshalled inside this native struct.
 - Prevented the UXF directory button from opening a native dialog before its click event finishes, and blocked repeated Windows folder dialogs during modal message dispatch.
 
 - Moved the authoritative package source to `Packages/com.immersivecognition.uxf` so the development project consumes it as an embedded Package Manager package; updated the Git installation path, clean consumer fixture, exporter and CI archive workflow.

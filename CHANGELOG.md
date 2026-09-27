@@ -4,7 +4,7 @@
 
 - Major release for the Unity 6 / UPM package line. Review the package migration and platform validation notes before upgrading an existing project.
 - UXF pointer/key reads and rig-managed EventSystems now use the Input System backend when enabled, including Input System-only consumer projects.
-- Fixed a native parameter flag in the Windows folder picker that could cause a stack overflow when opening the directory selector.
+- Corrected Windows folder browser path selection and `BROWSEINFO` output-buffer marshalling.
 - Deferred the directory button's native dialog until the click event completes and guarded against a second Windows folder dialog opening while one is active.
 
 - Moved the authoritative package source to `Packages/com.immersivecognition.uxf` so the development project consumes the same embedded package source that CI archives and consumers install.

@@ -57,7 +57,7 @@ namespace SFB {
         private struct BrowseInfo {
             public IntPtr hwndOwner;
             public IntPtr pidlRoot;
-            public StringBuilder pszDisplayName;
+            public IntPtr pszDisplayName;
             [MarshalAs(UnmanagedType.LPWStr)] public string lpszTitle;
             public uint ulFlags;
             public IntPtr lpfn;
@@ -127,16 +127,26 @@ namespace SFB {
                 };
             }
 
-            BrowseInfo browseInfo = new BrowseInfo {
-                hwndOwner = GetActiveWindow(),
-                pszDisplayName = new StringBuilder(FileBufferCapacity),
-                lpszTitle = title,
-                ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE,
-                lpfn = callback == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(callback)
-            };
+            // BROWSEINFO.pszDisplayName is an output pointer. StringBuilder cannot
+            // be marshalled as a field inside a sequential struct, so provide the
+            // native API with an explicitly allocated writable buffer.
+            IntPtr displayNameBuffer = Marshal.AllocHGlobal(FileBufferCapacity * sizeof(char));
+            IntPtr itemIdList = IntPtr.Zero;
+            try {
+                BrowseInfo browseInfo = new BrowseInfo {
+                    hwndOwner = GetActiveWindow(),
+                    pszDisplayName = displayNameBuffer,
+                    lpszTitle = title,
+                    ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE,
+                    lpfn = callback == null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(callback)
+                };
 
-            IntPtr itemIdList = SHBrowseForFolder(ref browseInfo);
-            GC.KeepAlive(callback);
+                itemIdList = SHBrowseForFolder(ref browseInfo);
+                GC.KeepAlive(callback);
+            }
+            finally {
+                Marshal.FreeHGlobal(displayNameBuffer);
+            }
             if (itemIdList == IntPtr.Zero) return new string[0];
 
             try {
