@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="media/banner-2-0-small.png">
+  <img src="media/banner-2-0-small.webp">
 </p>
 
 # UXF - Unity Experiment Framework
-A set of components which simplify human behaviour experiments developed in the Unity engine. UXF 2.0 supports experiments for VR, Desktop, as well as Web based experiments for full remote data collection, with different data output modes. This is the development project, if you want to download the package, do not clone this repository, see "Get Started" below. 
+A set of components which simplify human behaviour experiments developed in the Unity engine. UXF 3.0 is a Unity 6 Package Manager release for VR, desktop and browser experiments, with platform-specific data handlers. This is the development project; if you want to consume the package, follow "Get started" below.
 
 <p align="center">
   <a href="https://doi.org/10.3758/s13428-019-01242-0">
@@ -43,17 +43,31 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 ## Get started
 
-0. Read over this Readme and the [paper](https://doi.org/10.3758/s13428-019-01242-0) to understand UXF.
+1. In Unity, open **Window > Package Manager**, click **+**, and choose **Add package from git URL**.
 
-1. Import the latest ```UXF.unitypackage``` [release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) to your existing Unity project. (Drag the file into your project.)
+   ```text
+   https://github.com/immersivecognition/unity-experiment-framework.git?path=Packages/com.immersivecognition.uxf
+   ```
 
-2. The UXF Setup Wizard will launch (or via the top menu: UXF > UXF Wizard) - Use it to fix any compatibility issues. 
+   Paste the URL into the field and click **Add**. Unity will install UXF from the repository's default branch; you don't need to add a tag.
 
-3. Open an example scene. (e.g. UXF -> Examples -> 2_MoveToTarget -> MoveToTargetExample)
+   Or give the URL of this page to your Claude Code or ChatGPT agent to install it for you.
 
-4. Press play, and use the UI to enter any details.
+2. In Package Manager, select UXF and open its **Samples** tab. Click **Import** next to **UXF Examples**.
 
-5. Press start to begin the session.
+3. Open an example scene from the imported `Assets/Samples/` folder. The automatic, CSV and multi-scene examples also need the sample `StreamingAssets` files copied into the project's root `Assets/StreamingAssets` folder. Merge with any existing folder so user files are preserved.
+
+The example scenes require **Universal Render Pipeline (URP) 17.3**. Install URP and assign its Render Pipeline Asset to the quality levels you use before opening the scenes. The core UXF package can be used without URP. See the [sample setup guide](Packages/com.immersivecognition.uxf/Samples~/README.md) for setup details.
+
+4. Open **UXF > UXF Wizard** and review any compatibility suggestions for your build target.
+
+5. Press Play, enter the participant details, and click **Start** to begin the session.
+
+For WebGL, copy `WebGLTemplates/UXF WebGL 2020` from the imported sample into the project's root `Assets/WebGLTemplates/` folder before selecting that template in WebGL Player Settings.
+
+## Legacy releases and older Unity versions
+
+UXF 3.0 requires Unity 6000.3 or newer. Older Unity Editor versions are outside the support range for UXF 3.0. If an existing project must stay on an older Unity version, use a matching historical UXF release from the [Releases](https://github.com/immersivecognition/unity-experiment-framework/releases) page. Legacy releases and the `.unitypackage` distribution are no longer maintained for the current package line. Do not install a `.unitypackage` and the UPM package in the same project.
 
 Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki) for more details.
 
@@ -182,7 +196,11 @@ More examples are contained in the package and on the [Wiki](https://github.com/
 
 ## Development
 
-This project is developed under Unity 2018.4 LTS but should work on all recent versions of Unity. Tested and working on Unity 2018 & 2019 LTS.
+The current development baseline is Unity 6000.3.25f1. Supported editor versions and platform combinations are recorded in the release documentation; they are advertised only after the corresponding CI, player or device checks pass. Older Unity versions are not implied by the current package manifest.
+
+The repository uses an embedded-package workflow: edit the authoritative source in `Packages/com.immersivecognition.uxf`, consume it from this development project through Package Manager, and validate a separate installation with `ci/consumer`. The [package development workflow](docs/maintenance/Package-development-workflow.md) explains the source, sample, test, archive and migration boundaries.
+
+Before a change is accepted for merge, all EditMode and PlayMode tests in the development project and clean consumer must pass locally in Unity 6000.3.25f1. Record the test results and any platform or backend limitations in the pull request. Package checks in CI do not replace this requirement.
 
 ## Documentation
 
