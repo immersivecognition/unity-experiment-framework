@@ -47,7 +47,7 @@ The current development-editor Console import diagnostics were triaged through `
 
 | Candidate configuration | Required behavior before advertising support | Current evidence |
 | --- | --- | --- |
-| Windows x64 Mono | Startup, UI, tracking, local output, dialog open/cancel/save, session stop/quit | Win32 P/Invoke adapter passes source-level compilation; runtime dialog flow not exercised |
+| Windows x64 Mono | Startup, UI, tracking, local output, dialog open/cancel/save, session stop/quit | Unity Editor PlayMode reentry regression passed (1/1); Windows harness passed nested-open and exception-reset checks. Real native dialog open/cancel/select remains unverified |
 | Windows x64 IL2CPP | Same plus native/managed plugin and stripping/AOT compatibility | Not built |
 | Web player, selected desktop browsers | Template loading, input, settings, Unicode interop, download/clipboard, fake HTTP/cloud, upload completion/errors | Interop bridge migrated to `UTF8ToString`; not built/run |
 | Web hosting variants | Actual selected compression/MIME/decompression behavior; HTTPS/CORS; CDN failure; page close with pending writes | Not exercised |

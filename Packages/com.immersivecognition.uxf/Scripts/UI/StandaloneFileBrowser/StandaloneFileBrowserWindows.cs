@@ -12,6 +12,7 @@ namespace SFB {
     /// legacy managed desktop dialog assemblies.
     /// </summary>
     public class StandaloneFileBrowserWindows : IStandaloneFileBrowser {
+        private bool folderDialogOpen;
         private const int OFN_ALLOWMULTISELECT = 0x00000200;
         private const int OFN_EXPLORER = 0x00080000;
         private const int OFN_FILEMUSTEXIST = 0x00001000;
@@ -103,6 +104,17 @@ namespace SFB {
         }
 
         public string[] OpenFolderPanel(string title, string directory, bool multiselect) {
+            if (folderDialogOpen) return new string[0];
+            folderDialogOpen = true;
+            try {
+                return OpenFolderPanelCore(title, directory);
+            }
+            finally {
+                folderDialogOpen = false;
+            }
+        }
+
+        protected virtual string[] OpenFolderPanelCore(string title, string directory) {
             BrowseCallbackProc callback = null;
             if (!string.IsNullOrEmpty(directory)) {
                 callback = (windowHandle, message, lParam, data) => {
