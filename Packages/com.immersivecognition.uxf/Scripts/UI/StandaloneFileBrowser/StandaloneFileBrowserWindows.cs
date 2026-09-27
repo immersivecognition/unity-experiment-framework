@@ -143,10 +143,13 @@ namespace SFB {
             int initializeResult = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
             if (initializeResult < 0) Marshal.ThrowExceptionForHR(initializeResult);
 
+            Guid fileOpenDialogClassId = FileOpenDialogClassId;
+            Guid fileOpenDialogInterfaceId = FileOpenDialogInterfaceId;
+            Guid shellItemInterfaceId = ShellItemInterfaceId;
             IFileOpenDialog dialog = null;
             try {
-                int result = CoCreateInstance(ref FileOpenDialogClassId, IntPtr.Zero, CLSCTX_INPROC_SERVER,
-                    ref FileOpenDialogInterfaceId, out dialog);
+                int result = CoCreateInstance(ref fileOpenDialogClassId, IntPtr.Zero, CLSCTX_INPROC_SERVER,
+                    ref fileOpenDialogInterfaceId, out dialog);
                 ThrowIfFailed(result);
 
                 uint options;
@@ -159,7 +162,7 @@ namespace SFB {
                 if (!string.IsNullOrEmpty(directory) && Directory.Exists(directory)) {
                     IShellItem initialFolder = null;
                     try {
-                        result = SHCreateItemFromParsingName(directory, IntPtr.Zero, ref ShellItemInterfaceId, out initialFolder);
+                        result = SHCreateItemFromParsingName(directory, IntPtr.Zero, ref shellItemInterfaceId, out initialFolder);
                         if (result >= 0) ThrowIfFailed(dialog.SetDefaultFolder(initialFolder));
                     }
                     finally {
