@@ -10,7 +10,7 @@ For the current development repository, add this Git URL in **Window > Package M
 https://github.com/immersivecognition/unity-experiment-framework.git?path=Packages/com.immersivecognition.uxf#<release-tag>
 ```
 
-Use a release tag instead of `master` for a reproducible project. The package requires Unity 6000.3 or newer for this release line and declares UGUI, Input System and UnityWebRequest as package dependencies. The package is hosted inside the development repository; the `?path=Packages/com.immersivecognition.uxf` suffix is required.
+Use a release tag instead of `master` for a reproducible project. The package requires Unity 6000.3 or newer for this release line and declares UGUI, Input System, and UnityWebRequest as package dependencies. UXF runtime scripts do not reference URP APIs and installing the runtime package does not install URP. URP 17.3 is an optional project dependency for the examples; the checked-in sample materials have not yet been converted from Built-in shaders. Follow the [sample conversion steps](Samples~/README.md) before reviewing them in a URP project. The package is hosted inside the development repository; the `?path=Packages/com.immersivecognition.uxf` suffix is required.
 
 The repository's own development project embeds this package under `Packages/com.immersivecognition.uxf`, so it appears under Package Manager's **In Project** list and exposes the **UXF Examples** sample. A separate consumer can install the same package through the Git URL above or a local `file:` dependency, as exercised by `ci/consumer`.
 
@@ -23,6 +23,8 @@ After installation, core runtime scripts are under `Scripts`; editor tooling is 
 3. Click **Import** beside **UXF Examples**. Unity copies the sample into `Assets/Samples/`.
 4. Open the scene you want from that imported folder. For the automatic, CSV and multi-scene examples, copy the sample's `StreamingAssets` fixtures into the project's root `Assets/StreamingAssets` folder and merge with existing files.
 5. For WebGL, copy `Assets/Samples/<package>/3.0.0/UXF Examples/WebGLTemplates/UXF WebGL 2020` into the project's root `Assets/WebGLTemplates/` folder, then select **UXF WebGL 2020** in WebGL Player Settings. Unity does not discover custom templates from `Assets/Samples/` directly.
+
+The example scenes use URP 17.3; the core UXF runtime remains render-pipeline-agnostic. The Standard and fire-particle sample materials have been converted to URP shaders. Procedural skyboxes retain Unity's built-in skybox shader, supported by URP. `ExampleGlow` remains on Built-in Unlit/Color and needs visual checking; if it appears pink, change it to **Universal Render Pipeline/Unlit**. In **Project Settings > Quality**, assign the URP Asset to each quality level you use; a quality-level assignment overrides **Graphics > Default Render Pipeline**. The Graphics default applies only when that quality level has no override.
 
 The `[UXF_Rig]` Session component is enabled by default and only runs its lifecycle in play mode. If a rig imported from an older UXF version still shows Session disabled, enable it and apply the prefab override (or re-import the sample). UXF's editor validation is side-effect-free, so opening or inspecting the rig should not dirty the scene.
 

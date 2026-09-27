@@ -3,6 +3,7 @@
 ## 3.0.0
 
 - Major release for the Unity 6 / UPM package line. Review the package migration and platform validation notes before upgrading an existing project.
+- UXF runtime assemblies remain render-pipeline-agnostic. Converted the Standard and fire-particle sample materials for URP 17.3; procedural skyboxes retain Unity's URP-compatible built-in skybox shader. `ExampleGlow` remains on Built-in Unlit/Color and requires visual validation.
 - Added Input System dependency and runtime input bridge for UXF pointer/key reads; the rig switches its own and scene-owned legacy UI input modules at runtime so Input System-only consumers can use the UI.
 - Windows folder selection now uses the recommended Vista-and-newer Common Item Dialog (`IFileOpenDialog` with `FOS_PICKFOLDERS`), including initial folders, multiselect, cancel handling and an STA COM thread. Windows file/save selection continues to use the common-dialog APIs.
 - Prevented the UXF directory button from opening a native dialog before its click event finishes, and blocked repeated Windows folder dialogs during modal message dispatch.

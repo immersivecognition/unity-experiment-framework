@@ -59,6 +59,8 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 3. In Package Manager, select **UXF Examples** under the package's **Samples** tab and import it. Then open an example scene such as `2_MoveToTarget/MoveToTargetExample` from the imported sample folder.
 
+   The examples are being migrated to **Universal Render Pipeline (URP)**, while UXF runtime scripts remain render-pipeline-agnostic. The checked-in sample materials are still authored for Built-in Render Pipeline, so URP users must convert supported materials and replace unsupported legacy effects as described in the [sample guide](Packages/com.immersivecognition.uxf/Samples~/README.md). Assign the URP Asset to each quality level you use under **Project Settings > Quality**; this per-quality setting overrides **Project Settings > Graphics > Default Render Pipeline**. The Graphics default is used only when that quality level has no override.
+
    The automatic, CSV and multi-scene examples also need the sample `StreamingAssets` files copied into the consumer project's root `Assets/StreamingAssets` folder. Merge with an existing folder so user files are preserved.
 
    For WebGL, copy `WebGLTemplates/UXF WebGL 2020` from the imported sample into the project's root `Assets/WebGLTemplates/` folder before selecting that template in WebGL Player Settings.

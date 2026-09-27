@@ -55,8 +55,9 @@ The current development-editor Console import diagnostics were triaged through `
 | macOS Intel/Apple Silicon | Native bundle architecture, dialog behavior, paths and local output | Bundle present; architecture/runtime unverified |
 | Linux x64 | Native dependency availability, file dialogs, path conversion and output | Native wrapper found; matching binary not found |
 | iOS if retained | AOT/stripping, supported handler/output/input paths and device lifecycle | Wiki claim only; no device validation |
-| Built-in rendering | All samples/UI/materials correct after upgrade | Configured, no visual run |
-| URP/HDRP if advertised | Core behavior plus explicit sample-material policy; no pink/invisible required content | No active pipeline dependency; not validated |
+| Built-in rendering | All samples/UI/materials correct after upgrade | Configured; sample materials authored for Built-in, no visual run |
+| URP | Inspect converted materials and all sample scenes; confirm remaining `ExampleGlow` shader renders correctly or replace it | URP 17.3 configured; 11 Standard/particle materials converted; four procedural skyboxes retained (URP-supported); `ExampleGlow` still uses Built-in Unlit/Color and needs visual validation |
+| HDRP | Explicit compatibility policy and visual run | Not supported or validated for sample visuals; runtime stays pipeline-agnostic |
 | Legacy input / Both / Input System only | Pointer/keyboard UI, trackers, fallback and scene-owned EventSystems and additive scenes work as documented | Package input bridge and runtime EventSystem conversion implemented; local Input System-only run pending because Unity Licensing Client timed out; CI clean-consumer matrix now covers legacy and Input System-only EditMode/PlayMode |
 
 Live cloud tests must be opt-in, use disposable resources and synthetic data, and record cleanup. Browser-beforeunload cannot be treated as guaranteed durable upload; test normal completion and document unavoidable close/offline limitations.
