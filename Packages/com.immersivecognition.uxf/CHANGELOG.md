@@ -4,8 +4,7 @@
 
 - Major release for the Unity 6 / UPM package line. Review the package migration and platform validation notes before upgrading an existing project.
 - Added Input System dependency and runtime input bridge for UXF pointer/key reads; the rig switches its own and scene-owned legacy UI input modules at runtime so Input System-only consumers can use the UI.
-- Corrected the Windows folder browser's initial-path callback flag so the shell reads its string path correctly.
-- Fixed Windows `BROWSEINFO` marshalling by passing `pszDisplayName` through an unmanaged output buffer; a `StringBuilder` field cannot be marshalled inside this native struct.
+- Windows folder selection now uses the recommended Vista-and-newer Common Item Dialog (`IFileOpenDialog` with `FOS_PICKFOLDERS`), including initial folders, multiselect, cancel handling and an STA COM thread. Windows file/save selection continues to use the common-dialog APIs.
 - Prevented the UXF directory button from opening a native dialog before its click event finishes, and blocked repeated Windows folder dialogs during modal message dispatch.
 
 - Moved the authoritative package source to `Packages/com.immersivecognition.uxf` so the development project consumes it as an embedded Package Manager package; updated the Git installation path, clean consumer fixture, exporter and CI archive workflow.
@@ -13,7 +12,7 @@
 - Added a documented package development workflow covering embedded source, imported samples, clean consumers, archive validation and legacy Assets migration.
 - Fixed Unity 6 import diagnostics caused by a malformed editor-script meta file, duplicate Test Runner assembly references and orphaned empty-folder metas left by the Samples move.
 - Unity 6 compatibility cleanup is in progress; consult the repository upgrade backlog before relying on platform support claims.
-- Windows native file dialogs now use Win32 common-dialog P/Invoke; the legacy System.Windows.Forms/Ookii.Dialogs assemblies were removed and the package targets .NET Standard 2.1.
+- Windows native file/save dialogs use Win32 common-dialog P/Invoke and folder selection uses Shell COM; the legacy System.Windows.Forms/Ookii.Dialogs assemblies were removed and the package targets .NET Standard 2.1.
 - The Windows-only `SFB.WindowWrapper` implementation detail was removed; use `StandaloneFileBrowser` as the public entry point.
 - Deprecated WebGL string bridges were updated and package-local agent guidance was added.
 - Obsolete pre-Unity-6 runtime/editor fallback branches were removed from web requests, object lookup, WebGL template checks and Web AWS target gating.

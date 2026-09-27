@@ -78,7 +78,7 @@ namespace SFB {
 
         /// <summary>
         /// Native open folder dialog
-        /// NOTE: Multiple folder selection doesn't supported on Windows
+        /// Multiple-folder selection is supported only by some platform backends.
         /// </summary>
         /// <param name="title"></param>
         /// <param name="directory">Root directory</param>
@@ -90,7 +90,7 @@ namespace SFB {
 
         /// <summary>
         /// Native open folder dialog async
-        /// NOTE: Multiple folder selection doesn't supported on Windows
+        /// Multiple-folder selection is supported only by some platform backends.
         /// </summary>
         /// <param name="title"></param>
         /// <param name="directory">Root directory</param>

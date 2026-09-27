@@ -40,7 +40,7 @@ The main concepts are:
 2. A `Block` owns ordered `Trial` objects.
 3. Settings cascade from session to block to trial.
 4. A trial records results and tracker data through configured `DataHandler` components.
-5. UI, WebGL/AWS, HTTP and native file dialogs are optional integrations; do not add them to a core-only consumer without checking their platform requirements. Use `SFB.StandaloneFileBrowser` as the dialog API. Windows dialogs use the OS common-dialog APIs through P/Invoke; macOS/Linux support still depends on the bundled native backends and requires platform validation.
+5. UI, WebGL/AWS, HTTP and native file dialogs are optional integrations; do not add them to a core-only consumer without checking their platform requirements. Use `SFB.StandaloneFileBrowser` as the dialog API. Windows file/save dialogs use Win32 common-dialog APIs, while folder selection uses the Windows Common Item Dialog (`IFileOpenDialog` in folder-picking mode) through Shell COM. macOS/Linux support still depends on the bundled native backends and requires platform validation.
 
 Build validation is session-based: UI-free and manually started `Session` components are checked for handler and platform compatibility even when no `UIController` is present. In batchmode, an unsupported configuration fails the build with a `BuildFailedException` so CI does not wait for an editor dialog.
 
