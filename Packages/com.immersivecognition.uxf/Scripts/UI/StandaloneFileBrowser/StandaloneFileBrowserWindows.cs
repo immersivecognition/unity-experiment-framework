@@ -14,6 +14,7 @@ namespace SFB {
     /// </summary>
     public class StandaloneFileBrowserWindows : IStandaloneFileBrowser {
         private bool folderDialogOpen;
+        private readonly object folderDialogLock = new object();
         private const int OFN_ALLOWMULTISELECT = 0x00000200;
         private const int OFN_EXPLORER = 0x00080000;
         private const int OFN_FILEMUSTEXIST = 0x00001000;
@@ -100,16 +101,68 @@ namespace SFB {
         }
 
         public string[] OpenFolderPanel(string title, string directory, bool multiselect) {
-            if (folderDialogOpen) return new string[0];
-            folderDialogOpen = true;
+            lock (folderDialogLock) {
+                if (folderDialogOpen) return new string[0];
+                folderDialogOpen = true;
+            }
             try {
                 return multiselect
                     ? OpenFolderPanelCore(title, directory, true)
                     : OpenFolderPanelCore(title, directory);
             }
             finally {
-                folderDialogOpen = false;
+                lock (folderDialogLock) folderDialogOpen = false;
             }
+        }
+
+        public void OpenFolderPanelAsync(string title, string directory, bool multiselect, Action<string[]> cb) {
+            if (cb == null) throw new ArgumentNullException(nameof(cb));
+
+            lock (folderDialogLock) {
+                if (folderDialogOpen) {
+                    PostFolderPanelResult(SynchronizationContext.Current, cb, new string[0]);
+                    return;
+                }
+                folderDialogOpen = true;
+            }
+
+            SynchronizationContext callbackContext = SynchronizationContext.Current;
+            IntPtr owner = GetActiveWindow();
+            Thread dialogThread = new Thread(() => {
+                string[] result = new string[0];
+                Exception dialogException = null;
+                try {
+                    result = ShowFolderDialog(owner, title, directory, multiselect);
+                }
+                catch (Exception exception) {
+                    dialogException = exception;
+                }
+                finally {
+                    lock (folderDialogLock) folderDialogOpen = false;
+                }
+
+                PostFolderPanelResult(callbackContext, cb, result, dialogException);
+            });
+            dialogThread.IsBackground = true;
+            dialogThread.Name = "UXF Windows folder picker";
+            dialogThread.SetApartmentState(ApartmentState.STA);
+            try {
+                dialogThread.Start();
+            }
+            catch {
+                lock (folderDialogLock) folderDialogOpen = false;
+                throw;
+            }
+        }
+
+        private static void PostFolderPanelResult(SynchronizationContext context, Action<string[]> callback, string[] result, Exception exception = null) {
+            SendOrPostCallback invokeCallback = _ => {
+                if (exception != null) UnityEngine.Debug.LogException(exception);
+                callback(exception == null && result != null ? result : new string[0]);
+            };
+
+            if (context != null) context.Post(invokeCallback, null);
+            else invokeCallback(null);
         }
 
         protected virtual string[] OpenFolderPanelCore(string title, string directory) {
@@ -140,36 +193,47 @@ namespace SFB {
         }
 
         private static string[] ShowFolderDialog(IntPtr owner, string title, string directory, bool multiselect) {
-            int initializeResult = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
-            if (initializeResult < 0) Marshal.ThrowExceptionForHR(initializeResult);
-
             Guid fileOpenDialogClassId = FileOpenDialogClassId;
             Guid fileOpenDialogInterfaceId = FileOpenDialogInterfaceId;
             Guid shellItemInterfaceId = ShellItemInterfaceId;
             IFileOpenDialog dialog = null;
+            bool comInitialized = false;
+            string operation = "CoInitializeEx";
             try {
+                int initializeResult = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
+                if (initializeResult < 0) Marshal.ThrowExceptionForHR(initializeResult);
+                comInitialized = true;
+
+                operation = "CoCreateInstance";
                 int result = CoCreateInstance(ref fileOpenDialogClassId, IntPtr.Zero, CLSCTX_INPROC_SERVER,
                     ref fileOpenDialogInterfaceId, out dialog);
                 ThrowIfFailed(result);
 
-                uint options;
-                ThrowIfFailed(dialog.GetOptions(out options));
-                options |= FOS_PICKFOLDERS | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST | FOS_NOCHANGEDIR | FOS_DONTADDTORECENT;
+                uint options = FOS_PICKFOLDERS | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST | FOS_NOCHANGEDIR | FOS_DONTADDTORECENT;
                 if (multiselect) options |= FOS_ALLOWMULTISELECT;
+                operation = "IFileDialog.SetOptions";
                 ThrowIfFailed(dialog.SetOptions(options));
 
-                if (!string.IsNullOrEmpty(title)) ThrowIfFailed(dialog.SetTitle(title));
+                if (!string.IsNullOrEmpty(title)) {
+                    operation = "IFileDialog.SetTitle";
+                    ThrowIfFailed(dialog.SetTitle(title));
+                }
                 if (!string.IsNullOrEmpty(directory) && Directory.Exists(directory)) {
                     IShellItem initialFolder = null;
                     try {
+                        operation = "SHCreateItemFromParsingName";
                         result = SHCreateItemFromParsingName(directory, IntPtr.Zero, ref shellItemInterfaceId, out initialFolder);
-                        if (result >= 0) ThrowIfFailed(dialog.SetDefaultFolder(initialFolder));
+                        if (result >= 0) {
+                            operation = "IFileDialog.SetDefaultFolder";
+                            ThrowIfFailed(dialog.SetDefaultFolder(initialFolder));
+                        }
                     }
                     finally {
                         ReleaseComObject(initialFolder);
                     }
                 }
 
+                operation = "IFileDialog.Show";
                 result = dialog.Show(owner);
                 if (result == ERROR_CANCELLED) return new string[0];
                 ThrowIfFailed(result);
@@ -177,7 +241,9 @@ namespace SFB {
                 if (!multiselect) {
                     IShellItem selectedItem = null;
                     try {
+                        operation = "IFileDialog.GetResult";
                         ThrowIfFailed(dialog.GetResult(out selectedItem));
+                        operation = "IShellItem.GetDisplayName";
                         return new[] { GetFileSystemPath(selectedItem) };
                     }
                     finally {
@@ -187,14 +253,18 @@ namespace SFB {
 
                 IShellItemArray selectedItems = null;
                 try {
+                    operation = "IFileOpenDialog.GetResults";
                     ThrowIfFailed(dialog.GetResults(out selectedItems));
                     uint count;
+                    operation = "IShellItemArray.GetCount";
                     ThrowIfFailed(selectedItems.GetCount(out count));
                     string[] paths = new string[checked((int)count)];
                     for (uint i = 0; i < count; i++) {
                         IShellItem item = null;
                         try {
+                            operation = "IShellItemArray.GetItemAt";
                             ThrowIfFailed(selectedItems.GetItemAt(i, out item));
+                            operation = "IShellItem.GetDisplayName";
                             paths[i] = GetFileSystemPath(item);
                         }
                         finally {
@@ -207,9 +277,12 @@ namespace SFB {
                     ReleaseComObject(selectedItems);
                 }
             }
+            catch (COMException exception) {
+                throw new COMException("Windows folder dialog failed during " + operation + " (HRESULT 0x" + exception.ErrorCode.ToString("X8") + ").", exception.ErrorCode);
+            }
             finally {
                 ReleaseComObject(dialog);
-                if (initializeResult >= 0) CoUninitialize();
+                if (comInitialized) CoUninitialize();
             }
         }
 
@@ -233,13 +306,7 @@ namespace SFB {
         }
 
         [ComImport, Guid("D57C7288-D4AD-4768-BE02-9D969532D960"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IFileOpenDialog : IFileDialog {
-            [PreserveSig] int GetResults(out IShellItemArray items);
-            [PreserveSig] int GetSelectedItems(out IShellItemArray items);
-        }
-
-        [ComImport, Guid("B4DB1657-70D7-485E-8E3E-6FCB5A5C1802"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IFileDialog {
+        private interface IFileOpenDialog {
             [PreserveSig] int Show(IntPtr owner);
             [PreserveSig] int SetFileTypes(uint count, IntPtr filters);
             [PreserveSig] int SetFileTypeIndex(uint index);
@@ -264,6 +331,8 @@ namespace SFB {
             [PreserveSig] int SetClientGuid(ref Guid guid);
             [PreserveSig] int ClearClientData();
             [PreserveSig] int SetFilter(IntPtr filter);
+            [PreserveSig] int GetResults(out IShellItemArray items);
+            [PreserveSig] int GetSelectedItems(out IShellItemArray items);
         }
 
         [ComImport, Guid("43826D1E-E718-42EE-BC55-A1E261C37BFE"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -284,10 +353,6 @@ namespace SFB {
             [PreserveSig] int GetCount(out uint count);
             [PreserveSig] int GetItemAt(uint index, out IShellItem item);
             [PreserveSig] int EnumItems(out IntPtr enumerator);
-        }
-
-        public void OpenFolderPanelAsync(string title, string directory, bool multiselect, Action<string[]> cb) {
-            cb.Invoke(OpenFolderPanel(title, directory, multiselect));
         }
 
         public string SaveFilePanel(string title, string directory, string defaultName, ExtensionFilter[] extensions) {

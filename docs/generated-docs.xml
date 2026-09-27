@@ -432,13 +432,13 @@
         </member>
         <member name="T:UXF.EditorUtils.CameraDisplayOverride">
             <summary>
-            Class which handles the cascading settings system. Wraps a Dictionary.
+            Disables stereo-eye rendering for this camera when using the built-in render pipeline.
+            Scriptable render pipelines do not support Camera.stereoTargetEye.
             </summary>
         </member>
         <member name="M:UXF.EditorUtils.CameraDisplayOverride.OnValidate">
             <summary>
-            Called when the script is loaded or a value is changed in the
-            inspector (Called in the editor only).
+            Sets the camera to render to neither stereo eye in the built-in render pipeline.
             </summary>
         </member>
         <member name="M:UXF.EditorUtils.Comment.Start">

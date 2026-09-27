@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="media/banner-2-0-small.png">
+  <img src="media/banner-2-0-small.webp">
 </p>
 
 # UXF - Unity Experiment Framework

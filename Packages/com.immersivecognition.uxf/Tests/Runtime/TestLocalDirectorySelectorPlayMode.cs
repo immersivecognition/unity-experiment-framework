@@ -11,11 +11,11 @@ namespace UXF.Tests
     {
         public int dialogCount;
 
-        protected override string[] ShowFolderPanel(string title, string directory, bool multiselect)
+        protected override void ShowFolderPanelAsync(string title, string directory, bool multiselect, System.Action<string[]> callback)
         {
             dialogCount++;
             SelectFolder(); // Simulate the click being dispatched again by a modal message loop.
-            return new string[0];
+            callback(new string[0]);
         }
     }
 

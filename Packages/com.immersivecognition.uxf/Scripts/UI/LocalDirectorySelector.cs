@@ -12,6 +12,7 @@ namespace UXF.UI
     public class LocalDirectorySelector : MonoBehaviour
     {
         private bool selectingFolder;
+        private int folderSelectionRequest;
         
         public FormElement inputField;
         UIController uiController;
@@ -47,39 +48,49 @@ namespace UXF.UI
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
             if (selectingFolder) return;
             selectingFolder = true;
-            StartCoroutine(SelectFolderAfterClick());
+            int request = ++folderSelectionRequest;
+            StartCoroutine(SelectFolderAfterClick(request));
 #else
             Utilities.UXFDebugLogError("Cannot select directory unless on PC platform!");
 #endif
         }
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
-        private IEnumerator SelectFolderAfterClick()
+        private IEnumerator SelectFolderAfterClick(int request)
         {
-            // A native modal dialog pumps Windows messages. Let the button's
-            // OnPointerClick finish before opening it so the click cannot reenter.
+            // Let the button's OnPointerClick finish before opening the dialog.
             yield return null;
-            try
-            {
-                string current = (string)inputField.GetContents();
-                string[] selected = ShowFolderPanel("Select data directory", current, false);
-                if (selected != null && selected.Length > 0) inputField.SetContents(selected[0]);
-            }
-            finally
+            if (!isActiveAndEnabled || request != folderSelectionRequest)
             {
                 selectingFolder = false;
+                yield break;
             }
+
+            string current = (string)inputField.GetContents();
+            ShowFolderPanelAsync("Select data directory", current, false, selected =>
+            {
+                if (request != folderSelectionRequest) return;
+                try
+                {
+                    if (isActiveAndEnabled && selected != null && selected.Length > 0)
+                        inputField.SetContents(selected[0]);
+                }
+                finally
+                {
+                    selectingFolder = false;
+                }
+            });
         }
 
-        protected virtual string[] ShowFolderPanel(string title, string directory, bool multiselect)
+        protected virtual void ShowFolderPanelAsync(string title, string directory, bool multiselect, Action<string[]> callback)
         {
-            return SFB.StandaloneFileBrowser.OpenFolderPanel(title, directory, multiselect);
+            SFB.StandaloneFileBrowser.OpenFolderPanelAsync(title, directory, multiselect, callback);
         }
 
         private void OnDisable()
         {
-            // Coroutines are stopped when this component is destroyed or its
-            // GameObject is disabled before the dialog opens.
+            // Ignore a pending native-dialog callback after this selector is disabled.
+            folderSelectionRequest++;
             selectingFolder = false;
         }
 #endif
