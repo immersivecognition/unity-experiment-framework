@@ -2,43 +2,39 @@
 
 ## 3.0.0
 
-- Major release for the Unity 6 / UPM package line. Review the package migration and platform validation notes before upgrading an existing project.
-- UXF runtime assemblies remain render-pipeline-agnostic. Converted the Standard and fire-particle sample materials for URP 17.3; procedural skyboxes retain Unity's URP-compatible built-in skybox shader. `ExampleGlow` remains on Built-in Unlit/Color and requires visual validation.
-- Added Input System dependency and runtime input bridge for UXF pointer/key reads; the rig switches its own and scene-owned legacy UI input modules at runtime so Input System-only consumers can use the UI.
-- Windows folder selection now uses the recommended Vista-and-newer Common Item Dialog (`IFileOpenDialog` with `FOS_PICKFOLDERS`), including initial folders, multiselect, cancel handling and an STA COM thread. Windows file/save selection continues to use the common-dialog APIs.
-- Prevented the UXF directory button from opening a native dialog before its click event finishes, and blocked repeated Windows folder dialogs during modal message dispatch.
+### Installation and compatibility
 
-- Moved the authoritative package source to `Packages/com.immersivecognition.uxf` so the development project consumes it as an embedded Package Manager package; updated the Git installation path, clean consumer fixture, exporter and CI archive workflow.
-- The package workflow now emits a SHA-256 checksum and verifies package/tag/changelog consistency before a tagged release.
-- Added a documented package development workflow covering embedded source, imported samples, clean consumers, archive validation and legacy Assets migration.
-- Fixed Unity 6 import diagnostics caused by a malformed editor-script meta file, duplicate Test Runner assembly references and orphaned empty-folder metas left by the Samples move.
-- Unity 6 compatibility cleanup is in progress; consult the repository upgrade backlog before relying on platform support claims.
-- Windows native file/save dialogs use Win32 common-dialog P/Invoke and folder selection uses Shell COM; the legacy System.Windows.Forms/Ookii.Dialogs assemblies were removed and the package targets .NET Standard 2.1.
-- The Windows-only `SFB.WindowWrapper` implementation detail was removed; use `StandaloneFileBrowser` as the public entry point.
-- Deprecated WebGL string bridges were updated and package-local agent guidance was added.
-- Obsolete pre-Unity-6 runtime/editor fallback branches were removed from web requests, object lookup, WebGL template checks and Web AWS target gating.
-- The setup wizard now distinguishes normal reload behavior from explicitly enabled fast Enter Play Mode settings.
-- Local-file handler platform checks now apply to UI-free and manual-start Sessions as well as UI-driven Sessions.
-- Android FileSaver build validation now requires app-private `PersistentDataPath` without enabling the legacy External (SDCard) permission.
-- Batchmode build failures now raise `BuildFailedException` without opening an editor modal dialog.
-- Tracker table serialization now uses a worker queue and `Session.End()` waits for queued tracker writes; `ResultsDictionary` writes are synchronized.
-- Removed the obsolete EasyEvent reflection patch and global reorderable inspector; UXF inspectors now use Unity's native serialized property/list/event controls.
-- Added runtime/editor/test assembly definitions, Package Manager `UXF Examples` samples, and package-local agent recipes.
-- Package samples now carry fresh-GUID Unity 6 WebGL templates; imported consumers are instructed to copy the selected template into `Assets/WebGLTemplates` because Unity only discovers custom templates there.
-- Known runtime static Session, SessionLogger and random-generator state now resets at subsystem registration; fast Enter Play Mode remains unvalidated when scene reload is disabled.
-- CSV output now preserves separators/quotes/newlines using standard quoting; FileSaver rejects unsafe session path components, keeps caller culture unchanged and tolerates repeated cleanup.
-- FileSaver relative paths now use the platform path API and emit stable forward-slash output on Windows, macOS and Linux; FileSaver tests use isolated temporary roots.
-- FileSaver queue accounting is synchronized while the worker is active.
-- Unity 6 EditMode coverage now runs cleanly under the native test runner; culture, CSV, JSON and EditMode lifecycle/static-state regressions are covered by the updated tests.
-- Session and SessionLogger static state now resets across play sessions; logger callbacks detach on destruction.
-- Trial worker queues now drain and restart cleanly after `Session.End()` and when a play session starts with domain reload disabled.
-- `FormElementEntry.element` remains readable after UI generation but can only be assigned by UXF; consumers should configure the serialized entry fields instead.
-- Package and repository guidance now provide explicit entry points for agents and contributors.
-- Package metadata now declares the UnityWebRequest module required by HTTPPost and UI web-file loading, so minimal consumers compile without development-project module assumptions.
-- The clean Package Manager consumer now has explicit EditMode/PlayMode test assemblies and smoke tests for runtime session use and sample metadata.
-- Consumer sample smoke tests now verify the packaged Unity 6 WebGL template as well as the sample README.
-- The `[UXF_Rig]` Session component is enabled by default; Session and EventSystem fallback lifecycle code no longer runs in edit mode. UI/data-handler validation is now side-effect-free so inspecting the rig does not dirty scenes.
+- UXF is now a Unity Package Manager package at `Packages/com.immersivecognition.uxf`, targeting Unity 6000.3 and .NET Standard 2.1. Install the package through the version-pinned Git URL in the package README; import **UXF Examples** from Package Manager's Samples tab.
+- Added explicit runtime, editor and test assemblies. The package declares UGUI 2.0.0, Input System 1.16.0 and UnityWebRequest 1.0.0 dependencies. UXF runtime scripts remain render-pipeline-agnostic.
+- Example scenes use URP 17.3 materials and require URP setup in the consuming project. Their settings fixtures must be copied into the project's root `Assets/StreamingAssets`; WebGL templates must be copied into the root `Assets/WebGLTemplates`.
+
+### Input, UI and platform integrations
+
+- UXF pointer, keyboard, tracker and UI components support projects using the Input System alone or alongside the legacy Input Manager. An active UXF rig converts its legacy UI input module at runtime when the Input System is enabled.
+- Windows file/save dialogs now use Win32 common-dialog APIs; folder selection uses Shell `IFileOpenDialog` on an STA thread. Removed the bundled `System.Windows.Forms` and Ookii dialog DLLs and the Windows-only `SFB.WindowWrapper` helper. Continue to call `SFB.StandaloneFileBrowser`.
+- Windows directory selection now defers the native picker until the UI click ends and rejects reentrant folder dialogs. The final selection/cancel path and standalone player backends still require validation.
+- Android FileSaver validation now uses app-private `PersistentDataPath` without requesting the legacy External (SDCard) permission. Updated WebGL string interop and Unity 6 platform/version checks.
+
+### Data and lifecycle
+
+- CSV output now quotes separators, quotes and line breaks; malformed quoted input fails explicitly. Check downstream CSV readers that relied on the earlier format.
+- FileSaver rejects rooted or nested experiment/participant identifiers, preserves the caller's culture while formatting output, uses portable forward-slash relative paths, and handles repeated or early cleanup.
+- Tracker serialization uses a worker queue; `Session.End()` waits for accepted tracker writes. FileSaver queue accounting and `ResultsDictionary` writes are synchronized.
+- Session, logger and random-generator static state reset between play sessions. The `[UXF_Rig]` Session is enabled by default, and editor validation no longer modifies scenes merely by inspecting them.
+
+### Editor and API migration
+
+- Removed the EasyEvent reflection patch and global reorderable inspector in favor of Unity's native serialized controls.
+- `FormElementEntry.element` remains readable but is now assigned by UXF. Configure its serialized entry fields rather than assigning the generated element directly.
+- Build validation checks manual and UI-free Sessions and reports batchmode failures with `BuildFailedException` rather than opening a dialog.
+- Added package-local agent guidance and recipes for installed-package consumers.
+
+### Validation limits
+
+- This release line is developed in Unity 6000.3.25f1. Earlier local package and clean-consumer EditMode/PlayMode suites passed, but final-source test runs, tagged installation and player/device checks are still required before claiming full platform support.
+- Fast Enter Play Mode with scene reload disabled, Windows IL2CPP dialogs, browser upload completion, macOS/Linux native dialogs, Android devices and sample visuals remain unverified. `ExampleGlow` still uses Built-in Unlit/Color and needs a URP visual check.
 
 ## 2.4.5
 
 - Development baseline migrated to Unity 6000.3.25f1.
+- Added the initial Unity Package Manager manifest and package-local agent/contributor guidance.

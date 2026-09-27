@@ -346,7 +346,7 @@ Done: CI produces an installable UPM artifact from one commit, verifies metadata
 
 **P1 · High · Confirmed gap · M · Depends E01–E03**
 
-Implementation started: the workflow now gates a release job to pushed `v*`/numeric tags, verifies the checksum and tag/package version, attaches the ZIP and checksum, and limits `contents: write` to that job. Changelog consistency, immutable-release behavior and broader artifact provenance remain to validate.
+Implementation started: the workflow gates a release on `master` or a pushed `v*`/numeric tag to successful package checks and licensed Unity tests. It verifies the checksum and tag/package version, attaches the ZIP and checksum, and limits `contents: write` to that job. Changelog consistency, immutable-release behavior and broader artifact provenance remain to validate.
 
 Done: dry-run produces reviewable artifacts without publishing; mismatched versions/tests block release; repeated invocation cannot silently replace a release with different bytes. Registry publication, if selected, uses its own explicit credentials and approval policy.
 

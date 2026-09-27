@@ -43,31 +43,31 @@ If you have developed a project using UXF please [let me know](http://twitter.co
 
 ## Get started
 
-0. Read over this Readme and the [paper](https://doi.org/10.3758/s13428-019-01242-0) to understand UXF.
-
-1. Install UXF through Unity Package Manager using the release tag URL below, or import the latest ```UXF.unitypackage``` [legacy release](https://github.com/immersivecognition/unity-experiment-framework/releases/latest) into your existing Unity project. (Drag the legacy file into your project.)
+1. In Unity, open **Window > Package Manager**, click **+**, and choose **Add package from git URL**.
 
    ```text
-   https://github.com/immersivecognition/unity-experiment-framework.git?path=Packages/com.immersivecognition.uxf#<release-tag>
+   https://github.com/immersivecognition/unity-experiment-framework.git?path=Packages/com.immersivecognition.uxf
    ```
 
-   Use a release tag in the URL for reproducible projects. The package-local [README](Packages/com.immersivecognition.uxf/README.md) and [agent guide](Packages/com.immersivecognition.uxf/AGENTS.md) describe the installed package and its extension points.
+   Paste the URL into the field and click **Add**. Unity will install UXF from the repository's default branch; you don't need to add a tag.
 
-   The repository's development project embeds the package under `Packages/com.immersivecognition.uxf`, so UXF appears in that project's Package Manager list. Select the package's **Samples** tab and import **UXF Examples**; `ci/consumer` is the clean local fixture used to exercise a separate consumer.
+   Or give the URL of this page to your Claude Code or ChatGPT agent to install it for you.
 
-2. The UXF Setup Wizard will launch (or via the top menu: UXF > UXF Wizard) - Use it to fix any compatibility issues. 
+2. In Package Manager, select UXF and open its **Samples** tab. Click **Import** next to **UXF Examples**.
 
-3. In Package Manager, select **UXF Examples** under the package's **Samples** tab and import it. Then open an example scene such as `2_MoveToTarget/MoveToTargetExample` from the imported sample folder.
+3. Open an example scene from the imported `Assets/Samples/` folder. The automatic, CSV and multi-scene examples also need the sample `StreamingAssets` files copied into the project's root `Assets/StreamingAssets` folder. Merge with any existing folder so user files are preserved.
 
-   The examples are being migrated to **Universal Render Pipeline (URP)**, while UXF runtime scripts remain render-pipeline-agnostic. The checked-in sample materials are still authored for Built-in Render Pipeline, so URP users must convert supported materials and replace unsupported legacy effects as described in the [sample guide](Packages/com.immersivecognition.uxf/Samples~/README.md). Assign the URP Asset to each quality level you use under **Project Settings > Quality**; this per-quality setting overrides **Project Settings > Graphics > Default Render Pipeline**. The Graphics default is used only when that quality level has no override.
+The example scenes require **Universal Render Pipeline (URP) 17.3**. Install URP and assign its Render Pipeline Asset to the quality levels you use before opening the scenes. The core UXF package can be used without URP. See the [sample setup guide](Packages/com.immersivecognition.uxf/Samples~/README.md) for setup details.
 
-   The automatic, CSV and multi-scene examples also need the sample `StreamingAssets` files copied into the consumer project's root `Assets/StreamingAssets` folder. Merge with an existing folder so user files are preserved.
+4. Open **UXF > UXF Wizard** and review any compatibility suggestions for your build target.
 
-   For WebGL, copy `WebGLTemplates/UXF WebGL 2020` from the imported sample into the project's root `Assets/WebGLTemplates/` folder before selecting that template in WebGL Player Settings.
+5. Press Play, enter the participant details, and click **Start** to begin the session.
 
-4. Press play, and use the UI to enter any details.
+For WebGL, copy `WebGLTemplates/UXF WebGL 2020` from the imported sample into the project's root `Assets/WebGLTemplates/` folder before selecting that template in WebGL Player Settings.
 
-5. Press start to begin the session.
+## Legacy releases and older Unity versions
+
+UXF 3.0 requires Unity 6000.3 or newer. Older Unity Editor versions are outside the support range for UXF 3.0. If an existing project must stay on an older Unity version, use a matching historical UXF release from the [Releases](https://github.com/immersivecognition/unity-experiment-framework/releases) page. Legacy releases and the `.unitypackage` distribution are no longer maintained for the current package line. Do not install a `.unitypackage` and the UPM package in the same project.
 
 Visit the [Wiki](https://github.com/immersivecognition/unity-experiment-framework/wiki) for more details.
 
@@ -199,6 +199,8 @@ More examples are contained in the package and on the [Wiki](https://github.com/
 The current development baseline is Unity 6000.3.25f1. Supported editor versions and platform combinations are recorded in the release documentation; they are advertised only after the corresponding CI, player or device checks pass. Older Unity versions are not implied by the current package manifest.
 
 The repository uses an embedded-package workflow: edit the authoritative source in `Packages/com.immersivecognition.uxf`, consume it from this development project through Package Manager, and validate a separate installation with `ci/consumer`. The [package development workflow](docs/maintenance/Package-development-workflow.md) explains the source, sample, test, archive and migration boundaries.
+
+Before a change is accepted for merge, all EditMode and PlayMode tests in the development project and clean consumer must pass locally in Unity 6000.3.25f1. Record the test results and any platform or backend limitations in the pull request. Package checks in CI do not replace this requirement.
 
 ## Documentation
 

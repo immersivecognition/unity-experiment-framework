@@ -27,7 +27,7 @@
     "url": "https://github.com/immersivecognition/unity-experiment-framework.git"
   },
   "documentationUrl": "https://github.com/immersivecognition/unity-experiment-framework/wiki",
-  "changelogUrl": "https://github.com/immersivecognition/unity-experiment-framework/blob/master/CHANGELOG.md",
+  "changelogUrl": "https://github.com/immersivecognition/unity-experiment-framework/blob/master/Packages/com.immersivecognition.uxf/CHANGELOG.md",
   "samples": [
     {
       "displayName": "UXF Examples",

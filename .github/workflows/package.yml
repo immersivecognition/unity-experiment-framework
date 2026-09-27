@@ -115,20 +115,26 @@ jobs:
           if-no-files-found: error
 
   release:
-    name: Publish tagged package release
-    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') }}
-    needs: package
+    name: Publish versioned package release
+    if: ${{ always() && github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master') && needs.package.result == 'success' && needs.unity-tests.result == 'success' && needs.consumer-tests.result == 'success' }}
+    needs: [package, unity-tests, consumer-tests]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+      - name: Check out source and tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Download package artifact
         uses: actions/download-artifact@v4
         with:
           name: uxf-upm-package
           path: release-artifact
 
-      - name: Verify tag and package version
+      - name: Verify package and select release tag
+        id: release-check
         shell: pwsh
         run: |
           $zip = Get-ChildItem -LiteralPath 'release-artifact' -Filter '*.zip' | Select-Object -First 1
@@ -137,20 +143,56 @@ jobs:
           $expected = (Get-Content -LiteralPath $checksum.FullName -Raw).Trim().Split(' ')[0].ToLowerInvariant()
           $actual = (Get-FileHash -LiteralPath $zip.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
           if ($expected -ne $actual) { throw "Package checksum mismatch: expected $expected, got $actual" }
-          $tagVersion = $env:GITHUB_REF_NAME -replace '^v', ''
           $temp = Join-Path $env:RUNNER_TEMP 'uxf-release-package'
           Expand-Archive -LiteralPath $zip.FullName -DestinationPath $temp -Force
-           $manifest = Get-Content -LiteralPath (Join-Path $temp 'package.json') -Raw | ConvertFrom-Json
-           if ($manifest.version -ne $tagVersion) { throw "Tag $env:GITHUB_REF_NAME does not match package version $($manifest.version)" }
-           $changelog = Get-Content -LiteralPath (Join-Path $temp 'CHANGELOG.md') -Raw
-           if ($changelog -notmatch "(?m)^##\s+$([regex]::Escape($manifest.version))(\s|$)") { throw "CHANGELOG.md has no heading for package version $($manifest.version)" }
-           "ZIP=$($zip.FullName)" >> $env:GITHUB_ENV
+          $manifest = Get-Content -LiteralPath (Join-Path $temp 'package.json') -Raw | ConvertFrom-Json
+          $changelog = Get-Content -LiteralPath (Join-Path $temp 'CHANGELOG.md') -Raw
+          if ($changelog -notmatch "(?m)^##\s+$([regex]::Escape($manifest.version))(\s|$)") { throw "CHANGELOG.md has no heading for package version $($manifest.version)" }
+
+          if ($env:GITHUB_REF -like 'refs/tags/*') {
+            $tagVersion = $env:GITHUB_REF_NAME -replace '^v', ''
+            if ($manifest.version -ne $tagVersion) { throw "Tag $env:GITHUB_REF_NAME does not match package version $($manifest.version)" }
+            $releaseTag = $env:GITHUB_REF_NAME
+            $publish = $true
+          }
+          else {
+            $releaseTag = "v$($manifest.version)"
+            $allTags = @(git tag --list)
+            if (($allTags -contains $releaseTag) -or ($allTags -contains $manifest.version)) {
+              Write-Host "Version $($manifest.version) already has a Git tag; skipping duplicate release."
+              $publish = $false
+            }
+            else {
+              $tagVersions = @($allTags | ForEach-Object {
+                if ($_ -match '^v?(\d+\.\d+\.\d+)$') { [version]$Matches[1] }
+              })
+              if ($tagVersions.Count -gt 0) {
+                $latestTagVersion = $tagVersions | Sort-Object | Select-Object -Last 1
+                if ([version]$manifest.version -le $latestTagVersion) {
+                  throw "Package version $($manifest.version) must be greater than the latest release tag $latestTagVersion."
+                }
+              }
+              $publish = $true
+            }
+          }
+
+          "ZIP=$($zip.FullName)" >> $env:GITHUB_ENV
           "CHECKSUM=$($checksum.FullName)" >> $env:GITHUB_ENV
+          "release_tag=$releaseTag" >> $env:GITHUB_OUTPUT
+          "publish=$($publish.ToString().ToLowerInvariant())" >> $env:GITHUB_OUTPUT
 
       - name: Create GitHub release
+        if: steps.release-check.outputs.publish == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" "$ZIP" "$CHECKSUM" --verify-tag --generate-notes
+          RELEASE_TAG: ${{ steps.release-check.outputs.release_tag }}
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            gh release create "$RELEASE_TAG" "$ZIP" "$CHECKSUM" --verify-tag --generate-notes
+          else
+            gh release create "$RELEASE_TAG" "$ZIP" "$CHECKSUM" --target "$GITHUB_SHA" --generate-notes
+          fi
 
   unity-tests:
     name: Unity ${{ matrix.testMode }} tests (licensed runner)
@@ -238,15 +280,22 @@ jobs:
           $manifest | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $manifestPath
           if (-not (Test-Path -LiteralPath (Join-Path $destination 'package.json'))) { throw 'Extracted package.json is missing.' }
 
-      - name: Configure Input System-only consumer
-        if: matrix.inputBackend == 'inputsystem'
+      - name: Configure consumer input backend
         shell: pwsh
+        env:
+          INPUT_BACKEND: ${{ matrix.inputBackend }}
         run: |
           $source = Join-Path $env:GITHUB_WORKSPACE 'ProjectSettings/ProjectSettings.asset'
           $destination = Join-Path $env:GITHUB_WORKSPACE 'ci/consumer/ProjectSettings/ProjectSettings.asset'
           $settings = Get-Content -LiteralPath $source -Raw
-          if ($settings -notmatch 'activeInputHandler: 0') { throw 'Development PlayerSettings input handling has changed.' }
-          $settings = $settings -replace 'activeInputHandler: 0', 'activeInputHandler: 1'
+          $inputSetting = [regex]::Match($settings, '(?m)^  activeInputHandler: [012]$')
+          if (-not $inputSetting.Success) { throw 'Development PlayerSettings input handling is missing or unsupported.' }
+          $inputValue = switch ($env:INPUT_BACKEND) {
+            'legacy' { 0 }
+            'inputsystem' { 1 }
+            default { throw "Unsupported input backend: $env:INPUT_BACKEND" }
+          }
+          $settings = $settings.Replace($inputSetting.Value, "  activeInputHandler: $inputValue")
           Set-Content -LiteralPath $destination -Value $settings
 
       - name: Run clean consumer tests

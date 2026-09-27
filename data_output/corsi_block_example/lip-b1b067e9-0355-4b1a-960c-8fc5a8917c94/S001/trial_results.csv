@@ -1,0 +1,3 @@
+experiment,ppid,session_num,trial_num,block_num,trial_num_in_block,start_time,end_time,num_sequence,correct,corsi_results_location_0,corsi_results_location_1
+corsi_block_example,lip-b1b067e9-0355-4b1a-960c-8fc5a8917c94,1,1,1,1,0.02,3.006498,2,True,corsi_block_example/lip-b1b067e9-0355-4b1a-960c-8fc5a8917c94/S001/other/corsi_results_T001.json,corsi_results_T001.json
+corsi_block_example,lip-b1b067e9-0355-4b1a-960c-8fc5a8917c94,1,2,1,2,4.004269,6.197314,2,,,
